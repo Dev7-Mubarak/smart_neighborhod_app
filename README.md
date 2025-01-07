@@ -1,1 +1,0 @@
-# smart_neighborhod_app
