@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_neighborhod_app/views/mainhome.dart';
 import '../components/constants/app_color.dart';
+import '../components/constants/app_route.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -20,10 +23,10 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // العنوان الرئيسي
-          const Text(
+            const Text(
               "الحارة الذكية",
               style: TextStyle(
-                color:AppColor.primaryColor,
+                color: AppColor.primaryColor,
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),
@@ -109,7 +112,7 @@ class _LoginState extends State<Login> {
                       "هل نسيت كلمة السر؟",
                       style: TextStyle(
                         fontSize: 16,
-                        color:AppColor.primaryColor,
+                        color: AppColor.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -121,9 +124,21 @@ class _LoginState extends State<Login> {
             const SizedBox(height: 20),
             // زر تسجيل الدخول
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.mainhome,
+                  );
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => mainhome(),
+                //   ),
+                //   (route) => false, // شرط لإزالة جميع الشاشات السابقة
+                // );
+              },
               style: ElevatedButton.styleFrom(
-                backgroundColor:AppColor.primaryColor,
+                backgroundColor: AppColor.primaryColor,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),

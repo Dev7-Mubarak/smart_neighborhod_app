@@ -10,20 +10,16 @@ class mainhome extends StatefulWidget {
 }
 
 class _mainhomeState extends State<mainhome> {
-  int _selectedIndex = 0; // لتحديد الزر النشط
+  int _selectedIndex = 1; // لتحديد الزر النشط
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('محتوى الرئيسية',
-        style: TextStyle(fontSize: 30)), // محتوى الصفحة الرئيسية
-    Text('محتوى المربعات السكنية',
-        style: TextStyle(fontSize: 30)), // محتوى صفحة المربعات السكنية
-  ];
+  static List<Widget> _widgetOptions = [ResidentialBlock(), Home()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.white,
+        elevation: 0, // إزالة الخط السفلي
         bottomOpacity: 0,
         title: const Center(
           child: Text(
@@ -37,8 +33,8 @@ class _mainhomeState extends State<mainhome> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(15),
-              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(10),
+              padding:EdgeInsets.symmetric(horizontal: 0,vertical: 0),
               decoration: BoxDecoration(
                   color: AppColor.gray,
                   borderRadius: BorderRadius.circular(20)),
@@ -64,7 +60,7 @@ class _mainhomeState extends State<mainhome> {
                         ),
                         child: Center(
                           child: Text(
-                            'الرئيسية',
+                            'المربعات السكنية',
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
@@ -95,7 +91,7 @@ class _mainhomeState extends State<mainhome> {
                         ),
                         child: Center(
                           child: Text(
-                            'المربعات السكنية',
+                            'الرئيسية',
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
@@ -111,10 +107,10 @@ class _mainhomeState extends State<mainhome> {
                 ],
               ),
             ),
-          const Expanded(
-              // لتوسيع المحتوى المتبقي أسفل الأزرار
+            Expanded(
               child: Center(
-                child: ResidentialBlock()
+                child: _widgetOptions.elementAt(
+                    _selectedIndex), // عرض المحتوى بناءً على الزر النشط
               ),
             ),
           ],
@@ -124,8 +120,8 @@ class _mainhomeState extends State<mainhome> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColor.primaryColor,
         unselectedItemColor: Color(0xFF565E6C),
-         iconSize: 30, // زيادة حجم الأيقونات
-        selectedLabelStyle:const TextStyle(
+        iconSize: 30, // زيادة حجم الأيقونات
+        selectedLabelStyle: const TextStyle(
           fontSize: 16, // تكبير حجم النص للعناصر المحددة
           fontWeight: FontWeight.bold,
         ),
@@ -133,7 +129,7 @@ class _mainhomeState extends State<mainhome> {
           fontSize: 14, // تكبير حجم النص للعناصر غير المحددة
         ),
         currentIndex: 0,
-        onTap: (int j){},
+        onTap: (int j) {},
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

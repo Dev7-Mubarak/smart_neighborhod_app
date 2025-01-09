@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_image.dart';
+import 'package:smart_neighborhod_app/components/constants/app_route.dart';
+import 'package:smart_neighborhod_app/views/login.dart';
 import '../components/constants/app_color.dart';
 import '../components/defult_button.dart';
 
@@ -68,7 +70,19 @@ class Onboarding extends StatelessWidget {
                 text: 'تسجيل الدخول',
                 backgroundColor: AppColor.white,
                 color: AppColor.primaryColor,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.login,
+                  );
+                  // Navigator.pushAndRemoveUntil(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) =>const Login(),
+                  //   ),
+                  //   (route) => false, // شرط لإزالة جميع الشاشات السابقة
+                  // );
+                },
               ),
             )
           ],
