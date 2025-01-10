@@ -15,7 +15,12 @@ class ResidentialBlock extends StatefulWidget {
 class _ResidentialBlockState extends State<ResidentialBlock> {
 
   List<buildHousingUnitCard>? ResidentialListSearch;
-  List<buildHousingUnitCard> ResidentialList = [];
+  List<buildHousingUnitCard> ResidentialList = [
+    // buildHousingUnitCard(tital: "المربع السكني الأول",),
+    // buildHousingUnitCard(tital: "المربع السكني الثاني",),
+    // buildHousingUnitCard(tital: "المربع السكني الثالث",),
+    // buildHousingUnitCard(tital: "المربع السكني الرابع",),
+  ];
    final _searchTextController = TextEditingController();
   bool _isSearching = false;
 Widget _buildSearchField() {
@@ -89,36 +94,54 @@ Widget _buildSearchField() {
     return  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-              ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.primaryColor,
-                minimumSize: const Size(40, 40),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+             Padding(
+               padding:EdgeInsets.symmetric(horizontal: 10,vertical: 0),
+               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.primaryColor,
+                  minimumSize: const Size(40, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                 ),
-              ),
-              child: const Text(
-                "أضافة",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            )
-            ,
-                if (_isSearching) _buildSearchField(),
-                _buildAppBarActions(),
-              ],
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: ListView(
-                 children: ResidentialListSearch ?? ResidentialList,
+                child: const Text(
+                  "أضافة",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              ),
-            ),
+                         )
+                         ,
+                  if (_isSearching) _buildSearchField(),
+                  _buildAppBarActions(),
+                ],
+                         ),
+             ),
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(10),
+            //     child: ListView(
+            //      children: ResidentialListSearch ?? ResidentialList,
+            //     ),
+            //   ),
+            // ),
+             Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child:  ResidentialList.isEmpty
+                ?const Center(
+                    child: Text(
+                      'لا يوجد مربعات سكنية',
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
+                  )
+                : ListView(
+                    children: ResidentialListSearch ?? ResidentialList,
+                  ),
+          ),
+        ),
           ],
         );
   }
