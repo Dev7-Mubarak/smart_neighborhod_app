@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_image.dart';
 import '../components/circular_logo.dart';
 import '../components/constants/app_color.dart';
+import '../components/constants/app_route.dart';
 import '../components/defult_button.dart';
 import 'login.dart';
 
@@ -60,9 +61,9 @@ class Onboarding extends StatelessWidget {
                 backgroundColor: AppColor.white,
                 color: AppColor.primaryColor,
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: (context) => Login()),
+                    AppRoute.login,
                   );
                 },
               ),
