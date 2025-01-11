@@ -32,8 +32,8 @@ class DefaultButton extends StatelessWidget {
             style: TextStyle(
               color: color,
               fontSize: 25,
-              fontWeight: FontWeight.bold,
-              // fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Tajawal',
               height: 31 / 25,
             ),
           ),

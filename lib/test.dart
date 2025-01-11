@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
 
-import 'components/constants/app_color.dart';
+class CounterPage extends StatefulWidget {
+  @override
+  _CounterPageState createState() => _CounterPageState();
+}
 
-class Test extends StatelessWidget {
-  const Test({super.key});
+class _CounterPageState extends State<CounterPage> {
+  int _count = 0; // Initialize the counter
+
+  void _incrementCounter() {
+    setState(() {
+      _count++; // Increment the counter
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.amber,
-          title: const Text('data'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SizedBox(
-            width: 353,
-            height: 48,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(70),
-                ),
-              ),
-              child: const Text(
-                'تسجيل الدخول',
-                style: TextStyle(
-                  color: AppColor.primaryColor,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Cairo',
-                ),
-              ),
+      appBar: AppBar(
+        title: const Text('Counter Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Count: $_count', // Display the current count
+              style: const TextStyle(fontSize: 24),
             ),
-          ),
-        ));
+            const SizedBox(height: 20), // Add some space
+            ElevatedButton(
+              onPressed: _incrementCounter, // Call increment function on press
+              child: const Text('Increment'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
