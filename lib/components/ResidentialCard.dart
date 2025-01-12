@@ -7,8 +7,7 @@ import 'constants/app_image.dart';
 
 class buildHousingUnitCard extends StatelessWidget {
   final String tital;
-  const buildHousingUnitCard({super.key, required this.tital});
-
+  const buildHousingUnitCard({super.key,required this.tital});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,10 +31,9 @@ class buildHousingUnitCard extends StatelessWidget {
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
             ),
-            child: Image.asset(
-              AppImage.residentailimage, // صورة افتراضية للمربع السكني
-              height: MediaQuery.of(context).size.width *
-                  0.5, // ارتفاع الصورة ديناميكي
+            child: Image.asset(AppImage.residentailimage, // صورة افتراضية للمربع السكني
+              height: MediaQuery.of(context).size.width * 0.5, // ارتفاع الصورة ديناميكي
+
               width: double.infinity,
               fit: BoxFit.cover,
             ),
