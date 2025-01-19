@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/services/dio_helper.dart';
 import 'AppRouter.dart';
 import 'components/constants/app_route.dart';
 import 'services/cache_helper.dart';
@@ -10,8 +9,7 @@ import 'views/onboarding.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = AppBlocObserver();
-  DioHelper.init();
-  await CacheHelper.init();
+  await CacheHelper;
   runApp(SmartNeighbourhood(appRouter: AppRouter()));
 }
 

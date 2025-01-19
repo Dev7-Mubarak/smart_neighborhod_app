@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import '../components/circular_logo.dart';
 import '../components/constants/app_color.dart';
 import '../components/default_text_form_filed.dart';
 import '../components/defult_button.dart';
+import '../core/API/dioConsumer.dart';
 
 class Login extends StatelessWidget {
   bool isPassword = true;
@@ -21,7 +23,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(),
+      create: (context) => LoginCubit(api: dioConsumer(dio: Dio())),
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
@@ -137,7 +139,7 @@ class Login extends StatelessWidget {
                         color: AppColor.white,
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).userLogin(
+                            LoginCubit.get(context).signIn(
                                 email: emailContoller.text,
                                 password: passwordContoller.text);
                           }

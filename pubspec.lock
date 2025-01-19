@@ -140,10 +140,10 @@ packages:
     dependency: "direct main"
     description:
       name: fluttertoast
-      sha256: "81b68579e23fcbcada2db3d50302813d2371664afe6165bc78148050ab94bf66"
+      sha256: ebe4f5b7630eb3c20cf9178937d572df519b204f3331e1f06e91d66a838c441d
       url: "https://pub.dev"
     source: hosted
-    version: "8.2.5"
+    version: "7.1.8"
   http:
     dependency: "direct main"
     description:
