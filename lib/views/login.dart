@@ -142,8 +142,8 @@ class Login extends StatelessWidget {
                             LoginCubit.get(context).signIn(
                                 email: emailContoller.text,
                                 password: passwordContoller.text);
-                          }
-                        }),
+                          } 
+                        },),
                   )
                 ],
               ),
