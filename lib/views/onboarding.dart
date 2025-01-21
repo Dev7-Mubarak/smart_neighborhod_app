@@ -4,7 +4,6 @@ import '../components/circular_logo.dart';
 import '../components/constants/app_color.dart';
 import '../components/constants/app_route.dart';
 import '../components/defult_button.dart';
-import 'login.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});

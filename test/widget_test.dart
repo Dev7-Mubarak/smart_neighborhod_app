@@ -7,8 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:smart_neighborhod_app/AppRouter.dart';
-
+import 'package:smart_neighborhod_app/app_route.dart';
 import 'package:smart_neighborhod_app/main.dart';
 
 void main() {

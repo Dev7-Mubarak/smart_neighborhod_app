@@ -1,7 +1,5 @@
 import 'package:smart_neighborhod_app/models/login_model.dart';
 
-import '../../models/user.dart';
-
 abstract class LoginState {}
 
 class LoginIntial extends LoginState {}

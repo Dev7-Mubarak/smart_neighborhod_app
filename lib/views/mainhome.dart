@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../components/constants/app_color.dart';
-import 'ResiddentialBlocks.dart';
+import 'residdential_blocks.dart';
 import 'home.dart';
 
-class mainhome extends StatefulWidget {
+class MainHome extends StatefulWidget {
+  const MainHome({super.key});
+
   @override
-  _mainhomeState createState() => _mainhomeState();
+  MmainHomeState createState() => MmainHomeState();
 }
 
-class _mainhomeState extends State<mainhome> {
+class MmainHomeState extends State<MainHome> {
   int _selectedIndex = 1; // لتحديد الزر النشط
 
-  static List<Widget> _widgetOptions = [ResidentialBlock(), Home()];
+  static final List<Widget> _widgetOptions = [
+    const ResidentialBlock(),
+    const Home()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +26,15 @@ class _mainhomeState extends State<mainhome> {
         backgroundColor: AppColor.white,
         elevation: 0, // إزالة الخط السفلي
         bottomOpacity: 0,
-        title: Padding(
-          padding:EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: const Center(
+        title: const Padding(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          child: Center(
             child: Text(
               'الحارة الذكية',
               style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
             ),
           ),
         ),
@@ -36,8 +43,8 @@ class _mainhomeState extends State<mainhome> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(10),
-              padding:EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               decoration: BoxDecoration(
                   color: AppColor.gray,
                   borderRadius: BorderRadius.circular(20)),
@@ -53,7 +60,7 @@ class _mainhomeState extends State<mainhome> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: _selectedIndex == 0
@@ -84,7 +91,7 @@ class _mainhomeState extends State<mainhome> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: _selectedIndex == 1
@@ -122,13 +129,13 @@ class _mainhomeState extends State<mainhome> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColor.primaryColor,
-        unselectedItemColor: Color(0xFF565E6C),
+        unselectedItemColor: const Color(0xFF565E6C),
         iconSize: 30, // زيادة حجم الأيقونات
         selectedLabelStyle: const TextStyle(
           fontSize: 16, // تكبير حجم النص للعناصر المحددة
           fontWeight: FontWeight.bold,
         ),
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: const TextStyle(
           fontSize: 14, // تكبير حجم النص للعناصر غير المحددة
         ),
         currentIndex: 0,

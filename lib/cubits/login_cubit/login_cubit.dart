@@ -1,10 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/api_link.dart';
 import 'package:smart_neighborhod_app/models/login_model.dart';
-import 'package:smart_neighborhod_app/views/login.dart';
-import '../../core/API/APIConsumer.dart';
+import '../../core/API/api_consumer.dart';
 import '../../core/errors/exception.dart';
 import '../../services/cache_helper.dart';
 import 'login_state.dart';
@@ -31,7 +29,9 @@ class LoginCubit extends Cubit<LoginState> {
         },
       );
       loginModel = LoginModel.fromJson(response);
-      CacheHelper().saveData(key: 'id', value: loginModel.data!=null?loginModel.data!.id:null);
+      CacheHelper().saveData(
+          key: 'id',
+          value: loginModel.data != null ? loginModel.data!.id : null);
       emit(LoginSuccess(loginModel));
     } on Serverexception catch (e) {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
