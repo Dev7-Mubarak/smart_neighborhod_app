@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/views/ResidentialBlockDetial.dart';
+import 'package:smart_neighborhod_app/views/residential_block_detial.dart';
 import 'package:smart_neighborhod_app/views/login.dart';
 import 'package:smart_neighborhod_app/views/mainhome.dart';
 import 'package:smart_neighborhod_app/views/onboarding.dart';
@@ -22,16 +22,13 @@ class AppRouter {
 
       case AppRoute.mainhome:
         // final String itemId = settings.arguments as String; // تمرير معرّف العنصر
-        return MaterialPageRoute(
-          builder: (_) => mainhome()
-        );
+        return MaterialPageRoute(builder: (_) => const MainHome());
 
-        case AppRoute.ResidentialBlockDetial:
+      case AppRoute.residentialBlockDetial:
         // final String itemId = settings.arguments as String; // تمرير معرّف العنصر
         return MaterialPageRoute(
-          builder: (_) => ResiddentialBlocksDetail()
-        );
-        
+            builder: (_) => const ResiddentialBlocksDetail());
+
       default:
         return null; // في حالة وجود مسار غير معروف
     }

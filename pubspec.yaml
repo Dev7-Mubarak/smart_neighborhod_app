@@ -29,12 +29,12 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   conditional_builder_null_safety: ^0.0.6
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.6
   dio: ^5.7.0
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.6
-  fluttertoast: ^7.1.8
+  flutter_bloc: ^9.0.0
+  fluttertoast: ^8.2.5
   http: ^0.13.6
   shared_preferences: ^2.2.2
 
@@ -45,7 +45,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.3
   flutter_test:
     sdk: flutter
 

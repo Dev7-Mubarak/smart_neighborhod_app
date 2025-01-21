@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 
-import '../components/CategoryCard.dart';
+import '../components/category_card.dart';
 import '../components/constants/app_image.dart';
 
 class Home extends StatefulWidget {
@@ -82,38 +82,41 @@ class _HomeState extends State<Home> {
 
   final _searchTextController = TextEditingController();
   bool _isSearching = false;
-Widget _buildSearchField() {
-  return Expanded(
-    child: Container(
-      height: 40, // التحكم في ارتفاع الحاوية الكاملة
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 243, 244, 246),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0), // تقليل الحشو حول الحقل
-        child: TextField(
-          textAlign: TextAlign.right,
-          controller: _searchTextController,
-          cursorColor: AppColor.primaryColor,
-          decoration: const InputDecoration(
-            hintText: 'بحث',
-            border: InputBorder.none,
-            hintStyle: TextStyle(
-              color: Color.fromARGB(255, 133, 134, 137),
-              fontSize: 18,
+  Widget _buildSearchField() {
+    return Expanded(
+      child: Container(
+        height: 40, // التحكم في ارتفاع الحاوية الكاملة
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 243, 244, 246),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 8.0), // تقليل الحشو حول الحقل
+          child: TextField(
+            textAlign: TextAlign.right,
+            controller: _searchTextController,
+            cursorColor: AppColor.primaryColor,
+            decoration: const InputDecoration(
+              hintText: 'بحث',
+              border: InputBorder.none,
+              hintStyle: TextStyle(
+                color: Color.fromARGB(255, 133, 134, 137),
+                fontSize: 18,
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: 5.0), // التحكم في ارتفاع النص داخل الحقل
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 5.0), // التحكم في ارتفاع النص داخل الحقل
+            style: const TextStyle(color: Colors.black, fontSize: 18),
+            onChanged: (searchedCategory) {
+              addSearchedForItemsToSearchedList(searchedCategory);
+            },
           ),
-          style: const TextStyle(color: Colors.black, fontSize: 18),
-          onChanged: (searchedCategory) {
-            addSearchedForItemsToSearchedList(searchedCategory);
-          },
         ),
       ),
-    ),
-  );
-}
+    );
+  }
+
   void addSearchedForItemsToSearchedList(String searchedCategory) {
     categoryCardListSearch = categoryCardList
         .where((category) => category.title
@@ -129,7 +132,7 @@ Widget _buildSearchField() {
       icon: Icon(
         _isSearching ? Icons.clear : Icons.search,
         color: Colors.black,
-          size: 28,
+        size: 28,
       ),
     );
   }
@@ -161,7 +164,7 @@ Widget _buildSearchField() {
 
     return SingleChildScrollView(
       child: Padding(
-        padding:EdgeInsets.symmetric(horizontal: 16,vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
         child: Column(
           children: [
             Row(
@@ -171,7 +174,7 @@ Widget _buildSearchField() {
                 _buildAppBarActions(),
               ],
             ),
-          const SizedBox(height: 10),
+            const SizedBox(height: 10),
             GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
