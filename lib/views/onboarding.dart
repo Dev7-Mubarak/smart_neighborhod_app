@@ -61,9 +61,9 @@ class Onboarding extends StatelessWidget {
                 color: AppColor.primaryColor,
                 onPressed: () {
                   Navigator.pushNamed(
-                    context,
+                   context,
                     AppRoute.login,
-                  );
+                  ); 
                 },
               ),
             )

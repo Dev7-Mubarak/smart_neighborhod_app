@@ -11,4 +11,5 @@ class AppImage {
   static const String homecomplan = '$rootImage/home/complan.png';
   static const String homehelping = '$rootImage/home/helping.png';
   static const String residentailimage = '$rootImage/residentail/Image37.png';
+  static const String loadingimage = '$rootImage/residentail/Animationloading.gif';
 }

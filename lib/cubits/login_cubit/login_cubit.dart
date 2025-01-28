@@ -20,6 +20,7 @@ class LoginCubit extends Cubit<LoginState> {
     required String email,
     required String password,
   }) async {
+    emit(LoginLoading());
     try {
       final response = await api.post(
         ApiLink.login,

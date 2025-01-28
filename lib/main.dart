@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/app_route.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
+import 'package:smart_neighborhod_app/components/constants/app_image.dart';
+import 'package:smart_neighborhod_app/models/Block.dart';
+import 'package:smart_neighborhod_app/views/residential_block_detial.dart';
 import 'components/constants/app_route.dart';
 import 'views/onboarding.dart';
 
@@ -12,8 +15,8 @@ void main() async {
 }
 
 class SmartNeighbourhood extends StatelessWidget {
-  const SmartNeighbourhood({super.key, required this.appRouter});
-
+   SmartNeighbourhood({super.key, required this.appRouter});
+  // Block block=Block.fromJson({"id":1,"name":"المربع السكني الأول","manager":"خالد عمر سعيد","Image":AppImage.residentailimage});
   final AppRouter appRouter;
   @override
   Widget build(BuildContext context) {
@@ -23,9 +26,9 @@ class SmartNeighbourhood extends StatelessWidget {
         scaffoldBackgroundColor: AppColor.white,
         fontFamily: 'Tajawal-Regular',
       ),
-      home: const Onboarding(),
+      // home:  ResiddentialBlocksDetail(),
       onGenerateRoute: appRouter.generateRoute,
-      initialRoute: AppRoute.onBoarding, //
+      initialRoute: AppRoute.residentialBlockDetial, 
     );
   }
 }
