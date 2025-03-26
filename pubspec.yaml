@@ -33,10 +33,15 @@ dependencies:
   dio: ^5.7.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  
   flutter_bloc: ^9.0.0
   fluttertoast: ^8.2.5
   http: ^0.13.6
   shared_preferences: ^2.2.2
+  image_picker: ^0.8.6
+
 
 dev_dependencies:
 
@@ -64,6 +69,7 @@ flutter:
     - assets/images/onBoarding/
     - assets/images/home/
     - assets/images/residentail/
+    - assets/images/announcement/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

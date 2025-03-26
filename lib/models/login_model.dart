@@ -1,16 +1,16 @@
-class LoginModel {
-  late int statusCode;
-  late bool succeeded;
-  late String message;
-  late UserData? data;
+// class LoginModel {
+//   late int statusCode;
+//   late bool succeeded;
+//   late String message;
+//   late UserData? data;
 
-  LoginModel.fromJson(Map<String, dynamic> json) {
-    statusCode = json['statusCode'];
-    succeeded = json['succeeded'];
-    message = json['message'];
-    data = json['data'] != null ? UserData.fromJson(json['data']) : null;
-  }
-}
+//   LoginModel.fromJson(Map<String, dynamic> json) {
+//     statusCode = json['statusCode'];
+//     succeeded = json['succeeded'];
+//     message = json['message'];
+//     data = json['data'] != null ? UserData.fromJson(json['data']) : null;
+//   }
+// }
 
 class UserData {
   late String id;
@@ -19,6 +19,7 @@ class UserData {
   UserData({required this.id, required this.email});
 
   UserData.fromJson(Map<String, dynamic> json) {
-    UserData(id: json['id'], email: json['email']);
+    id = json['id'] ?? ''; // تعيين قيمة افتراضية في حالة كانت null
+    email = json['email'] ?? ''; // تعيين قيمة افتراضية في حالة كانت null
   }
 }

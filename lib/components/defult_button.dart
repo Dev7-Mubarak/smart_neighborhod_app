@@ -7,11 +7,13 @@ class DefaultButton extends StatelessWidget {
     required this.backgroundColor,
     required this.color,
     required this.onPressed,
+   required this.fontsize,
   });
 
   final String text;
   final Color backgroundColor;
   final Color color;
+  final double fontsize;
   final void Function() onPressed;
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,9 @@ class DefaultButton extends StatelessWidget {
             text,
             style: TextStyle(
               color: color,
-              fontSize: 25,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'Tajawal',
+              fontSize: fontsize,
+              fontWeight: FontWeight.bold,
+              // fontFamily: 'Tajawal',
               height: 31 / 25,
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/models/Block.dart';
 
+import '../components/constants/app_route.dart';
 import '../components/residential_card.dart';
 import '../components/searcharea.dart';
 import '../core/API/dio_consumer.dart';
@@ -37,10 +38,14 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         if (state is get_ResiddentialBlocks_Success) {
           residentialList = state.AllResiddentialBlocks;
           residentialListSearch = residentialList; // عرض القائمة الأصلية
+            //       print("reeeeeeeeeeemmmmmmmm${state.AllResiddentialBlocks[0].managerId}22222222");
+            // print("reeeeeeeeeeemmmmmmmm${state.AllResiddentialBlocks[0].name}22222222");
+            // print("reeeeeeeeeeemmmmmmmm${state.AllResiddentialBlocks[0].id}22222222");
+
           return buildLoadedListWidgets();
-        } else if (state is get_ResiddentialBlocks_Loading) {
+        } else if (state is get_ResiddentialBlocks_Loading){
           return showLoadingIndicator();
-        } else if (state is get_ResiddentialBlocks_Failure) {
+        } else if (state is get_ResiddentialBlocks_Failure){
           return Center(
             child: Text(
               state.errorMessage,
@@ -76,12 +81,17 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                   Navigator.pushNamed(
+                   context,
+                    AppRoute.AddNewBlock,
+                  ); 
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primaryColor,
                   minimumSize: const Size(40, 40),
@@ -104,7 +114,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(15),
             child: buildBlocWidget(),
           ),
         ),

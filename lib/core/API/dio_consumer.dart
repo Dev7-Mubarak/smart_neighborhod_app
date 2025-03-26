@@ -88,7 +88,7 @@ class DioConsumer extends ApiConsumer {
           data: isFromData ? FormData.fromMap(data) : data,
           queryParameters: queryparameters);
       return response.data;
-    } on DioException catch (error) {
+    } on DioException catch (error){
       handleDioExceptions(error);
     }
   }

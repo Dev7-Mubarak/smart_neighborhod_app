@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/api_link.dart';
@@ -12,7 +13,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
-  late LoginModel loginModel;
+  // late LoginModel loginModel;
+  late UserData userData;
 
   ApiConsumer api;
 
@@ -22,18 +24,43 @@ class LoginCubit extends Cubit<LoginState> {
   }) async {
     emit(LoginLoading());
     try {
-      final response = await api.post(
-        ApiLink.login,
-        data: {
-          'username': email,
-          'password': password,
-        },
-      );
-      loginModel = LoginModel.fromJson(response);
+      final response = await
+      Dio().post("https://smartnieborhoodapi.runasp.net/api/Auth/Login", data: {
+    "email":email,
+    "password":password
+  },
+  );
+
+    //    api.post(
+    //     ApiLink.login,
+    //     data: {
+    //       'email': email,
+    //       'password': password,
+    //     },
+    //   );
+    //   loginModel = LoginModel.fromJson(response);
+    //   CacheHelper().saveData(
+    //       key: 'id',
+    //       value: loginModel.data != null ? loginModel.data!.id : null
+    //       );
+    //   emit(LoginSuccess(loginModel));
+    // } on Serverexception catch (e) {
+    //   emit(LoginFailure(errorMessage: e.errModel.errorMessage));
+    // }
+      //    api.post(
+      //   ApiLink.login,
+      //   data: {
+      //     'email': email,
+      //     'password': password,
+      //   },
+      // );
+
+    userData = UserData.fromJson(response.data["data"]); // تحويل البيانات بشكل صحيح
       CacheHelper().saveData(
           key: 'id',
-          value: loginModel.data != null ? loginModel.data!.id : null);
-      emit(LoginSuccess(loginModel));
+          value: userData.id!= null ? userData.id : null
+          );
+      emit(LoginSuccess(userData));
     } on Serverexception catch (e) {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
     }

@@ -33,14 +33,14 @@ class BuildHousingUnitCard extends StatelessWidget {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              child: block.image.isNotEmpty
+              child: AppImage.residentailimage.isEmpty
                   ? FadeInImage.assetNetwork(
                       height: MediaQuery.of(context).size.width *
                           0.5, // ارتفاع الصورة ديناميكي
                       width: double.infinity,
                       fit: BoxFit.cover,
                       placeholder: AppImage.loadingimage,
-                      image: block.image,
+                      image: AppImage.residentailimage,
                     )
                   : Image.asset(AppImage.residentailimage),
             ),
@@ -58,7 +58,7 @@ class BuildHousingUnitCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "مدير المربع: ${block.manger}",
+                    "مدير المربع: ${block.managerId}",
                     style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ],
