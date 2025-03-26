@@ -1,19 +1,22 @@
-// نسوي هنا مودل يعني إنه لما نستلم خطأ من الطلب خق ال API نطرحة في مودل عشان يتشكل ونقدر نعرضة للمستخدم
-
-class ErrorModel{
+class ErrorModel {
   final int status;
   final String errorMessage;
-  
-  // هو عنده إتنين كونستركتر و إلي هم 
-  //الكونستركتر العادي نستعمله لما بغيت بنشأ اوبجكت عادي من هذا المودل
-  ErrorModel({required this.status,required this.errorMessage});
 
-  // الكونستركتر الثاني نستعمله لما بغيت بحول الجيسون إلى مودل
-  // نحول الجايسن إلي يجيلي و إلي هو خطأ إلى مودل 
+  ErrorModel({required this.status, required this.errorMessage});
+
   factory ErrorModel.fromJson(Map<String, dynamic> jsonData) {
+    var errors = jsonData["errors"];
+    String finalErrorMessage;
+
+    if (errors != null && errors.isNotEmpty) {
+      finalErrorMessage = errors[0]["errorMessage"];
+    } else {
+      finalErrorMessage = jsonData["message"];
+    }
+
     return ErrorModel(
-      status: jsonData["status"],
-      errorMessage: jsonData["ErrorMessage"],
+      status: jsonData["statusCode"],
+      errorMessage: finalErrorMessage,
     );
   }
 }

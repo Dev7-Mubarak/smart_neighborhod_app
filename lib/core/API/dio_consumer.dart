@@ -4,18 +4,12 @@ import '../errors/exception.dart';
 import 'api_consumer.dart';
 import 'api_interceptors.dart';
 
-class DioConsumer extends ApiConsumer {
+class DioConsumer {
   final Dio dio;
 
   DioConsumer({required this.dio}) {
-    //نضيف مع الdio أشياء أساسية ينضاف في أي ركوست نرسلة
-    // إضافة الرابط الأساسي
-    dio.options.baseUrl = ApiLink.server;
-
-    // أضفت حارس المرور الذي أنشأته في الكلاس السابق
     dio.interceptors.add(ApiInterceptor());
 
-    // هو رجل مرور زي ذاك ولكن هذا جاهز قده وظيفته يراقب الركوست الذاهب و الرسبونس و يطبع معلومات عنهم في الكونسيلر على حسب المعلومات إلي ني نحددها
     dio.interceptors.add(LogInterceptor(
       request: true,
       requestHeader: true,
@@ -25,7 +19,6 @@ class DioConsumer extends ApiConsumer {
       error: true,
     ));
   }
-  @override
   Future delete(
     String path, {
     dynamic data,
@@ -42,7 +35,6 @@ class DioConsumer extends ApiConsumer {
     }
   }
 
-  @override
   Future get(
     String path, {
     dynamic data,
@@ -59,8 +51,7 @@ class DioConsumer extends ApiConsumer {
     }
   }
 
-  @override
-  Future? patch(
+  Future patch(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryparameters,
@@ -76,7 +67,6 @@ class DioConsumer extends ApiConsumer {
     }
   }
 
-  @override
   Future post(
     String path, {
     dynamic data,
@@ -88,7 +78,7 @@ class DioConsumer extends ApiConsumer {
           data: isFromData ? FormData.fromMap(data) : data,
           queryParameters: queryparameters);
       return response.data;
-    } on DioException catch (error){
+    } on DioException catch (error) {
       handleDioExceptions(error);
     }
   }

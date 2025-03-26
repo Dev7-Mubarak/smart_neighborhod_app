@@ -12,13 +12,13 @@ import 'views/onboarding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await CacheHelper.init(); // تهيئة sharedPreferences
+  await CacheHelper.init(); // تهيئة sharedPreferences
   Bloc.observer = AppBlocObserver();
   runApp(SmartNeighbourhood(appRouter: AppRouter()));
 }
 
 class SmartNeighbourhood extends StatelessWidget {
-   SmartNeighbourhood({super.key, required this.appRouter});
+  SmartNeighbourhood({super.key, required this.appRouter});
   // Block block=Block.fromJson({"id":1,"name":"المربع السكني الأول","manager":"خالد عمر سعيد","Image":AppImage.residentailimage});
   final AppRouter appRouter;
   @override
@@ -39,7 +39,7 @@ class SmartNeighbourhood extends StatelessWidget {
         fontFamily: 'Tajawal-Regular',
       ),
       onGenerateRoute: appRouter.generateRoute,
-      initialRoute: AppRoute.mainhome, 
+      initialRoute: AppRoute.login,
     );
   }
 }

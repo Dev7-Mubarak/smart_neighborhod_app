@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/api_consumer.dart';
+import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
 import '../../../models/Block.dart';
 
@@ -15,11 +16,12 @@ class ResiddentialBlocksCubit extends Cubit<ResiddentialBlocksState> {
       : super(ResiddentialBlocksInitial());
   static ResiddentialBlocksCubit get(context) => BlocProvider.of(context);
 
-  ApiConsumer api;
+  DioConsumer api;
   get_ResiddentialBlocks() async {
-   emit(get_ResiddentialBlocks_Loading());
+    emit(get_ResiddentialBlocks_Loading());
     try {
-      final response = await Dio().get("https://smartnieborhoodapi.runasp.net/api/Blocks/GetAll");
+      final response = await Dio()
+          .get("https://smartnieborhoodapi.runasp.net/api/Blocks/GetAll");
       print(response.data); // طباعة البيانات لمعرفة الهيكل
 
       // تحقق من أن البيانات هي Map وليس List
@@ -27,14 +29,15 @@ class ResiddentialBlocksCubit extends Cubit<ResiddentialBlocksState> {
         final Map<String, dynamic> data = response.data;
 
         // استخراج القائمة من الخريطة
-        final List<dynamic> blocksList = data['data']; // استخراج القائمة من 'data'
+        final List<dynamic> blocksList =
+            data['data']; // استخراج القائمة من 'data'
 
         // تحويل القائمة إلى List<Block>
-        List<Block> allResidentialBlocks = blocksList
-            .map((block) => Block.fromJson(block))
-            .toList();
+        List<Block> allResidentialBlocks =
+            blocksList.map((block) => Block.fromJson(block)).toList();
 
-      emit(get_ResiddentialBlocks_Success(AllResiddentialBlocks:allResidentialBlocks));
+        emit(get_ResiddentialBlocks_Success(
+            AllResiddentialBlocks: allResidentialBlocks));
       } else {
         throw Exception("Expected a Map but got ${response.data.runtimeType}");
       }

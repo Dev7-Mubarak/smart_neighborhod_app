@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 
 import 'errormodel.dart';
 
-// كلاس إنشأته عشان يتعامل مع إذا كان في خطأء من السرفر منعت وصول الركوست إليه
 class Serverexception implements Exception {
   final ErrorModel errModel;
   Serverexception({required this.errModel});
@@ -10,8 +9,6 @@ class Serverexception implements Exception {
 
 void handleDioExceptions(DioException error) {
   switch (error.type) {
-    // إذا صار خطأ من يعني الركوست ماوصلت إلى السرفر بسبب إنه السرفر فيه مشكله وهي سبع مشاكل من السرفر تؤذي إنه الركوست مايوصل إلى السرفر
-    // 1
     case DioExceptionType.connectionTimeout:
       throw Serverexception(
           errModel: ErrorModel.fromJson(error.response!.data));
@@ -34,7 +31,6 @@ void handleDioExceptions(DioException error) {
       throw Serverexception(
           errModel: ErrorModel.fromJson(error.response!.data));
 
-    //  هذا الخطأ الوحيد الذي ليس من السرفر و إنما من إنه وصل الركوست إلى السرفر ولكن في خطأ في البيانات المرسلة مثلاً الإيميل مكرر فيرجع خطأ
     case DioExceptionType.badResponse:
       switch (error.response?.statusCode) {
         case 400: // Bad request

@@ -5,8 +5,7 @@ abstract class LoginState {}
 class LoginIntial extends LoginState {}
 
 class LoginSuccess extends LoginState {
-  // final LoginModel loginModel;
-  final UserData  userdata;
+  final UserData userdata;
 
   LoginSuccess(this.userdata);
 }

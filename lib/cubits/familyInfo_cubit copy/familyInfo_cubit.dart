@@ -10,12 +10,13 @@ import '../../../core/errors/exception.dart';
 import '../../../models/Block.dart';
 import 'dart:async';
 
+import '../../core/API/dio_consumer.dart';
 import '../../models/Assist.dart'; // لإستخدام TimeoutException
 
 part 'familyInfo_state.dart';
 
 class familyInfoCubit extends Cubit<familyInfoState> {
-  final ApiConsumer api;
+  final DioConsumer api;
   familyInfoCubit({required this.api}) : super(familyInfoInitial());
 
   static familyInfoCubit get(context) => BlocProvider.of(context);
@@ -26,7 +27,7 @@ class familyInfoCubit extends Cubit<familyInfoState> {
       final List<dynamic> response = await api
           .get(ApiLink.getAssistsFamily("$Idfamily"))
           .timeout(const Duration(seconds: 15)); // إضافة مهلة لمدة 15 ثانية
-      List<Assist> Assists=
+      List<Assist> Assists =
           response.map((assist) => Assist.fromJson(assist)).toList();
       emit(get_Assists_Success(Assists: Assists));
     } on TimeoutException catch (e) {
