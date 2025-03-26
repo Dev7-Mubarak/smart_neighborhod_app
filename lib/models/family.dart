@@ -9,6 +9,7 @@ class Family{
   late String familyType;
   late String familyNotes;
   late int blockId;
+
   Family.fromJson(Map<String, dynamic> json) {
   id=json["id"];
   phoneNumber=json["phoneNumber"];

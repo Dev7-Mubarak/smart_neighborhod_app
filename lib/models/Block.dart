@@ -1,12 +1,13 @@
 class Block {
   late int id;
   late String name;
-  late String manger;
-  late String image;
+  late String managerId;
+  late List families;
+
   Block.fromJson(Map<String, dynamic> json) {
-  id=json["id"];
-  name=json["name"];
-  manger=json["manager"];
-  image=json["image"];
+  id=json["id"]?? 0;
+  name=json["name"]??"";
+  managerId=json["manager"]??"";
+  families=json["families"]??[];
   }
 }

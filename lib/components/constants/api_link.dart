@@ -1,8 +1,12 @@
 class ApiLink {
-  static const String server = 'https://localhost:7060/api';
-  static const String login = '/Auth/login';
-  static const String getAllBlockes = '/';
+  static const String server = 'https://smartnieborhoodapi.runasp.net';
+  static const String login = '/api/Auth/Login';
+  static const String getAllBlockes = '/api/Blocks/GetAll';
   static String getAllBlockFamilys(IdBlock) {
     return "block/get-familys/$IdBlock";
+  }
+
+  static String getAssistsFamily(IdFamily) {
+    return "block/get-familys/$IdFamily";
   }
 }

@@ -64,7 +64,7 @@ class Onboarding extends StatelessWidget {
                    context,
                     AppRoute.login,
                   ); 
-                },
+                }, fontsize: 25,
               ),
             )
           ],
