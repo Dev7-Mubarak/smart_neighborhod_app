@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'constants/app_color.dart';
@@ -6,8 +5,10 @@ import 'constants/app_color.dart';
 class SmallButton extends StatelessWidget {
   final String text;
   final void Function() onPressed;
-  const SmallButton({ 
-    super.key, required this.text, required this.onPressed,
+  const SmallButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
   });
 
   @override
@@ -21,9 +22,9 @@ class SmallButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
       ),
-      child:  Text(
+      child: Text(
         text,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
   }

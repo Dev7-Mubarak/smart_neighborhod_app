@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import '../../components/constants/api_link.dart';
 import '../errors/exception.dart';
-import 'api_consumer.dart';
 import 'api_interceptors.dart';
 
 class DioConsumer {
@@ -37,14 +35,10 @@ class DioConsumer {
 
   Future get(
     String path, {
-    dynamic data,
     Map<String, dynamic>? queryparameters,
-    bool isFromData = false,
   }) async {
     try {
-      final response = await dio.get(path,
-          data: isFromData ? FormData.fromMap(data) : data,
-          queryParameters: queryparameters);
+      final response = await dio.get(path, queryParameters: queryparameters);
       return response.data;
     } on DioException catch (error) {
       handleDioExceptions(error);

@@ -18,21 +18,23 @@ class CustomTableWidget extends StatelessWidget {
     return Table(
       border: TableBorder.all(color: Colors.black),
       columnWidths: {
-        for (int i = 0; i < columnFlexes.length; i++) i: FlexColumnWidth(columnFlexes[i])
+        for (int i = 0; i < columnFlexes.length; i++)
+          i: FlexColumnWidth(columnFlexes[i])
       },
       children: [
         // رأس الجدول
         TableRow(
-          decoration: BoxDecoration(color: AppColor.primaryColor),
-          children: columnTitles.map((title) => _buildHeaderCell(title)).toList(),
+          decoration: const BoxDecoration(color: AppColor.primaryColor),
+          children:
+              columnTitles.map((title) => _buildHeaderCell(title)).toList(),
         ),
         // الصفوف الديناميكية
         ...rowData.asMap().entries.map((entry) {
           int index = entry.key;
           List<dynamic> row = entry.value;
           return TableRow(
-            decoration: BoxDecoration(
-              color:  Colors.white,
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
             children: row.map((cellData) => _buildCell(cellData)).toList(),
           );
@@ -43,22 +45,24 @@ class CustomTableWidget extends StatelessWidget {
 
   Widget _buildHeaderCell(String text) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        style:
+            const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
     );
   }
 
   Widget _buildCell(String text) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
     );
   }

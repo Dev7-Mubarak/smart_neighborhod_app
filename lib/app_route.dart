@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/views/ProfilePage.dart';
@@ -8,20 +7,15 @@ import 'package:smart_neighborhod_app/views/addNewAnnouncement.dart';
 import 'package:smart_neighborhod_app/views/addNewBlock.dart';
 import 'package:smart_neighborhod_app/views/addNewFamily.dart';
 import 'package:smart_neighborhod_app/views/addNewPerson.dart';
-import 'package:smart_neighborhod_app/views/annoucement.dart';
 import 'package:smart_neighborhod_app/views/annoucement1.dart';
 import 'package:smart_neighborhod_app/views/checkEmail.dart';
 import 'package:smart_neighborhod_app/views/createNewPassword.dart';
 import 'package:smart_neighborhod_app/views/familyInfo.dart';
 import 'package:smart_neighborhod_app/views/forgetapassword.dart';
-import 'package:smart_neighborhod_app/views/residential_block_detial.dart';
 import 'package:smart_neighborhod_app/views/login.dart';
 import 'package:smart_neighborhod_app/views/mainhome.dart';
 import 'package:smart_neighborhod_app/views/onboarding.dart';
 import 'components/constants/app_route.dart';
-import 'core/API/dio_consumer.dart';
-import 'cubits/ResiddentialBlocksDetail_cubit/residdential_blocksdential_cubit.dart';
-import 'cubits/familyInfo_cubit copy/familyInfo_cubit.dart';
 
 // تعريف AppRouter لإدارة التنقل بين الشاشات
 
@@ -42,14 +36,14 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const MainHome());
 
       case AppRoute.residentialBlockDetial:
-        // final Block block = settings.arguments as Block; // تمرير معرّف العنصر
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (BuildContext contxt) =>
-                ResiddentialBlockDetailCubit(api: DioConsumer(dio: Dio())),
-            child: ResiddentialBlocksDetail(),
-          ),
-        );
+      // final Block block = settings.arguments as Block; // تمرير معرّف العنصر
+      // return MaterialPageRoute(
+      //   builder: (_) => BlocProvider(
+      //     create: (BuildContext contxt) =>
+      //         ResiddentialBlockDetailCubit(api: DioConsumer(dio: Dio())),
+      //     child: ResiddentialBlocksDetail(),
+      //   ),
+      // );
 
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
@@ -74,18 +68,14 @@ class AppRouter {
         );
       case AppRoute.FamilyInfo:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (BuildContext contxt) =>
-                familyInfoCubit(api: DioConsumer(dio: Dio())),
-            child: FamilyInfo(),
-          ),
+          builder: (_) => FamilyInfo(),
           fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
         );
-      case AppRoute.AddNewFamily:
-        return MaterialPageRoute(
-          builder: (_) => AddNewFamily(),
-          fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
-        );
+      // case AppRoute.AddNewFamily:
+      //   return MaterialPageRoute(
+      //     builder: (_) => AddNewFamily(),
+      //     fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
+      //   );
       case AppRoute.AddNewPerson:
         return MaterialPageRoute(
           builder: (_) => addNewPerson(),

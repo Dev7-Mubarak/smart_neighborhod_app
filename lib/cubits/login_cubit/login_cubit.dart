@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/api_link.dart';
 import 'package:smart_neighborhod_app/models/login_model.dart';
-import '../../core/API/api_consumer.dart';
 import '../../core/API/dio_consumer.dart';
 import '../../core/errors/exception.dart';
 import '../../services/cache_helper.dart';

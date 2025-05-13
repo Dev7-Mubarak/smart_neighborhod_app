@@ -10,7 +10,8 @@ class CustomDropdown extends StatelessWidget {
     Key? key,
     required this.selectedValue,
     required this.items,
-    required this.onChanged, required this.text,
+    required this.onChanged,
+    required this.text,
   }) : super(key: key);
 
   @override
@@ -30,10 +31,10 @@ class CustomDropdown extends StatelessWidget {
             isExpanded: true,
             alignment: Alignment.centerRight,
             hint: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

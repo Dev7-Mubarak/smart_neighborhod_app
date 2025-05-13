@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../models/Block.dart';
+import '../views/residential_block_detial.dart';
 import 'constants/app_color.dart';
 import 'constants/app_image.dart';
-import 'constants/app_route.dart';
 
 class BuildHousingUnitCard extends StatelessWidget {
   final Block block;
@@ -16,8 +15,11 @@ class BuildHousingUnitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, AppRoute.residentialBlockDetial,
-          arguments: block),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ResiddentialBlocksDetail(block: block)),
+      ),
       borderRadius: BorderRadius.circular(16), // نفس الانحناء للكرت
       child: Container(
         margin: const EdgeInsets.only(bottom: 16), // مسافة بين الكروت
@@ -58,7 +60,7 @@ class BuildHousingUnitCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "مدير المربع: ${block.managerId}",
+                    "مدير المربع: ${block.managerName}",
                     style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ],

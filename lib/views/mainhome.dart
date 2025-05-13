@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/ResiddentialBlocks_cubit/cubit/residdential_blocks_cubit.dart';
 
 import '../components/NavigationBar.dart';
 import '../components/constants/app_color.dart';
 import '../core/API/dio_consumer.dart';
 import '../cubits/mainHome_cubit/main_home_cubit.dart';
+import '../cubits/person_cubit/person_cubit.dart';
 import 'residdential_blocks.dart';
 import 'home.dart';
 
@@ -19,22 +19,15 @@ class MainHome extends StatefulWidget {
 
 class MmainHomeState extends State<MainHome> {
   static final List<Widget> _widgetOptions = [
-    BlocProvider(
-      create: (BuildContext contxt) =>
-          ResiddentialBlocksCubit(api: DioConsumer(dio: Dio())),
-      child: ResidentialBlock(),
-    ),
+    const ResidentialBlock(),
     const Home()
   ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MainHomeCubitCubit(),
-      child: BlocConsumer<MainHomeCubitCubit, MainHomeState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
+    return BlocBuilder<MainHomeCubitCubit, MainHomeState>(
+      builder: (context, state) {
+        return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColor.white,
               elevation: 0, // إزالة الخط السفلي
@@ -58,9 +51,6 @@ class MmainHomeState extends State<MainHome> {
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Container(
-                      // margin: const EdgeInsets.all(10),
-                      // padding:
-                      //     const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                       decoration: BoxDecoration(
                           color: AppColor.gray,
                           borderRadius: BorderRadius.circular(20)),
@@ -73,9 +63,6 @@ class MmainHomeState extends State<MainHome> {
                               onTap: () {
                                 MainHomeCubitCubit.get(context)
                                     .changeselectedIndex(0);
-                                // setState(() {
-                                //   _selectedIndex = 0;
-                                // });
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(16.0),
@@ -136,10 +123,8 @@ class MmainHomeState extends State<MainHome> {
                 ],
               ),
             ),
-            bottomNavigationBar: navigationBar()
-          );
-        },
-      ),
+            bottomNavigationBar: const navigationBar());
+      },
     );
   }
 }

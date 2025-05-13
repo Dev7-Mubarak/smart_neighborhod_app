@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/boldText.dart';
+import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
 import '../components/NavigationBar.dart';
 import '../components/constants/app_color.dart';
 import '../components/searcharea.dart';
 import '../components/smallButton.dart';
 import '../components/table.dart';
-import '../cubits/ResiddentialBlocksDetail_cubit/residdential_blocksdential_cubit.dart';
-import '../cubits/familyInfo_cubit copy/familyInfo_cubit.dart';
 import '../models/Assist.dart';
 
 class FamilyInfo extends StatefulWidget {
@@ -44,10 +43,19 @@ class _FamilyInfoState extends State<FamilyInfo> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SmallButton(
-                    text: 'تعديل', onPressed: () { },
+                    text: 'تعديل',
+                    onPressed: () {},
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'أفراد الأسرة',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
             ),
             const SizedBox(height: 16),
             FamilyMembersSection(),
@@ -58,16 +66,16 @@ class _FamilyInfoState extends State<FamilyInfo> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SmallButton(
-                    text: 'إضافة فرد جديد', onPressed: () {  },
+                    text: 'إضافة فرد جديد',
+                    onPressed: () {},
                   ),
-                  
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
+            const Padding(
+              padding: EdgeInsets.all(16),
               child: Divider(
-                color: const Color.fromARGB(255, 44, 44, 44),
+                color: Color.fromARGB(255, 44, 44, 44),
                 thickness: 1.5,
               ),
             ),
@@ -76,7 +84,7 @@ class _FamilyInfoState extends State<FamilyInfo> {
           ],
         ),
       ),
-      bottomNavigationBar: navigationBar(),
+      bottomNavigationBar: const navigationBar(),
     );
   }
 }
@@ -356,27 +364,27 @@ class _AssistanceTableState extends State<AssistanceTable> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<familyInfoCubit>(context).get_Assists(2);
+    // BlocProvider.of<FamilyCubit>(context).get_Assists(2);
   }
 
   Widget buildBlocWidget() {
-    return BlocBuilder<familyInfoCubit, familyInfoState>(
+    return BlocBuilder<FamilyCubit, FamilyState>(
       buildWhen: (previous, current) =>
           previous.runtimeType != current.runtimeType,
       builder: (context, state) {
-        if (state is get_Assists_Success) {
-          assistsList = state.Assists;
+        if (state is FamilysLoaded) {
+          // assistsList = state.families;
           assistsListSearch = assistsList;
           return buildLoadedListFamilys();
-        } else if (state is get_Assists_Loading) {
+        } else if (state is FamilysLoaded) {
           return showLoadingIndicator();
-        } else if (state is get_Assists_Failure) {
-          return Center(
-            child: Text(
-              state.errorMessage,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
-            ),
-          );
+        } else if (state is FamilysLoaded) {
+          return const Center(
+              // child: Text(
+              //   state.errorMessage,
+              //   style: const TextStyle(color: Colors.red, fontSize: 18),
+              // ),
+              );
         } else {
           return const Center(
             child: Text("لا توجد بيانات للعرض حاليًا."),
