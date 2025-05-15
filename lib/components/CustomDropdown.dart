@@ -17,12 +17,18 @@ class CustomDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      width: 290,
+      height: 39,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.black, width: 1),
+        borderRadius: BorderRadius.circular(16.5),
+        border: Border.all(
+          color: const Color(0xFFE4E4E4),
+          width: 2,
+        ),
       ),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      alignment: Alignment.center,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: DropdownButtonHideUnderline(
@@ -36,8 +42,8 @@ class CustomDropdown extends StatelessWidget {
                 text,
                 style: const TextStyle(
                   color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
                 ),
               ),
             ),

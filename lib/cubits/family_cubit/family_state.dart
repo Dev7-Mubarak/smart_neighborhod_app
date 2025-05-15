@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 
 import '../../models/family.dart';
+import '../../models/family_detiles_model.dart';
 
 @immutable
 abstract class FamilyState {}
 
 class FamilyInitial extends FamilyState {}
 
-class FamilysLoaded extends FamilyState {
+class FamilyLoaded extends FamilyState {
   final List<Family> families;
   final bool? hasNextPage;
 
-  FamilysLoaded({
+  FamilyLoaded({
     required this.families,
-    this.hasNextPage,
+    required this.hasNextPage,
+  });
+}
+
+class FamilyDetilesLoaded extends FamilyState {
+  final FamilyDetilesModel familyDetiles;
+
+  FamilyDetilesLoaded({
+    required this.familyDetiles,
   });
 }
 

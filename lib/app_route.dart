@@ -6,11 +6,12 @@ import 'package:smart_neighborhod_app/views/Reconciliation_councils.dart';
 import 'package:smart_neighborhod_app/views/addNewAnnouncement.dart';
 import 'package:smart_neighborhod_app/views/addNewBlock.dart';
 import 'package:smart_neighborhod_app/views/addNewFamily.dart';
-import 'package:smart_neighborhod_app/views/addNewPerson.dart';
+import 'package:smart_neighborhod_app/views/add_new_person.dart';
+import 'package:smart_neighborhod_app/views/all_pepole.dart';
 import 'package:smart_neighborhod_app/views/annoucement1.dart';
 import 'package:smart_neighborhod_app/views/checkEmail.dart';
 import 'package:smart_neighborhod_app/views/createNewPassword.dart';
-import 'package:smart_neighborhod_app/views/familyInfo.dart';
+import 'package:smart_neighborhod_app/views/family_detiles.dart';
 import 'package:smart_neighborhod_app/views/forgetapassword.dart';
 import 'package:smart_neighborhod_app/views/login.dart';
 import 'package:smart_neighborhod_app/views/mainhome.dart';
@@ -25,6 +26,10 @@ class AppRouter {
       case AppRoute.onBoarding:
         return MaterialPageRoute(
           builder: (_) => const Onboarding(),
+        );
+      case AppRoute.allPeople:
+        return MaterialPageRoute(
+          builder: (_) => const AllPeople(),
         );
 
       case AppRoute.login:
@@ -66,9 +71,9 @@ class AppRouter {
           builder: (_) => AddNewBlock(),
           fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
         );
-      case AppRoute.FamilyInfo:
+      case AppRoute.FamilyDetiles:
         return MaterialPageRoute(
-          builder: (_) => FamilyInfo(),
+          builder: (_) => FamilyDetiles(familyId: 1044),
           fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
         );
       // case AppRoute.AddNewFamily:

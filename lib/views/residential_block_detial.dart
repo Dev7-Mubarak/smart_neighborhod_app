@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/constants/app_route.dart';
 import 'package:smart_neighborhod_app/cubits/familyCategory/family_category_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/familyType/family_type_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
@@ -61,7 +60,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
   Widget buildBlocWidget() {
     return BlocBuilder<FamilyCubit, FamilyState>(
       builder: (context, state) {
-        if (state is FamilysLoaded) {
+        if (state is FamilyLoaded) {
           FamilysList = state.families;
           FamilysListSearch = FamilysList; // عرض القائمة الأصلية
           return buildLoadedListFamilys();

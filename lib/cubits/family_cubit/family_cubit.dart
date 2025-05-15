@@ -6,6 +6,7 @@ import 'dart:async';
 import '../../core/API/dio_consumer.dart';
 import '../../core/errors/errormodel.dart';
 import '../../models/family.dart';
+import '../../models/family_detiles_model.dart';
 // لإستخدام TimeoutException
 
 class FamilyCubit extends Cubit<FamilyState> {
@@ -48,7 +49,7 @@ class FamilyCubit extends Cubit<FamilyState> {
 
       _currentPage++;
       hasNextPage = response["data"]["hasNextPage"];
-      emit(FamilysLoaded(families: allFamilies, hasNextPage: hasNextPage));
+      emit(FamilyLoaded(families: allFamilies, hasNextPage: hasNextPage));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
@@ -90,12 +91,11 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
-  Future<void> getFamilyInfoById(int familyId) async {
+  Future<void> getFamilyDetilesById(int familyId) async {
     emit(FamilyInitial());
     try {
       final response = await api.get(
-        ApiLink.getFamilyInfoById,
-        queryparameters: {'id': familyId},
+        '${ApiLink.getFamilyDetilesById}/$familyId',
       );
 
       if (response["data"] == null) {
@@ -103,11 +103,8 @@ class FamilyCubit extends Cubit<FamilyState> {
             errModel:
                 ErrorModel(status: 400, errorMessage: "No data received"));
       }
-
-      List<dynamic> famileInfo = response["data"];
-
-      emit(FamilysLoaded(
-          families: famileInfo.map((e) => Family.fromJson(e)).toList()));
+      emit(FamilyDetilesLoaded(
+          familyDetiles: FamilyDetilesModel.fromJson(response["data"])));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

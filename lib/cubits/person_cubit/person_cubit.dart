@@ -28,8 +28,8 @@ class PersonCubit extends Cubit<PersonState> {
 
       List<dynamic> people = response["data"];
 
-      emit(
-          PersonLoaded(people: people.map((e) => Person.fromJson(e)).toList()));
+      emit(PersonLoaded(
+          people: people.map((e) => Person.fromJsonFor(e)).toList()));
     } on Serverexception catch (e) {
       emit(PersonFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

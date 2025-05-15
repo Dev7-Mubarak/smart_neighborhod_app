@@ -6,7 +6,8 @@ class ApiLink {
   static const String getAllFamilyTypes = '$server/FamilyTypes/GetAll';
   static const String addBlocke = '$server/Blocks/Add';
   static const String addFamily = '$server/Family/Add';
-  static const String getFamilyInfoById = '$server/Family/GetFamilyInfoById';
+  static const String getFamilyDetilesById =
+      '$server/Family/GetFamilyDetilesById';
   static const String getBlockFamiliesById =
       '$server/Blocks/GetBlockFamiliesById';
   static const String getAllPepole = '$server/Person/GetAll';
