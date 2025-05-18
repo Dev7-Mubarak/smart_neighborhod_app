@@ -15,6 +15,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   late UserData userData;
   final DioConsumer api;
+  IconData prefixIcon = Icons.visibility;
+  bool isPassword = true;
 
   signIn({
     required String email,
@@ -37,9 +39,6 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
     }
   }
-
-  IconData prefixIcon = Icons.visibility;
-  bool isPassword = true;
 
   void changePasswordVisibilty() {
     isPassword = !isPassword;

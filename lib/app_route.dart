@@ -83,7 +83,7 @@ class AppRouter {
       //   );
       case AppRoute.AddNewPerson:
         return MaterialPageRoute(
-          builder: (_) => addNewPerson(),
+          builder: (_) => AddNewPerson(),
           fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
         );
       case AppRoute.ProfilePage:

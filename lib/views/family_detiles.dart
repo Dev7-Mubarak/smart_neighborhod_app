@@ -258,7 +258,7 @@ class MemberCard extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                'نوع الهوية: ${familyMember.typeOfIdentity}',
+                'نوع الهوية: ${familyMember.secondName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.black,
@@ -290,7 +290,7 @@ class MemberCard extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                'تاريخ الميلاد: ${familyMember.dateOfBirth}',
+                'تاريخ الميلاد: ${familyMember.secondName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.black,
@@ -306,7 +306,7 @@ class MemberCard extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                'الحالة: ${familyMember.status}',
+                'الحالة: ${familyMember.secondName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.black,

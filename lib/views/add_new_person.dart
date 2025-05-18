@@ -1,55 +1,58 @@
 // import 'dart:html';
 import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/boldText.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/smallButton.dart';
+import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_neighborhod_app/models/enums/blood_type.dart';
+import 'package:smart_neighborhod_app/models/enums/marital_status.dart';
+import 'package:smart_neighborhod_app/models/enums/occupation_status.dart';
 import '../components/CustomDropdown.dart';
 import '../components/NavigationBar.dart';
 import '../components/constants/small_text.dart';
 import '../components/custom_text_input_filed.dart';
+import '../models/enums/identity_type.dart';
+import 'package:intl/intl.dart';
 
-class addNewPerson extends StatefulWidget {
-  const addNewPerson({super.key});
+class AddNewPerson extends StatefulWidget {
+  const AddNewPerson({super.key});
 
   @override
-  State<addNewPerson> createState() => _addNewPersonState();
+  State<AddNewPerson> createState() => AaddNewPersonState();
 }
 
-class _addNewPersonState extends State<addNewPerson> {
-  File? _pickedImage;
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    final XFile? imageFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-    if (imageFile != null) {
-      setState(() {
-        _pickedImage = File(imageFile.path);
-      });
-    }
-  }
-
-  bool isCall = false;
-  bool isWhatsApp = false;
-
-  final TextEditingController fatherNameController = TextEditingController();
+class AaddNewPersonState extends State<AddNewPerson> {
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController secondNameController = TextEditingController();
+  final TextEditingController thirdNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController identityNumberController =
       TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController jobController = TextEditingController();
 
-  String? selectedIdentityType;
-  String? selectedGender;
-  String? selectedBloodType;
-  String? selectedStatus;
-  String? selectedRole;
+  TextEditingController _dateController = TextEditingController();
+  DateTime? selectedDate;
 
-  final List<String> identityTypes = ['بطاقة شخصية', 'جواز سفر', 'شهادة ميلاد'];
+  Future<void> _pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime(2000, 1, 1),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
 
-  final List<String> statuses = ['موظف', 'عاطل', 'طالب'];
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,15 +115,26 @@ class _addNewPersonState extends State<addNewPerson> {
                   const SizedBox(height: 20),
                   const SmallText(text: 'نوع الهوية'),
                   const SizedBox(height: 6),
-                  CustomDropdown(
-                    items: identityTypes,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedIdentityType = newValue;
-                      });
+                  BlocBuilder<PersonCubit, PersonState>(
+                    builder: (context, state) {
+                      return CustomDropdown(
+                        items: IdentityType.values
+                            .map((e) => e.displayName)
+                            .toList(),
+                        onChanged: (String? newValue) {
+                          context
+                              .read<PersonCubit>()
+                              .changeSelectedIdentityType(IdentityType.values
+                                  .firstWhere(
+                                      (e) => e.displayName == newValue));
+                        },
+                        selectedValue: context
+                            .read<PersonCubit>()
+                            .selectedIdentityType
+                            ?.displayName,
+                        text: 'نوع الهوية',
+                      );
                     },
-                    selectedValue: selectedIdentityType,
-                    text: 'نوع الهوية',
                   ),
                   const SizedBox(height: 20),
                   Column(
@@ -128,45 +142,51 @@ class _addNewPersonState extends State<addNewPerson> {
                     children: [
                       const SmallText(text: 'الجنس'),
                       const SizedBox(height: 6),
-                      SingleChildScrollView(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            // اختيار ذكر
-                            Row(
+                      BlocBuilder<PersonCubit, PersonState>(
+                        builder: (context, state) {
+                          return SingleChildScrollView(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Radio<String>(
-                                  value: 'ذكر',
-                                  groupValue: selectedGender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedGender = value;
-                                    });
-                                  },
+                                Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'ذكر',
+                                      groupValue: context
+                                          .read<PersonCubit>()
+                                          .selectedGender,
+                                      onChanged: (value) {
+                                        context
+                                            .read<PersonCubit>()
+                                            .changeSelctedGender(value!);
+                                      },
+                                    ),
+                                    const SmallText(
+                                      text: 'ذكر',
+                                    )
+                                  ],
                                 ),
-                                const SmallText(
-                                  text: 'ذكر',
-                                )
+                                const SizedBox(width: 30),
+                                Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'أنثى',
+                                      groupValue: context
+                                          .read<PersonCubit>()
+                                          .selectedGender,
+                                      onChanged: (value) {
+                                        context
+                                            .read<PersonCubit>()
+                                            .changeSelctedGender(value!);
+                                      },
+                                    ),
+                                    const SmallText(text: 'انثى')
+                                  ],
+                                ),
                               ],
                             ),
-                            const SizedBox(width: 30),
-                            // اختيار أنثى
-                            Row(
-                              children: [
-                                Radio<String>(
-                                  value: 'أنثى',
-                                  groupValue: selectedGender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedGender = value;
-                                    });
-                                  },
-                                ),
-                                const SmallText(text: 'انثى')
-                              ],
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -194,41 +214,55 @@ class _addNewPersonState extends State<addNewPerson> {
                   const SizedBox(height: 20),
                   const SmallText(text: 'طريقة الإتصال'),
                   const SizedBox(height: 6),
-                  SingleChildScrollView(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
+                  BlocBuilder<PersonCubit, PersonState>(
+                    builder: (context, state) {
+                      return SingleChildScrollView(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            const SmallText(text: 'اتصال'),
-                            Checkbox(
-                              value: isCall,
-                              activeColor: AppColor.primaryColor,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isCall = value ?? false;
-                                });
-                              },
+                            Row(
+                              children: [
+                                const SmallText(text: 'اتصال'),
+                                Checkbox(
+                                  value: context.read<PersonCubit>().isCall,
+                                  activeColor: AppColor.primaryColor,
+                                  onChanged: (bool? value) {
+                                    context
+                                        .read<PersonCubit>()
+                                        .changeContactType(
+                                            isCall: value,
+                                            isWhatsapp: context
+                                                .read<PersonCubit>()
+                                                .isWhatsapp);
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Row(
+                              children: [
+                                const SmallText(text: 'واتس اب'),
+                                Checkbox(
+                                  value: context.read<PersonCubit>().isWhatsapp,
+                                  activeColor: AppColor.primaryColor,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      context
+                                          .read<PersonCubit>()
+                                          .changeContactType(
+                                              isWhatsapp: value,
+                                              isCall: context
+                                                  .read<PersonCubit>()
+                                                  .isCall);
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        const SizedBox(width: 20),
-                        Row(
-                          children: [
-                            const SmallText(text: 'واتس اب'),
-                            Checkbox(
-                              value: isWhatsApp,
-                              activeColor: AppColor.primaryColor,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isWhatsApp = value ?? false;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
                   const SmallText(text: 'الإيميل'),
@@ -250,32 +284,36 @@ class _addNewPersonState extends State<addNewPerson> {
                   const SizedBox(height: 20),
                   const SmallText(text: 'تاريخ الميلاد'),
                   const SizedBox(height: 6),
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: CustomTextFormField(
-                          hintText: 'تاريخ الميلاد',
-                        ),
-                      ),
-                      Icon(
-                        Icons.calendar_month,
-                        color: AppColor.primaryColor,
-                        size: 30,
-                      )
-                    ],
+                  TextFormField(
+                    controller: _dateController,
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Date of Birth *',
+                      suffixIcon: Icon(Icons.calendar_today),
+                      border: OutlineInputBorder(),
+                    ),
+                    onTap: () => _pickDate(context),
                   ),
                   const SizedBox(height: 20),
                   const SmallText(text: 'فصيلة الدم'),
                   const SizedBox(height: 6),
-                  CustomDropdown(
-                    selectedValue: selectedBloodType,
-                    items: const [],
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedBloodType = newValue;
-                      });
+                  BlocBuilder<PersonCubit, PersonState>(
+                    builder: (context, state) {
+                      return CustomDropdown(
+                        items:
+                            BloodType.values.map((e) => e.displayName).toList(),
+                        selectedValue: context
+                            .read<PersonCubit>()
+                            .selectedBloodType
+                            ?.displayName,
+                        onChanged: (newValue) {
+                          context.read<PersonCubit>().changeSelectedBloodType(
+                              BloodType.values.firstWhere(
+                                  (e) => e.displayName == newValue));
+                        },
+                        text: 'فصيلة الدم',
+                      );
                     },
-                    text: 'فصيلة الدم',
                   ),
                   const SizedBox(height: 20),
                   SingleChildScrollView(
@@ -285,18 +323,57 @@ class _addNewPersonState extends State<addNewPerson> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const SmallText(text: 'الحالة'),
+                              const SmallText(text: 'الحالة الاجتماعية'),
                               const SizedBox(height: 6),
-                              CustomDropdown(
-                                selectedValue: selectedStatus,
-                                items: statuses,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    selectedStatus = newValue;
-                                  });
+                              BlocBuilder<PersonCubit, PersonState>(
+                                builder: (context, state) {
+                                  return CustomDropdown(
+                                    items: MaritalStatus.values
+                                        .map((e) => e.displayName)
+                                        .toList(),
+                                    selectedValue: context
+                                        .read<PersonCubit>()
+                                        .selectedMaritalStatus
+                                        ?.displayName,
+                                    onChanged: (newValue) {
+                                      context
+                                          .read<PersonCubit>()
+                                          .changeSelectedMaritalStatus(
+                                              MaritalStatus.values.firstWhere(
+                                                  (e) =>
+                                                      e.displayName ==
+                                                      newValue));
+                                    },
+                                    text: 'الحالة الاجتماعية',
+                                  );
                                 },
-                                text: 'الحالة',
                               ),
+                              const SizedBox(height: 8),
+                              const SmallText(text: 'الحالة المهنية'),
+                              const SizedBox(height: 6),
+                              BlocBuilder<PersonCubit, PersonState>(
+                                builder: (context, state) {
+                                  return CustomDropdown(
+                                    items: OccupationStatus.values
+                                        .map((e) => e.displayName)
+                                        .toList(),
+                                    selectedValue: context
+                                        .read<PersonCubit>()
+                                        .selectedOccupationStatus
+                                        ?.displayName,
+                                    onChanged: (newValue) {
+                                      context
+                                          .read<PersonCubit>()
+                                          .changeSelectedOccupationStatus(
+                                              OccupationStatus.values
+                                                  .firstWhere((e) =>
+                                                      e.displayName ==
+                                                      newValue));
+                                    },
+                                    text: 'الحالة المهنية',
+                                  );
+                                },
+                              )
                             ],
                           ),
                         ),
@@ -307,28 +384,59 @@ class _addNewPersonState extends State<addNewPerson> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SmallButton(
-                        text: 'إضافة صورة شخصية',
-                        onPressed: _pickImage,
+                      GestureDetector(
+                        onTap: () {
+                          ImagePicker()
+                              .pickImage(source: ImageSource.gallery)
+                              .then((value) => context
+                                  .read<PersonCubit>()
+                                  .uplodePorfilePicture(value!));
+                        },
+                        child: const Icon(
+                          Icons.camera_alt_sharp,
+                        ),
                       ),
-                      const SizedBox(width: 20),
+                      //                       SmallButton(
+                      //   text: 'إضافة صورة شخصية',
+                      //   onPressed:
+                      //   ImagePicker().pickImage(source: ImageSource.gallery)
+                      //   .then((value) => context.read<PersonCubit>().uplodePorfilePicture(value)),
+                      // ),
+                      // const SizedBox(width: 20),
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black26, width: 1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: _pickedImage == null
-                              ? const Icon(Icons.person,
-                                  size: 60, color: Colors.grey)
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(
-                                    _pickedImage!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                        child: BlocBuilder<PersonCubit, PersonState>(
+                          builder: (context, state) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                    Border.all(color: Colors.black26, width: 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: context
+                                          .read<PersonCubit>()
+                                          .profilePicture ==
+                                      null
+                                  ? const Icon(Icons.person)
+                                  : CircleAvatar(
+                                      backgroundImage: FileImage(File(context
+                                          .read<PersonCubit>()
+                                          .profilePicture!
+                                          .path)),
+                                    ),
+                              //         size: 60, color: Colors.grey),
+                              // child: _pickedImage == null
+                              //     ? const Icon(Icons.person,
+                              //         size: 60, color: Colors.grey)
+                              //     : ClipRRect(
+                              //         borderRadius: BorderRadius.circular(8),
+                              //         child: Image.file(
+                              //           _pickedImage!,
+                              //           fit: BoxFit.cover,
+                              //         ),
+                              //       ),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -349,7 +457,9 @@ class _addNewPersonState extends State<addNewPerson> {
                 const SizedBox(width: 10),
                 SmallButton(
                   text: 'إضافة',
-                  onPressed: () {},
+                  onPressed: () {
+                    // context.read<PersonCubit>()
+                  },
                 ),
               ],
             ),
@@ -357,27 +467,6 @@ class _addNewPersonState extends State<addNewPerson> {
         ),
       ),
       bottomNavigationBar: const navigationBar(),
-    );
-  }
-}
-
-class SubName extends StatelessWidget {
-  const SubName({
-    super.key,
-    required this.text,
-  });
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-      child: boldtext(
-        boldSize: .1,
-        fontcolor: Colors.black54,
-        fontsize: 12,
-        text: text,
-      ),
     );
   }
 }

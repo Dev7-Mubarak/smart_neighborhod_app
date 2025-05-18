@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
@@ -69,10 +72,17 @@ class AllPeople extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final person = state.people[index];
                         return ListTile(
-                          leading: const CircleAvatar(
-                            backgroundColor: AppColor.primaryColor,
-                            child: Icon(Icons.person, color: Colors.white),
-                          ),
+                          leading: person.imageBase64 != null
+                              ? CircleAvatar(
+                                  backgroundImage: MemoryImage(
+                                      base64Decode(person.imageBase64!)),
+                                  backgroundColor: Colors.grey[200],
+                                )
+                              : const CircleAvatar(
+                                  backgroundColor: AppColor.primaryColor,
+                                  child:
+                                      Icon(Icons.person, color: Colors.white),
+                                ),
                           title: Text(person.fullName),
                         );
                       },
