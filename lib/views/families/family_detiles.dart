@@ -4,13 +4,14 @@ import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_neighborhod_app/models/Person.dart';
 import 'package:smart_neighborhod_app/models/family_member.dart';
-import '../components/NavigationBar.dart';
-import '../components/constants/app_color.dart';
-import '../components/searcharea.dart';
-import '../components/smallButton.dart';
-import '../components/table.dart';
-import '../models/Assist.dart';
-import '../models/family_detiles_model.dart';
+
+import '../../components/NavigationBar.dart';
+import '../../components/constants/app_color.dart';
+import '../../components/searcharea.dart';
+import '../../components/smallButton.dart';
+import '../../components/table.dart';
+import '../../models/Assist.dart';
+import '../../models/family_detiles_model.dart';
 
 class FamilyDetiles extends StatefulWidget {
   const FamilyDetiles({super.key, required this.familyId});

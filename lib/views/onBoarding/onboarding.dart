@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_image.dart';
-import '../components/circular_logo.dart';
-import '../components/constants/app_color.dart';
-import '../components/constants/app_route.dart';
-import '../components/defult_button.dart';
+import '../../components/circular_logo.dart';
+import '../../components/constants/app_color.dart';
+import '../../components/constants/app_route.dart';
+import '../../components/defult_button.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
@@ -61,10 +61,11 @@ class Onboarding extends StatelessWidget {
                 color: AppColor.primaryColor,
                 onPressed: () {
                   Navigator.pushNamed(
-                   context,
+                    context,
                     AppRoute.login,
-                  ); 
-                }, fontsize: 25,
+                  );
+                },
+                fontsize: 25,
               ),
             )
           ],

@@ -12,14 +12,14 @@ class Person {
   final DateTime dateOfBirth;
   final String phoneNumber;
   String? email;
-  String? imageBase64;
+  String? image;
   final String gender;
   final BloodType bloodType;
   final String identityNumber;
   final IdentityType identityType;
   final OccupationStatus occupationStatus;
   final MaritalStatus maritalStatus;
-  final String job;
+  String? job;
 
   Person({
     required this.id,
@@ -29,7 +29,7 @@ class Person {
     required this.lastName,
     required this.phoneNumber,
     this.email,
-    this.imageBase64,
+    this.image,
     required this.dateOfBirth,
     required this.gender,
     required this.bloodType,
@@ -37,7 +37,7 @@ class Person {
     required this.identityType,
     required this.occupationStatus,
     required this.maritalStatus,
-    required this.job,
+    this.job,
   });
 
   // Getter for full name
@@ -56,14 +56,14 @@ class Person {
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
       phoneNumber: json['phoneNumber'] as String,
       email: json['email'],
-      imageBase64: json['imageBase64'],
+      image: json['image'],
       gender: json['gender'] as String,
       bloodType: _bloodTypeFromString(json['bloodType']),
       identityNumber: json['identityNumber'] as String,
       identityType: _identityTypeFromString(json['identityType']),
       occupationStatus: _occupationStatusFromString(json['occupationStatus']),
       maritalStatus: _maritalStatusFromString(json['maritalStatus']),
-      job: json['job'] as String,
+      job: json['job'],
     );
   }
 

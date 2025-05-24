@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/models/Block.dart';
-import '../components/residential_card.dart';
-import '../components/searcharea.dart';
-import '../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
-import '../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
-import '../cubits/person_cubit/person_cubit.dart';
+
+import '../../components/residential_card.dart';
+import '../../components/searcharea.dart';
+import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
+import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
+import '../../cubits/person_cubit/person_cubit.dart';
 import 'addNewBlock.dart';
 
 class ResidentialBlock extends StatefulWidget {

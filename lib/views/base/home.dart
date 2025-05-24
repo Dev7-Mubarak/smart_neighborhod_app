@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 
-import '../components/category_card.dart';
-import '../components/constants/app_image.dart';
-import '../components/searcharea.dart';
+import '../../components/category_card.dart';
+import '../../components/constants/app_image.dart';
+import '../../components/searcharea.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
         // إجراء عند النقر
       },
     ),
-     CategoryCard(
+    CategoryCard(
       title: 'قسم المناشدات',
       imagePath: AppImage.monashadatimage,
       backgroundColor: const Color(0xFF878CED),
@@ -89,8 +89,6 @@ class _HomeState extends State<Home> {
   ];
 
   List<CategoryCard> displayedCategoryList = []; // القائمة المعروضة
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +106,8 @@ class _HomeState extends State<Home> {
               originalList: categoryCardList,
               onSearch: (filteredList) {
                 setState(() {
-                  displayedCategoryList = filteredList; // تحديث القائمة المعروضة
+                  displayedCategoryList =
+                      filteredList; // تحديث القائمة المعروضة
                 });
               },
               searchCriteria: (category) => category.title, // البحث في العنوان

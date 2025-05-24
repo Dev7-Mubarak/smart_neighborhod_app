@@ -10,11 +10,10 @@ import 'components/constants/app_route.dart';
 import 'core/API/dio_consumer.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'cubits/mainHome_cubit/main_home_cubit.dart';
-import 'cubits/person_cubit/person_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CacheHelper.init(); // تهيئة sharedPreferences
+  await CacheHelper.init();
   Bloc.observer = AppBlocObserver();
   runApp(SmartNeighbourhood(appRouter: AppRouter()));
 }
@@ -32,22 +31,10 @@ class SmartNeighbourhood extends StatelessWidget {
         BlocProvider(
             create: (_) =>
                 BlockCubit(api: DioConsumer(dio: Dio()))..getBlocks()),
-        BlocProvider(
-            create: (_) =>
-                PersonCubit(api: DioConsumer(dio: Dio()))..getPeople()),
         BlocProvider(create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        supportedLocales: const [
-          Locale('ar', 'SA'),
-          Locale('en', 'US'),
-        ],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
         theme: ThemeData(
           scaffoldBackgroundColor: AppColor.white,
           fontFamily: 'Tajawal-Regular',

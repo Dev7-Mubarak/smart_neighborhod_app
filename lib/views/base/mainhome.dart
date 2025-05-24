@@ -1,13 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../components/NavigationBar.dart';
-import '../components/constants/app_color.dart';
-import '../core/API/dio_consumer.dart';
-import '../cubits/mainHome_cubit/main_home_cubit.dart';
-import '../cubits/person_cubit/person_cubit.dart';
-import 'residdential_blocks.dart';
+import 'package:smart_neighborhod_app/views/residdentailBlocks/residdential_blocks.dart';
+import '../../components/NavigationBar.dart';
+import '../../components/constants/app_color.dart';
+import '../../cubits/mainHome_cubit/main_home_cubit.dart';
 import 'home.dart';
 
 class MainHome extends StatefulWidget {

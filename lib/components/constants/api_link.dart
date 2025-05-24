@@ -11,6 +11,7 @@ class ApiLink {
   static const String getBlockFamiliesById =
       '$server/Blocks/GetBlockFamiliesById';
   static const String addNewPerson = '$server/Person/Add';
+  static const String deletePerson = '$server/Person/Delete';
   static const String getAllPepole = '$server/Person/GetAll';
 
   static String getAllBlockFamilys(IdBlock) {

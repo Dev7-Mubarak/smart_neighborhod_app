@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
 import 'package:smart_neighborhod_app/core/errors/errormodel.dart';
+import 'package:dio/dio.dart';
+import 'package:smart_neighborhod_app/models/enums/Gender.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
@@ -10,7 +12,7 @@ import '../../models/enums/blood_type.dart';
 import '../../models/enums/identity_type.dart';
 import '../../models/enums/marital_status.dart';
 import '../../models/enums/occupation_status.dart';
-
+import 'package:intl/intl.dart';
 part 'person_state.dart';
 
 class PersonCubit extends Cubit<PersonState> {
@@ -26,6 +28,8 @@ class PersonCubit extends Cubit<PersonState> {
   BloodType? selectedBloodType;
   MaritalStatus? selectedMaritalStatus;
   OccupationStatus? selectedOccupationStatus;
+  DateTime? selectedDate;
+  final TextEditingController dateController = TextEditingController();
 
   Future<void> getPeople() async {
     emit(PersonLoading());
@@ -34,13 +38,13 @@ class PersonCubit extends Cubit<PersonState> {
         ApiLink.getAllPepole,
       );
 
-      if (response["data"] == null) {
+      if (response["data"]["items"] == null) {
         throw Serverexception(
             errModel:
                 ErrorModel(status: 400, errorMessage: "No data received"));
       }
 
-      List<dynamic> people = response["data"];
+      List<dynamic> people = response["data"]["items"];
 
       emit(
           PersonLoaded(people: people.map((e) => Person.fromJson(e)).toList()));
@@ -51,17 +55,15 @@ class PersonCubit extends Cubit<PersonState> {
     }
   }
 
-  Future<void> addNewPerson(
-      {required String firstName,
-      required String secondName,
-      required String thirdName,
-      required String lastName,
-      required String phoneNumber,
-      required String identityNumber,
-      required String dateOfBirth,
-      required String? email,
-      required String? job,
-      em}) async {
+  Future<void> addNewPerson({
+    required String firstName,
+    required String secondName,
+    required String thirdName,
+    required String lastName,
+    required String phoneNumber,
+    required String identityNumber,
+    required String? email,
+  }) async {
     emit(PersonLoading());
     try {
       final response = await api.post(
@@ -76,20 +78,27 @@ class PersonCubit extends Cubit<PersonState> {
           "IsWhatsapp": isWhatsapp,
           "IsContactNumber": isCall,
           "Email": email,
-          "DateOfBirth": dateOfBirth,
-          "Gender": selectedGender,
-          "Image": profilePicture,
-          "BloodType": selectedBloodType,
+          "DateOfBirth": selectedDate?.toIso8601String(),
+          "Gender": GenderExtension.fromDisplayName(selectedGender!)
+              .toString()
+              .split('.')
+              .last,
+          "BloodType": selectedBloodType?.toString().split('.').last,
           "IdentityNumber": identityNumber,
-          "IdentityType": selectedIdentityType,
-          "MaritalStatus": selectedMaritalStatus,
-          "OccupationStatus": selectedOccupationStatus,
-          "Job": job,
+          "IdentityType": selectedIdentityType?.toString().split('.').last,
+          "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
+          "OccupationStatus":
+              selectedOccupationStatus?.toString().split('.').last,
+          "Job": null,
+          if (profilePicture != null)
+            "Image": await MultipartFile.fromFile(profilePicture!.path,
+                filename: profilePicture!.name),
         },
       );
 
       if (response["isSuccess"]) {
         emit(PersonAddedSuccessfully(message: response["message"]));
+        await getPeople();
       } else {
         emit(PersonFailure(errorMessage: response["message"]));
       }
@@ -97,6 +106,40 @@ class PersonCubit extends Cubit<PersonState> {
       emit(PersonFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(PersonFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> deletePerson(int id) async {
+    emit(PersonLoading());
+    try {
+      final response = await api.delete(
+        '${ApiLink.deletePerson}/$id',
+      );
+
+      if (response["isSuccess"]) {
+        emit(PersonDeletedSuccessfully(message: response["message"]));
+        await getPeople();
+      } else {
+        emit(PersonFailure(errorMessage: response["message"]));
+      }
+    } on Serverexception catch (e) {
+      emit(PersonFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(PersonFailure(errorMessage: e.toString()));
+    }
+  }
+
+  void pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime(2000, 1, 1),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      selectedDate = picked;
+      dateController.text = DateFormat('yyyy-MM-dd').format(picked!);
     }
   }
 

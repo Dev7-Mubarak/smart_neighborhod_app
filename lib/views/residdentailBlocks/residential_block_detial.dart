@@ -6,14 +6,15 @@ import 'package:smart_neighborhod_app/cubits/familyType/family_type_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_neighborhod_app/models/family.dart';
-import 'package:smart_neighborhod_app/views/addNewFamily.dart';
-import '../components/NavigationBar.dart';
-import '../components/constants/app_color.dart';
-import '../components/constants/app_image.dart';
-import '../components/searcharea.dart';
-import '../components/table.dart'; // يحتوي على CustomTableWidget
-import '../core/API/dio_consumer.dart';
-import '../models/Block.dart';
+
+import '../../components/NavigationBar.dart';
+import '../../components/constants/app_color.dart';
+import '../../components/constants/app_image.dart';
+import '../../components/searcharea.dart';
+import '../../components/table.dart';
+import '../../core/API/dio_consumer.dart';
+import '../../models/Block.dart';
+import '../families/addNewFamily.dart';
 
 class ResiddentialBlocksDetail extends StatefulWidget {
   final Block block;
