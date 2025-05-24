@@ -32,6 +32,11 @@ class PersonDeletedSuccessfully extends PersonState {
   PersonDeletedSuccessfully({required this.message});
 }
 
+class PersonUpdatedSuccessfully extends PersonState {
+  final String message;
+  PersonUpdatedSuccessfully({required this.message});
+}
+
 class UplodePeofilePicture extends PersonState {}
 
 class ChangeBirthDate extends PersonState {}

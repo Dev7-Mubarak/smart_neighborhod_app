@@ -45,6 +45,22 @@ class DioConsumer {
     }
   }
 
+  Future update(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryparameters,
+    bool isFromData = false,
+  }) async {
+    try {
+      final response = await dio.put(path,
+          data: isFromData ? FormData.fromMap(data) : data,
+          queryParameters: queryparameters);
+      return response.data;
+    } on DioException catch (error) {
+      handleDioExceptions(error);
+    }
+  }
+
   Future patch(
     String path, {
     dynamic data,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/core/API/dio_consumer.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_neighborhod_app/models/person_dto.dart';
 import 'package:smart_neighborhod_app/views/annoucements/addNewAnnouncement.dart';
 import 'package:smart_neighborhod_app/views/annoucements/annoucement1.dart';
 
@@ -28,11 +29,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const Onboarding(),
         );
+      case AppRoute.mainHome:
+        return MaterialPageRoute(builder: (_) => const MainHome());
+
       case AppRoute.allPeople:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: ((BuildContext context) =>
-                PersonCubit(api: DioConsumer(dio: Dio()))..getPeople()),
+                PersonCubit(api: DioConsumer(dio: Dio()))),
             child: const AllPeople(),
           ),
         );
@@ -40,16 +44,16 @@ class AppRouter {
         final personCubit = settings.arguments as PersonCubit;
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-              value: personCubit, child: const AddNewPerson()),
+              value: personCubit,
+              child: AddNewPerson(
+                person: personCubit.person,
+              )),
         );
 
       case AppRoute.login:
         return MaterialPageRoute(
           builder: (_) => Login(),
         );
-
-      case AppRoute.mainHome:
-        return MaterialPageRoute(builder: (_) => const MainHome());
 
       case AppRoute.residentialBlockDetial:
       // final Block block = settings.arguments as Block; // تمرير معرّف العنصر

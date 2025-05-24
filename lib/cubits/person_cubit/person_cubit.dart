@@ -20,6 +20,7 @@ class PersonCubit extends Cubit<PersonState> {
   static PersonCubit get(context) => BlocProvider.of(context);
 
   DioConsumer api;
+  Person? person;
   XFile? profilePicture;
   String? selectedGender;
   bool isCall = false;
@@ -29,13 +30,29 @@ class PersonCubit extends Cubit<PersonState> {
   MaritalStatus? selectedMaritalStatus;
   OccupationStatus? selectedOccupationStatus;
   DateTime? selectedDate;
-  final TextEditingController dateController = TextEditingController();
 
-  Future<void> getPeople() async {
+  void setPerson(Person person) {
+    this.person = person;
+    selectedIdentityType = person.identityType;
+    selectedBloodType = person.bloodType;
+    selectedMaritalStatus = person.maritalStatus;
+    selectedOccupationStatus = person.occupationStatus;
+    isCall = person.isCall;
+    isWhatsapp = person.isWhatsapp;
+    selectedGender = person.gender;
+    // profilePicture = person.image;
+  }
+
+  Future<void> getPeople({String? search}) async {
     emit(PersonLoading());
     try {
       final response = await api.get(
         ApiLink.getAllPepole,
+        queryparameters: {
+          'pageNumber': 1,
+          'pageSize': 10,
+          'search': search,
+        },
       );
 
       if (response["data"]["items"] == null) {
@@ -109,6 +126,61 @@ class PersonCubit extends Cubit<PersonState> {
     }
   }
 
+  Future<void> updatePerson({
+    required String id,
+    String? firstName,
+    String? secondName,
+    String? thirdName,
+    String? lastName,
+    String? phoneNumber,
+    String? identityNumber,
+    String? email,
+  }) async {
+    emit(PersonLoading());
+    try {
+      final response = await api.update(
+        ApiLink.updatePerson,
+        isFromData: true,
+        data: {
+          "FirstName": firstName,
+          "SecondName": secondName,
+          "ThirdName": thirdName,
+          "LastName": lastName,
+          "PhoneNumber": phoneNumber,
+          "IsWhatsapp": isWhatsapp,
+          "IsContactNumber": isCall,
+          "Email": email,
+          "DateOfBirth": selectedDate?.toIso8601String(),
+          "Gender": GenderExtension.fromDisplayName(selectedGender!)
+              .toString()
+              .split('.')
+              .last,
+          "BloodType": selectedBloodType?.toString().split('.').last,
+          "IdentityNumber": identityNumber,
+          "IdentityType": selectedIdentityType?.toString().split('.').last,
+          "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
+          "OccupationStatus":
+              selectedOccupationStatus?.toString().split('.').last,
+          "Job": null,
+          if (profilePicture != null)
+            "Image": await MultipartFile.fromFile(profilePicture!.path,
+                filename: profilePicture!.name),
+        },
+      );
+
+      if (response["isSuccess"]) {
+        emit(PersonUpdatedSuccessfully(message: response["message"]));
+        await getPeople();
+      } else {
+        emit(PersonFailure(errorMessage: response["message"]));
+      }
+    } on Serverexception catch (e) {
+      emit(PersonFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(PersonFailure(errorMessage: e.toString()));
+    }
+  }
+
   Future<void> deletePerson(int id) async {
     emit(PersonLoading());
     try {
@@ -139,7 +211,6 @@ class PersonCubit extends Cubit<PersonState> {
 
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
-      dateController.text = DateFormat('yyyy-MM-dd').format(picked!);
     }
   }
 
@@ -153,7 +224,7 @@ class PersonCubit extends Cubit<PersonState> {
     emit(ChangeSelctedGender());
   }
 
-  void changeContactType({bool? isCall, bool? isWhatsapp}) {
+  void toggleContactType({bool? isCall, bool? isWhatsapp}) {
     this.isCall = isCall ?? false;
     this.isWhatsapp = isWhatsapp ?? false;
     emit(ChangeContactType());

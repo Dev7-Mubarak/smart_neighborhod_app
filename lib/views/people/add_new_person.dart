@@ -10,32 +10,53 @@ import 'package:smart_neighborhod_app/models/enums/Gender.dart';
 import 'package:smart_neighborhod_app/models/enums/blood_type.dart';
 import 'package:smart_neighborhod_app/models/enums/marital_status.dart';
 import 'package:smart_neighborhod_app/models/enums/occupation_status.dart';
-
+import 'package:intl/intl.dart';
 import '../../components/CustomDropdown.dart';
 import '../../components/NavigationBar.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/constants/small_text.dart';
 import '../../components/custom_text_input_filed.dart';
+import '../../models/Person.dart';
 import '../../models/enums/identity_type.dart';
 
 class AddNewPerson extends StatefulWidget {
-  const AddNewPerson({super.key});
-
+  const AddNewPerson({super.key, this.person});
+  final Person? person;
   @override
   State<AddNewPerson> createState() => AaddNewPersonState();
 }
 
 class AaddNewPersonState extends State<AddNewPerson> {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController secondNameController = TextEditingController();
-  final TextEditingController thirdNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController identityNumberController =
-      TextEditingController();
-  final TextEditingController birthDateController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  late final TextEditingController firstNameController;
+  late final TextEditingController secondNameController;
+  late final TextEditingController thirdNameController;
+  late final TextEditingController lastNameController;
+  late final TextEditingController identityNumberController;
+  late final TextEditingController birthDateController;
+  late final TextEditingController phoneNumberController;
+  late final TextEditingController emailController;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    firstNameController =
+        TextEditingController(text: widget.person?.firstName ?? '');
+    secondNameController =
+        TextEditingController(text: widget.person?.secondName ?? '');
+    thirdNameController =
+        TextEditingController(text: widget.person?.thirdName ?? '');
+    lastNameController =
+        TextEditingController(text: widget.person?.lastName ?? '');
+    identityNumberController =
+        TextEditingController(text: widget.person?.identityNumber ?? '');
+    birthDateController = TextEditingController(
+        text: DateFormat('yyyy-MM-dd')
+            .format(widget.person?.dateOfBirth ?? DateTime(2000, 1, 1)));
+    phoneNumberController =
+        TextEditingController(text: widget.person?.phoneNumber ?? '');
+    emailController = TextEditingController(text: widget.person?.email ?? '');
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -292,7 +313,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                     onChanged: (bool? value) {
                                       context
                                           .read<PersonCubit>()
-                                          .changeContactType(
+                                          .toggleContactType(
                                               isCall: value,
                                               isWhatsapp: context
                                                   .read<PersonCubit>()
@@ -314,7 +335,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                       setState(() {
                                         context
                                             .read<PersonCubit>()
-                                            .changeContactType(
+                                            .toggleContactType(
                                                 isWhatsapp: value,
                                                 isCall: context
                                                     .read<PersonCubit>()
@@ -352,7 +373,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                       const SizedBox(
                           height: AppSize.spasingBetweenInputsAndLabale),
                       CustomTextFormField(
-                        controller: cubit.dateController,
+                        controller: birthDateController,
                         suffixIcon: Icons.calendar_today,
                         readOnly: true,
                         onTap: () => cubit.pickDate(context),

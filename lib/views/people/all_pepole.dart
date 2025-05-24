@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
+import 'package:smart_neighborhod_app/components/constants/app_size.dart';
+import 'package:smart_neighborhod_app/components/custom_text_input_filed.dart';
+import 'package:smart_neighborhod_app/models/Person.dart';
+import 'package:smart_neighborhod_app/models/person_dto.dart';
 import '../../components/constants/app_color.dart';
+import '../../components/searcable_text_input_filed.dart';
+import '../../components/searcharea.dart';
 import '../../components/smallButton.dart';
 import '../../cubits/person_cubit/person_cubit.dart';
 
-class AllPeople extends StatelessWidget {
+class AllPeople extends StatefulWidget {
   const AllPeople({super.key});
+
+  @override
+  State<AllPeople> createState() => _AllPeopleState();
+}
+
+class _AllPeopleState extends State<AllPeople> {
+  late List<Person> allPeople;
+
+  @override
+  void initState() {
+    context.read<PersonCubit>().getPeople();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +46,31 @@ class AllPeople extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SmallButton(
-            text: 'أضافة شخص',
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoute.addNewPerson,
-                  arguments: BlocProvider.of<PersonCubit>(context));
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                SmallButton(
+                  text: 'أضافة',
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoute.addNewPerson,
+                        arguments: BlocProvider.of<PersonCubit>(context));
+                  },
+                ),
+                const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+                Expanded(
+                  child: SearchableTextFormField(
+                    hintText: 'بحث',
+                    prefixIcon: Icons.clear,
+                    suffixIcon: Icons.search,
+                    bachgroundColor: AppColor.gray2,
+                    onChanged: (value) {
+                      context.read<PersonCubit>().getPeople(search: value);
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
           Expanded(
             child: BlocBuilder<PersonCubit, PersonState>(
@@ -51,40 +89,34 @@ class AllPeople extends StatelessWidget {
                 }
 
                 if (state is PersonLoaded) {
-                  if (state.people.isEmpty) {
+                  allPeople = state.people;
+                  if (allPeople.isEmpty) {
                     return const Center(
                       child: Text('لا يوجد أشخاص حتى الآن.'),
                     );
                   }
-
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      context.read<PersonCubit>().getPeople();
+                  return ListView.separated(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: allPeople.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) {
+                      final person = allPeople[index];
+                      return ListTile(
+                        leading: person.image != null
+                            ? CircleAvatar(
+                                backgroundImage: NetworkImage(person.image!),
+                                backgroundColor: Colors.grey[200],
+                              )
+                            : const CircleAvatar(
+                                backgroundColor: AppColor.primaryColor,
+                                child: Icon(Icons.person, color: Colors.white),
+                              ),
+                        title: Text(person.fullName),
+                        onLongPress: () {
+                          _showOptions(context, index, person);
+                        },
+                      );
                     },
-                    child: ListView.separated(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: state.people.length,
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final person = state.people[index];
-                        return ListTile(
-                          leading: person.image != null
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage(person.image!),
-                                  backgroundColor: Colors.grey[200],
-                                )
-                              : const CircleAvatar(
-                                  backgroundColor: AppColor.primaryColor,
-                                  child:
-                                      Icon(Icons.person, color: Colors.white),
-                                ),
-                          title: Text(person.fullName),
-                          onLongPress: () {
-                            _showOptions(context, index, person);
-                          },
-                        );
-                      },
-                    ),
                   );
                 }
 
@@ -112,9 +144,9 @@ class AllPeople extends StatelessWidget {
               title: const Text('تعديل'),
               onTap: () {
                 Navigator.pop(context);
-                // Navigate to edit screen or handle edit
-                // Example:
-                // Navigator.pushNamed(context, AppRoute.editPerson, arguments: person);
+                Navigator.pushNamed(context, AppRoute.addNewPerson,
+                    arguments: BlocProvider.of<PersonCubit>(passContext)
+                      ..setPerson(person));
               },
             ),
             ListTile(
@@ -129,7 +161,12 @@ class AllPeople extends StatelessWidget {
                     content: const Text('هل أنت متأكد أنك تريد حذف هذا الشخص؟'),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () => Navigator.pushNamed(
+                            context, AppRoute.addNewPerson,
+                            arguments: PersonDto(
+                                personCubit:
+                                    BlocProvider.of<PersonCubit>(context),
+                                person: person)),
                         child: const Text('إلغاء'),
                       ),
                       TextButton(
