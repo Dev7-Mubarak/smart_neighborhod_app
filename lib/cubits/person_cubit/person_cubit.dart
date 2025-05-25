@@ -30,6 +30,10 @@ class PersonCubit extends Cubit<PersonState> {
   MaritalStatus? selectedMaritalStatus;
   OccupationStatus? selectedOccupationStatus;
   DateTime? selectedDate;
+  bool _hasNextPage = false;
+  int _pageNumber = 1;
+  final int _pageSize = 10;
+  List<Person> people = [];
 
   void setPerson(Person person) {
     this.person = person;
@@ -43,17 +47,30 @@ class PersonCubit extends Cubit<PersonState> {
     // profilePicture = person.image;
   }
 
+  Future<void> loadNextPage({String? search}) async {
+    if (!_hasNextPage) return;
+    _pageNumber++;
+    await getPeople(search: search);
+  }
+
   Future<void> getPeople({String? search}) async {
-    emit(PersonLoading());
+    if (search != null) {
+      _pageNumber = 1;
+      people.clear();
+    }
+
+    emit(PersonLoading(isFirstFetch: _pageNumber == 1 && people.isEmpty));
     try {
       final response = await api.get(
         ApiLink.getAllPepole,
         queryparameters: {
-          'pageNumber': 1,
-          'pageSize': 10,
+          'pageNumber': _pageNumber,
+          'pageSize': _pageSize,
           'search': search,
         },
       );
+
+      _hasNextPage = response["data"]["hasNextPage"];
 
       if (response["data"]["items"] == null) {
         throw Serverexception(
@@ -61,10 +78,10 @@ class PersonCubit extends Cubit<PersonState> {
                 ErrorModel(status: 400, errorMessage: "No data received"));
       }
 
-      List<dynamic> people = response["data"]["items"];
+      List<dynamic> paganatedPeople = response["data"]["items"];
+      people.addAll(paganatedPeople.map((e) => Person.fromJson(e)).toList());
 
-      emit(
-          PersonLoaded(people: people.map((e) => Person.fromJson(e)).toList()));
+      emit(PersonLoaded(people: people));
     } on Serverexception catch (e) {
       emit(PersonFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

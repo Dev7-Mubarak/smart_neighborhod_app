@@ -1,11 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
 import 'package:smart_neighborhod_app/components/constants/app_size.dart';
-import 'package:smart_neighborhod_app/models/Person.dart';
 import 'package:smart_neighborhod_app/models/person_dto.dart';
 import 'package:skeletons/skeletons.dart';
-
 import '../../components/constants/app_color.dart';
 import '../../components/searcable_text_input_filed.dart';
 import '../../components/smallButton.dart';
@@ -19,15 +19,31 @@ class AllPeople extends StatefulWidget {
 }
 
 class _AllPeopleState extends State<AllPeople> {
-  late List<Person> _allPeople;
   late PersonCubit _personCubit;
   late TextEditingController _searchingController;
+  late ScrollController _scrollController;
+  Timer? _delay;
 
   @override
   void initState() {
     _personCubit = context.read<PersonCubit>()..getPeople();
     _searchingController = TextEditingController();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        _personCubit.loadNextPage();
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchingController.dispose();
+    _scrollController.dispose();
+    _delay?.cancel();
+    super.dispose();
   }
 
   @override
@@ -49,116 +65,106 @@ class _AllPeopleState extends State<AllPeople> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                SmallButton(
-                  text: 'أضافة',
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoute.addNewPerson,
-                        arguments: BlocProvider.of<PersonCubit>(context));
+          _buildToBar(context),
+          _peopleListView(),
+        ],
+      ),
+    );
+  }
+
+  Widget _peopleListView() {
+    return Expanded(
+      child: BlocBuilder<PersonCubit, PersonState>(
+        builder: (context, state) {
+          if (state is PersonFailure) {
+            return Center(
+              child: Text(
+                state.errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
+
+          if (state is PersonLoading && state.isFirstFetch) {
+            return const _SkeletonList();
+          }
+
+          if (state is PersonLoaded ||
+              (state is PersonLoading && !state.isFirstFetch)) {
+            final people = _personCubit.people;
+            final isLoadingMore = state is PersonLoading && !state.isFirstFetch;
+
+            return ListView.separated(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(16),
+              itemCount: isLoadingMore ? people.length + 1 : people.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                if (index >= people.length) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final person = people[index];
+                return ListTile(
+                  leading: person.image != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(person.image!),
+                          backgroundColor: Colors.grey[200],
+                        )
+                      : const CircleAvatar(
+                          backgroundColor: AppColor.primaryColor,
+                          child: Icon(Icons.person, color: Colors.white),
+                        ),
+                  title: Text(person.fullName),
+                  onLongPress: () {
+                    _showOptions(context, index, person);
                   },
-                ),
-                const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-                Expanded(
-                  child: SearchableTextFormField(
-                    controller: _searchingController,
-                    hintText: 'بحث',
-                    prefixIcon: IconButton(
-                        onPressed: () {
-                          _searchingController.clear();
-                          _personCubit.getPeople();
-                        },
-                        icon: const Icon(Icons.close)),
-                    suffixIcon: Icons.search,
-                    bachgroundColor: AppColor.gray2,
-                    onChanged: (value) {
-                      _personCubit.getPeople(search: value);
-                    },
-                  ),
-                )
-              ],
-            ),
+                );
+              },
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+
+  Widget _buildToBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          SmallButton(
+            text: 'أضافة',
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoute.addNewPerson,
+                  arguments: BlocProvider.of<PersonCubit>(context));
+            },
           ),
+          const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
-            child: BlocBuilder<PersonCubit, PersonState>(
-              builder: (context, state) {
-                if (state is PersonFailure) {
-                  return Center(
-                    child: Text(
-                      state.errorMessage,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  );
-                }
-
-                if (state is PersonLoading) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: SkeletonListView(
-                      itemCount: 10,
-                      itemBuilder: (context, index) => const ListTile(
-                        leading: SkeletonAvatar(
-                          style: SkeletonAvatarStyle(
-                            shape: BoxShape.circle,
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-                        title: SkeletonLine(
-                          style: SkeletonLineStyle(
-                            height: 16,
-                            width: 240,
-                          ),
-                        ),
-                        subtitle: SkeletonLine(
-                          style: SkeletonLineStyle(
-                            height: 12,
-                            width: 100,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-                if (state is PersonLoaded) {
-                  _allPeople = state.people;
-                  if (_allPeople.isEmpty) {
-                    return const Center(
-                      child: Text('لا يوجد أشخاص.'),
-                    );
-                  }
-                  return ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _allPeople.length,
-                    separatorBuilder: (context, index) => const Divider(),
-                    itemBuilder: (context, index) {
-                      final person = _allPeople[index];
-                      return ListTile(
-                        leading: person.image != null
-                            ? CircleAvatar(
-                                backgroundImage: NetworkImage(person.image!),
-                                backgroundColor: Colors.grey[200],
-                              )
-                            : const CircleAvatar(
-                                backgroundColor: AppColor.primaryColor,
-                                child: Icon(Icons.person, color: Colors.white),
-                              ),
-                        title: Text(person.fullName),
-                        onLongPress: () {
-                          _showOptions(context, index, person);
-                        },
-                      );
-                    },
-                  );
-                }
-
-                return const SizedBox.shrink();
+            child: SearchableTextFormField(
+              controller: _searchingController,
+              hintText: 'بحث',
+              prefixIcon: IconButton(
+                  onPressed: () {
+                    _searchingController.clear();
+                    _personCubit.getPeople();
+                  },
+                  icon: const Icon(Icons.close)),
+              suffixIcon: Icons.search,
+              bachgroundColor: AppColor.gray2,
+              onChanged: (value) {
+                _delay?.cancel();
+                _delay = Timer(const Duration(milliseconds: 400), () {
+                  _personCubit.getPeople(search: value.trim());
+                });
               },
             ),
-          ),
+          )
         ],
       ),
     );
@@ -221,6 +227,41 @@ class _AllPeopleState extends State<AllPeople> {
           ],
         );
       },
+    );
+  }
+}
+
+class _SkeletonList extends StatelessWidget {
+  const _SkeletonList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: SkeletonListView(
+        itemCount: 10,
+        itemBuilder: (context, index) => const ListTile(
+          leading: SkeletonAvatar(
+            style: SkeletonAvatarStyle(
+              shape: BoxShape.circle,
+              width: 40,
+              height: 40,
+            ),
+          ),
+          title: SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 16,
+              width: 240,
+            ),
+          ),
+          subtitle: SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 12,
+              width: 100,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

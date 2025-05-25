@@ -13,7 +13,10 @@ class PersonLoaded extends PersonState {
   });
 }
 
-class PersonLoading extends PersonState {}
+class PersonLoading extends PersonState {
+  final bool isFirstFetch;
+  PersonLoading({this.isFirstFetch = false});
+}
 
 class PersonFailure extends PersonState {
   final String errorMessage;
