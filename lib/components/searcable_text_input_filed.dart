@@ -12,7 +12,7 @@ class SearchableTextFormField extends StatelessWidget {
   final void Function()? onTap;
   final bool readOnly;
   final IconData? suffixIcon;
-  final IconData? prefixIcon;
+  final IconButton? prefixIcon;
   final Color bachgroundColor;
   final void Function(String)? onChanged;
   final bool isBordred;
@@ -59,8 +59,9 @@ class SearchableTextFormField extends StatelessWidget {
         ),
         prefixIcon: prefixIcon == null
             ? null
-            : Icon(
-                prefixIcon,
+            : IconButton(
+                icon: prefixIcon!.icon,
+                onPressed: prefixIcon!.onPressed,
                 color: Colors.black,
               ),
         suffixIcon: suffixIcon == null

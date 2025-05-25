@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
 import 'package:smart_neighborhod_app/components/constants/app_size.dart';
-import 'package:smart_neighborhod_app/components/custom_text_input_filed.dart';
 import 'package:smart_neighborhod_app/models/Person.dart';
 import 'package:smart_neighborhod_app/models/person_dto.dart';
+import 'package:skeletons/skeletons.dart';
+
 import '../../components/constants/app_color.dart';
 import '../../components/searcable_text_input_filed.dart';
-import '../../components/searcharea.dart';
 import '../../components/smallButton.dart';
 import '../../cubits/person_cubit/person_cubit.dart';
 
@@ -19,11 +19,14 @@ class AllPeople extends StatefulWidget {
 }
 
 class _AllPeopleState extends State<AllPeople> {
-  late List<Person> allPeople;
+  late List<Person> _allPeople;
+  late PersonCubit _personCubit;
+  late TextEditingController _searchingController;
 
   @override
   void initState() {
-    context.read<PersonCubit>().getPeople();
+    _personCubit = context.read<PersonCubit>()..getPeople();
+    _searchingController = TextEditingController();
     super.initState();
   }
 
@@ -60,12 +63,18 @@ class _AllPeopleState extends State<AllPeople> {
                 const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
                 Expanded(
                   child: SearchableTextFormField(
+                    controller: _searchingController,
                     hintText: 'بحث',
-                    prefixIcon: Icons.clear,
+                    prefixIcon: IconButton(
+                        onPressed: () {
+                          _searchingController.clear();
+                          _personCubit.getPeople();
+                        },
+                        icon: const Icon(Icons.close)),
                     suffixIcon: Icons.search,
                     bachgroundColor: AppColor.gray2,
                     onChanged: (value) {
-                      context.read<PersonCubit>().getPeople(search: value);
+                      _personCubit.getPeople(search: value);
                     },
                   ),
                 )
@@ -85,22 +94,48 @@ class _AllPeopleState extends State<AllPeople> {
                 }
 
                 if (state is PersonLoading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: SkeletonListView(
+                      itemCount: 10,
+                      itemBuilder: (context, index) => const ListTile(
+                        leading: SkeletonAvatar(
+                          style: SkeletonAvatarStyle(
+                            shape: BoxShape.circle,
+                            width: 40,
+                            height: 40,
+                          ),
+                        ),
+                        title: SkeletonLine(
+                          style: SkeletonLineStyle(
+                            height: 16,
+                            width: 240,
+                          ),
+                        ),
+                        subtitle: SkeletonLine(
+                          style: SkeletonLineStyle(
+                            height: 12,
+                            width: 100,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 }
 
                 if (state is PersonLoaded) {
-                  allPeople = state.people;
-                  if (allPeople.isEmpty) {
+                  _allPeople = state.people;
+                  if (_allPeople.isEmpty) {
                     return const Center(
-                      child: Text('لا يوجد أشخاص حتى الآن.'),
+                      child: Text('لا يوجد أشخاص.'),
                     );
                   }
                   return ListView.separated(
                     padding: const EdgeInsets.all(16),
-                    itemCount: allPeople.length,
+                    itemCount: _allPeople.length,
                     separatorBuilder: (context, index) => const Divider(),
                     itemBuilder: (context, index) {
-                      final person = allPeople[index];
+                      final person = _allPeople[index];
                       return ListTile(
                         leading: person.image != null
                             ? CircleAvatar(
