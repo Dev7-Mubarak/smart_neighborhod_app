@@ -9,7 +9,7 @@ class AppRoute {
   static const String addNewBlock = '/AddNewBlock';
   static const String familyDetiles = '/FamilyDetiles';
   static const String addNewFamily = '/AddNewFamily';
-  static const String addNewPerson = '/addNewPerson';
+  static const String addUpdatePerson = '/AddUpdatePerson';
   static const String arofilePage = '/ProfilePage';
   static const String allPeople = '/AllPeople';
   // static const String nnouncement ='/nnouncement';

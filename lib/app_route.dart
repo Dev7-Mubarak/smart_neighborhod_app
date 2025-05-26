@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/core/API/dio_consumer.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_neighborhod_app/models/person_dto.dart';
 import 'package:smart_neighborhod_app/views/annoucements/addNewAnnouncement.dart';
 import 'package:smart_neighborhod_app/views/annoucements/annoucement1.dart';
-
 import 'package:smart_neighborhod_app/views/auth/checkEmail.dart';
 import 'package:smart_neighborhod_app/views/auth/createNewPassword.dart';
 import 'package:smart_neighborhod_app/views/auth/forgetapassword.dart';
@@ -14,8 +12,7 @@ import 'package:smart_neighborhod_app/views/auth/login.dart';
 import 'package:smart_neighborhod_app/views/base/mainhome.dart';
 import 'package:smart_neighborhod_app/views/families/family_detiles.dart';
 import 'package:smart_neighborhod_app/views/onBoarding/onboarding.dart';
-import 'package:smart_neighborhod_app/views/people/ProfilePage.dart';
-import 'package:smart_neighborhod_app/views/people/add_new_person.dart';
+import 'package:smart_neighborhod_app/views/people/add_update_person.dart';
 import 'package:smart_neighborhod_app/views/people/all_pepole.dart';
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_council_Detials.dart';
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_councils.dart';
@@ -40,12 +37,12 @@ class AppRouter {
             child: const AllPeople(),
           ),
         );
-      case AppRoute.addNewPerson:
+      case AppRoute.addUpdatePerson:
         final personCubit = settings.arguments as PersonCubit;
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
               value: personCubit,
-              child: AddNewPerson(
+              child: AddUpdatePerson(
                 person: personCubit.person,
               )),
         );
@@ -96,14 +93,9 @@ class AppRouter {
       //     builder: (_) => AddNewFamily(),
       //     fullscreenDialog: false,
       //   );
-      case AppRoute.addNewPerson:
+      case AppRoute.addUpdatePerson:
         return MaterialPageRoute(
-          builder: (_) => const AddNewPerson(),
-          fullscreenDialog: false,
-        );
-      case AppRoute.arofilePage:
-        return MaterialPageRoute(
-          builder: (_) => ProfilePage(),
+          builder: (_) => const AddUpdatePerson(),
           fullscreenDialog: false,
         );
       // case AppRoute.nnouncement:

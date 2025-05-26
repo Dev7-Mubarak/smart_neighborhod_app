@@ -19,14 +19,14 @@ import '../../components/custom_text_input_filed.dart';
 import '../../models/Person.dart';
 import '../../models/enums/identity_type.dart';
 
-class AddNewPerson extends StatefulWidget {
-  const AddNewPerson({super.key, this.person});
+class AddUpdatePerson extends StatefulWidget {
+  const AddUpdatePerson({super.key, this.person});
   final Person? person;
   @override
-  State<AddNewPerson> createState() => AaddNewPersonState();
+  State<AddUpdatePerson> createState() => AAddUpdatePersonState();
 }
 
-class AaddNewPersonState extends State<AddNewPerson> {
+class AAddUpdatePersonState extends State<AddUpdatePerson> {
   late final TextEditingController firstNameController;
   late final TextEditingController secondNameController;
   late final TextEditingController thirdNameController;
@@ -92,10 +92,12 @@ class AaddNewPersonState extends State<AddNewPerson> {
           backgroundColor: AppColor.white,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: const Center(
+          title: Center(
             child: Text(
-              'إضافة شخص جديد',
-              style: TextStyle(
+              context.read<PersonCubit>().person == null
+                  ? 'إضافة شخص جديد'
+                  : 'تعديل بيانات الشخص',
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 22),
@@ -190,6 +192,8 @@ class AaddNewPersonState extends State<AddNewPerson> {
                       const SizedBox(
                           height: AppSize.spasingBetweenInputsAndLabale),
                       BlocBuilder<PersonCubit, PersonState>(
+                        buildWhen: (previous, current) =>
+                            current is ChangeSelectedIdentityType,
                         builder: (context, state) {
                           return CustomDropdown(
                             items: IdentityType.values
@@ -206,6 +210,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                       IdentityType.values.firstWhere(
                                           (e) => e.displayName == newValue));
                             },
+                            text: 'اختيار نوع الهوية',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'يرجى اختيار نوع الهوية';
@@ -216,52 +221,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const SmallText(text: 'الجنس'),
-                          const SizedBox(
-                              height: AppSize.spasingBetweenInputsAndLabale),
-                          BlocBuilder<PersonCubit, PersonState>(
-                            buildWhen: (previous, current) =>
-                                current is ChangeSelctedGender,
-                            builder: (context, state) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Radio<String>(
-                                        value: Gender.male.displayName,
-                                        groupValue: cubit.selectedGender,
-                                        onChanged: (value) {
-                                          cubit.changeSelctedGender(value!);
-                                        },
-                                      ),
-                                      const SmallText(
-                                        text: 'ذكر',
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(width: 30),
-                                  Row(
-                                    children: [
-                                      Radio<String>(
-                                        value: Gender.female.displayName,
-                                        groupValue: cubit.selectedGender,
-                                        onChanged: (value) {
-                                          cubit.changeSelctedGender(value!);
-                                        },
-                                      ),
-                                      const SmallText(text: 'انثى')
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                      _buildGenderSelector(cubit),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'رقم التواصل'),
                       const SizedBox(
@@ -400,6 +360,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                   .firstWhere(
                                       (e) => e.displayName == newValue));
                             },
+                            text: 'اختبار فصيلة الدم',
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'يرجى اختيار فصيلة الدم';
@@ -421,6 +382,8 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                     height:
                                         AppSize.spasingBetweenInputsAndLabale),
                                 BlocBuilder<PersonCubit, PersonState>(
+                                  buildWhen: (previous, current) =>
+                                      current is ChangeSelectedMaritalStatus,
                                   builder: (context, state) {
                                     return CustomDropdown(
                                       items: MaritalStatus.values
@@ -434,6 +397,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                                 (e) =>
                                                     e.displayName == newValue));
                                       },
+                                      text: 'اختيار الحالة الاجتماعية',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'يرجى اختيار الحالة الاجتماعية';
@@ -450,6 +414,8 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                     height:
                                         AppSize.spasingBetweenInputsAndLabale),
                                 BlocBuilder<PersonCubit, PersonState>(
+                                  buildWhen: (previous, current) =>
+                                      current is ChangeSelectedOccupationStatus,
                                   builder: (context, state) {
                                     return CustomDropdown(
                                       items: OccupationStatus.values
@@ -465,6 +431,7 @@ class AaddNewPersonState extends State<AddNewPerson> {
                                                 (e) =>
                                                     e.displayName == newValue));
                                       },
+                                      text: 'اختيار الحالة المهنية',
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'يرجى اختيار الحالة المهنية';
@@ -480,104 +447,173 @@ class AaddNewPersonState extends State<AddNewPerson> {
                         ],
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              ImagePicker()
-                                  .pickImage(source: ImageSource.gallery)
-                                  .then((value) => context
-                                      .read<PersonCubit>()
-                                      .uplodePorfilePicture(value!));
-                            },
-                            child: const Icon(
-                              Icons.camera_alt_sharp,
-                            ),
-                          ),
-                          //                       SmallButton(
-                          //   text: 'إضافة صورة شخصية',
-                          //   onPressed:
-                          //   ImagePicker().pickImage(source: ImageSource.gallery)
-                          //   .then((value) => cubit.uplodePorfilePicture(value)),
-                          // ),
-                          // const SizedBox(width: AppSize.spasingBetweenInputBloc),
-                          Expanded(
-                            child: BlocBuilder<PersonCubit, PersonState>(
-                              buildWhen: (previous, current) =>
-                                  current is UplodePeofilePicture,
-                              builder: (context, state) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.black26, width: 1),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: context
-                                              .read<PersonCubit>()
-                                              .profilePicture ==
-                                          null
-                                      ? const Icon(Icons.person)
-                                      : CircleAvatar(
-                                          backgroundImage: FileImage(
-                                              File(cubit.profilePicture!.path)),
-                                        ),
-                                  //         size: 60, color: Colors.grey),
-                                  // child: _pickedImage == null
-                                  //     ? const Icon(Icons.person,
-                                  //         size: 60, color: Colors.grey)
-                                  //     : ClipRRect(
-                                  //         borderRadius: BorderRadius.circular(8),
-                                  //         child: Image.file(
-                                  //           _pickedImage!,
-                                  //           fit: BoxFit.cover,
-                                  //         ),
-                                  //       ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                      _buildImagePicker(context, cubit),
                     ],
                   ),
                 ),
                 const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SmallButton(
-                      text: 'إلغاء',
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const SizedBox(width: 10),
-                    SmallButton(
-                      text: 'إضافة',
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          cubit.addNewPerson(
-                            firstName: firstNameController.text,
-                            secondName: secondNameController.text,
-                            thirdName: thirdNameController.text,
-                            lastName: lastNameController.text,
-                            phoneNumber: phoneNumberController.text,
-                            identityNumber: identityNumberController.text,
-                            email: emailController.text,
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                _buildSubmitButtons(context, cubit),
               ],
             ),
           ),
         ),
         bottomNavigationBar: const navigationBar(),
       ),
+    );
+  }
+
+  Widget _buildImagePicker(BuildContext context, PersonCubit cubit) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            ImagePicker().pickImage(source: ImageSource.gallery).then((value) =>
+                context.read<PersonCubit>().uplodePorfilePicture(value!));
+          },
+          child: const Icon(
+            Icons.camera_alt_sharp,
+          ),
+        ),
+        //                       SmallButton(
+        //   text: 'إضافة صورة شخصية',
+        //   onPressed:
+        //   ImagePicker().pickImage(source: ImageSource.gallery)
+        //   .then((value) => cubit.uplodePorfilePicture(value)),
+        // ),
+        // const SizedBox(width: AppSize.spasingBetweenInputBloc),
+        Expanded(
+          child: BlocBuilder<PersonCubit, PersonState>(
+            buildWhen: (previous, current) => current is UplodePeofilePicture,
+            builder: (context, state) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black26, width: 1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: context.read<PersonCubit>().profilePicture != null
+                    ? CircleAvatar(
+                        backgroundImage:
+                            FileImage(File(cubit.profilePicture!.path)),
+                        radius: 40,
+                      )
+                    : (widget.person?.image != null &&
+                            widget.person!.image!.isNotEmpty
+                        ? CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(widget.person!.image!),
+                            radius: 40,
+                          )
+                        : const Icon(Icons.person,
+                            size: 60, color: Colors.grey)),
+                //         size: 60, color: Colors.grey),
+                // child: _pickedImage == null
+                //     ? const Icon(Icons.person,
+                //         size: 60, color: Colors.grey)
+                //     : ClipRRect(
+                //         borderRadius: BorderRadius.circular(8),
+                //         child: Image.file(
+                //           _pickedImage!,
+                //           fit: BoxFit.cover,
+                //         ),
+                //       ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGenderSelector(PersonCubit cubit) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        const SmallText(text: 'الجنس'),
+        const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
+        BlocBuilder<PersonCubit, PersonState>(
+          buildWhen: (previous, current) => current is ChangeSelctedGender,
+          builder: (context, state) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    Radio<String>(
+                      value: Gender.male.displayName,
+                      groupValue: cubit.selectedGender,
+                      onChanged: (value) {
+                        cubit.changeSelctedGender(value!);
+                      },
+                    ),
+                    const SmallText(
+                      text: 'ذكر',
+                    )
+                  ],
+                ),
+                const SizedBox(width: 30),
+                Row(
+                  children: [
+                    Radio<String>(
+                      value: Gender.female.displayName,
+                      groupValue: cubit.selectedGender,
+                      onChanged: (value) {
+                        cubit.changeSelctedGender(value!);
+                      },
+                    ),
+                    const SmallText(text: 'انثى')
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSubmitButtons(BuildContext context, PersonCubit cubit) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SmallButton(
+          text: 'إلغاء',
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        const SizedBox(width: 10),
+        SmallButton(
+          text: widget.person == null ? 'إضافة' : 'تعديل',
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (widget.person == null) {
+                cubit.addNewPerson(
+                  firstName: firstNameController.text,
+                  secondName: secondNameController.text,
+                  thirdName: thirdNameController.text,
+                  lastName: lastNameController.text,
+                  phoneNumber: phoneNumberController.text,
+                  identityNumber: identityNumberController.text,
+                  email: emailController.text,
+                );
+              } else {
+                cubit.updatePerson(
+                  id: widget.person!.id,
+                  firstName: firstNameController.text,
+                  secondName: secondNameController.text,
+                  thirdName: thirdNameController.text,
+                  lastName: lastNameController.text,
+                  phoneNumber: phoneNumberController.text,
+                  identityNumber: identityNumberController.text,
+                  email: emailController.text,
+                );
+              }
+            }
+          },
+        ),
+      ],
     );
   }
 }

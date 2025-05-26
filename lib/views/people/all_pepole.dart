@@ -140,7 +140,8 @@ class _AllPeopleState extends State<AllPeople> {
           SmallButton(
             text: 'أضافة',
             onPressed: () {
-              Navigator.pushNamed(context, AppRoute.addNewPerson,
+              BlocProvider.of<PersonCubit>(context).person = null;
+              Navigator.pushNamed(context, AppRoute.addUpdatePerson,
                   arguments: BlocProvider.of<PersonCubit>(context));
             },
           ),
@@ -184,10 +185,9 @@ class _AllPeopleState extends State<AllPeople> {
               leading: const Icon(Icons.edit, color: Colors.blue),
               title: const Text('تعديل'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, AppRoute.addNewPerson,
+                Navigator.pushNamed(context, AppRoute.addUpdatePerson,
                     arguments: BlocProvider.of<PersonCubit>(passContext)
-                      ..setPerson(person));
+                      ..setPersonForUpdate(person));
               },
             ),
             ListTile(
@@ -203,7 +203,7 @@ class _AllPeopleState extends State<AllPeople> {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pushNamed(
-                            context, AppRoute.addNewPerson,
+                            context, AppRoute.addUpdatePerson,
                             arguments: PersonDto(
                                 personCubit:
                                     BlocProvider.of<PersonCubit>(context),

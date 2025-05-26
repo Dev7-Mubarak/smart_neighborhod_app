@@ -35,7 +35,7 @@ class PersonCubit extends Cubit<PersonState> {
   final int _pageSize = 10;
   List<Person> people = [];
 
-  void setPerson(Person person) {
+  void setPersonForUpdate(Person person) {
     this.person = person;
     selectedIdentityType = person.identityType;
     selectedBloodType = person.bloodType;
@@ -44,7 +44,6 @@ class PersonCubit extends Cubit<PersonState> {
     isCall = person.isCall;
     isWhatsapp = person.isWhatsapp;
     selectedGender = person.gender;
-    // profilePicture = person.image;
   }
 
   Future<void> loadNextPage({String? search}) async {
@@ -144,7 +143,7 @@ class PersonCubit extends Cubit<PersonState> {
   }
 
   Future<void> updatePerson({
-    required String id,
+    required int id,
     String? firstName,
     String? secondName,
     String? thirdName,
@@ -156,7 +155,7 @@ class PersonCubit extends Cubit<PersonState> {
     emit(PersonLoading());
     try {
       final response = await api.update(
-        ApiLink.updatePerson,
+        '${ApiLink.updatePerson}/$id',
         isFromData: true,
         data: {
           "FirstName": firstName,
@@ -167,7 +166,7 @@ class PersonCubit extends Cubit<PersonState> {
           "IsWhatsapp": isWhatsapp,
           "IsContactNumber": isCall,
           "Email": email,
-          "DateOfBirth": selectedDate?.toIso8601String(),
+          "DateOfBirth": DateTime(1990, 1, 1).toIso8601String(),
           "Gender": GenderExtension.fromDisplayName(selectedGender!)
               .toString()
               .split('.')
