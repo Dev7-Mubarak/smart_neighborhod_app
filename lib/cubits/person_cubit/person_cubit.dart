@@ -122,14 +122,16 @@ class PersonCubit extends Cubit<PersonState> {
           "OccupationStatus":
               selectedOccupationStatus?.toString().split('.').last,
           "Job": null,
-          if (profilePicture != null)
-            "Image": await MultipartFile.fromFile(profilePicture!.path,
-                filename: profilePicture!.name),
+          "Image": profilePicture != null
+              ? await MultipartFile.fromFile(profilePicture!.path,
+                  filename: profilePicture!.name)
+              : null
         },
       );
 
       if (response["isSuccess"]) {
         emit(PersonAddedSuccessfully(message: response["message"]));
+        _resetPeopleList();
         await getPeople();
       } else {
         emit(PersonFailure(errorMessage: response["message"]));
