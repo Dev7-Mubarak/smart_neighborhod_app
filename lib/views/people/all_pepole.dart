@@ -29,13 +29,23 @@ class _AllPeopleState extends State<AllPeople> {
     _personCubit = context.read<PersonCubit>()..getPeople();
     _searchingController = TextEditingController();
     _scrollController = ScrollController();
-    _scrollController.addListener(() {
+
+    _setListener();
+    super.initState();
+  }
+
+  /// Adds a listener to the [_scrollController] that triggers loading the next page of people
+  /// when the user scrolls within 200 pixels of the bottom of the scrollable area.
+  ///
+  /// When the scroll position reaches or exceeds the maximum scroll extent minus 200 pixels,
+  /// the [_personCubit.loadNextPage()] method is called to fetch more data.
+  void _setListener() {
+    return _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
         _personCubit.loadNextPage();
       }
     });
-    super.initState();
   }
 
   @override
@@ -72,6 +82,8 @@ class _AllPeopleState extends State<AllPeople> {
     );
   }
 
+  /// Builds the paginated, searchable people list.
+  /// Handles loading, error, and loaded states, and shows a skeleton loader on first fetch.
   Widget _peopleListView() {
     return Expanded(
       child: BlocBuilder<PersonCubit, PersonState>(

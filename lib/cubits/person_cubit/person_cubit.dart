@@ -35,6 +35,8 @@ class PersonCubit extends Cubit<PersonState> {
   final int _pageSize = 10;
   List<Person> people = [];
 
+  /// Sets the cubit fields for editing a person.
+  /// Copies all relevant fields from the given [person] to the cubit state.
   void setPersonForUpdate(Person person) {
     this.person = person;
     selectedIdentityType = person.identityType;
@@ -47,6 +49,8 @@ class PersonCubit extends Cubit<PersonState> {
     selectedGender = person.gender;
   }
 
+  /// Loads the next page of people if available.
+  /// Increments the page number and fetches more people if [_hasNextPage] is true.
   Future<void> loadNextPage({String? search}) async {
     if (!_hasNextPage) return;
     _pageNumber++;
