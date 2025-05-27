@@ -119,7 +119,7 @@ class _AllPeopleState extends State<AllPeople> {
                         ),
                   title: Text(person.fullName),
                   onLongPress: () {
-                    _showOptions(context, index, person);
+                    _showOptions(context, person);
                   },
                 );
               },
@@ -171,7 +171,7 @@ class _AllPeopleState extends State<AllPeople> {
     );
   }
 
-  void _showOptions(BuildContext passContext, int index, person) {
+  void _showOptions(BuildContext passContext, person) {
     showModalBottomSheet(
       context: passContext,
       shape: const RoundedRectangleBorder(
@@ -185,6 +185,7 @@ class _AllPeopleState extends State<AllPeople> {
               leading: const Icon(Icons.edit, color: Colors.blue),
               title: const Text('تعديل'),
               onTap: () {
+                Navigator.pop(context);
                 Navigator.pushNamed(context, AppRoute.addUpdatePerson,
                     arguments: BlocProvider.of<PersonCubit>(passContext)
                       ..setPersonForUpdate(person));

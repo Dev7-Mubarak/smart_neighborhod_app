@@ -43,6 +43,7 @@ class PersonCubit extends Cubit<PersonState> {
     selectedOccupationStatus = person.occupationStatus;
     isCall = person.isCall;
     isWhatsapp = person.isWhatsapp;
+    selectedDate = person.dateOfBirth;
     selectedGender = person.gender;
   }
 
@@ -167,7 +168,7 @@ class PersonCubit extends Cubit<PersonState> {
           "IsWhatsapp": isWhatsapp,
           "IsContactNumber": isCall,
           "Email": email,
-          "DateOfBirth": DateTime(1990, 1, 1).toIso8601String(),
+          "DateOfBirth": selectedDate?.toIso8601String(),
           "Gender": GenderExtension.fromDisplayName(selectedGender!)
               .toString()
               .split('.')
@@ -187,6 +188,7 @@ class PersonCubit extends Cubit<PersonState> {
 
       if (response["isSuccess"]) {
         emit(PersonUpdatedSuccessfully(message: response["message"]));
+        _resetPeopleList();
         await getPeople();
       } else {
         emit(PersonFailure(errorMessage: response["message"]));

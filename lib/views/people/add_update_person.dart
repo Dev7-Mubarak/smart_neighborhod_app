@@ -23,10 +23,10 @@ class AddUpdatePerson extends StatefulWidget {
   const AddUpdatePerson({super.key, this.person});
   final Person? person;
   @override
-  State<AddUpdatePerson> createState() => AAddUpdatePersonState();
+  State<AddUpdatePerson> createState() => AddUpdatePersonState();
 }
 
-class AAddUpdatePersonState extends State<AddUpdatePerson> {
+class AddUpdatePersonState extends State<AddUpdatePerson> {
   late final TextEditingController firstNameController;
   late final TextEditingController secondNameController;
   late final TextEditingController thirdNameController;
@@ -39,6 +39,7 @@ class AAddUpdatePersonState extends State<AddUpdatePerson> {
 
   @override
   void initState() {
+    final cubit = context.read<PersonCubit>();
     firstNameController =
         TextEditingController(text: widget.person?.firstName ?? '');
     secondNameController =
@@ -49,9 +50,11 @@ class AAddUpdatePersonState extends State<AddUpdatePerson> {
         TextEditingController(text: widget.person?.lastName ?? '');
     identityNumberController =
         TextEditingController(text: widget.person?.identityNumber ?? '');
-    birthDateController = TextEditingController(
-        text: DateFormat('yyyy-MM-dd')
-            .format(widget.person?.dateOfBirth ?? DateTime(2000, 1, 1)));
+    final date = cubit.selectedDate ??
+        widget.person?.dateOfBirth ??
+        DateTime(2000, 1, 1);
+    birthDateController =
+        TextEditingController(text: DateFormat('yyyy-MM-dd').format(date));
     phoneNumberController =
         TextEditingController(text: widget.person?.phoneNumber ?? '');
     emailController = TextEditingController(text: widget.person?.email ?? '');
@@ -463,66 +466,73 @@ class AAddUpdatePersonState extends State<AddUpdatePerson> {
   }
 
   Widget _buildImagePicker(BuildContext context, PersonCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: () {
-            ImagePicker().pickImage(source: ImageSource.gallery).then((value) =>
-                context.read<PersonCubit>().uplodePorfilePicture(value!));
-          },
-          child: const Icon(
-            Icons.camera_alt_sharp,
-          ),
-        ),
-        //                       SmallButton(
-        //   text: 'إضافة صورة شخصية',
-        //   onPressed:
-        //   ImagePicker().pickImage(source: ImageSource.gallery)
-        //   .then((value) => cubit.uplodePorfilePicture(value)),
-        // ),
-        // const SizedBox(width: AppSize.spasingBetweenInputBloc),
-        Expanded(
-          child: BlocBuilder<PersonCubit, PersonState>(
-            buildWhen: (previous, current) => current is UplodePeofilePicture,
-            builder: (context, state) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black26, width: 1),
-                  borderRadius: BorderRadius.circular(8),
+    return Center(
+      child: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
                 ),
-                child: context.read<PersonCubit>().profilePicture != null
-                    ? CircleAvatar(
-                        backgroundImage:
-                            FileImage(File(cubit.profilePicture!.path)),
-                        radius: 40,
-                      )
-                    : (widget.person?.image != null &&
-                            widget.person!.image!.isNotEmpty
-                        ? CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(widget.person!.image!),
-                            radius: 40,
-                          )
-                        : const Icon(Icons.person,
-                            size: 60, color: Colors.grey)),
-                //         size: 60, color: Colors.grey),
-                // child: _pickedImage == null
-                //     ? const Icon(Icons.person,
-                //         size: 60, color: Colors.grey)
-                //     : ClipRRect(
-                //         borderRadius: BorderRadius.circular(8),
-                //         child: Image.file(
-                //           _pickedImage!,
-                //           fit: BoxFit.cover,
-                //         ),
-                //       ),
-              );
-            },
+              ],
+              border: Border.all(color: AppColor.primaryColor, width: 2),
+            ),
+            child: GestureDetector(
+              onTap: () async {
+                final picked =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (picked != null) {
+                  cubit.uplodePorfilePicture(picked);
+                }
+              },
+              child: BlocBuilder<PersonCubit, PersonState>(
+                buildWhen: (previous, current) =>
+                    current is UplodePeofilePicture,
+                builder: (context, state) {
+                  if (cubit.profilePicture != null) {
+                    return CircleAvatar(
+                      backgroundImage:
+                          FileImage(File(cubit.profilePicture!.path)),
+                      radius: 48,
+                    );
+                  } else if (widget.person?.image != null &&
+                      widget.person!.image!.isNotEmpty) {
+                    return CircleAvatar(
+                      backgroundImage: NetworkImage(widget.person!.image!),
+                      radius: 48,
+                    );
+                  } else {
+                    return CircleAvatar(
+                      radius: 48,
+                      backgroundColor: Colors.grey[200],
+                      child:
+                          Icon(Icons.person, size: 48, color: Colors.grey[600]),
+                    );
+                  }
+                },
+              ),
+            ),
           ),
-        ),
-      ],
+          Positioned(
+            bottom: 4,
+            right: 4,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColor.primaryColor,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child:
+                  const Icon(Icons.camera_alt, color: Colors.white, size: 24),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -609,6 +619,7 @@ class AAddUpdatePersonState extends State<AddUpdatePerson> {
                   identityNumber: identityNumberController.text,
                   email: emailController.text,
                 );
+                Navigator.pop(context);
               }
             }
           },
