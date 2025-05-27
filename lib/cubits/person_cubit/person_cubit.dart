@@ -54,8 +54,7 @@ class PersonCubit extends Cubit<PersonState> {
 
   Future<void> getPeople({String? search}) async {
     if (search != null) {
-      _pageNumber = 1;
-      people.clear();
+      _resetPeopleList();
     }
 
     emit(PersonLoading(isFirstFetch: _pageNumber == 1 && people.isEmpty));
@@ -206,6 +205,7 @@ class PersonCubit extends Cubit<PersonState> {
 
       if (response["isSuccess"]) {
         emit(PersonDeletedSuccessfully(message: response["message"]));
+        _resetPeopleList();
         await getPeople();
       } else {
         emit(PersonFailure(errorMessage: response["message"]));
@@ -215,6 +215,11 @@ class PersonCubit extends Cubit<PersonState> {
     } catch (e) {
       emit(PersonFailure(errorMessage: e.toString()));
     }
+  }
+
+  void _resetPeopleList() {
+    _pageNumber = 1;
+    people.clear();
   }
 
   void pickDate(BuildContext context) async {

@@ -202,18 +202,13 @@ class _AllPeopleState extends State<AllPeople> {
                     content: const Text('هل أنت متأكد أنك تريد حذف هذا الشخص؟'),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.pushNamed(
-                            context, AppRoute.addUpdatePerson,
-                            arguments: PersonDto(
-                                personCubit:
-                                    BlocProvider.of<PersonCubit>(context),
-                                person: person)),
+                        onPressed: () => Navigator.pop(context),
                         child: const Text('إلغاء'),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          BlocProvider.of<PersonCubit>(context)
+                          BlocProvider.of<PersonCubit>(passContext)
                               .deletePerson(person.id);
                         },
                         child: const Text('حذف',
