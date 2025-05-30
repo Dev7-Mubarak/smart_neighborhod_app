@@ -27,3 +27,14 @@ class BlockAddedSuccessfully extends BlockState {
   final String message;
   BlockAddedSuccessfully({required this.message});
 }
+class BlockDeletedSuccessfully extends BlockState {
+  final String message;
+  BlockDeletedSuccessfully({required this.message});
+}
+class BlockUpdatedSuccessfully extends BlockState {
+  final String message;
+  BlockUpdatedSuccessfully({required this.message});
+}
+
+class ChangeSelectedManager extends BlockState {}
+

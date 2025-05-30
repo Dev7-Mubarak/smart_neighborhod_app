@@ -18,7 +18,7 @@ part 'person_state.dart';
 class PersonCubit extends Cubit<PersonState> {
   PersonCubit({required this.api}) : super(PersonInitial());
   static PersonCubit get(context) => BlocProvider.of(context);
-
+  
   DioConsumer api;
   Person? person;
   XFile? profilePicture;
@@ -74,7 +74,7 @@ class PersonCubit extends Cubit<PersonState> {
       );
 
       _hasNextPage = response["data"]["hasNextPage"];
-
+      
       if (response["data"]["items"] == null) {
         throw Serverexception(
             errModel:

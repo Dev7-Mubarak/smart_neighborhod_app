@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
 import 'package:smart_neighborhod_app/models/Block.dart';
+import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
 
-import '../../components/residential_card.dart';
+import '../../components/constants/app_image.dart';
 import '../../components/searcharea.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
@@ -21,10 +22,12 @@ class ResidentialBlock extends StatefulWidget {
 class _ResidentialBlockState extends State<ResidentialBlock> {
   List<Block> residentialListSearch = [];
   List<Block> residentialList = [];
+  late BlockCubit _BlockCubit;
 
   @override
   void initState() {
     super.initState();
+    _BlockCubit = context.read<BlockCubit>()..getBlocks();
   }
 
   void updateSearchResults(List<Block> filteredList) {
@@ -58,7 +61,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     );
   }
 
-  Widget showLoadingIndicator(){
+  Widget showLoadingIndicator() {
     return const Center(child: CircularProgressIndicator());
   }
 
@@ -66,8 +69,89 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     return ListView.builder(
       itemCount: residentialListSearch.length,
       itemBuilder: (context, index) {
-        return BuildHousingUnitCard(block: residentialListSearch[index]);
+        return _buildHousingUnitCard(
+          block: residentialListSearch[index],
+          // تمرير الدالة _showOptions كـ onLongPressCallback
+          onLongPressCallback: (ctx, block) {
+            _showOptions(ctx, block);
+          },
+        );
       },
+    );
+  }
+  // الدالة التي تحل محل BuildHousingUnitCard Widget
+  Widget _buildHousingUnitCard({
+    required Block block,
+    required void Function(BuildContext context, Block block) onLongPressCallback,
+  }) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ResiddentialBlocksDetail(block: block)),
+      ),
+      onLongPress: () {
+        onLongPressCallback(context, block);
+      },
+      borderRadius: BorderRadius.circular(16), // نفس الانحناء للكرت
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16), // مسافة بين الكروت
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: AppColor.gray,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              // هنا تأكد أن AppImage.residentailimage ليس فارغًا أو null
+              // وإذا كان فارغًا/null، يمكنك عرض صورة بديلة أو معالجة ذلك.
+              // أضفت بعض المنطق الأساسي هنا.
+              child: AppImage.residentailimage.isNotEmpty
+                  ? Image.asset(
+                      AppImage.residentailimage,
+                      height: MediaQuery.of(context).size.width * 0.5,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                  : FadeInImage.assetNetwork(
+                      height: MediaQuery.of(context).size.width * 0.5,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      placeholder: AppImage.loadingimage, // تأكد من وجود هذه الصورة كأصل
+                      image: AppImage.residentailimage, // إذا كان لديك URL للصورة في البلوك، استخدمه
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(AppImage.residentailimage); // صورة في حالة فشل التحميل
+                      },
+                    ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    block.name,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "مدير المربع: ${block.managerName}",
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -83,22 +167,10 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                Navigator.pushNamed(context, AppRoute.addNewBlock);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => MultiBlocProvider(
-                  //       providers:[
-                  //         BlocProvider<PersonCubit>.value(
-                  //             value: context.read<PersonCubit>()),
-                  //         BlocProvider<BlockCubit>.value(
-                  //         value: context.read<BlockCubit>(),
-                  //         ),
-                  //       ],
-                  //       child: const AddNewBlock(),
-                  //     ),
-                  //   ),
-                  // );
+                     Navigator.pop(context);
+                Navigator.pushNamed(context, AppRoute.addNewBlock,
+                    arguments: BlocProvider.of<BlockCubit>(context)
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primaryColor,
@@ -127,6 +199,60 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showOptions(BuildContext passContext, bloc) {
+    showModalBottomSheet(
+      context: passContext,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit, color: Colors.blue),
+              title: const Text('تعديل'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, AppRoute.addNewBlock,
+                    arguments: BlocProvider.of<BlockCubit>(passContext)
+                      ..setBlockForUpdate(bloc));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete, color: Colors.red),
+              title: const Text('حذف'),
+              onTap: () async {
+                Navigator.pop(context);
+                await showDialog<bool>(
+                  context: passContext,
+                  builder: (context) => AlertDialog(
+                    title: const Text('تأكيد الحذف'),
+                    content: const Text('هل أنت متأكد أنك تريد حذف هذا الشخص؟'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('إلغاء'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _BlockCubit.deleteBlock(bloc.id);
+                        },
+                        child: const Text('حذف',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

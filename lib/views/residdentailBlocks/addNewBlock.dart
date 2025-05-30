@@ -6,7 +6,9 @@ import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/default_text_form_filed.dart';
 import 'package:smart_neighborhod_app/components/smallButton.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_neighborhod_app/models/Block.dart';
 
+import '../../components/custom_text_input_filed.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
 import '../../models/Person.dart';
@@ -14,25 +16,37 @@ import '../../models/Person.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class AddNewBlock extends StatefulWidget {
-  const AddNewBlock({super.key});
+  const AddNewBlock({super.key, this.block});
+  final Block? block;
 
   @override
   State<AddNewBlock> createState() => _AddNewBlockState();
 }
 
 class _AddNewBlockState extends State<AddNewBlock> {
-  final TextEditingController nameBlockController = TextEditingController();
+  late final TextEditingController nameBlockController;
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // int? _personId;
   Person? _selectedPerson;
+  late PersonCubit personCubit;
+  late BlockCubit blockCubit;
 
   @override
   void initState() {
-    super.initState();
-    context.read<PersonCubit>().getPeople();
+    personCubit = context.read<PersonCubit>()..getPeople();
+    blockCubit = context.read<BlockCubit>();
+    nameBlockController = TextEditingController(text: widget.block?.name ?? '');
+  }
+
+  @override
+  void dispose() {
+    nameBlockController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,9 +75,11 @@ class _AddNewBlockState extends State<AddNewBlock> {
           backgroundColor: AppColor.white,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: const Center(
+          title: Center(
             child: Text(
-              'إضافة مربع سكني جديد',
+              blockCubit.block == null
+                  ? 'إضافة مربع سكني جديد'
+                  : 'تعديل بيانات مربع سكني',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -87,12 +103,10 @@ class _AddNewBlockState extends State<AddNewBlock> {
                     text: 'اسم المربع السكني',
                   ),
                   const SizedBox(height: 18),
-                  DefaultTextFormFiled(
-                    bordercolor: AppColor.gray2,
-                    fillcolor: AppColor.white,
+                  CustomTextFormField(
+                    bachgroundColor: AppColor.white,
                     hintText: 'اسم المربع السكني',
                     controller: nameBlockController,
-                    isPassword: false,
                     keyboardType: TextInputType.name,
                     suffixIcon: null,
                     validator: (value) {
@@ -102,6 +116,21 @@ class _AddNewBlockState extends State<AddNewBlock> {
                       return null;
                     },
                   ),
+                  // DefaultTextFormFiled(
+                  //   bordercolor: AppColor.gray2,
+                  //   fillcolor: AppColor.white,
+                  //   hintText: 'اسم المربع السكني',
+                  //   controller: nameBlockController,
+                  //   isPassword: false,
+                  //   keyboardType: TextInputType.name,
+                  //   suffixIcon: null,
+                  //   validator: (value) {
+                  //     if (value == null || value.trim().isEmpty) {
+                  //       return 'الرجاء إدخال اسم المربع السكني';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   const SizedBox(height: 30),
                   const boldtext(
                     boldSize: .2,
@@ -120,6 +149,8 @@ class _AddNewBlockState extends State<AddNewBlock> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         BlocBuilder<PersonCubit, PersonState>(
+                          buildWhen: (previous, current) =>
+                              current is ChangeSelectedManager,
                           builder: (context, state) {
                             if (state is PersonLoading) {
                               return const Center(
@@ -130,12 +161,16 @@ class _AddNewBlockState extends State<AddNewBlock> {
                                 return const Center(
                                     child: Text('لا يوجد مديرين متاحين'));
                               }
-
-                              if (_selectedPerson == null &&
+                              if (blockCubit.selectedManager == null &&
                                   state.people.isNotEmpty) {
-                                _selectedPerson = state.people
-                                    .first; // يمكن تفعيل هذا إذا أردت تحديد أول عنصر تلقائياً
+                                blockCubit.changeSelectedManager(state.people
+                                    .first); // يمكن تفعيل هذا إذا أردت تحديد أول عنصر تلقائياً
                               }
+                              // if (_selectedPerson == null &&
+                              //     state.people.isNotEmpty) {
+                              //   _selectedPerson = state.people
+                              //       .first; // يمكن تفعيل هذا إذا أردت تحديد أول عنصر تلقائياً
+                              // }
 
                               return DropdownSearch<Person>(
                                 popupProps: PopupProps.menu(
@@ -166,9 +201,10 @@ class _AddNewBlockState extends State<AddNewBlock> {
                                 items: state.people,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
-                                  setState(() {
-                                    _selectedPerson = data;
-                                  });
+                                  blockCubit.changeSelectedManager(data);
+                                  // setState(() {
+                                  //   _selectedPerson = data;
+                                  // });
                                 },
                                 selectedItem: _selectedPerson,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
@@ -233,12 +269,9 @@ class _AddNewBlockState extends State<AddNewBlock> {
                         ),
                         const SizedBox(height: 20),
                         buildLabel('البريد الإلكتروني للمستخدم'),
-                        DefaultTextFormFiled(
+                        CustomTextFormField(
                           hintText: 'البريد الإلكتروني',
-                          bordercolor: AppColor.gray2,
-                          fillcolor: AppColor.white,
                           controller: usernameController,
-                          isPassword: false,
                           suffixIcon: null,
                           keyboardType: TextInputType.name,
                           validator: (value) {
@@ -260,12 +293,9 @@ class _AddNewBlockState extends State<AddNewBlock> {
                         ),
                         const SizedBox(height: 20),
                         buildLabel('كلمة المرور'),
-                        DefaultTextFormFiled(
+                        CustomTextFormField(
                           hintText: 'كلمة المرور',
-                          bordercolor: AppColor.gray2,
-                          fillcolor: AppColor.white,
                           controller: passwordController,
-                          isPassword: true,
                           suffixIcon: null,
                           keyboardType: TextInputType.text,
                           validator: (value) {
@@ -293,16 +323,24 @@ class _AddNewBlockState extends State<AddNewBlock> {
                           onPressed: () => Navigator.pop(context)),
                       const SizedBox(width: 10),
                       SmallButton(
-                        text: 'إضافة',
+                        text: widget.block == null ? 'إضافة' : 'تعديل',
                         onPressed: () {
-                          // التحقق من صحة الفورم قبل الإرسال
                           if (_formKey.currentState!.validate()) {
-                            context.read<BlockCubit>().addNewBlock(
-                                  nameBlockController.text,
-                                  _selectedPerson?.id,
-                                  usernameController.text,
-                                  passwordController.text,
-                                );
+                            if (widget.block == null) {
+                              blockCubit.addNewBlock(
+                                nameBlockController.text,
+                                usernameController.text,
+                                passwordController.text,
+                              );
+                            } else {
+                              blockCubit.updateBlock(
+                                email: usernameController.text,
+                                id: widget.block!.id,
+                                name: nameBlockController.text,
+                                password: passwordController.text,
+                              );
+                              Navigator.pop(context);
+                            }
                           }
                         },
                       ),

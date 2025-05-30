@@ -35,8 +35,7 @@ class AppRouter {
             providers: [
               BlocProvider(create: (_) => MainHomeCubitCubit()),
               BlocProvider(
-                  create: (_) =>
-                      BlockCubit(api: DioConsumer(dio: Dio()))..getBlocks()),
+                  create: (_) => BlockCubit(api: DioConsumer(dio: Dio()))),
               BlocProvider(
                   create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())))
             ],
@@ -57,10 +56,11 @@ class AppRouter {
         final personCubit = settings.arguments as PersonCubit;
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-              value: personCubit,
-              child: AddUpdatePerson(
-                person: personCubit.person,
-              )),
+            value: personCubit,
+            child: AddUpdatePerson(
+              person: personCubit.person,
+            ),
+          ),
         );
 
       case AppRoute.login:
@@ -95,16 +95,17 @@ class AppRouter {
           fullscreenDialog: false,
         );
       case AppRoute.addNewBlock:
+         final blockCubit = settings.arguments as BlockCubit;
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider<PersonCubit>(
                 create: (context) => PersonCubit(
-                    api: DioConsumer(dio: Dio())), // قم بتهيئة PersonCubit هنا
+                    api: DioConsumer(dio: Dio())), 
               ),
-              BlocProvider<BlockCubit>(
-                create: (context) => BlockCubit(api: DioConsumer(dio: Dio())),
-              ),
+              BlocProvider.value(
+            value: blockCubit,
+            child: AddNewBlock(block:blockCubit.block),),
             ],
             child: const AddNewBlock(),
           ),

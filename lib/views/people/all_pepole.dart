@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
@@ -200,7 +199,9 @@ class _AllPeopleState extends State<AllPeople> {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, AppRoute.addUpdatePerson,
                     arguments: BlocProvider.of<PersonCubit>(passContext)
-                      ..setPersonForUpdate(person));
+                      ..setPersonForUpdate(person
+                    ),
+                    );
               },
             ),
             ListTile(
