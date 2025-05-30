@@ -21,7 +21,7 @@ class BlockCubit extends Cubit<BlockState> {
       if (response["data"] == null) {
         throw Serverexception(
             errModel:
-                ErrorModel(status: 400, errorMessage: "No data received"));
+                ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
       }
 
       List<dynamic> blocks = response["data"];
@@ -55,8 +55,9 @@ class BlockCubit extends Cubit<BlockState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            status: response["statusCode"] ?? 400,
+            statusCode: response["statusCode"] ?? '400',
             errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"]??false,
           ),
         );
       }
@@ -67,3 +68,56 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 }
+/////////////////////////////////////////////////////////////////////////////////
+
+// class BlockCubit extends Cubit<BlockState> {
+//   BlockCubit({required this.api}) : super(ResiddentialBlocksInitial());
+  
+//   DioConsumer api;
+//   List<Block> allBlocks = [];
+//   int pagenum = 1;
+//   bool hasmore = true;
+//   bool isloading = false;
+
+//   Future<void> getResidentialBlocks() async {
+//     if (isloading || !hasmore) return;
+//     isloading = true;
+//     const limit = 10;
+    
+//     emit(ResiddentialBlocksLoading());
+    
+//     try {
+//       final response = await api.get(ApiLink.getAllBlockes, queryparameters: {
+//         'pageNumber': pagenum,
+//         'pageSize': limit,
+//       }).timeout(const Duration(seconds: 15));
+      
+//       if (response is Map<String, dynamic> && response['items'] is List) {
+//         final newBlocks = (response["items"] as List)
+//             .map((block) => Block.fromJson(block))
+//             .toList();
+            
+//         allBlocks.addAll(newBlocks);
+//         pagenum++;
+//         hasmore = newBlocks.length >= limit;
+        
+//         emit(ResiddentialBlocksSuccess(allBlocks));
+//       }
+//     } on TimeoutException catch (e) {
+//       emit(ResiddentialBlocksFailure("Timeout: ${e.toString()}"));
+//     } on Serverexception catch (e) {
+//       emit(ResiddentialBlocksFailure(e.errModel.message));
+//     } catch (e) {
+//       emit(ResiddentialBlocksFailure(e.toString()));
+//     } finally {
+//       isloading = false;
+//     }
+//   }
+
+//   Future<void> refresh() async {
+//     pagenum = 1;
+//     hasmore = true;
+//     allBlocks.clear();
+//     await getResidentialBlocks();
+//   }
+// }

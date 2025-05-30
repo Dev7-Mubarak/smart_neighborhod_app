@@ -20,8 +20,7 @@ class FamilyTypeCubit extends Cubit<FamilyTypeState> {
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel:
-                ErrorModel(status: 400, errorMessage: "No data received"));
+       errModel:ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
       }
 
       List<dynamic> familyTypes = response["data"];

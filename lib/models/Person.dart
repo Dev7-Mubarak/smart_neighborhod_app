@@ -66,8 +66,8 @@ class Person {
       identityType: _identityTypeFromString(json['identityType']),
       occupationStatus: _occupationStatusFromString(json['occupationStatus']),
       maritalStatus: _maritalStatusFromString(json['maritalStatus']),
-      isCall: json['isCall'],
-      isWhatsapp: json['isWhatsapp'],
+      isCall: json['isCall']as bool? ?? false,
+      isWhatsapp: json['isWhatsapp']as bool? ?? false, 
       job: json['job'],
     );
   }

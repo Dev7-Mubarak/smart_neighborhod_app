@@ -21,7 +21,7 @@ class FamilyCategoryCubit extends Cubit<FamilyCategoryState> {
       if (response["data"] == null) {
         throw Serverexception(
             errModel:
-                ErrorModel(status: 400, errorMessage: "No data received"));
+                   ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
       }
 
       List<dynamic> familyCategories = response["data"];

@@ -23,7 +23,7 @@ class MmainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainHomeCubitCubit, MainHomeState>(
-      builder: (context, state) {
+      builder: (context, state){
         return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColor.white,

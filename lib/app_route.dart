@@ -18,6 +18,9 @@ import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_counc
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_councils.dart';
 import 'package:smart_neighborhod_app/views/residdentailBlocks/addNewBlock.dart';
 import 'components/constants/app_route.dart';
+import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
+import 'cubits/family_cubit/family_cubit.dart';
+import 'cubits/mainHome_cubit/main_home_cubit.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -27,7 +30,20 @@ class AppRouter {
           builder: (_) => const Onboarding(),
         );
       case AppRoute.mainHome:
-        return MaterialPageRoute(builder: (_) => const MainHome());
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => MainHomeCubitCubit()),
+              BlocProvider(
+                  create: (_) =>
+                      BlockCubit(api: DioConsumer(dio: Dio()))..getBlocks()),
+              BlocProvider(
+                  create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())))
+            ],
+            child: const MainHome(),
+          ),
+        );
+      // return MaterialPageRoute(builder: (_) => const MainHome());
 
       case AppRoute.allPeople:
         return MaterialPageRoute(
@@ -80,9 +96,48 @@ class AppRouter {
         );
       case AppRoute.addNewBlock:
         return MaterialPageRoute(
-          builder: (_) => const AddNewBlock(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(
+                    api: DioConsumer(dio: Dio())), // قم بتهيئة PersonCubit هنا
+              ),
+              BlocProvider<BlockCubit>(
+                create: (context) => BlockCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: const AddNewBlock(),
+          ),
           fullscreenDialog: false,
         );
+      // case AppRoute.addNewBlock:
+      //   return MaterialPageRoute(
+      //     builder: (context) => MultiBlocProvider(
+      //       providers: [
+      //         BlocProvider<PersonCubit>.value(
+      //             value: context.read<PersonCubit>()),
+      //         BlocProvider<BlockCubit>.value(
+      //           value: context.read<BlockCubit>(),
+      //         ),
+      //       ],
+      //       child: const AddNewBlock(),
+      //     ),
+      //     fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
+      //   );
+      //  return MaterialPageRoute(
+      //   builder: (_) =>
+      //   BlocProvider(
+      //     create: (BuildContext contxt) =>
+      //         BlockCubit(api: DioConsumer(dio: Dio())),
+      //     child: AddNewBlock(),
+      //   ),
+      //   fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
+      // );
+      /////////////////////////////////////////////////////////////////
+      // return MaterialPageRoute(
+      //   builder: (_) => const AddNewBlock(),
+      //   fullscreenDialog: false,
+      // );
       case AppRoute.familyDetiles:
         return MaterialPageRoute(
           builder: (_) => const FamilyDetiles(familyId: 1044),
