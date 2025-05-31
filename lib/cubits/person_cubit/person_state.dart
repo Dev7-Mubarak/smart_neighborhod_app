@@ -11,6 +11,7 @@ class PersonLoaded extends PersonState {
   PersonLoaded({
     required this.people,
   });
+  
 }
 
 class PersonLoading extends PersonState {

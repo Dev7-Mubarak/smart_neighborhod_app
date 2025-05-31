@@ -6,10 +6,12 @@ import 'constants/app_image.dart';
 
 class BuildHousingUnitCard extends StatelessWidget {
   final Block block;
+  final void Function(BuildContext context, Block block) onLongPressCallback;
 
   const BuildHousingUnitCard({
     super.key,
     required this.block,
+    required this.onLongPressCallback, 
   });
 
   @override
@@ -20,6 +22,9 @@ class BuildHousingUnitCard extends StatelessWidget {
         MaterialPageRoute(
             builder: (context) => ResiddentialBlocksDetail(block: block)),
       ),
+      onLongPress: () {
+        onLongPressCallback(context, block);
+      },
       borderRadius: BorderRadius.circular(16), // نفس الانحناء للكرت
       child: Container(
         margin: const EdgeInsets.only(bottom: 16), // مسافة بين الكروت

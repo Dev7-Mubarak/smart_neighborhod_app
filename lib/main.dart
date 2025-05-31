@@ -25,24 +25,33 @@ class SmartNeighbourhood extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => MainHomeCubitCubit()),
-        BlocProvider(
-            create: (_) =>
-                BlockCubit(api: DioConsumer(dio: Dio()))..getBlocks()),
-        BlocProvider(create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())))
-      ],
-      child: MaterialApp(
+      return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: AppColor.white,
           fontFamily: 'Tajawal-Regular',
         ),
         onGenerateRoute: appRouter.generateRoute,
-        initialRoute: AppRoute.allPeople,
-      ),
-    );
+        initialRoute: AppRoute.onBoarding,
+      );
+    // return MultiBlocProvider(
+    //   providers: [
+    //     BlocProvider(create: (_) => MainHomeCubitCubit()),
+    //     BlocProvider(
+    //         create: (_) =>
+    //             BlockCubit(api: DioConsumer(dio: Dio()))..getBlocks()),
+    //     BlocProvider(create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())))
+    //   ],
+    //   child: MaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     theme: ThemeData(
+    //       scaffoldBackgroundColor: AppColor.white,
+    //       fontFamily: 'Tajawal-Regular',
+    //     ),
+    //     onGenerateRoute: appRouter.generateRoute,
+    //     initialRoute: AppRoute.onBoarding,
+    //   ),
+    // );
   }
 }
 

@@ -18,7 +18,7 @@ part 'person_state.dart';
 class PersonCubit extends Cubit<PersonState> {
   PersonCubit({required this.api}) : super(PersonInitial());
   static PersonCubit get(context) => BlocProvider.of(context);
-
+  
   DioConsumer api;
   Person? person;
   XFile? profilePicture;
@@ -74,11 +74,11 @@ class PersonCubit extends Cubit<PersonState> {
       );
 
       _hasNextPage = response["data"]["hasNextPage"];
-
+      
       if (response["data"]["items"] == null) {
         throw Serverexception(
             errModel:
-                ErrorModel(status: 400, errorMessage: "No data received"));
+                   ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
       }
 
       List<dynamic> paganatedPeople = response["data"]["items"];
