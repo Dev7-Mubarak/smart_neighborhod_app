@@ -153,7 +153,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'مدير المربع:  ${widget.block.managerName}',
+                      'مدير المربع:  ${widget.block.fullName}',
                       style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,

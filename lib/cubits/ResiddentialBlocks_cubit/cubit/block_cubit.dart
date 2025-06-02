@@ -15,10 +15,10 @@ class BlockCubit extends Cubit<BlockState> {
   Block? block;
   Person? selectedManager;
 
-
   void setBlockForUpdate(Block block) {
     this.block = block;
   }
+
   void changeSelectedManager(Person? selectedManager) {
     this.selectedManager = selectedManager;
     emit(ChangeSelectedManager());
@@ -49,8 +49,7 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-  Future<void> addNewBlock(
-      String name, String email, String password) async {
+  Future<void> addNewBlock(String name, String email, String password) async {
     emit(BlocksLoading());
     try {
       final response = await api.post(
@@ -84,15 +83,15 @@ class BlockCubit extends Cubit<BlockState> {
   }
 
   Future<void> updateBlock({
-    required int id, 
+    required int id,
     required String name,
     required String email,
     required String password,
   }) async {
     emit(BlocksLoading());
     try {
-      final response = await api.update( 
-        '${ApiLink.updateBlocke}/${id}', 
+      final response = await api.update(
+        '${ApiLink.updateBlocke}/${id}',
         data: {
           'name': name,
           'personId': selectedManager?.id,
@@ -101,14 +100,15 @@ class BlockCubit extends Cubit<BlockState> {
         },
       );
       if (response["isSuccess"]) {
-        emit(BlockUpdatedSuccessfully( 
+        emit(BlockUpdatedSuccessfully(
             message: response["message"] ?? "تم التحديث بنجاح"));
-        await getBlocks(); 
+        await getBlocks();
       } else {
-        final String errorMessage = response["message"] ?? "حدث خطأ غير معروف أثناء تحديث البلوك";
+        final String errorMessage =
+            response["message"] ?? "حدث خطأ غير معروف أثناء تحديث البلوك";
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400', 
+            statusCode: response["statusCode"]?.toString() ?? '400',
             errorMessage: errorMessage,
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -121,7 +121,7 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-   Future<void> deleteBlock(int id) async {
+  Future<void> deleteBlock(int id) async {
     emit(BlocksLoading());
     try {
       final response = await api.delete(
@@ -134,7 +134,7 @@ class BlockCubit extends Cubit<BlockState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400', 
+            statusCode: response["statusCode"]?.toString() ?? '400',
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -147,56 +147,3 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 }
-/////////////////////////////////////////////////////////////////////////////////
-
-// class BlockCubit extends Cubit<BlockState> {
-//   BlockCubit({required this.api}) : super(ResiddentialBlocksInitial());
-  
-//   DioConsumer api;
-//   List<Block> allBlocks = [];
-//   int pagenum = 1;
-//   bool hasmore = true;
-//   bool isloading = false;
-
-//   Future<void> getResidentialBlocks() async {
-//     if (isloading || !hasmore) return;
-//     isloading = true;
-//     const limit = 10;
-    
-//     emit(ResiddentialBlocksLoading());
-    
-//     try {
-//       final response = await api.get(ApiLink.getAllBlockes, queryparameters: {
-//         'pageNumber': pagenum,
-//         'pageSize': limit,
-//       }).timeout(const Duration(seconds: 15));
-      
-//       if (response is Map<String, dynamic> && response['items'] is List) {
-//         final newBlocks = (response["items"] as List)
-//             .map((block) => Block.fromJson(block))
-//             .toList();
-            
-//         allBlocks.addAll(newBlocks);
-//         pagenum++;
-//         hasmore = newBlocks.length >= limit;
-        
-//         emit(ResiddentialBlocksSuccess(allBlocks));
-//       }
-//     } on TimeoutException catch (e) {
-//       emit(ResiddentialBlocksFailure("Timeout: ${e.toString()}"));
-//     } on Serverexception catch (e) {
-//       emit(ResiddentialBlocksFailure(e.errModel.message));
-//     } catch (e) {
-//       emit(ResiddentialBlocksFailure(e.toString()));
-//     } finally {
-//       isloading = false;
-//     }
-//   }
-
-//   Future<void> refresh() async {
-//     pagenum = 1;
-//     hasmore = true;
-//     allBlocks.clear();
-//     await getResidentialBlocks();
-//   }
-// }

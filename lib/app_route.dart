@@ -95,17 +95,17 @@ class AppRouter {
           fullscreenDialog: false,
         );
       case AppRoute.addNewBlock:
-         final blockCubit = settings.arguments as BlockCubit;
+        final blockCubit = settings.arguments as BlockCubit;
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider<PersonCubit>(
-                create: (context) => PersonCubit(
-                    api: DioConsumer(dio: Dio())), 
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
               ),
               BlocProvider.value(
-            value: blockCubit,
-            child: AddNewBlock(block:blockCubit.block),),
+                value: blockCubit,
+                child: AddNewBlock(block: blockCubit.block),
+              ),
             ],
             child: const AddNewBlock(),
           ),
@@ -149,11 +149,6 @@ class AppRouter {
       //     builder: (_) => AddNewFamily(),
       //     fullscreenDialog: false,
       //   );
-      case AppRoute.addUpdatePerson:
-        return MaterialPageRoute(
-          builder: (_) => const AddUpdatePerson(),
-          fullscreenDialog: false,
-        );
       // case AppRoute.nnouncement:
       // return MaterialPageRoute(
       //   builder: (_) => announcement(),

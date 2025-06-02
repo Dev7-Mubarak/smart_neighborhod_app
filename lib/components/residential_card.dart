@@ -11,7 +11,7 @@ class BuildHousingUnitCard extends StatelessWidget {
   const BuildHousingUnitCard({
     super.key,
     required this.block,
-    required this.onLongPressCallback, 
+    required this.onLongPressCallback,
   });
 
   @override
@@ -65,7 +65,7 @@ class BuildHousingUnitCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "مدير المربع: ${block.managerName}",
+                    "مدير المربع: ${block.fullName}",
                     style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ],

@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/NavigationBar.dart';
 import 'package:smart_neighborhod_app/components/boldText.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/default_text_form_filed.dart';
+import 'package:smart_neighborhod_app/components/constants/app_size.dart';
 import 'package:smart_neighborhod_app/components/smallButton.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_neighborhod_app/models/Block.dart';
 
+import '../../components/constants/small_text.dart';
 import '../../components/custom_text_input_filed.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
@@ -36,6 +37,7 @@ class _AddNewBlockState extends State<AddNewBlock> {
 
   @override
   void initState() {
+    super.initState();
     personCubit = context.read<PersonCubit>()..getPeople();
     blockCubit = context.read<BlockCubit>();
     nameBlockController = TextEditingController(text: widget.block?.name ?? '');
@@ -80,7 +82,7 @@ class _AddNewBlockState extends State<AddNewBlock> {
               blockCubit.block == null
                   ? 'إضافة مربع سكني جديد'
                   : 'تعديل بيانات مربع سكني',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 22),
@@ -96,16 +98,12 @@ class _AddNewBlockState extends State<AddNewBlock> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(height: 20),
-                  const boldtext(
-                    boldSize: .2,
-                    fontcolor: Colors.black54,
-                    fontsize: 18,
+                  const SmallText(
                     text: 'اسم المربع السكني',
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: AppSize.spasingBetweenInputBloc),
                   CustomTextFormField(
                     bachgroundColor: AppColor.white,
-                    hintText: 'اسم المربع السكني',
                     controller: nameBlockController,
                     keyboardType: TextInputType.name,
                     suffixIcon: null,
@@ -116,21 +114,6 @@ class _AddNewBlockState extends State<AddNewBlock> {
                       return null;
                     },
                   ),
-                  // DefaultTextFormFiled(
-                  //   bordercolor: AppColor.gray2,
-                  //   fillcolor: AppColor.white,
-                  //   hintText: 'اسم المربع السكني',
-                  //   controller: nameBlockController,
-                  //   isPassword: false,
-                  //   keyboardType: TextInputType.name,
-                  //   suffixIcon: null,
-                  //   validator: (value) {
-                  //     if (value == null || value.trim().isEmpty) {
-                  //       return 'الرجاء إدخال اسم المربع السكني';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
                   const SizedBox(height: 30),
                   const boldtext(
                     boldSize: .2,
@@ -149,8 +132,6 @@ class _AddNewBlockState extends State<AddNewBlock> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         BlocBuilder<PersonCubit, PersonState>(
-                          buildWhen: (previous, current) =>
-                              current is ChangeSelectedManager,
                           builder: (context, state) {
                             if (state is PersonLoading) {
                               return const Center(
@@ -202,9 +183,6 @@ class _AddNewBlockState extends State<AddNewBlock> {
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
                                   blockCubit.changeSelectedManager(data);
-                                  // setState(() {
-                                  //   _selectedPerson = data;
-                                  // });
                                 },
                                 selectedItem: _selectedPerson,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
@@ -214,7 +192,7 @@ class _AddNewBlockState extends State<AddNewBlock> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 12, vertical: 8),
                                   ),
                                 ),
@@ -226,84 +204,33 @@ class _AddNewBlockState extends State<AddNewBlock> {
                                 },
                               );
                             }
-                            //   if (state is PersonLoaded && state.people.isEmpty) {
-                            //     return const Center(
-                            //         child: Text('لا يوجد مديرين'));
-                            //   }
 
-                            //   if (state is PersonFailure) {
-                            //     return Center(child: Text(state.errorMessage));
-                            //   }
-
-                            //   if (_personId == null && state is PersonLoaded) {
-                            //     _personId = state.people.first.id;
-                            //   }
-
-                            //   if (state is PersonLoaded) {
-                            //     return DropdownButtonFormField<int>(
-                            //       value: _personId,
-                            //       decoration: const InputDecoration(
-                            //         labelText: 'Manager',
-                            //         border: OutlineInputBorder(),
-                            //       ),
-                            //       items: state.people.map((person) {
-                            //         return DropdownMenuItem(
-                            //           value: person.id,
-                            //           child: Text(person.fullName),
-                            //         );
-                            //       }).toList(),
-                            //       onChanged: (value) {
-                            //         if (value != null) {
-                            //           setState(() {
-                            //             _personId = value;
-                            //           });
-                            //         }
-                            //       },
-                            //     );
-                            //   }
-
-                            //   return Container();
-                            // },
                             return Container();
                           },
                         ),
                         const SizedBox(height: 20),
-                        buildLabel('البريد الإلكتروني للمستخدم'),
+                        const SmallText(text: 'اسم المستخدم'),
                         CustomTextFormField(
-                          hintText: 'البريد الإلكتروني',
                           controller: usernameController,
                           suffixIcon: null,
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'الرجاء إدخال البريد الإلكتروني';
-                            }
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                .hasMatch(value)) {
-                              return 'الرجاء إدخال بريد إلكتروني صالح';
+                              return 'الرجاء إدخال اسم المستخدم';
                             }
                             return null;
                           },
-                          // validator: (value) {
-                          //   if (value == null || value.trim().isEmpty) {
-                          //     return 'الرجاء إدخال اسم المستخدم';
-                          //   }
-                          //   return null;
-                          // },
                         ),
                         const SizedBox(height: 20),
-                        buildLabel('كلمة المرور'),
+                        const SmallText(text: 'كلمة المرور'),
                         CustomTextFormField(
-                          hintText: 'كلمة المرور',
                           controller: passwordController,
                           suffixIcon: null,
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value == null || value.length < 8) {
-                              // غير من 6 إلى 8
                               return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
                             }
-                            // إضافة تحقق من الأحرف الكبيرة والأرقام إن لزم
                             if (!RegExp(r'^(?=.*[A-Z])(?=.*[0-9])')
                                 .hasMatch(value)) {
                               return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
@@ -353,13 +280,6 @@ class _AddNewBlockState extends State<AddNewBlock> {
         ),
         bottomNavigationBar: const navigationBar(),
       ),
-    );
-  }
-
-  Widget buildLabel(String text) {
-    return Text(
-      text,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
     );
   }
 }
