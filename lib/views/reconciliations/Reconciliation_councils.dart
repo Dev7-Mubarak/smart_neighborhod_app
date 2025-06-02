@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/smallButton.dart';
 
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/boldText.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/searcharea.dart';
@@ -278,7 +278,7 @@ class _ReconciliationCouncilsScreenState
           ),
         ),
       ),
-      bottomNavigationBar: const navigationBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

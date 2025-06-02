@@ -33,7 +33,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => MainHomeCubitCubit()),
+              BlocProvider(create: (_) => MainHomeCubit()),
               BlocProvider(
                   create: (_) => BlockCubit(api: DioConsumer(dio: Dio()))),
               BlocProvider(

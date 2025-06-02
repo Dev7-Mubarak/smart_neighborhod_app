@@ -11,7 +11,7 @@ import 'package:smart_neighborhod_app/models/enums/marital_status.dart';
 import 'package:smart_neighborhod_app/models/enums/occupation_status.dart';
 import 'package:intl/intl.dart';
 import '../../components/CustomDropdown.dart';
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/constants/small_text.dart';
 import '../../components/custom_text_input_filed.dart';
@@ -459,7 +459,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
             ),
           ),
         ),
-        bottomNavigationBar: const navigationBar(),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

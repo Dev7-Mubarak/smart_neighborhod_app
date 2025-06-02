@@ -17,7 +17,7 @@ import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_neighborhod_app/models/Block.dart';
 import 'package:smart_neighborhod_app/models/family.dart';
 
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/subname.dart';
 import '../../cubits/family_cubit/family_state.dart';
 
@@ -802,7 +802,7 @@ class _AddNewFamilyState extends State<AddNewFamily> {
             ],
           ),
         ),
-        bottomNavigationBar: const navigationBar(),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

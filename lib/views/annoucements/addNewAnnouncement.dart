@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:smart_neighborhod_app/components/constants/app_image.dart';
 
 import '../../components/CustomDropdown.dart';
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/default_text_form_filed.dart';
 import '../../components/smallButton.dart';
@@ -387,7 +387,7 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
           ),
         ),
       ),
-      bottomNavigationBar: const navigationBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 

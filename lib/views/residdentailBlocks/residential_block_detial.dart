@@ -7,7 +7,7 @@ import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_neighborhod_app/models/family.dart';
 
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/searcharea.dart';
@@ -245,6 +245,6 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
             ),
           ),
         ),
-        bottomNavigationBar: const navigationBar());
+        bottomNavigationBar: const CustomNavigationBar());
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/smallButton.dart';
 
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../models/Announcemwnt.dart';
 
 class announcement extends StatefulWidget {
@@ -288,7 +288,7 @@ class _announcementState extends State<announcement> {
 //           ]
 //         ),
 //       ),
-      bottomNavigationBar: const navigationBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

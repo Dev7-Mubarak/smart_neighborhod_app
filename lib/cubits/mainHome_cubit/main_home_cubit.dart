@@ -1,28 +1,22 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
-
 import '../../components/constants/app_color.dart';
-
 part 'main_home_state.dart';
 
-class MainHomeCubitCubit extends Cubit<MainHomeState> {
-  MainHomeCubitCubit() : super(MainHomeInitial());
+class MainHomeCubit extends Cubit<MainHomeState> {
+  MainHomeCubit() : super(MainHomeInitial());
 
-  static MainHomeCubitCubit get(context) => BlocProvider.of(context);
+  static MainHomeCubit get(context) => BlocProvider.of(context);
 
   int selectedIndex = 1;
 
-  void changeselectedIndex(int num) {
+  void changeSelectedIndex(int num) {
     selectedIndex = num;
-    emit(MainHomeIndexChanged(selectedIndex)); // تحديث الحالة وإعادة البناء
+    emit(MainHomeIndexChanged(selectedIndex));
   }
 
   Color changebackgroundcolor(int num) {
-    return selectedIndex == num
-        ? AppColor.primaryColor
-        : AppColor.gray; // تغيير لون الخلفية بناءً على الزر النشط
+    return selectedIndex == num ? AppColor.primaryColor : AppColor.gray;
   }
 
   Color changeFontcolor(int num) {

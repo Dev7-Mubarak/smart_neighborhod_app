@@ -5,7 +5,7 @@ import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_neighborhod_app/models/Person.dart';
 import 'package:smart_neighborhod_app/models/family_member.dart';
 
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/searcharea.dart';
 import '../../components/smallButton.dart';
@@ -106,7 +106,7 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
           return Container();
         },
       ),
-      bottomNavigationBar: const navigationBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

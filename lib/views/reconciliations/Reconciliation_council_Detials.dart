@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/subname.dart';
@@ -167,7 +167,7 @@ class _ReconciliationcouncilDetialsState
           ),
         ),
       ),
-      bottomNavigationBar: navigationBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

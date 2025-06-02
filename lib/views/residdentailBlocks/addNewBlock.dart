@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/NavigationBar.dart';
+import 'package:smart_neighborhod_app/components/custom_navigation_bar.dart';
 import 'package:smart_neighborhod_app/components/boldText.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/constants/app_size.dart';
@@ -278,7 +278,7 @@ class _AddNewBlockState extends State<AddNewBlock> {
             ),
           ),
         ),
-        bottomNavigationBar: const navigationBar(),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

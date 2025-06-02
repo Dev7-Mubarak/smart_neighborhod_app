@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/views/residdentailBlocks/residdential_blocks.dart';
-import '../../components/NavigationBar.dart';
+import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../cubits/mainHome_cubit/main_home_cubit.dart';
 import 'home.dart';
@@ -22,27 +21,27 @@ class MmainHomeState extends State<MainHome> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainHomeCubitCubit, MainHomeState>(
-      builder: (context, state){
-        return Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColor.white,
-              elevation: 0, // إزالة الخط السفلي
-              bottomOpacity: 0,
-              title: const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: Center(
-                  child: Text(
-                    'الحارة الذكية',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22),
-                  ),
-                ),
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          bottomOpacity: 0,
+          title: const Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Center(
+              child: Text(
+                'الحارة الذكية',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22),
               ),
             ),
-            body: Center(
+          ),
+        ),
+        body: BlocBuilder<MainHomeCubit, MainHomeState>(
+          builder: (context, state) {
+            return Center(
               child: Column(
                 children: [
                   Padding(
@@ -58,24 +57,22 @@ class MmainHomeState extends State<MainHome> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                MainHomeCubitCubit.get(context)
-                                    .changeselectedIndex(0);
+                                MainHomeCubit.get(context)
+                                    .changeSelectedIndex(0);
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: MainHomeCubitCubit.get(context)
-                                        .changebackgroundcolor(
-                                            0) // تغيير لون الخلفية بناءً على الزر النشط
-                                    ),
+                                    color: MainHomeCubit.get(context)
+                                        .changebackgroundcolor(0)),
                                 child: Center(
                                   child: Text(
                                     'المربعات السكنية',
                                     style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color: MainHomeCubitCubit.get(context)
+                                        color: MainHomeCubit.get(context)
                                             .changeFontcolor(0)),
                                   ),
                                 ),
@@ -85,14 +82,14 @@ class MmainHomeState extends State<MainHome> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                MainHomeCubitCubit.get(context)
-                                    .changeselectedIndex(1);
+                                MainHomeCubit.get(context)
+                                    .changeSelectedIndex(1);
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: MainHomeCubitCubit.get(context)
+                                  color: MainHomeCubit.get(context)
                                       .changebackgroundcolor(1),
                                 ),
                                 child: Center(
@@ -101,7 +98,7 @@ class MmainHomeState extends State<MainHome> {
                                     style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color: MainHomeCubitCubit.get(context)
+                                        color: MainHomeCubit.get(context)
                                             .changeFontcolor(1)),
                                   ),
                                 ),
@@ -114,14 +111,14 @@ class MmainHomeState extends State<MainHome> {
                   ),
                   Expanded(
                     child: _widgetOptions.elementAt(
-                      MainHomeCubitCubit.get(context).selectedIndex,
+                      MainHomeCubit.get(context).selectedIndex,
                     ),
                   ),
                 ],
               ),
-            ),
-            bottomNavigationBar: const navigationBar());
-      },
-    );
+            );
+          },
+        ),
+        bottomNavigationBar: const CustomNavigationBar());
   }
 }
