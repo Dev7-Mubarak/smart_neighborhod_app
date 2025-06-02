@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
+import 'package:smart_neighborhod_app/components/searcable_text_input_filed.dart';
 import 'package:smart_neighborhod_app/models/Block.dart';
 import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
-
 import '../../components/constants/app_image.dart';
+import '../../components/constants/app_size.dart';
 import '../../components/searcharea.dart';
+import '../../components/smallButton.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
-import '../../cubits/person_cubit/person_cubit.dart';
-import 'addNewBlock.dart';
 
 class ResidentialBlock extends StatefulWidget {
   const ResidentialBlock({super.key});
@@ -22,12 +22,12 @@ class ResidentialBlock extends StatefulWidget {
 class _ResidentialBlockState extends State<ResidentialBlock> {
   List<Block> residentialListSearch = [];
   List<Block> residentialList = [];
-  late BlockCubit _BlockCubit;
+  late BlockCubit _blockCubit;
 
   @override
   void initState() {
     super.initState();
-    _BlockCubit = context.read<BlockCubit>()..getBlocks();
+    _blockCubit = context.read<BlockCubit>()..getBlocks();
   }
 
   void updateSearchResults(List<Block> filteredList) {
@@ -170,28 +170,23 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
+              SmallButton(
+                text: 'أضافة',
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, AppRoute.addNewBlock,
                       arguments: BlocProvider.of<BlockCubit>(context));
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.primaryColor,
-                  minimumSize: const Size(40, 40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: const Text(
-                  "إضافة",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
               ),
-              SearchWidget<Block>(
-                originalList: residentialList,
-                onSearch: updateSearchResults,
-                searchCriteria: (block) => block.name, // البحث بالاسم
+              const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+              Expanded(
+                child: SearchableTextFormField(
+                  hintText: 'ابحث عن المربع السكني',
+                  bachgroundColor: AppColor.gray2,
+                  prefixIcon: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.close)),
+                  suffixIcon: Icons.search,
+                ),
               ),
             ],
           ),
@@ -244,7 +239,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          _BlockCubit.deleteBlock(bloc.id);
+                          _blockCubit.deleteBlock(bloc.id);
                         },
                         child: const Text('حذف',
                             style: TextStyle(color: Colors.red)),
