@@ -65,7 +65,7 @@ class MmainHomeState extends State<MainHome> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: MainHomeCubit.get(context)
-                                        .changebackgroundcolor(0)),
+                                        .changeSelectedBackgroundColor(0)),
                                 child: Center(
                                   child: Text(
                                     'المربعات السكنية',
@@ -73,7 +73,7 @@ class MmainHomeState extends State<MainHome> {
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: MainHomeCubit.get(context)
-                                            .changeFontcolor(0)),
+                                            .changeSelectedFontColor(0)),
                                   ),
                                 ),
                               ),
@@ -90,7 +90,7 @@ class MmainHomeState extends State<MainHome> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: MainHomeCubit.get(context)
-                                      .changebackgroundcolor(1),
+                                      .changeSelectedBackgroundColor(1),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -99,7 +99,7 @@ class MmainHomeState extends State<MainHome> {
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: MainHomeCubit.get(context)
-                                            .changeFontcolor(1)),
+                                            .changeSelectedFontColor(1)),
                                   ),
                                 ),
                               ),

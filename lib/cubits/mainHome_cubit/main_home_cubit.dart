@@ -15,11 +15,11 @@ class MainHomeCubit extends Cubit<MainHomeState> {
     emit(MainHomeIndexChanged(selectedIndex));
   }
 
-  Color changebackgroundcolor(int num) {
+  Color changeSelectedBackgroundColor(int num) {
     return selectedIndex == num ? AppColor.primaryColor : AppColor.gray;
   }
 
-  Color changeFontcolor(int num) {
+  Color changeSelectedFontColor(int num) {
     return selectedIndex == num ? AppColor.white : Colors.black;
   }
 }
