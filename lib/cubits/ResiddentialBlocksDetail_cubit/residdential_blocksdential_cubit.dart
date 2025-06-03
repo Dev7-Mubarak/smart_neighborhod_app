@@ -23,7 +23,7 @@ class ResiddentialBlockDetailCubit extends Cubit<ResiddentialBlockDetailState> {
     try {
       final List<dynamic> response = await api
           .get(
-            ApiLink.getAllBlockFamilys("$IdBlock"),
+            ApiLink.getAllBlockes,
           )
           .timeout(const Duration(seconds: 15)); // إضافة مهلة لمدة 15 ثانية
       List<Family> AllBlockFamilys =

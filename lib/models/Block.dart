@@ -1,3 +1,5 @@
+import 'package:smart_neighborhod_app/models/Person.dart';
+
 class Block {
   late int id;
   late String name;

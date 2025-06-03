@@ -6,7 +6,7 @@ class AppRoute {
   static const String forgetapassword = '/forgetapassword';
   static const String checkEmail = '/checkEmail';
   static const String createNewPassword = '/createNewPassword';
-  static const String addNewBlock = '/AddNewBlock';
+  static const String addUpdateBlock = '/AddUpdateBlock';
   static const String familyDetiles = '/FamilyDetiles';
   static const String addNewFamily = '/AddNewFamily';
   static const String addUpdatePerson = '/AddUpdatePerson';

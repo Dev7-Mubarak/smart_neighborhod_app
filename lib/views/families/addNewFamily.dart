@@ -14,7 +14,7 @@ import 'package:smart_neighborhod_app/cubits/familyType/family_type_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/familyType/family_type_state.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_neighborhod_app/models/Block.dart';
+import 'package:smart_neighborhod_app/models/block.dart';
 import 'package:smart_neighborhod_app/models/family.dart';
 
 import '../../components/custom_navigation_bar.dart';

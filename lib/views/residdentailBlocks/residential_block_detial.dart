@@ -13,7 +13,7 @@ import '../../components/constants/app_image.dart';
 import '../../components/searcharea.dart';
 import '../../components/table.dart';
 import '../../core/API/dio_consumer.dart';
-import '../../models/Block.dart';
+import '../../models/block.dart';
 import '../families/addNewFamily.dart';
 
 class ResiddentialBlocksDetail extends StatefulWidget {

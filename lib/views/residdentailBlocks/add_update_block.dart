@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/custom_navigation_bar.dart';
-import 'package:smart_neighborhod_app/components/boldText.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/constants/app_size.dart';
 import 'package:smart_neighborhod_app/components/smallButton.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_neighborhod_app/models/Block.dart';
-
 import '../../components/constants/small_text.dart';
 import '../../components/custom_text_input_filed.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
@@ -16,17 +13,16 @@ import '../../models/Person.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
 
-class AddNewBlock extends StatefulWidget {
-  const AddNewBlock({super.key, this.block});
-  final Block? block;
+class AddUpdateBlock extends StatefulWidget {
+  const AddUpdateBlock({super.key});
 
   @override
-  State<AddNewBlock> createState() => _AddNewBlockState();
+  State<AddUpdateBlock> createState() => _AddUpdateBlockState();
 }
 
-class _AddNewBlockState extends State<AddNewBlock> {
-  late final TextEditingController nameBlockController;
-  final TextEditingController usernameController = TextEditingController();
+class _AddUpdateBlockState extends State<AddUpdateBlock> {
+  late final TextEditingController blockNameController;
+  late final TextEditingController usernameController;
   final TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -40,12 +36,17 @@ class _AddNewBlockState extends State<AddNewBlock> {
     super.initState();
     personCubit = context.read<PersonCubit>()..getPeople();
     blockCubit = context.read<BlockCubit>();
-    nameBlockController = TextEditingController(text: widget.block?.name ?? '');
+    blockNameController =
+        TextEditingController(text: blockCubit.block?.name ?? '');
+    usernameController =
+        TextEditingController(text: blockCubit.block?.userName ?? '');
+
+    _selectedPerson = blockCubit.selectedManager;
   }
 
   @override
   void dispose() {
-    nameBlockController.dispose();
+    blockNameController.dispose();
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -104,7 +105,7 @@ class _AddNewBlockState extends State<AddNewBlock> {
                   const SizedBox(height: AppSize.spasingBetweenInputBloc),
                   CustomTextFormField(
                     bachgroundColor: AppColor.white,
-                    controller: nameBlockController,
+                    controller: blockNameController,
                     keyboardType: TextInputType.name,
                     suffixIcon: null,
                     validator: (value) {
@@ -115,10 +116,7 @@ class _AddNewBlockState extends State<AddNewBlock> {
                     },
                   ),
                   const SizedBox(height: 30),
-                  const boldtext(
-                    boldSize: .2,
-                    fontcolor: Colors.black54,
-                    fontsize: 18,
+                  const SmallText(
                     text: 'مدير المربع السكني',
                   ),
                   const SizedBox(height: 18),
@@ -142,16 +140,11 @@ class _AddNewBlockState extends State<AddNewBlock> {
                                 return const Center(
                                     child: Text('لا يوجد مديرين متاحين'));
                               }
-                              if (blockCubit.selectedManager == null &&
+
+                              if (_selectedPerson == null &&
                                   state.people.isNotEmpty) {
-                                blockCubit.changeSelectedManager(state.people
-                                    .first); // يمكن تفعيل هذا إذا أردت تحديد أول عنصر تلقائياً
+                                _selectedPerson = state.people.first;
                               }
-                              // if (_selectedPerson == null &&
-                              //     state.people.isNotEmpty) {
-                              //   _selectedPerson = state.people
-                              //       .first; // يمكن تفعيل هذا إذا أردت تحديد أول عنصر تلقائياً
-                              // }
 
                               return DropdownSearch<Person>(
                                 popupProps: PopupProps.menu(
@@ -221,23 +214,25 @@ class _AddNewBlockState extends State<AddNewBlock> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
-                        const SmallText(text: 'كلمة المرور'),
-                        CustomTextFormField(
-                          controller: passwordController,
-                          suffixIcon: null,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.length < 8) {
-                              return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
-                            }
-                            if (!RegExp(r'^(?=.*[A-Z])(?=.*[0-9])')
-                                .hasMatch(value)) {
-                              return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
-                            }
-                            return null;
-                          },
-                        ),
+                        if (blockCubit.block == null) ...[
+                          const SizedBox(height: 20),
+                          const SmallText(text: 'كلمة المرور'),
+                          CustomTextFormField(
+                            controller: passwordController,
+                            suffixIcon: null,
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.length < 8) {
+                                return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
+                              }
+                              if (!RegExp(r'^(?=.*[A-Z])(?=.*[0-9])')
+                                  .hasMatch(value)) {
+                                return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
+                              }
+                              return null;
+                            },
+                          ),
+                        ]
                       ],
                     ),
                   ),
@@ -250,21 +245,20 @@ class _AddNewBlockState extends State<AddNewBlock> {
                           onPressed: () => Navigator.pop(context)),
                       const SizedBox(width: 10),
                       SmallButton(
-                        text: widget.block == null ? 'إضافة' : 'تعديل',
+                        text: blockCubit.block == null ? 'إضافة' : 'تعديل',
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            if (widget.block == null) {
+                            if (blockCubit.block == null) {
                               blockCubit.addNewBlock(
-                                nameBlockController.text,
+                                blockNameController.text,
                                 usernameController.text,
                                 passwordController.text,
                               );
                             } else {
                               blockCubit.updateBlock(
-                                email: usernameController.text,
-                                id: widget.block!.id,
-                                name: nameBlockController.text,
-                                password: passwordController.text,
+                                userName: usernameController.text,
+                                id: blockCubit.block!.id,
+                                name: blockNameController.text,
                               );
                               Navigator.pop(context);
                             }

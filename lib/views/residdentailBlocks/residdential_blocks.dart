@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
 import 'package:smart_neighborhod_app/components/searcable_text_input_filed.dart';
-import 'package:smart_neighborhod_app/models/Block.dart';
+import 'package:smart_neighborhod_app/models/block.dart';
 import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/constants/app_size.dart';
-import '../../components/searcharea.dart';
 import '../../components/smallButton.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
@@ -71,7 +70,6 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
       itemBuilder: (context, index) {
         return _buildHousingUnitCard(
           block: residentialListSearch[index],
-          // تمرير الدالة _showOptions كـ onLongPressCallback
           onLongPressCallback: (ctx, block) {
             _showOptions(ctx, block);
           },
@@ -95,9 +93,9 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
       onLongPress: () {
         onLongPressCallback(context, block);
       },
-      borderRadius: BorderRadius.circular(16), // نفس الانحناء للكرت
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16), // مسافة بين الكروت
+        margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: AppColor.gray,
@@ -110,9 +108,6 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              // هنا تأكد أن AppImage.residentailimage ليس فارغًا أو null
-              // وإذا كان فارغًا/null، يمكنك عرض صورة بديلة أو معالجة ذلك.
-              // أضفت بعض المنطق الأساسي هنا.
               child: AppImage.residentailimage.isNotEmpty
                   ? Image.asset(
                       AppImage.residentailimage,
@@ -124,13 +119,10 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                       height: MediaQuery.of(context).size.width * 0.5,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      placeholder:
-                          AppImage.loadingimage, // تأكد من وجود هذه الصورة كأصل
-                      image: AppImage
-                          .residentailimage, // إذا كان لديك URL للصورة في البلوك، استخدمه
+                      placeholder: AppImage.loadingimage,
+                      image: AppImage.residentailimage,
                       imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(AppImage
-                            .residentailimage); // صورة في حالة فشل التحميل
+                        return Image.asset(AppImage.residentailimage);
                       },
                     ),
             ),
@@ -173,9 +165,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               SmallButton(
                 text: 'أضافة',
                 onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, AppRoute.addNewBlock,
-                      arguments: BlocProvider.of<BlockCubit>(context));
+                  Navigator.pushNamed(context, AppRoute.addUpdateBlock,
+                          arguments: BlocProvider.of<BlockCubit>(context))
+                      .then((_) {
+                    _blockCubit.getBlocks();
+                  });
                 },
               ),
               const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
@@ -215,10 +209,54 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               leading: const Icon(Icons.edit, color: Colors.blue),
               title: const Text('تعديل'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, AppRoute.addNewBlock,
+                Navigator.pushNamed(context, AppRoute.addUpdateBlock,
                     arguments: BlocProvider.of<BlockCubit>(passContext)
                       ..setBlockForUpdate(bloc));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person, color: Colors.green),
+              title: const Text('تغيير المدير'),
+              onTap: () {
+                Navigator.pop(context);
+                // Navigate to change manager screen or show dialog
+                showDialog(
+                  context: passContext,
+                  builder: (context) => AlertDialog(
+                    title: const Text('تغيير المدير'),
+                    content: const Text('هنا يمكنك تنفيذ منطق تغيير المدير.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('إغلاق'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.lock, color: Colors.orange),
+              title: const Text('تغيير كلمة المرور'),
+              onTap: () {
+                Navigator.pop(context);
+                // Navigate to change password screen or show dialog
+                // Example: Navigator.pushNamed(context, AppRoute.changePassword, arguments: bloc);
+                // Or show a dialog for password change
+                showDialog(
+                  context: passContext,
+                  builder: (context) => AlertDialog(
+                    title: const Text('تغيير كلمة المرور'),
+                    content:
+                        const Text('هنا يمكنك تنفيذ منطق تغيير كلمة المرور.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('إغلاق'),
+                      ),
+                    ],
+                  ),
+                );
               },
             ),
             ListTile(

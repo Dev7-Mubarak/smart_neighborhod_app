@@ -5,7 +5,7 @@ import 'package:smart_neighborhod_app/models/Person.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
-import '../../../models/Block.dart';
+import '../../../models/block.dart';
 
 class BlockCubit extends Cubit<BlockState> {
   BlockCubit({required this.api}) : super(BlockInitial());
@@ -15,8 +15,18 @@ class BlockCubit extends Cubit<BlockState> {
   Block? block;
   Person? selectedManager;
 
-  void setBlockForUpdate(Block block) {
+  Future<void> setBlockForUpdate(Block block) async {
     this.block = block;
+
+    // convert this to service and repositry then called
+    final response = await api.get(
+      '${ApiLink.getPersonById}/${block.personId}',
+    );
+
+    if (response["data"] != null) {
+      selectedManager = Person.fromJson(response["data"]);
+    }
+    //
   }
 
   void changeSelectedManager(Person? selectedManager) {
@@ -49,7 +59,8 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-  Future<void> addNewBlock(String name, String email, String password) async {
+  Future<void> addNewBlock(
+      String name, String userName, String password) async {
     emit(BlocksLoading());
     try {
       final response = await api.post(
@@ -57,7 +68,7 @@ class BlockCubit extends Cubit<BlockState> {
         data: {
           'name': name,
           'personId': selectedManager?.id,
-          'email': email,
+          'userName': userName,
           'password': password,
         },
       );
@@ -65,7 +76,6 @@ class BlockCubit extends Cubit<BlockState> {
       if (response["isSuccess"]) {
         emit(BlockAddedSuccessfully(
             message: response["message"] ?? "تمت الإضافة بنجاح"));
-        await getBlocks();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -85,18 +95,16 @@ class BlockCubit extends Cubit<BlockState> {
   Future<void> updateBlock({
     required int id,
     required String name,
-    required String email,
-    required String password,
+    required String userName,
   }) async {
     emit(BlocksLoading());
     try {
       final response = await api.update(
-        '${ApiLink.updateBlocke}/${id}',
+        '${ApiLink.updateBlocke}/$id',
         data: {
           'name': name,
           'personId': selectedManager?.id,
-          'email': email,
-          'password': password,
+          'userName': userName,
         },
       );
       if (response["isSuccess"]) {
