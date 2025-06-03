@@ -1,3 +1,5 @@
+![Logo](logo.png)
+
 # smart_neighborhod_app
 
 A new Flutter project.
