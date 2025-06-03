@@ -1,3 +1,5 @@
+![Repository Banner](assets/images/logo.png)
+
 # smart_neighborhod_app
 
 A new Flutter project.
