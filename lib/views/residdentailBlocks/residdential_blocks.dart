@@ -166,10 +166,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                 text: 'أضافة',
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoute.addUpdateBlock,
-                          arguments: BlocProvider.of<BlockCubit>(context))
-                      .then((_) {
-                    _blockCubit.getBlocks();
-                  });
+                      arguments: BlocProvider.of<BlockCubit>(context));
                 },
               ),
               const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),

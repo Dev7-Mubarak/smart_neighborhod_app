@@ -59,8 +59,7 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-  Future<void> addNewBlock(
-      String name, String userName, String password) async {
+  Future<void> addNewBlock(String name, String email, String password) async {
     emit(BlocksLoading());
     try {
       final response = await api.post(
@@ -68,7 +67,7 @@ class BlockCubit extends Cubit<BlockState> {
         data: {
           'name': name,
           'personId': selectedManager?.id,
-          'userName': userName,
+          'email': email,
           'password': password,
         },
       );
@@ -76,6 +75,7 @@ class BlockCubit extends Cubit<BlockState> {
       if (response["isSuccess"]) {
         emit(BlockAddedSuccessfully(
             message: response["message"] ?? "تمت الإضافة بنجاح"));
+        getBlocks();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -95,7 +95,7 @@ class BlockCubit extends Cubit<BlockState> {
   Future<void> updateBlock({
     required int id,
     required String name,
-    required String userName,
+    required String email,
   }) async {
     emit(BlocksLoading());
     try {
@@ -104,7 +104,7 @@ class BlockCubit extends Cubit<BlockState> {
         data: {
           'name': name,
           'personId': selectedManager?.id,
-          'userName': userName,
+          'email': email,
         },
       );
       if (response["isSuccess"]) {

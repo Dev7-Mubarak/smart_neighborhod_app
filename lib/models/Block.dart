@@ -5,7 +5,7 @@ class Block {
   late String name;
   late String managerId;
   late int personId;
-  late String userName;
+  late String email;
   late String fullName;
 
   Block.fromJson(Map<String, dynamic> json) {
@@ -13,7 +13,7 @@ class Block {
     name = json["name"] ?? "";
     managerId = json["managerId"] ?? "";
     personId = json["personId"] ?? "";
-    userName = json["userName"] ?? "";
+    email = json["email"] ?? "";
     fullName = json["fullName"] ?? "";
   }
 }
