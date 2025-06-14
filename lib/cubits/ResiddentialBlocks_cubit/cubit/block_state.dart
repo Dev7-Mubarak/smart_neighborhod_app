@@ -28,6 +28,11 @@ class BlockAddedSuccessfully extends BlockState {
   BlockAddedSuccessfully({required this.message});
 }
 
+class BlockManagerChanangeSuccessfully extends BlockState {
+  final String message;
+  BlockManagerChanangeSuccessfully({required this.message});
+}
+
 class BlockDeletedSuccessfully extends BlockState {
   final String message;
   BlockDeletedSuccessfully({required this.message});

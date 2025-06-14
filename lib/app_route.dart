@@ -17,6 +17,7 @@ import 'package:smart_neighborhod_app/views/people/all_pepole.dart';
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_council_Detials.dart';
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_councils.dart';
 import 'package:smart_neighborhod_app/views/residdentailBlocks/add_update_block.dart';
+import 'package:smart_neighborhod_app/views/residdentailBlocks/change_block_manager.dart';
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'cubits/family_cubit/family_cubit.dart';
@@ -110,6 +111,22 @@ class AppRouter {
           ),
           fullscreenDialog: false,
         );
+      case AppRoute.changeBlockManager:
+        final blockCubit = settings.arguments as BlockCubit;
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<PersonCubit>(
+                      create: (context) =>
+                          PersonCubit(api: DioConsumer(dio: Dio())),
+                    ),
+                    BlocProvider.value(
+                      value: blockCubit,
+                      child: const ChangeBlockManager(),
+                    ),
+                  ],
+                  child: const ChangeBlockManager(),
+                ));
       case AppRoute.familyDetiles:
         return MaterialPageRoute(
           builder: (_) => const FamilyDetiles(familyId: 1044),

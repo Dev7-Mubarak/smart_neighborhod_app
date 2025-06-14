@@ -294,15 +294,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                         context.read<PersonCubit>().isWhatsapp,
                                     activeColor: AppColor.primaryColor,
                                     onChanged: (bool? value) {
-                                      setState(() {
-                                        context
-                                            .read<PersonCubit>()
-                                            .toggleContactType(
-                                                isWhatsapp: value,
-                                                isCall: context
-                                                    .read<PersonCubit>()
-                                                    .isCall);
-                                      });
+                                      context
+                                          .read<PersonCubit>()
+                                          .toggleContactType(
+                                              isWhatsapp: value,
+                                              isCall: context
+                                                  .read<PersonCubit>()
+                                                  .isCall);
                                     },
                                   ),
                                 ],

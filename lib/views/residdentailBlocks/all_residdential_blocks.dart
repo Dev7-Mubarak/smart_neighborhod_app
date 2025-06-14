@@ -11,14 +11,14 @@ import '../../components/smallButton.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
 
-class ResidentialBlock extends StatefulWidget {
-  const ResidentialBlock({super.key});
+class AllResidentialBlock extends StatefulWidget {
+  const AllResidentialBlock({super.key});
 
   @override
-  State<ResidentialBlock> createState() => _ResidentialBlockState();
+  State<AllResidentialBlock> createState() => _AllResidentialBlockState();
 }
 
-class _ResidentialBlockState extends State<ResidentialBlock> {
+class _AllResidentialBlockState extends State<AllResidentialBlock> {
   List<Block> residentialListSearch = [];
   List<Block> residentialList = [];
   late BlockCubit _blockCubit;
@@ -192,7 +192,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     );
   }
 
-  void _showOptions(BuildContext passContext, bloc) {
+  void _showOptions(BuildContext passContext, Block bloc) {
     showModalBottomSheet(
       context: passContext,
       shape: const RoundedRectangleBorder(
@@ -214,22 +214,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
             ListTile(
               leading: const Icon(Icons.person, color: Colors.green),
               title: const Text('تغيير المدير'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to change manager screen or show dialog
-                showDialog(
-                  context: passContext,
-                  builder: (context) => AlertDialog(
-                    title: const Text('تغيير المدير'),
-                    content: const Text('هنا يمكنك تنفيذ منطق تغيير المدير.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('إغلاق'),
-                      ),
-                    ],
-                  ),
-                );
+              onTap: () async {
+                final blockCubit = BlocProvider.of<BlockCubit>(passContext);
+                await blockCubit.setManagerForUpdate(bloc);
+                Navigator.pushNamed(context, AppRoute.changeBlockManager,
+                    arguments: blockCubit);
               },
             ),
             ListTile(

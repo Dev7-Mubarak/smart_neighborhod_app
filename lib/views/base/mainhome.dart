@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/views/residdentailBlocks/residdential_blocks.dart';
+import 'package:smart_neighborhod_app/views/residdentailBlocks/all_residdential_blocks.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../cubits/mainHome_cubit/main_home_cubit.dart';
@@ -15,7 +15,7 @@ class MainHome extends StatefulWidget {
 
 class MmainHomeState extends State<MainHome> {
   static final List<Widget> _widgetOptions = [
-    const ResidentialBlock(),
+    const AllResidentialBlock(),
     const Home()
   ];
 

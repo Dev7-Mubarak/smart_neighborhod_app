@@ -25,6 +25,7 @@ class BlockCubit extends Cubit<BlockState> {
 
     if (response["data"] != null) {
       selectedManager = Person.fromJson(response["data"]);
+      changeSelectedManager(selectedManager);
     }
     //
   }
@@ -32,6 +33,19 @@ class BlockCubit extends Cubit<BlockState> {
   void changeSelectedManager(Person? selectedManager) {
     this.selectedManager = selectedManager;
     emit(ChangeSelectedManager());
+  }
+
+  Future<void> setManagerForUpdate(Block block) async {
+    this.block = block;
+    // convert this to service and repositry then called
+    final response = await api.get(
+      '${ApiLink.getPersonById}/${block.personId}',
+    );
+
+    if (response["data"] != null) {
+      selectedManager = Person.fromJson(response["data"]);
+    }
+    //
   }
 
   Future<void> getBlocks() async {
@@ -74,6 +88,40 @@ class BlockCubit extends Cubit<BlockState> {
 
       if (response["isSuccess"]) {
         emit(BlockAddedSuccessfully(
+            message: response["message"] ?? "تمت الإضافة بنجاح"));
+        getBlocks();
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(BlocksFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> changeBlockManager(
+      {required String email, required password}) async {
+    emit(BlocksLoading());
+    try {
+      final response = await api.post(
+        ApiLink.changeBlockManager,
+        data: {
+          'blockId': block?.id ?? 0,
+          'personId': selectedManager?.id,
+          'email': email,
+          'password': password,
+        },
+      );
+
+      if (response["isSuccess"]) {
+        emit(BlockManagerChanangeSuccessfully(
             message: response["message"] ?? "تمت الإضافة بنجاح"));
         getBlocks();
       } else {
