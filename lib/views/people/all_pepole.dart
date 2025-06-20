@@ -174,7 +174,7 @@ class _AllPeopleState extends State<AllPeople> {
                 _delay = Timer(const Duration(milliseconds: 400), () {
                   _personCubit.getPeople(search: value.trim());
                 });
-              },
+              } ,
             ),
           )
         ],
