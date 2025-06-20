@@ -13,6 +13,8 @@ class CustomTextFormField extends StatelessWidget {
   final IconData? suffixIcon;
   final IconData? prefixIcon;
   final Color bachgroundColor;
+  final int? maxLines; // تمت إضافته لدعم الأسطر المتعددة
+  final int? minLines; // تمت إضافته لدعم الأسطر المتعددة
   final void Function(String)? onChanged;
 
   const CustomTextFormField({
@@ -29,6 +31,8 @@ class CustomTextFormField extends StatelessWidget {
     this.bachgroundColor = Colors.white,
     this.prefixIcon,
     this.onChanged,
+    this.maxLines = 1, // الافتراضي هو 1 لإدخال سطر واحد
+    this.minLines, // لا يوجد افتراضي، يسمح بأن يكون فارغًا لإدخال سطر واحد
   });
 
   @override
@@ -42,6 +46,8 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText,
       validator: validator,
       onTap: onTap,
+      maxLines: maxLines, // تطبيق maxLines
+      minLines: minLines, // تطبيق minLines
       decoration: InputDecoration(
         fillColor: bachgroundColor,
         filled: true,

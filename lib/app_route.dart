@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/core/API/dio_consumer.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_neighborhod_app/cubits/project_category/project_category_cubit.dart';
+import 'package:smart_neighborhod_app/views/Assistances/add_update_assistanc.dart';
+import 'package:smart_neighborhod_app/views/Assistances/all_assistances.dart';
 import 'package:smart_neighborhod_app/views/annoucements/addNewAnnouncement.dart';
 import 'package:smart_neighborhod_app/views/annoucements/annoucement1.dart';
 import 'package:smart_neighborhod_app/views/auth/checkEmail.dart';
@@ -19,6 +22,7 @@ import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_counc
 import 'package:smart_neighborhod_app/views/residdentailBlocks/add_update_block.dart';
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
+import 'cubits/assistances/assistances_cubit.dart';
 import 'cubits/family_cubit/family_cubit.dart';
 import 'cubits/mainHome_cubit/main_home_cubit.dart';
 
@@ -135,7 +139,37 @@ class AppRouter {
           builder: (_) => const ReconciliationcouncilDetials(),
           fullscreenDialog: false,
         );
-
+      case AppRoute.allAssistances:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: ((BuildContext context) =>
+                AssistancesCubit(api: DioConsumer(dio: Dio()))),
+            child: const AllAssistances(),
+          ),
+        );
+      case AppRoute.addUpdateAssistanc:
+        final assistancCubit = settings.arguments as AssistancesCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider<ProjectCategoryCubit>(
+                create: (context) => ProjectCategoryCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(
+                value: assistancCubit,
+                child: AddUpdateAssistanc(
+                  assistancProject: assistancCubit.project,
+                ),
+              ),
+            ],
+            child: AddUpdateAssistanc( 
+              assistancProject: assistancCubit.project,
+            ),
+          ),
+        );
       default:
         return null;
     }

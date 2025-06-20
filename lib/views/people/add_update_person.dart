@@ -58,6 +58,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
         TextEditingController(text: widget.person?.phoneNumber ?? '');
     emailController = TextEditingController(text: widget.person?.email ?? '');
     super.initState();
+    
   }
 
   @override
