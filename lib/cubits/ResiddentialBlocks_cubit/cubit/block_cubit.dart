@@ -5,7 +5,7 @@ import 'package:smart_neighborhod_app/models/Person.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
-import '../../../models/block.dart';
+import '../../../models/Block.dart';
 
 class BlockCubit extends Cubit<BlockState> {
   BlockCubit({required this.api}) : super(BlockInitial());

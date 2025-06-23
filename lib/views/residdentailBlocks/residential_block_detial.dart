@@ -1,20 +1,17 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/familyCategory/family_category_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/familyType/family_type_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_neighborhod_app/models/family.dart';
-
+import '../../components/constants/app_route.dart';
+import '../../components/constants/app_size.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/constants/app_image.dart';
-import '../../components/searcharea.dart';
+import '../../components/searcable_text_input_filed.dart';
+import '../../components/smallButton.dart';
 import '../../components/table.dart';
-import '../../core/API/dio_consumer.dart';
-import '../../models/block.dart';
-import '../families/addNewFamily.dart';
+import '../../models/Block.dart';
 
 class ResiddentialBlocksDetail extends StatefulWidget {
   final Block block;
@@ -63,7 +60,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
       builder: (context, state) {
         if (state is FamilyLoaded) {
           FamilysList = state.families;
-          FamilysListSearch = FamilysList; // عرض القائمة الأصلية
+          FamilysListSearch = FamilysList;
           return buildLoadedListFamilys();
         } else if (state is FamilyLoading) {
           return showLoadingIndicator();
@@ -84,7 +81,6 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
   }
 
   Widget showLoadingIndicator() {
-    // استخدام const لتقليل عمليات إعادة البناء
     return const Center(child: CircularProgressIndicator());
   }
 
@@ -105,10 +101,9 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColor.white,
-          elevation: 0, // إزالة الخط السفلي
+          elevation: 0,
           bottomOpacity: 0,
-          iconTheme: const IconThemeData(
-              color: Colors.black), // تغيير لون سهم الرجوع إلى الأسود
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Padding(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
             child: Center(
@@ -130,8 +125,8 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  width: double.infinity, // أضف عرضًا ثابتًا
-                  height: 205, // أضف ارتفاعًا ثابتًا
+                  width: double.infinity,
+                  height: 205,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     image: const DecorationImage(
@@ -194,51 +189,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                // زر إضافة أسرة وبحث
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MultiBlocProvider(
-                              providers: [
-                                BlocProvider(
-                                    create: (_) => FamilyCategoryCubit(
-                                        api: DioConsumer(dio: Dio()))
-                                      ..getFamilyCategories()),
-                                BlocProvider(
-                                    create: (_) => FamilyTypeCubit(
-                                        api: DioConsumer(dio: Dio()))
-                                      ..getFamilyTypes()),
-                              ],
-                              child: AddNewFamily(block: widget.block),
-                            ),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.primaryColor,
-                        minimumSize: const Size(40, 40),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: const Text(
-                        "إضافة أسرة",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SearchWidget<Family>(
-                      originalList: FamilysList,
-                      onSearch: updateSearchResults,
-                      searchCriteria: (Family) => Family.name,
-                    ),
-                  ],
-                ),
+                _buildTopBar(context, widget.block.id),
                 const SizedBox(height: 8),
                 buildBlocWidget(),
               ],
@@ -247,4 +198,44 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
         ),
         bottomNavigationBar: const CustomNavigationBar());
   }
+}
+
+Widget _buildTopBar(BuildContext context, int blockId) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    child: Row(
+      children: [
+        SmallButton(
+          text: 'أضافة',
+          onPressed: () {
+            var familyCubit = BlocProvider.of<FamilyCubit>(context);
+            familyCubit.setBlockId(blockId);
+            Navigator.pushNamed(context, AppRoute.addNewFamily,
+                arguments: familyCubit);
+          },
+        ),
+        const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+        Expanded(
+          child: SearchableTextFormField(
+            // controller: _searchingController,
+            hintText: 'بحث',
+            prefixIcon: IconButton(
+                onPressed: () {
+                  // _searchingController.clear();
+                  // _personCubit.getPeople();
+                },
+                icon: const Icon(Icons.close)),
+            suffixIcon: Icons.search,
+            bachgroundColor: AppColor.gray2,
+            // onChanged: (value) {
+            //   _delay?.cancel();
+            //   _delay = Timer(const Duration(milliseconds: 400), () {
+            //     _personCubit.getPeople(search: value.trim());
+            //   });
+            // } ,
+          ),
+        )
+      ],
+    ),
+  );
 }

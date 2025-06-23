@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/block.dart';
+import '../models/Block.dart';
 import '../views/residdentailBlocks/residential_block_detial.dart';
 import 'constants/app_color.dart';
 import 'constants/app_image.dart';

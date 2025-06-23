@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../models/block.dart';
+
+import '../../../models/Block.dart';
 
 @immutable
 abstract class BlockState {}

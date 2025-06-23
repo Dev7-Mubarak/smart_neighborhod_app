@@ -39,3 +39,7 @@ class FamilyAddedSuccessfully extends FamilyState {
   final String message;
   FamilyAddedSuccessfully({required this.message});
 }
+
+class changeFamilyHead extends FamilyState {}
+
+class ChangeFamilyCategory extends FamilyState {}

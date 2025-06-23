@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/familyCategory/family_category_state.dart';
-import 'package:smart_neighborhod_app/models/family_category.dart';
 import '../../components/constants/api_link.dart';
 import '../../core/API/dio_consumer.dart';
 import '../../core/errors/errormodel.dart';
 import '../../core/errors/exception.dart';
+import '../../models/family_category.dart';
+import 'family_catgory_state.dart';
 
 class FamilyCategoryCubit extends Cubit<FamilyCategoryState> {
   FamilyCategoryCubit({required this.api}) : super(FamilyCategoryInitial());
@@ -20,16 +20,17 @@ class FamilyCategoryCubit extends Cubit<FamilyCategoryState> {
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel:
-                   ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
+            errModel: ErrorModel(
+                statusCode: '400',
+                errorMessage: "No data received",
+                isSuccess: response["isSuccess"] ?? false));
       }
 
-      List<dynamic> familyCategories = response["data"];
+      List<dynamic> familyCatgories = response["data"];
 
       emit(FamilyCategoryLoaded(
-          familyCategories: familyCategories
-              .map((e) => FamilyCategory.fromJson(e))
-              .toList()));
+          familyCategories:
+              familyCatgories.map((e) => FamilyCategory.fromJson(e)).toList()));
     } on Serverexception catch (e) {
       emit(FamilyCategoryFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

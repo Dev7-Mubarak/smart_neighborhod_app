@@ -5,9 +5,10 @@ import '../../../core/errors/exception.dart';
 import 'dart:async';
 import '../../core/API/dio_consumer.dart';
 import '../../core/errors/errormodel.dart';
+import '../../models/Person.dart';
 import '../../models/family.dart';
+import '../../models/family_category.dart';
 import '../../models/family_detiles_model.dart';
-// لإستخدام TimeoutException
 
 class FamilyCubit extends Cubit<FamilyState> {
   final DioConsumer api;
@@ -19,6 +20,22 @@ class FamilyCubit extends Cubit<FamilyState> {
   bool hasNextPage = true;
   List<Family> allFamilies = [];
   late int blockId;
+  Person? selectedFamilyHead;
+  FamilyCategory? selectedCategory;
+
+  void setBlockId(int blockId) {
+    this.blockId = blockId;
+  }
+
+  void changeSelectedFamilyCategory(FamilyCategory? selectedCategory) {
+    this.selectedCategory = selectedCategory;
+    emit(ChangeFamilyCategory());
+  }
+
+  void changeSelectedFamilyHaed(Person? selectedFamilyHead) {
+    this.selectedFamilyHead = selectedFamilyHead;
+    emit(changeFamilyHead());
+  }
 
   Future<void> getBlockFamiliesByBlockId(int blockIdPar) async {
     blockId = blockIdPar;
@@ -37,7 +54,10 @@ class FamilyCubit extends Cubit<FamilyState> {
 
       if (response["data"] == null) {
         throw Serverexception(
-       errModel:ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
+            errModel: ErrorModel(
+                statusCode: '400',
+                errorMessage: "No data received",
+                isSuccess: response["isSuccess"] ?? false));
       }
 
       List<dynamic> familes = response["data"]["items"];
@@ -56,7 +76,7 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
-  Future<void> addNewFamily(Family family, int? personId) async {
+  Future<void> addNewFamily(Family family) async {
     emit(FamilyInitial());
     try {
       final response = await api.post(
@@ -68,7 +88,7 @@ class FamilyCubit extends Cubit<FamilyState> {
           "familyTypeId": family.familyTypeId,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
-          "personId": personId
+          "personId": family.familyHeadId
         },
       );
 
@@ -77,10 +97,10 @@ class FamilyCubit extends Cubit<FamilyState> {
         await getBlockFamiliesByBlockId(blockId);
       } else {
         throw Serverexception(
-                 errModel:ErrorModel(statusCode: '400', errorMessage: "حدث خطأ غير معروف",isSuccess: response["isSuccess"]??false)
-
-        
-        );
+            errModel: ErrorModel(
+                statusCode: '400',
+                errorMessage: "حدث خطأ غير معروف",
+                isSuccess: response["isSuccess"] ?? false));
       }
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
@@ -98,8 +118,11 @@ class FamilyCubit extends Cubit<FamilyState> {
 
       if (response["data"] == null) {
         throw Serverexception(
-                       errModel: ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
- }
+            errModel: ErrorModel(
+                statusCode: '400',
+                errorMessage: "No data received",
+                isSuccess: response["isSuccess"] ?? false));
+      }
       emit(FamilyDetilesLoaded(
           familyDetiles: FamilyDetilesModel.fromJson(response["data"])));
     } on Serverexception catch (e) {

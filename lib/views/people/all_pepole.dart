@@ -74,7 +74,7 @@ class _AllPeopleState extends State<AllPeople> {
       ),
       body: Column(
         children: [
-          _buildToBar(context),
+          _buildTopBar(context),
           _peopleListView(),
         ],
       ),
@@ -143,7 +143,7 @@ class _AllPeopleState extends State<AllPeople> {
     );
   }
 
-  Widget _buildToBar(BuildContext context) {
+  Widget _buildTopBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -174,7 +174,7 @@ class _AllPeopleState extends State<AllPeople> {
                 _delay = Timer(const Duration(milliseconds: 400), () {
                   _personCubit.getPeople(search: value.trim());
                 });
-              } ,
+              },
             ),
           )
         ],
@@ -197,11 +197,12 @@ class _AllPeopleState extends State<AllPeople> {
               title: const Text('تعديل'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, AppRoute.addUpdatePerson,
-                    arguments: BlocProvider.of<PersonCubit>(passContext)
-                      ..setPersonForUpdate(person
-                    ),
-                    );
+                Navigator.pushNamed(
+                  context,
+                  AppRoute.addUpdatePerson,
+                  arguments: BlocProvider.of<PersonCubit>(passContext)
+                    ..setPersonForUpdate(person),
+                );
               },
             ),
             ListTile(

@@ -3,13 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 import 'package:smart_neighborhod_app/components/constants/app_route.dart';
 import 'package:smart_neighborhod_app/components/searcable_text_input_filed.dart';
-import 'package:smart_neighborhod_app/models/block.dart';
-import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/smallButton.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
+import '../../models/Block.dart';
 
 class ResidentialBlock extends StatefulWidget {
   const ResidentialBlock({super.key});
@@ -85,11 +84,13 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         onLongPressCallback,
   }) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ResiddentialBlocksDetail(block: block)),
-      ),
+      onTap: () => {
+        Navigator.pushNamed(
+          context,
+          AppRoute.residentialBlockDetial,
+          arguments: block,
+        )
+      },
       onLongPress: () {
         onLongPressCallback(context, block);
       },
@@ -225,30 +226,6 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                   builder: (context) => AlertDialog(
                     title: const Text('تغيير المدير'),
                     content: const Text('هنا يمكنك تنفيذ منطق تغيير المدير.'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('إغلاق'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.lock, color: Colors.orange),
-              title: const Text('تغيير كلمة المرور'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to change password screen or show dialog
-                // Example: Navigator.pushNamed(context, AppRoute.changePassword, arguments: bloc);
-                // Or show a dialog for password change
-                showDialog(
-                  context: passContext,
-                  builder: (context) => AlertDialog(
-                    title: const Text('تغيير كلمة المرور'),
-                    content:
-                        const Text('هنا يمكنك تنفيذ منطق تغيير كلمة المرور.'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),

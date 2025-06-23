@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/models/family_Type.dart';
+
+import '../../models/family_type.dart';
 
 @immutable
 abstract class FamilyTypeState {}

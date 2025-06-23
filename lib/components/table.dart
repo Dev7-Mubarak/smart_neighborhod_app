@@ -47,14 +47,14 @@ import 'package:smart_neighborhod_app/components/constants/app_color.dart';
 //                 onLongPress: onRowLongPress != null
 //                     ? () => onRowLongPress!(index)
 //                     : null,
-//                 child: IntrinsicHeight( 
+//                 child: IntrinsicHeight(
 //                   child: Row(
 //                     children: row.asMap().entries.map((cellEntry) {
 //                       int cellIndex = cellEntry.key;
 //                       dynamic cellData = cellEntry.value;
 //                       return Expanded(
-//                         flex: columnFlexes[cellIndex].toInt(), 
-//                         child: _buildCell(cellData.toString()), 
+//                         flex: columnFlexes[cellIndex].toInt(),
+//                         child: _buildCell(cellData.toString()),
 //                       );
 //                     }).toList(),
 //                   ),
@@ -102,7 +102,7 @@ class CustomTableWidget extends StatelessWidget {
   final List<String> columnTitles;
   final List<List<dynamic>> rowData;
   final List<double> columnFlexes;
-final void Function(int rowIndex, dynamic rowObject)? onRowLongPress;
+  final void Function(int rowIndex, dynamic rowObject)? onRowLongPress;
   final List<dynamic>? originalObjects; // الكائنات الأصلية لتمريرها
 
   const CustomTableWidget({
@@ -135,12 +135,13 @@ final void Function(int rowIndex, dynamic rowObject)? onRowLongPress;
           ),
         ),
         // الصفوف الديناميكية
-        Expanded( 
+        SizedBox(
+          height: 400, // or any height you want, or make it a parameter
           child: ListView.builder(
             itemCount: rowData.length,
             itemBuilder: (context, index) {
               List<dynamic> row = rowData[index];
-              return InkWell( 
+              return InkWell(
                 onLongPress: onRowLongPress != null
                     ? () => onRowLongPress!(index, originalObjects![index])
                     : null,
@@ -150,7 +151,8 @@ final void Function(int rowIndex, dynamic rowObject)? onRowLongPress;
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    border: Border(bottom: BorderSide(color: Colors.black, width: 1.0)),
+                    border: Border(
+                        bottom: BorderSide(color: Colors.black, width: 1.0)),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: IntrinsicHeight(
@@ -180,7 +182,8 @@ final void Function(int rowIndex, dynamic rowObject)? onRowLongPress;
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        style:
+            const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       ),
     );
   }
@@ -191,7 +194,8 @@ final void Function(int rowIndex, dynamic rowObject)? onRowLongPress;
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       ),
     );
   }

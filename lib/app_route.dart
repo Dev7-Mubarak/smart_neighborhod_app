@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_neighborhod_app/core/API/dio_consumer.dart';
+import 'package:smart_neighborhod_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
+import 'package:smart_neighborhod_app/cubits/family_type/family_type_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_neighborhod_app/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_neighborhod_app/views/Assistances/add_update_assistanc.dart';
@@ -13,6 +15,7 @@ import 'package:smart_neighborhod_app/views/auth/createNewPassword.dart';
 import 'package:smart_neighborhod_app/views/auth/forgetapassword.dart';
 import 'package:smart_neighborhod_app/views/auth/login.dart';
 import 'package:smart_neighborhod_app/views/base/mainhome.dart';
+import 'package:smart_neighborhod_app/views/families/addNewFamily.dart';
 import 'package:smart_neighborhod_app/views/families/family_detiles.dart';
 import 'package:smart_neighborhod_app/views/onBoarding/onboarding.dart';
 import 'package:smart_neighborhod_app/views/people/add_update_person.dart';
@@ -20,11 +23,13 @@ import 'package:smart_neighborhod_app/views/people/all_pepole.dart';
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_council_Detials.dart';
 import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_councils.dart';
 import 'package:smart_neighborhod_app/views/residdentailBlocks/add_update_block.dart';
+import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'cubits/assistances/assistances_cubit.dart';
 import 'cubits/family_cubit/family_cubit.dart';
 import 'cubits/mainHome_cubit/main_home_cubit.dart';
+import 'models/Block.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -40,8 +45,6 @@ class AppRouter {
               BlocProvider(create: (_) => MainHomeCubit()),
               BlocProvider(
                   create: (_) => BlockCubit(api: DioConsumer(dio: Dio()))),
-              BlocProvider(
-                  create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())))
             ],
             child: const MainHome(),
           ),
@@ -65,6 +68,28 @@ class AppRouter {
             ),
           ),
         );
+      case AppRoute.addNewFamily:
+        final familyCubit = settings.arguments as FamilyCubit;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    FamilyCategoryCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (_) => FamilyTypeCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: AddNewFamily(
+              blockId: familyCubit.blockId,
+            ),
+          ),
+        );
 
       case AppRoute.login:
         return MaterialPageRoute(
@@ -72,14 +97,19 @@ class AppRouter {
         );
 
       case AppRoute.residentialBlockDetial:
-      // final Block block = settings.arguments as Block; // تمرير معرّف العنصر
-      // return MaterialPageRoute(
-      //   builder: (_) => BlocProvider(
-      //     create: (BuildContext contxt) =>
-      //         ResiddentialBlockDetailCubit(api: DioConsumer(dio: Dio())),
-      //     child: ResiddentialBlocksDetail(),
-      //   ),
-      // );
+        final block = settings.arguments as Block;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<FamilyCubit>(
+                create: (context) => FamilyCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: ResiddentialBlocksDetail(
+              block: block,
+            ),
+          ),
+        );
 
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
@@ -156,7 +186,8 @@ class AppRouter {
                 create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
               ),
               BlocProvider<ProjectCategoryCubit>(
-                create: (context) => ProjectCategoryCubit(api: DioConsumer(dio: Dio())),
+                create: (context) =>
+                    ProjectCategoryCubit(api: DioConsumer(dio: Dio())),
               ),
               BlocProvider.value(
                 value: assistancCubit,
@@ -165,7 +196,7 @@ class AppRouter {
                 ),
               ),
             ],
-            child: AddUpdateAssistanc( 
+            child: AddUpdateAssistanc(
               assistancProject: assistancCubit.project,
             ),
           ),
