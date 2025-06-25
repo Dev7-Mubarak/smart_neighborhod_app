@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:smart_negborhood_app/components/constants/app_image.dart';
 
 import '../../components/CustomDropdown.dart';
