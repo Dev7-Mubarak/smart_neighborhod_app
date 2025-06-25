@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
 import 'dart:async';
@@ -54,15 +54,18 @@ class FamilyCubit extends Cubit<FamilyState> {
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "No data received",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
 
       List<dynamic> familes = response["data"]["items"];
-      List<Family> newFamilies =
-          familes.map((e) => Family.fromJson(e)).toList();
+      List<Family> newFamilies = familes
+          .map((e) => Family.fromJson(e))
+          .toList();
 
       allFamilies.addAll(newFamilies);
 
@@ -88,7 +91,7 @@ class FamilyCubit extends Cubit<FamilyState> {
           "familyTypeId": family.familyTypeId,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
-          "personId": family.familyHeadId
+          "personId": family.familyHeadId,
         },
       );
 
@@ -97,10 +100,12 @@ class FamilyCubit extends Cubit<FamilyState> {
         await getBlockFamiliesByBlockId(blockId);
       } else {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "حدث خطأ غير معروف",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
@@ -118,13 +123,18 @@ class FamilyCubit extends Cubit<FamilyState> {
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "No data received",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
-      emit(FamilyDetilesLoaded(
-          familyDetiles: FamilyDetilesModel.fromJson(response["data"])));
+      emit(
+        FamilyDetilesLoaded(
+          familyDetiles: FamilyDetilesModel.fromJson(response["data"]),
+        ),
+      );
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

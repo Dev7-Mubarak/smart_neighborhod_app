@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/smallButton.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
 
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_image.dart';
@@ -8,6 +7,8 @@ import '../../components/searcharea.dart';
 import '../../models/Announcemwnt.dart';
 
 class announcement1 extends StatefulWidget {
+  const announcement1({super.key});
+
   @override
   _announcement1State createState() => _announcement1State();
 }
@@ -76,45 +77,54 @@ class _announcement1State extends State<announcement1> {
           child: Text(
             'الإعلانات',
             style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
       ),
       body: SingleChildScrollView(
-          child: Expanded(
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.primaryColor,
-                    minimumSize: const Size(40, 40),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+        child: Expanded(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.primaryColor,
+                        minimumSize: const Size(40, 40),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        "إضافة",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    "إضافة",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                    SearchWidget<Announcement>(
+                      originalList: announcements,
+                      onSearch: updateSearchResults,
+                      searchCriteria: (announcement2) => announcement2.title,
+                    ),
+                  ],
                 ),
-                SearchWidget<Announcement>(
-                  originalList: announcements,
-                  onSearch: updateSearchResults,
-                  searchCriteria: (announcement2) => announcement2.title,
-                ),
-              ],
-            ),
+              ),
+              ...announcementsdisplay.map<Widget>(
+                (e) => caredAnnouncement(announcement: e),
+              ),
+            ],
           ),
-          ...announcementsdisplay
-              .map<Widget>((e) => caredAnnouncement(announcement: e))
-              .toList()
-        ]),
-      )),
+        ),
+      ),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }
@@ -151,10 +161,7 @@ class caredAnnouncement extends StatelessWidget {
     }
   }
 
-  const caredAnnouncement({
-    required this.announcement,
-    super.key,
-  });
+  const caredAnnouncement({required this.announcement, super.key});
   final Announcement announcement;
 
   @override
@@ -184,21 +191,25 @@ class caredAnnouncement extends StatelessWidget {
           ),
           SizedBox(width: 10),
           Container(
-              padding: const EdgeInsets.fromLTRB(
-                  20, 20, 3, 0), // مسافة داخلية للعنصر
-              decoration: BoxDecoration(
-                color: getColor(announcement.type),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              height: 130,
-              width: 100,
-              child: Image.asset(
-                getIcon(announcement.type),
-                width: 10, // عرض الصورة
-                height: 10, // ارتفاع الصورة
-                // fit: BoxFit.contain, // احتواء الصورة داخل الحجم
-              ) // احتواء الصورة داخل الحجم
-              ),
+            padding: const EdgeInsets.fromLTRB(
+              20,
+              20,
+              3,
+              0,
+            ), // مسافة داخلية للعنصر
+            decoration: BoxDecoration(
+              color: getColor(announcement.type),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            height: 130,
+            width: 100,
+            child: Image.asset(
+              getIcon(announcement.type),
+              width: 10, // عرض الصورة
+              height: 10, // ارتفاع الصورة
+              // fit: BoxFit.contain, // احتواء الصورة داخل الحجم
+            ), // احتواء الصورة داخل الحجم
+          ),
         ],
       ),
     );

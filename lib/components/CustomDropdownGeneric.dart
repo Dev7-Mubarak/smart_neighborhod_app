@@ -10,14 +10,14 @@ class CustomDropdown<T> extends StatelessWidget {
   final String Function(T)? itemLabel;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.selectedValue,
     required this.items,
     required this.onChanged,
     required this.validator,
     required this.itemLabel, // Used to convert item to label
     this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,10 @@ class CustomDropdown<T> extends StatelessWidget {
             fillColor: Colors.white,
             filled: true,
             isDense: true,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 12,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
               borderSide: const BorderSide(color: Color(0xFFE4E4E4), width: 2),
@@ -53,10 +55,7 @@ class CustomDropdown<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
               borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
-            errorStyle: const TextStyle(
-              color: Colors.red,
-              fontSize: 12,
-            ),
+            errorStyle: const TextStyle(color: Colors.red, fontSize: 12),
           ),
           alignment: Alignment.centerRight,
           hint: Padding(

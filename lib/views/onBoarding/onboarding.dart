@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_image.dart';
+import 'package:smart_negborhood_app/components/constants/app_image.dart';
 import '../../components/circular_logo.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/constants/app_route.dart';
@@ -50,9 +50,7 @@ class Onboarding extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: DefaultButton(
@@ -60,14 +58,11 @@ class Onboarding extends StatelessWidget {
                 backgroundColor: AppColor.white,
                 color: AppColor.primaryColor,
                 onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoute.login,
-                  );
+                  Navigator.pushNamed(context, AppRoute.login);
                 },
                 fontsize: 25,
               ),
-            )
+            ),
           ],
         ),
       ),

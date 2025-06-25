@@ -2,20 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/constants/app_route.dart';
-import 'package:smart_neighborhod_app/components/searcable_text_input_filed.dart';
-import 'package:smart_neighborhod_app/cubits/assistances/assistances_state.dart';
-import 'package:smart_neighborhod_app/models/block.dart';
-import 'package:smart_neighborhod_app/models/project.dart';
-import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
-import '../../components/constants/app_image.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/models/project.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/smallButton.dart';
 import '../../components/table.dart';
-import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
-import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
 import '../../cubits/assistances/assistances_cubit.dart';
 
 class AllAssistances extends StatefulWidget {
@@ -30,8 +25,7 @@ class _AllAssistancesState extends State<AllAssistances> {
   List<Project> _projectsList = [];
   late AssistancesCubit _assistancesCubit;
   late TextEditingController _searchingController;
-    Timer? _delay;
-
+  Timer? _delay;
 
   @override
   void initState() {
@@ -39,6 +33,7 @@ class _AllAssistancesState extends State<AllAssistances> {
     _assistancesCubit = context.read<AssistancesCubit>()..getAssistances();
     _searchingController = TextEditingController();
   }
+
   @override
   void dispose() {
     _searchingController.dispose();
@@ -68,9 +63,7 @@ class _AllAssistancesState extends State<AllAssistances> {
             ),
           );
         } else {
-          return const Center(
-            child: Text("لا توجد بيانات للعرض حاليًا."),
-          );
+          return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
         }
       },
     );
@@ -119,9 +112,10 @@ class _AllAssistancesState extends State<AllAssistances> {
             child: Text(
               'مشاريع توزيع المساعدات',
               style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -147,9 +141,11 @@ class _AllAssistancesState extends State<AllAssistances> {
           SmallButton(
             text: 'أضافة',
             onPressed: () {
-              Navigator.pushNamed(context, AppRoute.addUpdateAssistanc,
-                      arguments: BlocProvider.of<AssistancesCubit>(context))
-                  .then((_) {
+              Navigator.pushNamed(
+                context,
+                AppRoute.addUpdateAssistanc,
+                arguments: BlocProvider.of<AssistancesCubit>(context),
+              ).then((_) {
                 _assistancesCubit.getAssistances();
               });
             },
@@ -160,18 +156,20 @@ class _AllAssistancesState extends State<AllAssistances> {
               controller: _searchingController,
               hintText: 'ابحث عن المربع السكني',
               bachgroundColor: AppColor.gray2,
-              prefixIcon:
-                  IconButton(onPressed: () {
-                    _searchingController.clear();
-                    _assistancesCubit.getAssistances();
-                  }, icon: const Icon(Icons.close)),
+              prefixIcon: IconButton(
+                onPressed: () {
+                  _searchingController.clear();
+                  _assistancesCubit.getAssistances();
+                },
+                icon: const Icon(Icons.close),
+              ),
               suffixIcon: Icons.search,
               onChanged: (value) {
                 _delay?.cancel();
                 _delay = Timer(const Duration(milliseconds: 400), () {
                   _assistancesCubit.getAssistances(search: value.trim());
                 });
-              } ,
+              },
             ),
           ),
         ],
@@ -195,9 +193,12 @@ class _AllAssistancesState extends State<AllAssistances> {
               onTap: () {
                 Navigator.pop(context);
 
-                Navigator.pushNamed(context, AppRoute.addUpdateAssistanc,
-                    arguments: BlocProvider.of<AssistancesCubit>(passContext)
-                      ..setAssistanceForUpdate(project));
+                Navigator.pushNamed(
+                  context,
+                  AppRoute.addUpdateAssistanc,
+                  arguments: BlocProvider.of<AssistancesCubit>(passContext)
+                    ..setAssistanceForUpdate(project),
+                );
               },
             ),
             ListTile(
@@ -210,7 +211,8 @@ class _AllAssistancesState extends State<AllAssistances> {
                   builder: (context) => AlertDialog(
                     title: const Text('تأكيد الحذف'),
                     content: const Text(
-                        'هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟'),
+                      'هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
@@ -221,8 +223,10 @@ class _AllAssistancesState extends State<AllAssistances> {
                           Navigator.of(context).pop();
                           _assistancesCubit.deleteAssistance(project.id);
                         },
-                        child: const Text('حذف',
-                            style: TextStyle(color: Colors.red)),
+                        child: const Text(
+                          'حذف',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ],
                   ),

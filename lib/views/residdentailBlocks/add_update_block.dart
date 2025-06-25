@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/custom_navigation_bar.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/constants/app_size.dart';
-import 'package:smart_neighborhod_app/components/smallButton.dart';
-import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_size.dart';
+import 'package:smart_negborhood_app/components/custom_navigation_bar.dart';
+import 'package:smart_negborhood_app/components/smallButton.dart';
+import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+
 import '../../components/constants/small_text.dart';
 import '../../components/custom_text_input_filed.dart';
 import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
@@ -36,10 +37,12 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
     super.initState();
     personCubit = context.read<PersonCubit>()..getPeople();
     blockCubit = context.read<BlockCubit>();
-    blockNameController =
-        TextEditingController(text: blockCubit.block?.name ?? '');
-    usernameController =
-        TextEditingController(text: blockCubit.block?.userName ?? '');
+    blockNameController = TextEditingController(
+      text: blockCubit.block?.name ?? '',
+    );
+    usernameController = TextEditingController(
+      text: blockCubit.block?.userName ?? '',
+    );
 
     _selectedPerson = blockCubit.selectedManager;
   }
@@ -84,9 +87,10 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                   ? 'إضافة مربع سكني جديد'
                   : 'تعديل بيانات مربع سكني',
               style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
             ),
           ),
         ),
@@ -99,9 +103,7 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(height: 20),
-                  const SmallText(
-                    text: 'اسم المربع السكني',
-                  ),
+                  const SmallText(text: 'اسم المربع السكني'),
                   const SizedBox(height: AppSize.spasingBetweenInputBloc),
                   CustomTextFormField(
                     bachgroundColor: AppColor.white,
@@ -116,9 +118,7 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                     },
                   ),
                   const SizedBox(height: 30),
-                  const SmallText(
-                    text: 'مدير المربع السكني',
-                  ),
+                  const SmallText(text: 'مدير المربع السكني'),
                   const SizedBox(height: 18),
                   Container(
                     padding: const EdgeInsets.all(25),
@@ -133,12 +133,14 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                           builder: (context, state) {
                             if (state is PersonLoading) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             }
                             if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
-                                    child: Text('لا يوجد مديرين متاحين'));
+                                  child: Text('لا يوجد مديرين متاحين'),
+                                );
                               }
 
                               if (_selectedPerson == null &&
@@ -186,7 +188,9 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
                                   ),
                                 ),
                                 validator: (Person? item) {
@@ -225,14 +229,15 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                               if (value == null || value.length < 8) {
                                 return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
                               }
-                              if (!RegExp(r'^(?=.*[A-Z])(?=.*[0-9])')
-                                  .hasMatch(value)) {
+                              if (!RegExp(
+                                r'^(?=.*[A-Z])(?=.*[0-9])',
+                              ).hasMatch(value)) {
                                 return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
                               }
                               return null;
                             },
                           ),
-                        ]
+                        ],
                       ],
                     ),
                   ),
@@ -241,8 +246,9 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SmallButton(
-                          text: 'إلغاء',
-                          onPressed: () => Navigator.pop(context)),
+                        text: 'إلغاء',
+                        onPressed: () => Navigator.pop(context),
+                      ),
                       const SizedBox(width: 10),
                       SmallButton(
                         text: blockCubit.block == null ? 'إضافة' : 'تعديل',
@@ -266,7 +272,7 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                         },
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

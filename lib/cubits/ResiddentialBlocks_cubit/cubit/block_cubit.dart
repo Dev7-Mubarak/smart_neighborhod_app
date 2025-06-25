@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/core/errors/errormodel.dart';
-import 'package:smart_neighborhod_app/cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
-import 'package:smart_neighborhod_app/models/Person.dart';
+import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
+import 'package:smart_negborhood_app/models/Person.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
@@ -37,16 +37,16 @@ class BlockCubit extends Cubit<BlockState> {
   Future<void> getBlocks() async {
     emit(BlocksLoading());
     try {
-      final response = await api.get(
-        ApiLink.getAllBlockes,
-      );
+      final response = await api.get(ApiLink.getAllBlockes);
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "No data received",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
 
       List<dynamic> blocks = response["data"];
@@ -60,7 +60,10 @@ class BlockCubit extends Cubit<BlockState> {
   }
 
   Future<void> addNewBlock(
-      String name, String userName, String password) async {
+    String name,
+    String userName,
+    String password,
+  ) async {
     emit(BlocksLoading());
     try {
       final response = await api.post(
@@ -74,8 +77,11 @@ class BlockCubit extends Cubit<BlockState> {
       );
 
       if (response["isSuccess"]) {
-        emit(BlockAddedSuccessfully(
-            message: response["message"] ?? "تمت الإضافة بنجاح"));
+        emit(
+          BlockAddedSuccessfully(
+            message: response["message"] ?? "تمت الإضافة بنجاح",
+          ),
+        );
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -108,8 +114,11 @@ class BlockCubit extends Cubit<BlockState> {
         },
       );
       if (response["isSuccess"]) {
-        emit(BlockUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح"));
+        emit(
+          BlockUpdatedSuccessfully(
+            message: response["message"] ?? "تم التحديث بنجاح",
+          ),
+        );
         await getBlocks();
       } else {
         final String errorMessage =
@@ -132,9 +141,7 @@ class BlockCubit extends Cubit<BlockState> {
   Future<void> deleteBlock(int id) async {
     emit(BlocksLoading());
     try {
-      final response = await api.delete(
-        '${ApiLink.deleteBlocke}/$id',
-      );
+      final response = await api.delete('${ApiLink.deleteBlocke}/$id');
 
       if (response["isSuccess"]) {
         emit(BlockDeletedSuccessfully(message: response["message"]));

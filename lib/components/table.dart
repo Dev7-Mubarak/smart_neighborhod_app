@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
 
 // class CustomTableWidget extends StatelessWidget {
 //   final List<String> columnTitles; // عناوين الأعمدة
@@ -106,13 +106,13 @@ class CustomTableWidget extends StatelessWidget {
   final List<dynamic>? originalObjects; // الكائنات الأصلية لتمريرها
 
   const CustomTableWidget({
-    Key? key,
+    super.key,
     required this.columnTitles,
     required this.rowData,
     required this.columnFlexes,
     this.onRowLongPress,
     this.originalObjects,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -146,13 +146,14 @@ class CustomTableWidget extends StatelessWidget {
                     ? () => onRowLongPress!(index, originalObjects![index])
                     : null,
                 onTap: () {
-                  print('Row ${index} tapped!');
+                  print('Row $index tapped!');
                 },
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     border: Border(
-                        bottom: BorderSide(color: Colors.black, width: 1.0)),
+                      bottom: BorderSide(color: Colors.black, width: 1.0),
+                    ),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: IntrinsicHeight(
@@ -182,8 +183,10 @@ class CustomTableWidget extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style:
-            const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -194,8 +197,10 @@ class CustomTableWidget extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style:
-            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

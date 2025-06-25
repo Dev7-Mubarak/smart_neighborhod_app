@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/core/errors/errormodel.dart';
-import 'package:smart_neighborhod_app/models/Person.dart';
-import 'package:smart_neighborhod_app/models/project_catgory.dart';
+import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/models/project_catgory.dart';
+
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
@@ -28,32 +28,34 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   Future<void> getAssistances({String? search}) async {
     emit(AssistancesLoading());
     try {
-      final response = await api.get(
-        ApiLink.getAllProjects,
-      );
+      final response = await api.get(ApiLink.getAllProjects);
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "No data received",
-                isSuccess: response["isSuccess"] ?? false)
-            );
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
-      List<dynamic> _projectsJson = response["data"];
-      List<Project> _projectsObjects =
-          _projectsJson.map((e) => Project.fromJson(e)).toList();    
-      List<Project> _assistances = _projectsObjects
+      List<dynamic> projectsJson = response["data"];
+      List<Project> projectsObjects = projectsJson
+          .map((e) => Project.fromJson(e))
+          .toList();
+      List<Project> assistances = projectsObjects
           .where((e) => e.projectCategory.name == "مساعدات")
           .toList();
-      if (_assistances == []) {
+      if (assistances == []) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "لا توجد مشاريع مساعدات",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "لا توجد مشاريع مساعدات",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
-      emit(AssistancesLoaded(_assistances));
+      emit(AssistancesLoaded(assistances));
     } on Serverexception catch (e) {
       emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
@@ -84,14 +86,14 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   // دالة لتغيير المدير المختار بناءً على الـ ID
   void changeSelectedManager(int? id) {
     selectedManagerId = id;
-  
+
     // يمكنك هنا إطلاق حالة جديدة إذا كنت بحاجة إلى تحديث واجهة المستخدم
     // emit(PersonIdSelectedState(id));
     emit(ChangeSelectedManager());
   }
 
   void changeSelectedProjectCategory(ProjectCategory? selectedManager) {
-    this.selectedProjectCategory = selectedManager;
+    selectedProjectCategory = selectedManager;
     emit(ChangeSelectedProjectCategory());
   }
 
@@ -108,10 +110,11 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   void pickStartDate(BuildContext context) async {
     final DateTime now = DateTime.now();
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedStartDate ?? now,
-        firstDate: DateTime(now.year - 5, now.month, now.day),
-        lastDate: DateTime(2100, 12, 31));
+      context: context,
+      initialDate: selectedStartDate ?? now,
+      firstDate: DateTime(now.year - 5, now.month, now.day),
+      lastDate: DateTime(2100, 12, 31),
+    );
 
     if (picked != null && picked != selectedStartDate) {
       selectedStartDate = picked;
@@ -122,10 +125,11 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   void pickEndDate(BuildContext context) async {
     final DateTime now = DateTime.now();
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedEndDate ?? now,
-        firstDate: DateTime(now.year - 5, now.month, now.day),
-        lastDate: DateTime(2100, 12, 31));
+      context: context,
+      initialDate: selectedEndDate ?? now,
+      firstDate: DateTime(now.year - 5, now.month, now.day),
+      lastDate: DateTime(2100, 12, 31),
+    );
     if (picked != null && picked != selectedEndDate) {
       selectedEndDate = picked;
     }
@@ -133,7 +137,10 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }
 
   Future<void> addNewAssistances(
-      String name, String description, int budget) async {
+    String name,
+    String description,
+    int budget,
+  ) async {
     emit(AssistancesLoading());
     try {
       final response = await api.post(
@@ -148,14 +155,19 @@ class AssistancesCubit extends Cubit<AssistancesState> {
           "endDate": selectedEndDate?.toIso8601String(),
           "projectStatus": selectedProjectStatus?.toString().split('.').last,
           "budget": budget,
-          "projectPriority":
-              selectedProjectPriority?.toString().split('.').last,
+          "projectPriority": selectedProjectPriority
+              ?.toString()
+              .split('.')
+              .last,
         },
       );
 
       if (response["isSuccess"]) {
-        emit(AssistancAddedSuccessfully(
-            message: response["message"] ?? "تمت الإضافة بنجاح"));
+        emit(
+          AssistancAddedSuccessfully(
+            message: response["message"] ?? "تمت الإضافة بنجاح",
+          ),
+        );
         resetInputs();
         await getAssistances();
       } else {
@@ -205,13 +217,18 @@ class AssistancesCubit extends Cubit<AssistancesState> {
           "endDate": selectedEndDate?.toIso8601String(),
           "projectStatus": selectedProjectStatus?.toString().split('.').last,
           "budget": budget,
-          "projectPriority":
-              selectedProjectPriority?.toString().split('.').last,
+          "projectPriority": selectedProjectPriority
+              ?.toString()
+              .split('.')
+              .last,
         },
       );
       if (response["isSuccess"]) {
-        emit(AssistanceUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح"));
+        emit(
+          AssistanceUpdatedSuccessfully(
+            message: response["message"] ?? "تم التحديث بنجاح",
+          ),
+        );
         resetInputs();
         await getAssistances();
       } else {
@@ -235,9 +252,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   Future<void> deleteAssistance(int id) async {
     emit(AssistancesLoading());
     try {
-      final response = await api.delete(
-        '${ApiLink.deleteProject}/$id',
-      );
+      final response = await api.delete('${ApiLink.deleteProject}/$id');
 
       if (response["isSuccess"]) {
         emit(AssistancDeletedSuccessfully(message: response["message"]));

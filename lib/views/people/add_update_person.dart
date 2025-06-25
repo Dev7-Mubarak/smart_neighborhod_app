@@ -2,14 +2,15 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/smallButton.dart';
-import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_neighborhod_app/models/enums/Gender.dart';
-import 'package:smart_neighborhod_app/models/enums/blood_type.dart';
-import 'package:smart_neighborhod_app/models/enums/marital_status.dart';
-import 'package:smart_neighborhod_app/models/enums/occupation_status.dart';
+
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/smallButton.dart';
+import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/models/enums/blood_type.dart';
+import 'package:smart_negborhood_app/models/enums/gender.dart';
+import 'package:smart_negborhood_app/models/enums/marital_status.dart';
+import 'package:smart_negborhood_app/models/enums/occupation_status.dart';
 import '../../components/CustomDropdown.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_size.dart';
@@ -39,26 +40,33 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
   @override
   void initState() {
     final cubit = context.read<PersonCubit>();
-    firstNameController =
-        TextEditingController(text: widget.person?.firstName ?? '');
-    secondNameController =
-        TextEditingController(text: widget.person?.secondName ?? '');
-    thirdNameController =
-        TextEditingController(text: widget.person?.thirdName ?? '');
-    lastNameController =
-        TextEditingController(text: widget.person?.lastName ?? '');
-    identityNumberController =
-        TextEditingController(text: widget.person?.identityNumber ?? '');
-    final date = cubit.selectedDate ??
+    firstNameController = TextEditingController(
+      text: widget.person?.firstName ?? '',
+    );
+    secondNameController = TextEditingController(
+      text: widget.person?.secondName ?? '',
+    );
+    thirdNameController = TextEditingController(
+      text: widget.person?.thirdName ?? '',
+    );
+    lastNameController = TextEditingController(
+      text: widget.person?.lastName ?? '',
+    );
+    identityNumberController = TextEditingController(
+      text: widget.person?.identityNumber ?? '',
+    );
+    final date =
+        cubit.selectedDate ??
         widget.person?.dateOfBirth ??
         DateTime(2000, 1, 1);
-    birthDateController =
-        TextEditingController(text: DateFormat('yyyy-MM-dd').format(date));
-    phoneNumberController =
-        TextEditingController(text: widget.person?.phoneNumber ?? '');
+    birthDateController = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(date),
+    );
+    phoneNumberController = TextEditingController(
+      text: widget.person?.phoneNumber ?? '',
+    );
     emailController = TextEditingController(text: widget.person?.email ?? '');
     super.initState();
-    
   }
 
   @override
@@ -80,14 +88,14 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     return BlocListener<PersonCubit, PersonState>(
       listener: (context, state) {
         if (state is PersonAddedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
           Navigator.pop(context);
         } else if (state is PersonFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
         }
       },
       child: Scaffold(
@@ -101,9 +109,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   ? 'إضافة شخص جديد'
                   : 'تعديل بيانات الشخص',
               style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
             ),
           ),
         ),
@@ -125,7 +134,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                     children: [
                       const SmallText(text: 'الاسم الاول'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: firstNameController,
                         validator: (value) {
@@ -138,7 +148,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'الاسم الثاني'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: secondNameController,
                         validator: (value) {
@@ -151,7 +162,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'الاسم الثالث'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: thirdNameController,
                         validator: (value) {
@@ -164,7 +176,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'الاسم الربع'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: lastNameController,
                         validator: (value) {
@@ -177,7 +190,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'رقم الهوية'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: identityNumberController,
                         validator: (value) {
@@ -193,7 +207,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'نوع الهوية'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       BlocBuilder<PersonCubit, PersonState>(
                         buildWhen: (previous, current) =>
                             current is ChangeSelectedIdentityType,
@@ -210,8 +225,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                               context
                                   .read<PersonCubit>()
                                   .changeSelectedIdentityType(
-                                      IdentityType.values.firstWhere(
-                                          (e) => e.displayName == newValue));
+                                    IdentityType.values.firstWhere(
+                                      (e) => e.displayName == newValue,
+                                    ),
+                                  );
                             },
                             text: 'اختيار نوع الهوية',
                             validator: (value) {
@@ -228,7 +245,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'رقم التواصل'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       Row(
                         children: [
                           Expanded(
@@ -253,13 +271,14 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                               color: AppColor.primaryColor,
                               size: 30,
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'طريقة الإتصال'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       BlocBuilder<PersonCubit, PersonState>(
                         buildWhen: (previous, current) =>
                             current is ChangeContactType,
@@ -277,32 +296,36 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                       context
                                           .read<PersonCubit>()
                                           .toggleContactType(
-                                              isCall: value,
-                                              isWhatsapp: context
-                                                  .read<PersonCubit>()
-                                                  .isWhatsapp);
+                                            isCall: value,
+                                            isWhatsapp: context
+                                                .read<PersonCubit>()
+                                                .isWhatsapp,
+                                          );
                                     },
                                   ),
                                 ],
                               ),
                               const SizedBox(
-                                  width: AppSize.spasingBetweenInputBloc),
+                                width: AppSize.spasingBetweenInputBloc,
+                              ),
                               Row(
                                 children: [
                                   const SmallText(text: 'واتس اب'),
                                   Checkbox(
-                                    value:
-                                        context.read<PersonCubit>().isWhatsapp,
+                                    value: context
+                                        .read<PersonCubit>()
+                                        .isWhatsapp,
                                     activeColor: AppColor.primaryColor,
                                     onChanged: (bool? value) {
                                       setState(() {
                                         context
                                             .read<PersonCubit>()
                                             .toggleContactType(
-                                                isWhatsapp: value,
-                                                isCall: context
-                                                    .read<PersonCubit>()
-                                                    .isCall);
+                                              isWhatsapp: value,
+                                              isCall: context
+                                                  .read<PersonCubit>()
+                                                  .isCall,
+                                            );
                                       });
                                     },
                                   ),
@@ -315,26 +338,30 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'الإيميل'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       Row(
                         children: [
                           Expanded(
                             child: CustomTextFormField(
                               controller: emailController,
-                              validator: (value) {},
+                              validator: (value) {
+                                return null;
+                              },
                             ),
                           ),
                           const Icon(
                             Icons.email,
                             color: AppColor.primaryColor,
                             size: 30,
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'تاريخ الميلاد'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: birthDateController,
                         suffixIcon: Icons.calendar_today,
@@ -350,7 +377,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'فصيلة الدم'),
                       const SizedBox(
-                          height: AppSize.spasingBetweenInputsAndLabale),
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       BlocBuilder<PersonCubit, PersonState>(
                         builder: (context, state) {
                           return CustomDropdown(
@@ -359,9 +387,11 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                 .toList(),
                             selectedValue: cubit.selectedBloodType?.displayName,
                             onChanged: (String? newValue) {
-                              cubit.changeSelectedBloodType(BloodType.values
-                                  .firstWhere(
-                                      (e) => e.displayName == newValue));
+                              cubit.changeSelectedBloodType(
+                                BloodType.values.firstWhere(
+                                  (e) => e.displayName == newValue,
+                                ),
+                              );
                             },
                             text: 'اختبار فصيلة الدم',
                             validator: (value) {
@@ -382,8 +412,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                               children: [
                                 const SmallText(text: 'الحالة الاجتماعية'),
                                 const SizedBox(
-                                    height:
-                                        AppSize.spasingBetweenInputsAndLabale),
+                                  height: AppSize.spasingBetweenInputsAndLabale,
+                                ),
                                 BlocBuilder<PersonCubit, PersonState>(
                                   buildWhen: (previous, current) =>
                                       current is ChangeSelectedMaritalStatus,
@@ -393,12 +423,14 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                           .map((e) => e.displayName)
                                           .toList(),
                                       selectedValue: cubit
-                                          .selectedMaritalStatus?.displayName,
+                                          .selectedMaritalStatus
+                                          ?.displayName,
                                       onChanged: (newValue) {
                                         cubit.changeSelectedMaritalStatus(
-                                            MaritalStatus.values.firstWhere(
-                                                (e) =>
-                                                    e.displayName == newValue));
+                                          MaritalStatus.values.firstWhere(
+                                            (e) => e.displayName == newValue,
+                                          ),
+                                        );
                                       },
                                       text: 'اختيار الحالة الاجتماعية',
                                       validator: (value) {
@@ -411,11 +443,12 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                   },
                                 ),
                                 const SizedBox(
-                                    height: AppSize.spasingBetweenInputBloc),
+                                  height: AppSize.spasingBetweenInputBloc,
+                                ),
                                 const SmallText(text: 'الحالة المهنية'),
                                 const SizedBox(
-                                    height:
-                                        AppSize.spasingBetweenInputsAndLabale),
+                                  height: AppSize.spasingBetweenInputsAndLabale,
+                                ),
                                 BlocBuilder<PersonCubit, PersonState>(
                                   buildWhen: (previous, current) =>
                                       current is ChangeSelectedOccupationStatus,
@@ -430,9 +463,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                           ?.displayName,
                                       onChanged: (newValue) {
                                         cubit.changeSelectedOccupationStatus(
-                                            OccupationStatus.values.firstWhere(
-                                                (e) =>
-                                                    e.displayName == newValue));
+                                          OccupationStatus.values.firstWhere(
+                                            (e) => e.displayName == newValue,
+                                          ),
+                                        );
                                       },
                                       text: 'اختيار الحالة المهنية',
                                       validator: (value) {
@@ -443,7 +477,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                       },
                                     );
                                   },
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -484,8 +518,9 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
             ),
             child: GestureDetector(
               onTap: () async {
-                final picked =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                final picked = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
                 if (picked != null) {
                   cubit.uplodePorfilePicture(picked);
                 }
@@ -496,8 +531,9 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 builder: (context, state) {
                   if (cubit.profilePicture != null) {
                     return CircleAvatar(
-                      backgroundImage:
-                          FileImage(File(cubit.profilePicture!.path)),
+                      backgroundImage: FileImage(
+                        File(cubit.profilePicture!.path),
+                      ),
                       radius: 48,
                     );
                   } else if (widget.person?.image != null &&
@@ -510,8 +546,11 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                     return CircleAvatar(
                       radius: 48,
                       backgroundColor: Colors.grey[200],
-                      child:
-                          Icon(Icons.person, size: 48, color: Colors.grey[600]),
+                      child: Icon(
+                        Icons.person,
+                        size: 48,
+                        color: Colors.grey[600],
+                      ),
                     );
                   }
                 },
@@ -527,8 +566,11 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2),
               ),
-              child:
-                  const Icon(Icons.camera_alt, color: Colors.white, size: 24),
+              child: const Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: 24,
+              ),
             ),
           ),
         ],
@@ -557,9 +599,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         cubit.changeSelctedGender(value!);
                       },
                     ),
-                    const SmallText(
-                      text: 'ذكر',
-                    )
+                    const SmallText(text: 'ذكر'),
                   ],
                 ),
                 const SizedBox(width: 30),
@@ -572,7 +612,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         cubit.changeSelctedGender(value!);
                       },
                     ),
-                    const SmallText(text: 'انثى')
+                    const SmallText(text: 'انثى'),
                   ],
                 ),
               ],

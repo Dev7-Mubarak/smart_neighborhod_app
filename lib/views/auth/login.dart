@@ -2,8 +2,8 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/login_cubit/login_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/login_cubit/login_state.dart';
+import 'package:smart_negborhood_app/cubits/login_cubit/login_cubit.dart';
+import 'package:smart_negborhood_app/cubits/login_cubit/login_state.dart';
 
 import '../../components/circular_logo.dart';
 import '../../components/constants/app_color.dart';
@@ -11,7 +11,6 @@ import '../../components/constants/app_route.dart';
 import '../../components/default_text_form_filed.dart';
 import '../../components/defult_button.dart';
 import '../../core/API/dio_consumer.dart';
-
 
 class Login extends StatelessWidget {
   final isPassword = true;
@@ -29,10 +28,7 @@ class Login extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            Navigator.pushNamed(
-              context,
-              AppRoute.mainHome,
-            );
+            Navigator.pushNamed(context, AppRoute.mainHome);
             //  print(state.userdata.id);
           } else if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -54,7 +50,9 @@ class Login extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.only(left: 40),
                       child: Align(
-                          alignment: Alignment.topLeft, child: CircularLogo()),
+                        alignment: Alignment.topLeft,
+                        child: CircularLogo(),
+                      ),
                     ),
                     const Text(
                       "الحارة الذكية",
@@ -151,8 +149,9 @@ class Login extends StatelessWidget {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             LoginCubit.get(context).signIn(
-                                email: emailContoller.text,
-                                password: passwordContoller.text);
+                              email: emailContoller.text,
+                              password: passwordContoller.text,
+                            );
                             // Navigator.pushNamed(
                             //   context,
                             //   AppRoute.mainhome,
@@ -161,7 +160,7 @@ class Login extends StatelessWidget {
                         },
                         fontsize: 20,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

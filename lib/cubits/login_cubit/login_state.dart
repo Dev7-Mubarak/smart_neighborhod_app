@@ -1,4 +1,4 @@
-import 'package:smart_neighborhod_app/models/login_model.dart';
+import 'package:smart_negborhood_app/models/login_model.dart';
 
 abstract class LoginState {}
 

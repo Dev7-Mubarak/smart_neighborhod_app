@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'constants/app_size.dart';
 
 class SearchableTextFormField extends StatelessWidget {
@@ -50,13 +50,14 @@ class SearchableTextFormField extends StatelessWidget {
         fillColor: bachgroundColor,
         filled: true,
         isDense: true,
-        contentPadding:
-            const EdgeInsets.only(left: 4, right: 0, top: 12, bottom: 12),
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 14,
+        contentPadding: const EdgeInsets.only(
+          left: 4,
+          right: 0,
+          top: 12,
+          bottom: 12,
         ),
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Colors.black, fontSize: 14),
         prefixIcon: prefixIcon == null
             ? null
             : IconButton(
@@ -66,10 +67,7 @@ class SearchableTextFormField extends StatelessWidget {
               ),
         suffixIcon: suffixIcon == null
             ? null
-            : Icon(
-                suffixIcon,
-                color: Colors.black,
-              ),
+            : Icon(suffixIcon, color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
           borderSide: const BorderSide(color: Color(0xFFE4E4E4), width: 2),

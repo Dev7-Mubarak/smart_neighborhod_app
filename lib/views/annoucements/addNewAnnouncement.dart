@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:smart_neighborhod_app/components/constants/app_image.dart';
+import 'package:smart_negborhood_app/components/constants/app_image.dart';
 
 import '../../components/CustomDropdown.dart';
 import '../../components/custom_navigation_bar.dart';
@@ -45,7 +43,10 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
           child: Text(
             'الإعلانات',
             style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
       ),
@@ -59,17 +60,19 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                 child: Text(
                   'إضافة إعلان',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: AppColor.gray),
+                  borderRadius: BorderRadius.circular(18),
+                  color: AppColor.gray,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -87,12 +90,17 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                             },
                             selectedValue: selectedWriter,
                             text: 'كاتب الإعلان',
-                            validator: (String) {},
+                            validator: (String) {
+                              return null;
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Icon(Icons.person,
-                            color: AppColor.primaryColor, size: 40),
+                        const Icon(
+                          Icons.person,
+                          color: AppColor.primaryColor,
+                          size: 40,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -103,7 +111,9 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                         GestureDetector(
                           onTap: () async {
                             await DateTimeHelper.selectDate(
-                                context, DatewriteTheAnnouncementController);
+                              context,
+                              DatewriteTheAnnouncementController,
+                            );
                           },
                           child: const Icon(
                             Icons.calendar_month,
@@ -125,9 +135,13 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                             readOnly: true, // منع الإدخال اليدوي
                             onTap: () async {
                               await DateTimeHelper.selectDate(
-                                  context, DatewriteTheAnnouncementController);
+                                context,
+                                DatewriteTheAnnouncementController,
+                              );
                             },
-                            validator: (value) {},
+                            validator: (value) {
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -138,9 +152,7 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const subname(
-                          text: 'إعلان مكرر',
-                        ),
+                        const subname(text: 'إعلان مكرر'),
                         Radio<String>(
                           value: 'إعلان مكرر',
                           groupValue: selectedType,
@@ -163,7 +175,7 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                               items: [
                                 'توزيع إسطوانات غاز',
                                 'الإسم الثاني',
-                                'الإسم الأول'
+                                'الإسم الأول',
                               ],
                               onChanged: (newValue) {
                                 setState(() {
@@ -172,7 +184,9 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                               },
                               selectedValue: selectedAnnouncementType,
                               text: 'إسم الإعلان',
-                              validator: (String) {},
+                              validator: (String) {
+                                return null;
+                              },
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -181,7 +195,7 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                             width: 40, // عرض الصورة
                             height: 40, // ارتفاع الصورة
                             // fit: BoxFit.contain, // احتواء الصورة داخل الحجم
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -192,7 +206,9 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                           GestureDetector(
                             onTap: () async {
                               await DateTimeHelper.selectDate(
-                                  context, AnnouncementDateController);
+                                context,
+                                AnnouncementDateController,
+                              );
                             },
                             child: const Icon(
                               Icons.calendar_month,
@@ -214,9 +230,13 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                               readOnly: true, // منع الإدخال اليدوي
                               onTap: () async {
                                 await DateTimeHelper.selectDate(
-                                    context, AnnouncementDateController);
+                                  context,
+                                  AnnouncementDateController,
+                                );
                               },
-                              validator: (value) {},
+                              validator: (value) {
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -228,8 +248,10 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              await DateTimeHelper.selectTime(context,
-                                  TimeController); // استدعاء الدالة لاختيار الوقت
+                              await DateTimeHelper.selectTime(
+                                context,
+                                TimeController,
+                              ); // استدعاء الدالة لاختيار الوقت
                             },
                             child: const Icon(
                               Icons.access_time, // أيقونة الوقت
@@ -250,10 +272,14 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                               suffixIcon: null,
                               readOnly: true, // منع الإدخال اليدوي
                               onTap: () async {
-                                await DateTimeHelper.selectTime(context,
-                                    TimeController); // استدعاء الدالة عند النقر
+                                await DateTimeHelper.selectTime(
+                                  context,
+                                  TimeController,
+                                ); // استدعاء الدالة عند النقر
                               },
-                              validator: (value) {},
+                              validator: (value) {
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -326,7 +352,7 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
                             return null;
                           },
                         ),
-                      ]
+                      ],
                     ],
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -370,17 +396,9 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SmallButton(
-                    text: 'إلغاء',
-                    onPressed: () {},
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SmallButton(
-                    text: 'إضافة',
-                    onPressed: () {},
-                  )
+                  SmallButton(text: 'إلغاء', onPressed: () {}),
+                  const SizedBox(width: 10),
+                  SmallButton(text: 'إضافة', onPressed: () {}),
                 ],
               ),
             ],

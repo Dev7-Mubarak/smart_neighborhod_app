@@ -1,4 +1,4 @@
-import 'package:smart_neighborhod_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/Person.dart';
 
 class FamilyDetilesModel {
   late int id;
@@ -39,7 +39,7 @@ class FamilyDetilesModel {
     blockId = json["blockId"] ?? 0;
     headOfTheFamilyId = json["headOfTheFamilyId"];
     headOfTheFamilyName = json["headOfTheFamilyName"];
-    var _familyMembers = json["familyMembers"] as List;
-    familyMembers = _familyMembers.map((e) => Person.fromJson(e)).toList();
+    var familyMembers = json["familyMembers"] as List;
+    familyMembers = familyMembers.map((e) => Person.fromJson(e)).toList();
   }
 }

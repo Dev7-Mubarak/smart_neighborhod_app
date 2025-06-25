@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/constants/app_route.dart';
-import 'package:smart_neighborhod_app/components/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
+
 import '../../components/constants/app_image.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/smallButton.dart';
@@ -51,9 +52,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
             ),
           );
         } else {
-          return const Center(
-            child: Text("لا توجد بيانات للعرض حاليًا."),
-          );
+          return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
         }
       },
     );
@@ -81,7 +80,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
   Widget _buildHousingUnitCard({
     required Block block,
     required void Function(BuildContext context, Block block)
-        onLongPressCallback,
+    onLongPressCallback,
   }) {
     return InkWell(
       onTap: () => {
@@ -89,7 +88,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
           context,
           AppRoute.residentialBlockDetial,
           arguments: block,
-        )
+        ),
       },
       onLongPress: () {
         onLongPressCallback(context, block);
@@ -166,9 +165,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               SmallButton(
                 text: 'أضافة',
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoute.addUpdateBlock,
-                          arguments: BlocProvider.of<BlockCubit>(context))
-                      .then((_) {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.addUpdateBlock,
+                    arguments: BlocProvider.of<BlockCubit>(context),
+                  ).then((_) {
                     _blockCubit.getBlocks();
                   });
                 },
@@ -179,7 +180,9 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                   hintText: 'ابحث عن المربع السكني',
                   bachgroundColor: AppColor.gray2,
                   prefixIcon: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.close)),
+                    onPressed: () {},
+                    icon: const Icon(Icons.close),
+                  ),
                   suffixIcon: Icons.search,
                 ),
               ),
@@ -210,9 +213,12 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               leading: const Icon(Icons.edit, color: Colors.blue),
               title: const Text('تعديل'),
               onTap: () {
-                Navigator.pushNamed(context, AppRoute.addUpdateBlock,
-                    arguments: BlocProvider.of<BlockCubit>(passContext)
-                      ..setBlockForUpdate(bloc));
+                Navigator.pushNamed(
+                  context,
+                  AppRoute.addUpdateBlock,
+                  arguments: BlocProvider.of<BlockCubit>(passContext)
+                    ..setBlockForUpdate(bloc),
+                );
               },
             ),
             ListTile(
@@ -256,8 +262,10 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                           Navigator.of(context).pop();
                           _blockCubit.deleteBlock(bloc.id);
                         },
-                        child: const Text('حذف',
-                            style: TextStyle(color: Colors.red)),
+                        child: const Text(
+                          'حذف',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ],
                   ),

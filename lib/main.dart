@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/app_route.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/services/cache_helper.dart';
+import 'package:smart_negborhood_app/app_route.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/services/cache_helper.dart';
 import 'components/constants/app_route.dart';
 
 void main() async {

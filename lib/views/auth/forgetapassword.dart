@@ -1,9 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/login_cubit/login_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/login_cubit/login_state.dart';
 
 import '../../components/boldText.dart';
 import '../../components/circular_logo.dart';
@@ -55,7 +52,9 @@ class forgetapassword extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.only(left: 40),
                       child: Align(
-                          alignment: Alignment.topLeft, child: CircularLogo()),
+                        alignment: Alignment.topLeft,
+                        child: CircularLogo(),
+                      ),
                     ),
                     const Text(
                       "الحارة الذكية",
@@ -108,7 +107,8 @@ class forgetapassword extends StatelessWidget {
 
                               // التحقق من صحة البريد الإلكتروني باستخدام RegExp
                               final emailRegex = RegExp(
-                                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                              );
 
                               if (!emailRegex.hasMatch(value)) {
                                 return 'الرجاء إدخال بريد إلكتروني صالح';
@@ -134,15 +134,12 @@ class forgetapassword extends StatelessWidget {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             // إستدعاء فنكشن من الكيوبت تقوم بعمل ركوست إلى ال API ,و إرسال الإيميل معه
-                            Navigator.pushNamed(
-                              context,
-                              AppRoute.checkEmail,
-                            );
+                            Navigator.pushNamed(context, AppRoute.checkEmail);
                           }
                         },
                         fontsize: 20,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

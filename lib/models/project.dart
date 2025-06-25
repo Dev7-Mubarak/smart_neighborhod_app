@@ -1,4 +1,4 @@
-import 'package:smart_neighborhod_app/models/project_catgory.dart';
+import 'package:smart_negborhood_app/models/project_catgory.dart';
 
 import 'enums/project_priority.dart';
 import 'enums/project_status.dart';
@@ -34,9 +34,9 @@ class Project {
       name: json["name"] ?? "",
       description: json["description"] ?? "",
       startDate: DateTime.parse(json['startDate'] as String),
-      endDate:json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
-      projectStatus:_projectStatusFromString(json["projectStatus"]),
-      projectPriority:_projectPriorityFromString( json["projectPriority"]) ,
+      endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
+      projectStatus: _projectStatusFromString(json["projectStatus"]),
+      projectPriority: _projectPriorityFromString(json["projectPriority"]),
       budget: json["budget"] ?? 0,
       manager: Manager.fromJson(json["manager"] ?? {}),
       projectCategory: ProjectCategory.fromJson(json["projectCatgory"] ?? {}),
@@ -44,22 +44,23 @@ class Project {
   }
   static ProjectStatus _projectStatusFromString(String value) {
     try {
-    return ProjectStatusExtension.fromDisplayName(value);
-  } catch (e) {
-    return ProjectStatus.Planned;
-  }
+      return ProjectStatusExtension.fromDisplayName(value);
+    } catch (e) {
+      return ProjectStatus.Planned;
+    }
     // ProjectStatus _projectStatus=
-  //   return ProjectStatus.values.firstWhere(
-  //     (e) => e.toString().split('.').last == value,
-  //     orElse: () => ProjectStatus.Planned,
-  // );
+    //   return ProjectStatus.values.firstWhere(
+    //     (e) => e.toString().split('.').last == value,
+    //     orElse: () => ProjectStatus.Planned,
+    // );
   }
-    static ProjectPriority _projectPriorityFromString(String value) {
-        try {
-    return ProjectPriorityExtension.fromDisplayName(value);
-  } catch (e) {
-    return ProjectPriority.Low;
-  }
+
+  static ProjectPriority _projectPriorityFromString(String value) {
+    try {
+      return ProjectPriorityExtension.fromDisplayName(value);
+    } catch (e) {
+      return ProjectPriority.Low;
+    }
     // return ProjectPriority.values.firstWhere(
     //   (e) => e.toString().split('.').last == value,
     //   orElse: () => ProjectPriority.Low,
@@ -71,18 +72,9 @@ class Manager {
   late int id;
   late String fullName;
 
-  Manager({
-    required this.id,
-    required this.fullName,
-  });
+  Manager({required this.id, required this.fullName});
 
   factory Manager.fromJson(Map<String, dynamic> json) {
-    return Manager(
-      id: json["id"] ?? 0,
-      fullName: json["fullName"] ?? "",
-    );
+    return Manager(id: json["id"] ?? 0, fullName: json["fullName"] ?? "");
   }
 }
-
-  
-

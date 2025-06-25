@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import 'constants/app_color.dart';
 
 class boldtext extends StatelessWidget {
-  const boldtext( 
-      {super.key,
-      required this.text,
-      required this.fontsize,
-      required this.fontcolor, required this.boldSize,this.textAlign=TextAlign.right});
+  const boldtext({
+    super.key,
+    required this.text,
+    required this.fontsize,
+    required this.fontcolor,
+    required this.boldSize,
+    this.textAlign = TextAlign.right,
+  });
   final String text;
   final TextAlign textAlign;
   final double fontsize;
@@ -47,7 +46,7 @@ class boldtext extends StatelessWidget {
           ),
         ],
       ),
-      textAlign:textAlign,
+      textAlign: textAlign,
     );
   }
 }

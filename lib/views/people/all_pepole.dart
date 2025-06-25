@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/components/constants/app_route.dart';
-import 'package:smart_neighborhod_app/components/constants/app_size.dart';
-import 'package:smart_neighborhod_app/models/person_dto.dart';
-import 'package:skeletons/skeletons.dart';
+// import 'package:skeletons/skeletons.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/constants/app_size.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/searcable_text_input_filed.dart';
 import '../../components/smallButton.dart';
@@ -72,12 +71,7 @@ class _AllPeopleState extends State<AllPeople> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          _buildTopBar(context),
-          _peopleListView(),
-        ],
-      ),
+      body: Column(children: [_buildTopBar(context), _peopleListView()]),
     );
   }
 
@@ -96,9 +90,9 @@ class _AllPeopleState extends State<AllPeople> {
             );
           }
 
-          if (state is PersonLoading && state.isFirstFetch) {
-            return const _SkeletonList();
-          }
+          // if (state is PersonLoading && state.isFirstFetch) {
+          //   return const _SkeletonList();
+          // }
 
           if (state is PersonLoaded ||
               (state is PersonLoading && !state.isFirstFetch)) {
@@ -152,8 +146,11 @@ class _AllPeopleState extends State<AllPeople> {
             text: 'أضافة',
             onPressed: () {
               BlocProvider.of<PersonCubit>(context).person = null;
-              Navigator.pushNamed(context, AppRoute.addUpdatePerson,
-                  arguments: BlocProvider.of<PersonCubit>(context));
+              Navigator.pushNamed(
+                context,
+                AppRoute.addUpdatePerson,
+                arguments: BlocProvider.of<PersonCubit>(context),
+              );
             },
           ),
           const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
@@ -162,11 +159,12 @@ class _AllPeopleState extends State<AllPeople> {
               controller: _searchingController,
               hintText: 'بحث',
               prefixIcon: IconButton(
-                  onPressed: () {
-                    _searchingController.clear();
-                    _personCubit.getPeople();
-                  },
-                  icon: const Icon(Icons.close)),
+                onPressed: () {
+                  _searchingController.clear();
+                  _personCubit.getPeople();
+                },
+                icon: const Icon(Icons.close),
+              ),
               suffixIcon: Icons.search,
               bachgroundColor: AppColor.gray2,
               onChanged: (value) {
@@ -176,7 +174,7 @@ class _AllPeopleState extends State<AllPeople> {
                 });
               },
             ),
-          )
+          ),
         ],
       ),
     );
@@ -223,11 +221,14 @@ class _AllPeopleState extends State<AllPeople> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
-                          BlocProvider.of<PersonCubit>(passContext)
-                              .deletePerson(person.id);
+                          BlocProvider.of<PersonCubit>(
+                            passContext,
+                          ).deletePerson(person.id);
                         },
-                        child: const Text('حذف',
-                            style: TextStyle(color: Colors.red)),
+                        child: const Text(
+                          'حذف',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ],
                   ),
@@ -241,37 +242,29 @@ class _AllPeopleState extends State<AllPeople> {
   }
 }
 
-class _SkeletonList extends StatelessWidget {
-  const _SkeletonList();
+// class _SkeletonList extends StatelessWidget {
+//   const _SkeletonList();
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: SkeletonListView(
-        itemCount: 10,
-        itemBuilder: (context, index) => const ListTile(
-          leading: SkeletonAvatar(
-            style: SkeletonAvatarStyle(
-              shape: BoxShape.circle,
-              width: 40,
-              height: 40,
-            ),
-          ),
-          title: SkeletonLine(
-            style: SkeletonLineStyle(
-              height: 16,
-              width: 240,
-            ),
-          ),
-          subtitle: SkeletonLine(
-            style: SkeletonLineStyle(
-              height: 12,
-              width: 100,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(16),
+//       child: SkeletonListView(
+//         itemCount: 10,
+//         itemBuilder: (context, index) => const ListTile(
+//           leading: SkeletonAvatar(
+//             style: SkeletonAvatarStyle(
+//               shape: BoxShape.circle,
+//               width: 40,
+//               height: 40,
+//             ),
+//           ),
+//           title: SkeletonLine(style: SkeletonLineStyle(height: 16, width: 240)),
+//           subtitle: SkeletonLine(
+//             style: SkeletonLineStyle(height: 12, width: 100),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

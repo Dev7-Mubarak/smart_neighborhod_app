@@ -8,11 +8,11 @@ class SearchWidget<T> extends StatefulWidget {
   final String Function(T) searchCriteria; // دالة تحدد معيار البحث
 
   const SearchWidget({
-    Key? key,
+    super.key,
     required this.originalList,
     required this.onSearch,
     required this.searchCriteria,
-  }) : super(key: key);
+  });
 
   @override
   _SearchWidgetState<T> createState() => _SearchWidgetState<T>();
@@ -38,8 +38,12 @@ class _SearchWidgetState<T> extends State<SearchWidget<T>> {
 
   void _performSearch(String query) {
     final filteredList = widget.originalList
-        .where((item) =>
-            widget.searchCriteria(item).toLowerCase().contains(query.toLowerCase()))
+        .where(
+          (item) => widget
+              .searchCriteria(item)
+              .toLowerCase()
+              .contains(query.toLowerCase()),
+        )
         .toList();
     widget.onSearch(filteredList); // تحديث القائمة المعروضة
   }

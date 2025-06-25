@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/family_cubit/family_state.dart';
-import 'package:smart_neighborhod_app/models/Person.dart';
-import 'package:smart_neighborhod_app/models/family_member.dart';
+import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/models/Person.dart';
 
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
@@ -39,7 +38,10 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
           child: Text(
             'معلومات الأسرة',
             style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
       ),
@@ -58,35 +60,29 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SmallButton(
-                          text: 'تعديل',
-                          onPressed: () {},
-                        ),
-                      ],
+                      children: [SmallButton(text: 'تعديل', onPressed: () {})],
                     ),
                   ),
                   const SizedBox(height: 16),
                   const Text(
                     'أفراد الأسرة',
                     style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   FamilyMembersSection(
-                      familyMembers: state.familyDetiles.familyMembers),
+                    familyMembers: state.familyDetiles.familyMembers,
+                  ),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SmallButton(
-                          text: 'إضافة فرد جديد',
-                          onPressed: () {},
-                        ),
+                        SmallButton(text: 'إضافة فرد جديد', onPressed: () {}),
                       ],
                     ),
                   ),
@@ -128,64 +124,75 @@ class FamilyDetilesCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('أسم الأسرة: ${familyDetiles.name}',
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                'أسم الأسرة: ${familyDetiles.name}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 6),
               Text(
                 'المربع السكني: ${familyDetiles.blockId}',
                 style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'الموقع: ${familyDetiles.location}',
                 style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'نوع السكن: ${familyDetiles.housingType}',
                 style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'تصنيف الأسرة: ${familyDetiles.familyCatgoryName}',
                 style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'رب الأسرة: ${familyDetiles.headOfTheFamilyName}',
                 style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 6),
               const Text(
                 'رقم الجوال: 777888666',
                 style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 6),
               const Text(
                 'الأيميل: mohammed@gmail.com',
                 style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -206,11 +213,7 @@ class FamilyMembersSection extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ...familyMembers.map((e) => MemberCard(
-                familyMember: e,
-              ))
-        ],
+        children: [...familyMembers.map((e) => MemberCard(familyMember: e))],
       ),
     );
   }
@@ -234,93 +237,98 @@ class MemberCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 25,
-                child: Icon(
-                  Icons.person,
-                ),
-              ),
+              const CircleAvatar(radius: 25, child: Icon(Icons.person)),
               const SizedBox(height: 8),
               Text(
                 familyMember.fullName,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black),
+                  fontSize: 19,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 'رقم الهوية: ${familyMember.identityNumber}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'نوع الهوية: ${familyMember.secondName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'رقم الجوال: ${familyMember.phoneNumber}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'الأيميل: ${familyMember.email}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'الجنس: ${familyMember.gender}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'تاريخ الميلاد: ${familyMember.secondName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'فصيلة الدم: ${familyMember.bloodType}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'الحالة: ${familyMember.secondName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 'دور الفرد: ${familyMember.fullName}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -331,6 +339,8 @@ class MemberCard extends StatelessWidget {
 }
 
 class AssistanceTable extends StatefulWidget {
+  const AssistanceTable({super.key});
+
   @override
   State<AssistanceTable> createState() => _AssistanceTableState();
 }
@@ -358,15 +368,13 @@ class _AssistanceTableState extends State<AssistanceTable> {
           return showLoadingIndicator();
         } else if (state is FamilyLoaded) {
           return const Center(
-              // child: Text(
-              //   state.errorMessage,
-              //   style: const TextStyle(color: Colors.red, fontSize: 18),
-              // ),
-              );
-        } else {
-          return const Center(
-            child: Text("لا توجد بيانات للعرض حاليًا."),
+            // child: Text(
+            //   state.errorMessage,
+            //   style: const TextStyle(color: Colors.red, fontSize: 18),
+            // ),
           );
+        } else {
+          return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
         }
       },
     );
@@ -387,7 +395,7 @@ class _AssistanceTableState extends State<AssistanceTable> {
           assists.Notes,
           assists.deliverDate,
           assists.AssistType,
-          '${index + 1}'
+          '${index + 1}',
         ];
       }).toList(),
     );
@@ -415,10 +423,7 @@ class _AssistanceTableState extends State<AssistanceTable> {
           searchCriteria: (Assist) => Assist.AssistType,
         ),
         const SizedBox(height: 10),
-        SizedBox(
-          height: 300,
-          child: buildBlocWidget(),
-        )
+        SizedBox(height: 300, child: buildBlocWidget()),
       ],
     );
   }

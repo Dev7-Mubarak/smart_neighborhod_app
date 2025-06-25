@@ -7,12 +7,12 @@ class CategoryCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const CategoryCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.imagePath,
     required this.backgroundColor,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class CategoryCard extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.left,
-                style:const TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

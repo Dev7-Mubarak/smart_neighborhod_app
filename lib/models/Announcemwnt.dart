@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_image.dart';
-
 class Announcement {
   String title;
   DateTime date;
@@ -26,5 +23,4 @@ class Announcement {
       type: json["type"],
     );
   }
-
 }

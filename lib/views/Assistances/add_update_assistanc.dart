@@ -1,17 +1,17 @@
-import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/smallButton.dart';
-import 'package:smart_neighborhod_app/cubits/assistances/assistances_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/assistances/assistances_state.dart';
-import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_neighborhod_app/cubits/project_category/project_category_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/project_category/project_category_state.dart';
-import 'package:smart_neighborhod_app/models/project.dart';
-import 'package:smart_neighborhod_app/models/project_catgory.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/smallButton.dart';
+import 'package:smart_negborhood_app/cubits/assistances/assistances_cubit.dart';
+import 'package:smart_negborhood_app/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
+import 'package:smart_negborhood_app/cubits/project_category/project_category_state.dart';
+import 'package:smart_negborhood_app/models/project.dart';
+import 'package:smart_negborhood_app/models/project_catgory.dart';
+
 import '../../components/CustomDropdown.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_size.dart';
@@ -52,18 +52,20 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
     assistanceCubit = context.read<AssistancesCubit>();
     projectCategory = context.read<ProjectCategoryCubit>()
       ..getProjectCategories();
-    assistanceNameController =
-        TextEditingController(text: widget.assistancProject?.name ?? '');
-    assistanceDescribtionController =
-        TextEditingController(text: widget.assistancProject?.description ?? '');
+    assistanceNameController = TextEditingController(
+      text: widget.assistancProject?.name ?? '',
+    );
+    assistanceDescribtionController = TextEditingController(
+      text: widget.assistancProject?.description ?? '',
+    );
     budgetController = TextEditingController(
-        text: (widget.assistancProject?.budget ?? 0).toString());
+      text: (widget.assistancProject?.budget ?? 0).toString(),
+    );
     final startdate =
         assistanceCubit.selectedStartDate ?? widget.assistancProject?.startDate;
     startDateController = TextEditingController(
-        text: startdate != null
-            ? DateFormat('yyyy-MM-dd').format(startdate)
-            : '');
+      text: startdate != null ? DateFormat('yyyy-MM-dd').format(startdate) : '',
+    );
     // final startdate = assistanceCubit.selectedStartDate ??
     //     DateTime(2000, 1, 1);
     // startDateController =
@@ -71,8 +73,8 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
     final endtdate =
         assistanceCubit.selectedEndDate ?? widget.assistancProject?.endDate;
     endDateController = TextEditingController(
-        text:
-            endtdate != null ? DateFormat('yyyy-MM-dd').format(endtdate) : '');
+      text: endtdate != null ? DateFormat('yyyy-MM-dd').format(endtdate) : '',
+    );
     if (widget.assistancProject != null) {
       _selectedPerson = assistanceCubit.selectedManagerId;
       _selectedProjectCategory = assistanceCubit.selectedProjectCategory;
@@ -95,7 +97,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
   Widget build(BuildContext context) {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is AssistancAddedSuccessfully ) {
+        if (state is AssistancAddedSuccessfully) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -103,7 +105,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
             ),
           );
           Navigator.pop(context);
-        }else   if (state is AssistanceUpdatedSuccessfully) {
+        } else if (state is AssistanceUpdatedSuccessfully) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -118,19 +120,20 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
               backgroundColor: Colors.red,
             ),
           );
-        } 
-        else if (state is ChangeSelectedStartDate) {
+        } else if (state is ChangeSelectedStartDate) {
           startDateController.text = startDateController.text =
               assistanceCubit.selectedStartDate != null
-                  ? DateFormat('yyyy-MM-dd')
-                      .format(assistanceCubit.selectedStartDate!)
-                  : '';
+              ? DateFormat(
+                  'yyyy-MM-dd',
+                ).format(assistanceCubit.selectedStartDate!)
+              : '';
         } else if (state is ChangeSelectedEndDate) {
           endDateController.text = endDateController.text =
               assistanceCubit.selectedEndDate != null
-                  ? DateFormat('yyyy-MM-dd')
-                      .format(assistanceCubit.selectedEndDate!)
-                  : '';
+              ? DateFormat(
+                  'yyyy-MM-dd',
+                ).format(assistanceCubit.selectedEndDate!)
+              : '';
         }
       },
       child: Scaffold(
@@ -145,9 +148,10 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                   ? 'إضافة مشروع توزيع مساعدات جديد'
                   : 'تعديل مشروع توزيع المساعدات',
               style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
             ),
           ),
         ),
@@ -169,9 +173,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const SizedBox(height: 20),
-                        const SmallText(
-                          text: 'أسم المشروع',
-                        ),
+                        const SmallText(text: 'أسم المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
@@ -203,9 +205,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           },
                         ),
                         const SizedBox(height: 30),
-                        const SmallText(
-                          text: 'تصنيف المشروع',
-                        ),
+                        const SmallText(text: 'تصنيف المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         BlocBuilder<ProjectCategoryCubit, ProjectCategoryState>(
                           buildWhen: (previous, current) =>
@@ -213,21 +213,25 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           builder: (context, state) {
                             if (state is ProjectCategoryLoading) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             }
                             if (state is ProjectCategoryLoaded) {
                               if (state.projectCategories.isEmpty) {
                                 return const Center(
-                                    child: Text('لا يوجد تصنيفات متاحة'));
+                                  child: Text('لا يوجد تصنيفات متاحة'),
+                                );
                               }
                               _selectedProjectCategory = state.projectCategories
                                   .firstWhere(
-                                      (element) => element.name == "مساعدات");
+                                    (element) => element.name == "مساعدات",
+                                  );
                               if (assistanceCubit.selectedProjectCategory ==
                                       null &&
                                   _selectedProjectCategory != null) {
                                 assistanceCubit.changeSelectedProjectCategory(
-                                    _selectedProjectCategory);
+                                  _selectedProjectCategory,
+                                );
                               }
                               // _selectedProjectCategory = widget
                               //         .assistancProject?.projectCategory ??
@@ -252,13 +256,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   ),
                                   itemBuilder:
                                       (context, projectCategory, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        projectCategory.name,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
+                                        return ListTile(
+                                          title: Text(projectCategory.name),
+                                          selected: isSelected,
+                                        );
+                                      },
                                   fit: FlexFit.loose,
                                 ),
                                 items: state.projectCategories,
@@ -278,7 +280,9 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
                                   ),
                                 ),
                                 validator: (ProjectCategory? item) {
@@ -294,20 +298,20 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           },
                         ),
                         const SizedBox(height: 30),
-                        const SmallText(
-                          text: 'اسم المدير',
-                        ),
+                        const SmallText(text: 'اسم المدير'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         BlocBuilder<PersonCubit, PersonState>(
                           builder: (context, state) {
                             if (state is PersonLoading) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             }
                             if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
-                                    child: Text('لا يوجد مديرين متاحين'));
+                                  child: Text('لا يوجد مديرين متاحين'),
+                                );
                               }
                               Person? initialSelectedPerson;
                               if (_selectedPerson != null) {
@@ -352,8 +356,9 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 //   assistanceCubit.changeSelectedManager(data);
                                 // },
                                 onChanged: (Person? data) {
-                                  assistanceCubit
-                                      .changeSelectedManager(data!.id);
+                                  assistanceCubit.changeSelectedManager(
+                                    data!.id,
+                                  );
                                 },
                                 selectedItem: initialSelectedPerson,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
@@ -364,7 +369,9 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
                                   ),
                                 ),
                                 validator: (Person? item) {
@@ -503,11 +510,14 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   .map((e) => e.displayName)
                                   .toList(),
                               selectedValue: assistanceCubit
-                                  .selectedProjectStatus?.displayName,
+                                  .selectedProjectStatus
+                                  ?.displayName,
                               onChanged: (String? newValue) {
                                 assistanceCubit.changeSelectedProjectStatus(
-                                    ProjectStatus.values.firstWhere(
-                                        (e) => e.displayName == newValue));
+                                  ProjectStatus.values.firstWhere(
+                                    (e) => e.displayName == newValue,
+                                  ),
+                                );
                               },
                               text: 'اختيار حالة المشروع',
                               validator: (value) {
@@ -531,11 +541,14 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   .map((e) => e.displayName)
                                   .toList(),
                               selectedValue: assistanceCubit
-                                  .selectedProjectPriority?.displayName,
+                                  .selectedProjectPriority
+                                  ?.displayName,
                               onChanged: (String? newValue) {
                                 assistanceCubit.changeSelectedProjectPriority(
-                                    ProjectPriority.values.firstWhere(
-                                        (e) => e.displayName == newValue));
+                                  ProjectPriority.values.firstWhere(
+                                    (e) => e.displayName == newValue,
+                                  ),
+                                );
                               },
                               text: 'اختيارأولوية المشروع',
                               validator: (value) {
@@ -548,9 +561,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        const SmallText(
-                          text: 'الميزانية',
-                        ),
+                        const SmallText(text: 'الميزانية'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
@@ -578,17 +589,19 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                       BlocBuilder<AssistancesCubit, AssistancesState>(
                         builder: (context, state) {
                           return SmallButton(
-                              text: 'إلغاء',
-                              onPressed: () {
-                                Navigator.pop(context);
-                                assistanceCubit.resetInputs();
-                              });
+                            text: 'إلغاء',
+                            onPressed: () {
+                              Navigator.pop(context);
+                              assistanceCubit.resetInputs();
+                            },
+                          );
                         },
                       ),
                       const SizedBox(width: 10),
                       SmallButton(
-                        text:
-                            assistanceCubit.project == null ? 'إضافة' : 'تعديل',
+                        text: assistanceCubit.project == null
+                            ? 'إضافة'
+                            : 'تعديل',
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             if (assistanceCubit.project == null) {
@@ -599,18 +612,19 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                               );
                             } else {
                               assistanceCubit.updateAssistances(
-                                  id: widget.assistancProject!.id,
-                                  name: assistanceNameController.text,
-                                  description:
-                                      assistanceDescribtionController.text,
-                                  budget: int.parse(budgetController.text));
+                                id: widget.assistancProject!.id,
+                                name: assistanceNameController.text,
+                                description:
+                                    assistanceDescribtionController.text,
+                                budget: int.parse(budgetController.text),
+                              );
                               Navigator.pop(context);
                             }
                           }
                         },
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

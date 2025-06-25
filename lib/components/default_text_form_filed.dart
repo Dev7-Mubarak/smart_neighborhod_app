@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smart_neighborhod_app/components/constants/app_color.dart';
-import 'package:smart_neighborhod_app/components/constants/app_size.dart';
+import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_size.dart';
 
 class DefaultTextFormFiled extends StatelessWidget {
-  DefaultTextFormFiled({
+  const DefaultTextFormFiled({
     super.key,
     required this.hintText,
     required this.suffixIcon,
@@ -18,8 +18,8 @@ class DefaultTextFormFiled extends StatelessWidget {
     this.onTap, // جعلها اختيارية
     this.readOnly = false, // قيمة افتراضية
     this.maxLines = 1, // عدد الأسطر الافتراضي
-  })  : bordercolor = bordercolor ?? AppColor.white,
-        fillcolor = fillcolor ?? AppColor.gray;
+  }) : bordercolor = bordercolor ?? AppColor.white,
+       fillcolor = fillcolor ?? AppColor.gray;
   // super(key: key);
 
   final String hintText;
@@ -64,11 +64,15 @@ class DefaultTextFormFiled extends StatelessWidget {
           suffixIcon: Icon(suffixIcon),
           prefixIcon: prefixIcon != null
               ? IconButton(
-                  icon: Icon(prefixIcon), onPressed: onPrefixIconPressed)
+                  icon: Icon(prefixIcon),
+                  onPressed: onPrefixIconPressed,
+                )
               : null,
           hintText: hintText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 0,
+            vertical: 10,
+          ),
         ),
       ),
     );

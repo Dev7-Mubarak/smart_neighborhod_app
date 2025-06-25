@@ -10,7 +10,7 @@ class AdCard extends StatelessWidget {
   final bool hasMultipleLines;
 
   const AdCard({
-    Key? key,
+    super.key,
     required this.content,
     required this.date,
     required this.author,
@@ -18,7 +18,7 @@ class AdCard extends StatelessWidget {
     required this.iconBgColor,
     this.hasLeftPadding = false,
     this.hasMultipleLines = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,10 @@ class AdCard extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black, width: 1),
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1,
+                                    ),
                                   ),
                                   child: Text(
                                     date,
@@ -76,7 +79,7 @@ class AdCard extends StatelessWidget {
                                       fontSize: 9,
                                       fontFamily: 'Tajawal',
                                       fontWeight: FontWeight.w400,
-                                      height: 26/9, // lineHeight / fontSize
+                                      height: 26 / 9, // lineHeight / fontSize
                                     ),
                                   ),
                                 ),
@@ -84,7 +87,10 @@ class AdCard extends StatelessWidget {
                               const SizedBox(width: 9),
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black, width: 1),
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
                                 ),
                                 child: Text(
                                   author,
@@ -93,7 +99,7 @@ class AdCard extends StatelessWidget {
                                     fontSize: 9,
                                     fontFamily: 'Tajawal',
                                     fontWeight: FontWeight.w400,
-                                    height: 26/9, // lineHeight / fontSize
+                                    height: 26 / 9, // lineHeight / fontSize
                                   ),
                                 ),
                               ),
@@ -140,7 +146,7 @@ class AdCard extends StatelessWidget {
           fontSize: 11,
           fontFamily: 'Tajawal',
           fontWeight: FontWeight.w400,
-          height: 26/11, // lineHeight / fontSize
+          height: 26 / 11, // lineHeight / fontSize
         ),
       ),
     );
@@ -169,7 +175,7 @@ class AdCard extends StatelessWidget {
               fontSize: 11,
               fontFamily: 'Tajawal',
               fontWeight: FontWeight.w400,
-              height: 26/11, // lineHeight / fontSize
+              height: 26 / 11, // lineHeight / fontSize
             ),
           ),
         );

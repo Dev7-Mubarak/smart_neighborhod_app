@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_neighborhod_app/core/errors/errormodel.dart';
 import 'package:dio/dio.dart';
-import 'package:smart_neighborhod_app/models/enums/Gender.dart';
+import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/models/enums/gender.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
@@ -12,13 +12,12 @@ import '../../models/enums/blood_type.dart';
 import '../../models/enums/identity_type.dart';
 import '../../models/enums/marital_status.dart';
 import '../../models/enums/occupation_status.dart';
-import 'package:intl/intl.dart';
 part 'person_state.dart';
 
 class PersonCubit extends Cubit<PersonState> {
   PersonCubit({required this.api}) : super(PersonInitial());
   static PersonCubit get(context) => BlocProvider.of(context);
-  
+
   DioConsumer api;
   Person? person;
   XFile? profilePicture;
@@ -74,11 +73,15 @@ class PersonCubit extends Cubit<PersonState> {
       );
 
       _hasNextPage = response["data"]["hasNextPage"];
-      
+
       if (response["data"]["items"] == null) {
         throw Serverexception(
-            errModel:
-                   ErrorModel(statusCode: '400', errorMessage: "No data received",isSuccess: response["isSuccess"]??false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
 
       List<dynamic> paganatedPeople = response["data"]["items"];
@@ -116,21 +119,24 @@ class PersonCubit extends Cubit<PersonState> {
           "IsContactNumber": isCall,
           "Email": email,
           "DateOfBirth": selectedDate?.toIso8601String(),
-          "Gender": GenderExtension.fromDisplayName(selectedGender!)
-              .toString()
-              .split('.')
-              .last,
+          "Gender": GenderExtension.fromDisplayName(
+            selectedGender!,
+          ).toString().split('.').last,
           "BloodType": selectedBloodType?.toString().split('.').last,
           "IdentityNumber": identityNumber,
           "IdentityType": selectedIdentityType?.toString().split('.').last,
           "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
-          "OccupationStatus":
-              selectedOccupationStatus?.toString().split('.').last,
+          "OccupationStatus": selectedOccupationStatus
+              ?.toString()
+              .split('.')
+              .last,
           "Job": null,
           "Image": profilePicture != null
-              ? await MultipartFile.fromFile(profilePicture!.path,
-                  filename: profilePicture!.name)
-              : null
+              ? await MultipartFile.fromFile(
+                  profilePicture!.path,
+                  filename: profilePicture!.name,
+                )
+              : null,
         },
       );
 
@@ -173,20 +179,23 @@ class PersonCubit extends Cubit<PersonState> {
           "IsContactNumber": isCall,
           "Email": email,
           "DateOfBirth": selectedDate?.toIso8601String(),
-          "Gender": GenderExtension.fromDisplayName(selectedGender!)
-              .toString()
-              .split('.')
-              .last,
+          "Gender": GenderExtension.fromDisplayName(
+            selectedGender!,
+          ).toString().split('.').last,
           "BloodType": selectedBloodType?.toString().split('.').last,
           "IdentityNumber": identityNumber,
           "IdentityType": selectedIdentityType?.toString().split('.').last,
           "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
-          "OccupationStatus":
-              selectedOccupationStatus?.toString().split('.').last,
+          "OccupationStatus": selectedOccupationStatus
+              ?.toString()
+              .split('.')
+              .last,
           "Job": null,
           if (profilePicture != null)
-            "Image": await MultipartFile.fromFile(profilePicture!.path,
-                filename: profilePicture!.name),
+            "Image": await MultipartFile.fromFile(
+              profilePicture!.path,
+              filename: profilePicture!.name,
+            ),
         },
       );
 
@@ -207,9 +216,7 @@ class PersonCubit extends Cubit<PersonState> {
   Future<void> deletePerson(int id) async {
     emit(PersonLoading());
     try {
-      final response = await api.delete(
-        '${ApiLink.deletePerson}/$id',
-      );
+      final response = await api.delete('${ApiLink.deletePerson}/$id');
 
       if (response["isSuccess"]) {
         emit(PersonDeletedSuccessfully(message: response["message"]));
@@ -275,7 +282,8 @@ class PersonCubit extends Cubit<PersonState> {
   }
 
   void changeSelectedOccupationStatus(
-      OccupationStatus selectedOccupationStatus) {
+    OccupationStatus selectedOccupationStatus,
+  ) {
     this.selectedOccupationStatus = selectedOccupationStatus;
     emit(ChangeSelectedOccupationStatus());
   }

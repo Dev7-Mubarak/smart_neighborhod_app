@@ -1,9 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/cubits/login_cubit/login_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/login_cubit/login_state.dart';
+import 'package:smart_negborhood_app/cubits/login_cubit/login_state.dart';
 
 import '../../components/boldText.dart';
 import '../../components/circular_logo.dart';
@@ -59,8 +57,9 @@ class createNewPassword extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.only(left: 40),
                         child: Align(
-                            alignment: Alignment.topLeft,
-                            child: CircularLogo()),
+                          alignment: Alignment.topLeft,
+                          child: CircularLogo(),
+                        ),
                       ),
                       const Text(
                         "الحارة الذكية",
@@ -122,20 +121,24 @@ class createNewPassword extends StatelessWidget {
                                 if (!RegExp(r'[0-9]').hasMatch(value)) {
                                   return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
                                 }
-                                if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]')
-                                    .hasMatch(value)) {
+                                if (!RegExp(
+                                  r'[!@#$%^&*(),.?":{}|<>]',
+                                ).hasMatch(value)) {
                                   return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
                                 }
                                 return null;
                               },
                               suffixIcon: Icons.key,
-                              isPassword:
-                                  NewPasswordCubit.get(context).FirstisPassword,
-                              prefixIcon:
-                                  NewPasswordCubit.get(context).FirstprefixIcon,
+                              isPassword: NewPasswordCubit.get(
+                                context,
+                              ).FirstisPassword,
+                              prefixIcon: NewPasswordCubit.get(
+                                context,
+                              ).FirstprefixIcon,
                               onPrefixIconPressed: () {
-                                NewPasswordCubit.get(context)
-                                    .changeFirstPasswordVisibilty();
+                                NewPasswordCubit.get(
+                                  context,
+                                ).changeFirstPasswordVisibilty();
                               },
                             ),
                             const SizedBox(height: 8),
@@ -177,20 +180,24 @@ class createNewPassword extends StatelessWidget {
                                 if (!RegExp(r'[0-9]').hasMatch(value)) {
                                   return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
                                 }
-                                if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]')
-                                    .hasMatch(value)) {
+                                if (!RegExp(
+                                  r'[!@#$%^&*(),.?":{}|<>]',
+                                ).hasMatch(value)) {
                                   return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
                                 }
                                 return null;
                               },
                               suffixIcon: Icons.key,
-                              isPassword: NewPasswordCubit.get(context)
-                                  .SecondisPassword,
-                              prefixIcon: NewPasswordCubit.get(context)
-                                  .SecondprefixIcon,
+                              isPassword: NewPasswordCubit.get(
+                                context,
+                              ).SecondisPassword,
+                              prefixIcon: NewPasswordCubit.get(
+                                context,
+                              ).SecondprefixIcon,
                               onPrefixIconPressed: () {
-                                NewPasswordCubit.get(context)
-                                    .changeSecondPasswordVisibilty();
+                                NewPasswordCubit.get(
+                                  context,
+                                ).changeSecondPasswordVisibilty();
                               },
                             ),
                             const SizedBox(height: 10),
@@ -211,15 +218,13 @@ class createNewPassword extends StatelessWidget {
                               if (FirstpasswordContoller.text ==
                                   SecondpasswordContoller.text) {
                                 // كود الربط بالAPI <حيث نرسل له كلمة السر ويقوم بإعاده تعيينها
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoute.mainHome,
-                                );
+                                Navigator.pushNamed(context, AppRoute.mainHome);
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content:
-                                        Text('كلمة السر غير متطابقة مع الأخرى'),
+                                    content: Text(
+                                      'كلمة السر غير متطابقة مع الأخرى',
+                                    ),
                                     backgroundColor: Colors.red,
                                     duration: const Duration(seconds: 5),
                                   ),
@@ -229,7 +234,7 @@ class createNewPassword extends StatelessWidget {
                           },
                           fontsize: 20,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -1,29 +1,30 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_neighborhod_app/core/API/dio_consumer.dart';
-import 'package:smart_neighborhod_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/family_type/family_type_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_neighborhod_app/cubits/project_category/project_category_cubit.dart';
-import 'package:smart_neighborhod_app/views/Assistances/add_update_assistanc.dart';
-import 'package:smart_neighborhod_app/views/Assistances/all_assistances.dart';
-import 'package:smart_neighborhod_app/views/annoucements/addNewAnnouncement.dart';
-import 'package:smart_neighborhod_app/views/annoucements/annoucement1.dart';
-import 'package:smart_neighborhod_app/views/auth/checkEmail.dart';
-import 'package:smart_neighborhod_app/views/auth/createNewPassword.dart';
-import 'package:smart_neighborhod_app/views/auth/forgetapassword.dart';
-import 'package:smart_neighborhod_app/views/auth/login.dart';
-import 'package:smart_neighborhod_app/views/base/mainhome.dart';
-import 'package:smart_neighborhod_app/views/families/addNewFamily.dart';
-import 'package:smart_neighborhod_app/views/families/family_detiles.dart';
-import 'package:smart_neighborhod_app/views/onBoarding/onboarding.dart';
-import 'package:smart_neighborhod_app/views/people/add_update_person.dart';
-import 'package:smart_neighborhod_app/views/people/all_pepole.dart';
-import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_council_Detials.dart';
-import 'package:smart_neighborhod_app/views/reconciliations/Reconciliation_councils.dart';
-import 'package:smart_neighborhod_app/views/residdentailBlocks/add_update_block.dart';
-import 'package:smart_neighborhod_app/views/residdentailBlocks/residential_block_detial.dart';
+import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
+import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
+import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
+import 'package:smart_negborhood_app/views/Assistances/add_update_assistanc.dart';
+import 'package:smart_negborhood_app/views/Assistances/all_assistances.dart';
+import 'package:smart_negborhood_app/views/annoucements/addNewAnnouncement.dart';
+import 'package:smart_negborhood_app/views/annoucements/annoucement1.dart';
+import 'package:smart_negborhood_app/views/auth/checkEmail.dart';
+import 'package:smart_negborhood_app/views/auth/createNewPassword.dart';
+import 'package:smart_negborhood_app/views/auth/forgetapassword.dart';
+import 'package:smart_negborhood_app/views/auth/login.dart';
+import 'package:smart_negborhood_app/views/base/mainhome.dart';
+import 'package:smart_negborhood_app/views/families/addNewFamily.dart';
+import 'package:smart_negborhood_app/views/families/family_detiles.dart';
+import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
+import 'package:smart_negborhood_app/views/people/add_update_person.dart';
+import 'package:smart_negborhood_app/views/people/all_pepole.dart';
+import 'package:smart_negborhood_app/views/reconciliations/Reconciliation_council_Detials.dart';
+import 'package:smart_negborhood_app/views/reconciliations/Reconciliation_councils.dart';
+import 'package:smart_negborhood_app/views/residdentailBlocks/add_update_block.dart';
+import 'package:smart_negborhood_app/views/residdentailBlocks/residential_block_detial.dart';
+
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'cubits/assistances/assistances_cubit.dart';
@@ -35,16 +36,15 @@ class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoute.onBoarding:
-        return MaterialPageRoute(
-          builder: (_) => const Onboarding(),
-        );
+        return MaterialPageRoute(builder: (_) => const Onboarding());
       case AppRoute.mainHome:
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => MainHomeCubit()),
               BlocProvider(
-                  create: (_) => BlockCubit(api: DioConsumer(dio: Dio()))),
+                create: (_) => BlockCubit(api: DioConsumer(dio: Dio())),
+              ),
             ],
             child: const MainHome(),
           ),
@@ -63,9 +63,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
             value: personCubit,
-            child: AddUpdatePerson(
-              person: personCubit.person,
-            ),
+            child: AddUpdatePerson(person: personCubit.person),
           ),
         );
       case AppRoute.addNewFamily:
@@ -85,16 +83,12 @@ class AppRouter {
                 create: (_) => FamilyTypeCubit(api: DioConsumer(dio: Dio())),
               ),
             ],
-            child: AddNewFamily(
-              blockId: familyCubit.blockId,
-            ),
+            child: AddNewFamily(blockId: familyCubit.blockId),
           ),
         );
 
       case AppRoute.login:
-        return MaterialPageRoute(
-          builder: (_) => Login(),
-        );
+        return MaterialPageRoute(builder: (_) => Login());
 
       case AppRoute.residentialBlockDetial:
         final block = settings.arguments as Block;
@@ -105,9 +99,7 @@ class AppRouter {
                 create: (context) => FamilyCubit(api: DioConsumer(dio: Dio())),
               ),
             ],
-            child: ResiddentialBlocksDetail(
-              block: block,
-            ),
+            child: ResiddentialBlocksDetail(block: block),
           ),
         );
 
@@ -196,9 +188,7 @@ class AppRouter {
                 ),
               ),
             ],
-            child: AddUpdateAssistanc(
-              assistancProject: assistancCubit.project,
-            ),
+            child: AddUpdateAssistanc(assistancProject: assistancCubit.project),
           ),
         );
       default:
