@@ -3,11 +3,14 @@ class Family {
   late String name;
   late String location;
   late int familyCatgoryId;
+  late String familyCategoryName;
   late String familyNotes;
-  late String housingType;
   late int familyTypeId;
+  late String familyTypeName;
   late int blockId;
   late int familyHeadId;
+  late String familyHeadName;
+  late String familyHeadPhoneNumber;
 
   Family({
     required this.name,
@@ -22,13 +25,16 @@ class Family {
   Family.fromJson(Map<String, dynamic> json) {
     id = json["id"] ?? 0;
     name = json["name"] ?? "test";
-    housingType = json["housingType"] ?? "test";
-    familyCatgoryId = json["familyCatgoryId"] ?? "test";
-    familyTypeId = json["familyTypeId"] ?? "test";
+    familyCatgoryId = json["familyCatgoryId"];
+    familyCategoryName = json["familyCatgoryName"];
+    familyTypeId = json["familyTypeId"];
+    familyTypeName = json["familyTypeName"];
     location = json["location"] ?? "test";
     familyNotes = json["familyNotes"] ?? "test";
-    blockId = json["blockId"] ?? 0;
-    familyHeadId = json["personId"] ?? 0;
+    blockId = json["blockId"];
+    familyHeadId = json["familyHeadId"] ?? 0;
+    familyHeadName = json["familyHeadName"] ?? 0;
+    familyHeadPhoneNumber = json["phoneNumber"];
   }
 
   // Map<String, dynamic> toJson(int? personId) {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
+import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/models/family.dart';
-
 import '../../components/constants/app_route.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/custom_navigation_bar.dart';
@@ -12,12 +13,11 @@ import '../../components/constants/app_image.dart';
 import '../../components/searcable_text_input_filed.dart';
 import '../../components/smallButton.dart';
 import '../../components/table.dart';
-import '../../models/Block.dart';
 
 class ResiddentialBlocksDetail extends StatefulWidget {
-  final Block block;
+  final int blockId;
 
-  const ResiddentialBlocksDetail({super.key, required this.block});
+  const ResiddentialBlocksDetail({super.key, required this.blockId});
 
   @override
   State<ResiddentialBlocksDetail> createState() =>
@@ -26,28 +26,14 @@ class ResiddentialBlocksDetail extends StatefulWidget {
 
 class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
   List<Family> FamilysListSearch = [];
-  List<Family> FamilysList = [];
   final ScrollController _scrollController = ScrollController();
-  void updateSearchResults(List<Family> filteredList) {
-    setState(() {
-      FamilysListSearch = filteredList;
-    });
-  }
-
+  late BlockCubit blockCubit;
   @override
   void initState() {
     super.initState();
 
-    final familyCubit = BlocProvider.of<FamilyCubit>(context);
-    familyCubit.getBlockFamiliesByBlockId(widget.block.id);
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent &&
-          familyCubit.state is! FamilyLoading) {
-        familyCubit.getBlockFamiliesByBlockId(widget.block.id);
-      }
-    });
+    blockCubit = BlocProvider.of<BlockCubit>(context)
+      ..getBlockDetailes(widget.blockId);
   }
 
   @override
@@ -57,15 +43,13 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
   }
 
   Widget buildBlocWidget() {
-    return BlocBuilder<FamilyCubit, FamilyState>(
+    return BlocBuilder<BlockCubit, BlockState>(
       builder: (context, state) {
-        if (state is FamilyLoaded) {
-          FamilysList = state.families;
-          FamilysListSearch = FamilysList;
-          return buildLoadedListFamilys();
-        } else if (state is FamilyLoading) {
+        if (state is BlocksDetailesLoaded) {
+          return buildLoadedListFamilys(state.blockDetailes);
+        } else if (state is BlocksLoading) {
           return showLoadingIndicator();
-        } else if (state is FamilyFailure) {
+        } else if (state is BlocksFailure) {
           return Center(
             child: Text(
               state.errorMessage,
@@ -83,14 +67,19 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget buildLoadedListFamilys() {
+  Widget buildLoadedListFamilys(BlockDetails blockDetailes) {
     return CustomTableWidget(
       columnTitles: const ['رقم التواصل', 'التصنيف', 'رب الأسرة', 'رقم'],
-      columnFlexes: const [3, 2, 3, 1],
-      rowData: FamilysList.asMap().entries.map((entry) {
+      columnFlexes: const [4, 2, 3, 1],
+      rowData: blockDetailes.families.asMap().entries.map((entry) {
         int index = entry.key;
         var family = entry.value;
-        return [family.name, family.name, family.familyNotes, '${index + 1}'];
+        return [
+          family.familyHeadPhoneNumber,
+          family.familyTypeName,
+          family.familyHeadName,
+          '${index + 1}',
+        ];
       }).toList(),
     );
   }
@@ -103,12 +92,12 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
         elevation: 0,
         bottomOpacity: 0,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+        title: const Padding(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
           child: Center(
             child: Text(
-              widget.block.name,
-              style: const TextStyle(
+              'تفاصيل المربع',
+              style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -117,90 +106,104 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 205,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: const DecorationImage(
-                    image: AssetImage(AppImage.residentailimage),
-                    fit: BoxFit.fill,
+      body: SafeArea(
+        child: BlocBuilder<BlockCubit, BlockState>(
+          builder: (context, state) {
+            if (state is BlocksLoading) {
+              return showLoadingIndicator();
+            }
+
+            if (state is BlocksDetailesLoaded) {
+              final details = state.blockDetailes;
+
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 205,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage(AppImage.residentailimage),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'مدير المربع:  ${details.managerName}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'عدد الأسر: ${details.familyCount}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            'عدد الأرامل: ${details.widowsCount}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            'عدد الأيتام: ${details.orphansCount}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(
+                        color: Color.fromARGB(255, 44, 44, 44),
+                        thickness: 1.5,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'الأسر في المربع السكني',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      _buildTopBar(context, widget.blockId),
+                      const SizedBox(height: 8),
+                      buildBlocWidget(),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.block.name,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'مدير المربع:  ${widget.block.fullName}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    'عدد الأسر: 200',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  const Text(
-                    'عدد الأرامل: 50',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  const Text(
-                    'عدد الأيتام: 110',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Divider(
-                color: Color.fromARGB(255, 44, 44, 44),
-                thickness: 1.5,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'الأسر في المربع السكني',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              _buildTopBar(context, widget.block.id),
-              const SizedBox(height: 8),
-              buildBlocWidget(),
-            ],
-          ),
+              );
+            }
+
+            if (state is BlocksFailure) {
+              return Center(child: Text(state.errorMessage));
+            }
+
+            return const Center(child: Text("حدث خطأ غير متوقع"));
+          },
         ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),

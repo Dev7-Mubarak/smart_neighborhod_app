@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/errors/errormodel.dart';
 import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
+import 'package:smart_negborhood_app/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
@@ -15,7 +16,7 @@ class BlockCubit extends Cubit<BlockState> {
   Block? block;
   Person? selectedManager;
 
-  Future<void> setBlockForUpdate(Block block) async {
+  Future<void> setBlock(Block block) async {
     this.block = block;
 
     // convert this to service and repositry then called
@@ -155,6 +156,32 @@ class BlockCubit extends Cubit<BlockState> {
           ),
         );
       }
+    } on Serverexception catch (e) {
+      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(BlocksFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getBlockDetailes(int blockId) async {
+    emit(BlocksLoading());
+    try {
+      final response = await api.get(
+        ApiLink.getBlockDetails,
+        queryparameters: {'blockId': blockId},
+      );
+
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+
+      emit(BlocksDetailesLoaded(BlockDetails.fromJson(response["data"])));
     } on Serverexception catch (e) {
       emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

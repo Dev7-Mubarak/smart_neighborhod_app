@@ -306,15 +306,7 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                           const SizedBox(
                             height: AppSize.spasingBetweenInputsAndLabale,
                           ),
-                          CustomTextFormField(
-                            controller: _notesController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'الاسم الاول مطلوب';
-                              }
-                              return null;
-                            },
-                          ),
+                          CustomTextFormField(controller: _notesController),
 
                           const SizedBox(height: 25),
                           // أزرار الإضافة والإلغاء
