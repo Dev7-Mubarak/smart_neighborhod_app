@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/Block.dart';
+import 'package:smart_negborhood_app/models/family_type.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
 import 'dart:async';
@@ -21,6 +22,7 @@ class FamilyCubit extends Cubit<FamilyState> {
   late int blockId;
   Person? selectedFamilyHead;
   FamilyCategory? selectedCategory;
+  FamilyType? selectedFamilyType;
 
   void setBlockId(int blockId) {
     this.blockId = blockId;
@@ -31,41 +33,15 @@ class FamilyCubit extends Cubit<FamilyState> {
     emit(ChangeFamilyCategory());
   }
 
+  void changeSelectedFamilyType(FamilyType? selectedFamilyType) {
+    this.selectedFamilyType = selectedFamilyType;
+    emit(ChangeFamilyType());
+  }
+
   void changeSelectedFamilyHaed(Person? selectedFamilyHead) {
     this.selectedFamilyHead = selectedFamilyHead;
     emit(changeFamilyHead());
   }
-
-  // Future<void> getBlockFamiliesByBlockId(int blockId) async {
-  //   this.blockId = blockId;
-  //   emit(FamilyLoading());
-  //   try {
-  //     final response = await api.get(
-  //       ApiLink.getBlockDetails,
-  //       queryparameters: {'blockId': blockId},
-  //     );
-
-  //     if (response["data"] == null) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: '400',
-  //           errorMessage: "No data received",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-
-  //     List<dynamic> familes = response["data"];
-
-  //     emit(
-  //       FamilyLoaded(families: familes.map((e) => Family.fromJson(e)).toList()),
-  //     );
-  //   } on Serverexception catch (e) {
-  //     emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
-  //   } catch (e) {
-  //     emit(FamilyFailure(errorMessage: e.toString()));
-  //   }
-  // }
 
   Future<void> addNewFamily(Family family) async {
     emit(FamilyInitial());

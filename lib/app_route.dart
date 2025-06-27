@@ -91,7 +91,10 @@ class AppRouter {
       case AppRoute.residentialBlockDetial:
         final blockId = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (_) => ResiddentialBlocksDetail(blockId: blockId),
+          builder: (_) => BlocProvider<FamilyCubit>(
+            create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())),
+            child: ResiddentialBlocksDetail(blockId: blockId),
+          ),
         );
 
       case AppRoute.forgetapassword:

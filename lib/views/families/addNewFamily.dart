@@ -28,19 +28,16 @@ class AddNewFamily extends StatefulWidget {
 }
 
 class _AddNewFamilyState extends State<AddNewFamily> {
-  final _formKey = GlobalKey<FormState>(); // Add this line
+  final _formKey = GlobalKey<FormState>();
   int? _blockId;
   FamilyCategory? selectedFamilyCategory;
-  int? _familyTypeId;
-  int? _personId;
+  FamilyType? selectedFamilyType;
   Person? selectedFamilyHead;
   late PersonCubit personCubit;
   late FamilyCubit familyCubit;
   late FamilyCategoryCubit familyCategoryCubit;
   late FamilyTypeCubit familyTypeCubit;
 
-  bool isCall = false;
-  bool isWhatsApp = false;
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
@@ -53,6 +50,14 @@ class _AddNewFamilyState extends State<AddNewFamily> {
       ..getFamilyCategories();
     familyTypeCubit = context.read<FamilyTypeCubit>()..getFamilyTypies();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _familyNameController.dispose();
+    _locationController.dispose();
+    _notesController.dispose();
+    super.dispose();
   }
 
   @override
@@ -96,8 +101,7 @@ class _AddNewFamilyState extends State<AddNewFamily> {
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(15),
           child: Form(
-            // <-- Wrap with Form
-            key: _formKey, // <-- Assign key
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -263,8 +267,8 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                               List<FamilyType> familyTypes = [];
                               if (state is FamilyTypeLoaded) {
                                 familyTypes = state.familyTypes;
-                                _familyTypeId = familyTypes.isNotEmpty
-                                    ? familyTypes.first.id
+                                selectedFamilyType = familyTypes.isNotEmpty
+                                    ? familyTypes.first
                                     : null;
                               }
 
@@ -275,7 +279,10 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                                     : null,
                                 itemLabel: (type) => type.name,
                                 onChanged: (newValue) {
-                                  _familyTypeId = newValue?.id;
+                                  selectedFamilyType = newValue;
+                                  familyCubit.changeSelectedFamilyType(
+                                    newValue,
+                                  );
                                 },
                                 text: 'اختيار نوع الأسرة',
                                 validator: (value) {
@@ -309,7 +316,6 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                           CustomTextFormField(controller: _notesController),
 
                           const SizedBox(height: 25),
-                          // أزرار الإضافة والإلغاء
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -330,7 +336,7 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                                       familyNotes: _notesController.text,
                                       familyCatgoryId:
                                           selectedFamilyCategory?.id ?? 0,
-                                      familyTypeId: _familyTypeId ?? 0,
+                                      familyTypeId: selectedFamilyType?.id ?? 0,
                                       blockId: _blockId!,
                                       familyHeadId: selectedFamilyHead?.id ?? 0,
                                     );

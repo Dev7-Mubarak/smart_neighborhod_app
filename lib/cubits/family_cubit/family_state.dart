@@ -35,3 +35,5 @@ class FamilyAddedSuccessfully extends FamilyState {
 class changeFamilyHead extends FamilyState {}
 
 class ChangeFamilyCategory extends FamilyState {}
+
+class ChangeFamilyType extends FamilyState {}
