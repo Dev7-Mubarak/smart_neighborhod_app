@@ -61,7 +61,6 @@ class FamilyCubit extends Cubit<FamilyState> {
 
       if (response["isSuccess"]) {
         emit(FamilyAddedSuccessfully(message: "تم اضافة الاسرة بنجاح"));
-        // await getBlockFamiliesByBlockId(blockId);
       } else {
         throw Serverexception(
           errModel: ErrorModel(

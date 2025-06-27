@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:skeletons/skeletons.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/constants/app_size.dart';
 import '../../components/constants/app_color.dart';
@@ -90,9 +89,10 @@ class _AllPeopleState extends State<AllPeople> {
             );
           }
 
-          // if (state is PersonLoading && state.isFirstFetch) {
-          //   return const _SkeletonList();
-          // }
+          if (state is PersonLoading && state.isFirstFetch) {
+            return Center(child: const CircularProgressIndicator());
+            // return const _SkeletonList();
+          }
 
           if (state is PersonLoaded ||
               (state is PersonLoading && !state.isFirstFetch)) {
