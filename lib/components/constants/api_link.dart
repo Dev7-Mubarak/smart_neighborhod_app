@@ -7,8 +7,8 @@ class ApiLink {
   static const String getAllProjectCatgories =
       '$server/ProjectCatgories/GetAll';
   static const String deleteProject = '$server/Projects/Delete';
-    static const String addProject = '$server/Projects/Add';
-      static const String updateProject = '$server/Projects/Update';
+  static const String addProject = '$server/Projects/Add';
+  static const String updateProject = '$server/Projects/Update';
   static const String getAllFamilyCategories = '$server/FamilyCatgory/GetAll';
   static const String getAllFamilyTypes = '$server/FamilyTypes/GetAll';
   static const String addBlocke = '$server/Blocks/Add';
@@ -17,8 +17,7 @@ class ApiLink {
   static const String addFamily = '$server/Family/Add';
   static const String getFamilyDetilesById =
       '$server/Family/GetFamilyDetilesById';
-  static const String getBlockFamiliesById =
-      '$server/Blocks/GetBlockFamiliesById';
+  static const String getBlockDetails = '$server/Blocks/GetDetails';
   static const String addNewPerson = '$server/Person/Add';
   static const String deletePerson = '$server/Person/Delete';
   static const String updatePerson = '$server/Person/Update';

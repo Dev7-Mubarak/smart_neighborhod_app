@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/models/Block.dart';
+import 'package:smart_negborhood_app/models/family_type.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
 import 'dart:async';
@@ -16,12 +18,11 @@ class FamilyCubit extends Cubit<FamilyState> {
 
   static FamilyCubit get(context) => BlocProvider.of(context);
 
-  int _currentPage = 1;
-  bool hasNextPage = true;
   List<Family> allFamilies = [];
   late int blockId;
   Person? selectedFamilyHead;
   FamilyCategory? selectedCategory;
+  FamilyType? selectedFamilyType;
 
   void setBlockId(int blockId) {
     this.blockId = blockId;
@@ -32,51 +33,14 @@ class FamilyCubit extends Cubit<FamilyState> {
     emit(ChangeFamilyCategory());
   }
 
+  void changeSelectedFamilyType(FamilyType? selectedFamilyType) {
+    this.selectedFamilyType = selectedFamilyType;
+    emit(ChangeFamilyType());
+  }
+
   void changeSelectedFamilyHaed(Person? selectedFamilyHead) {
     this.selectedFamilyHead = selectedFamilyHead;
     emit(changeFamilyHead());
-  }
-
-  Future<void> getBlockFamiliesByBlockId(int blockIdPar) async {
-    blockId = blockIdPar;
-    if (!hasNextPage) return;
-
-    emit(FamilyLoading());
-    try {
-      final response = await api.get(
-        ApiLink.getBlockFamiliesById,
-        queryparameters: {
-          'blockId': blockId,
-          'pageNumber': _currentPage,
-          'pageSize': 10,
-        },
-      );
-
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
-
-      List<dynamic> familes = response["data"]["items"];
-      List<Family> newFamilies = familes
-          .map((e) => Family.fromJson(e))
-          .toList();
-
-      allFamilies.addAll(newFamilies);
-
-      _currentPage++;
-      hasNextPage = response["data"]["hasNextPage"];
-      emit(FamilyLoaded(families: allFamilies, hasNextPage: hasNextPage));
-    } on Serverexception catch (e) {
-      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
-      emit(FamilyFailure(errorMessage: e.toString()));
-    }
   }
 
   Future<void> addNewFamily(Family family) async {
@@ -91,13 +55,12 @@ class FamilyCubit extends Cubit<FamilyState> {
           "familyTypeId": family.familyTypeId,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
-          "personId": family.familyHeadId,
+          "familyHeadId": family.familyHeadId,
         },
       );
 
       if (response["isSuccess"]) {
-        emit(FamilyAddedSuccessfully(message: response["message"]));
-        await getBlockFamiliesByBlockId(blockId);
+        emit(FamilyAddedSuccessfully(message: "تم اضافة الاسرة بنجاح"));
       } else {
         throw Serverexception(
           errModel: ErrorModel(

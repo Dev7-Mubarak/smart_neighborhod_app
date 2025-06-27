@@ -1,23 +1,26 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/components/BlockStatsSection.dart';
+import 'package:smart_negborhood_app/components/FamilyListTable.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/constants/app_size.dart';
+import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/components/smallButton.dart';
+import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
+import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/models/family.dart';
-
-import '../../components/constants/app_route.dart';
-import '../../components/constants/app_size.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/constants/app_image.dart';
-import '../../components/searcable_text_input_filed.dart';
-import '../../components/smallButton.dart';
-import '../../components/table.dart';
-import '../../models/Block.dart';
 
+//Edit Searching and use pagination
 class ResiddentialBlocksDetail extends StatefulWidget {
-  final Block block;
+  final int blockId;
 
-  const ResiddentialBlocksDetail({super.key, required this.block});
+  const ResiddentialBlocksDetail({super.key, required this.blockId});
 
   @override
   State<ResiddentialBlocksDetail> createState() =>
@@ -25,74 +28,43 @@ class ResiddentialBlocksDetail extends StatefulWidget {
 }
 
 class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
-  List<Family> FamilysListSearch = [];
-  List<Family> FamilysList = [];
-  final ScrollController _scrollController = ScrollController();
-  void updateSearchResults(List<Family> filteredList) {
-    setState(() {
-      FamilysListSearch = filteredList;
-    });
-  }
+  late BlockDetails blockDetails;
+  List<Family> searchedFamilies = [];
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-
-    final familyCubit = BlocProvider.of<FamilyCubit>(context);
-    familyCubit.getBlockFamiliesByBlockId(widget.block.id);
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent &&
-          familyCubit.state is! FamilyLoading) {
-        familyCubit.getBlockFamiliesByBlockId(widget.block.id);
-      }
-    });
+    BlocProvider.of<BlockCubit>(context).getBlockDetailes(widget.blockId);
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
-  Widget buildBlocWidget() {
-    return BlocBuilder<FamilyCubit, FamilyState>(
-      builder: (context, state) {
-        if (state is FamilyLoaded) {
-          FamilysList = state.families;
-          FamilysListSearch = FamilysList;
-          return buildLoadedListFamilys();
-        } else if (state is FamilyLoading) {
-          return showLoadingIndicator();
-        } else if (state is FamilyFailure) {
-          return Center(
-            child: Text(
-              state.errorMessage,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
-            ),
-          );
-        } else {
-          return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
-        }
-      },
-    );
+  void _onSearchChanged(String value) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      final query = value.trim().toLowerCase();
+      setState(() {
+        searchedFamilies = blockDetails.families
+            .where(
+              (family) => family.familyHeadName.toLowerCase().contains(query),
+            )
+            .toList();
+      });
+    });
   }
 
-  Widget showLoadingIndicator() {
-    return const Center(child: CircularProgressIndicator());
-  }
-
-  Widget buildLoadedListFamilys() {
-    return CustomTableWidget(
-      columnTitles: const ['رقم التواصل', 'التصنيف', 'رب الأسرة', 'رقم'],
-      columnFlexes: const [3, 2, 3, 1],
-      rowData: FamilysList.asMap().entries.map((entry) {
-        int index = entry.key;
-        var family = entry.value;
-        return [family.name, family.name, family.familyNotes, '${index + 1}'];
-      }).toList(),
-    );
+  void _onClearSearch() {
+    _searchController.clear();
+    setState(() {
+      searchedFamilies = blockDetails.families;
+    });
   }
 
   @override
@@ -103,12 +75,12 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
         elevation: 0,
         bottomOpacity: 0,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+        title: const Padding(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
           child: Center(
             child: Text(
-              widget.block.name,
-              style: const TextStyle(
+              'تفاصيل المربع',
+              style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -117,137 +89,106 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 205,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: const DecorationImage(
-                    image: AssetImage(AppImage.residentailimage),
-                    fit: BoxFit.fill,
+      body: SafeArea(
+        child: BlocBuilder<BlockCubit, BlockState>(
+          builder: (context, state) {
+            if (state is BlocksLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state is BlocksDetailesLoaded) {
+              blockDetails = state.blockDetailes;
+
+              if (_searchController.text.isEmpty) {
+                searchedFamilies = blockDetails.families;
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 205,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: const DecorationImage(
+                            image: AssetImage(AppImage.residentailimage),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      BlockStatsSection(details: blockDetails),
+                      const SizedBox(height: 10),
+                      const Divider(
+                        color: Color.fromARGB(255, 44, 44, 44),
+                        thickness: 1.5,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'الأسر في المربع السكني',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            SmallButton(
+                              text: 'أضافة',
+                              onPressed: () {
+                                var familyCubit = BlocProvider.of<FamilyCubit>(
+                                  context,
+                                )..setBlockId(widget.blockId);
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoute.addNewFamily,
+                                  arguments: familyCubit,
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              width: AppSize.spasingBetweenInputsAndLabale,
+                            ),
+                            Expanded(
+                              child: SearchableTextFormField(
+                                controller: _searchController,
+                                hintText: 'بحث باسم رب الأسرة',
+                                prefixIcon: IconButton(
+                                  onPressed: _onClearSearch,
+                                  icon: const Icon(Icons.close),
+                                ),
+                                suffixIcon: Icons.search,
+                                bachgroundColor: AppColor.gray2,
+                                onChanged: _onSearchChanged,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      FamilyListTable(families: searchedFamilies),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.block.name,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'مدير المربع:  ${widget.block.fullName}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    'عدد الأسر: 200',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  const Text(
-                    'عدد الأرامل: 50',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  const Text(
-                    'عدد الأيتام: 110',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Divider(
-                color: Color.fromARGB(255, 44, 44, 44),
-                thickness: 1.5,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'الأسر في المربع السكني',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              _buildTopBar(context, widget.block.id),
-              const SizedBox(height: 8),
-              buildBlocWidget(),
-            ],
-          ),
+              );
+            }
+
+            if (state is BlocksFailure) {
+              return Center(child: Text(state.errorMessage));
+            }
+
+            return const Center(child: Text("حدث خطأ غير متوقع"));
+          },
         ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }
-}
-
-Widget _buildTopBar(BuildContext context, int blockId) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Row(
-      children: [
-        SmallButton(
-          text: 'أضافة',
-          onPressed: () {
-            var familyCubit = BlocProvider.of<FamilyCubit>(context);
-            familyCubit.setBlockId(blockId);
-            Navigator.pushNamed(
-              context,
-              AppRoute.addNewFamily,
-              arguments: familyCubit,
-            );
-          },
-        ),
-        const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-        Expanded(
-          child: SearchableTextFormField(
-            // controller: _searchingController,
-            hintText: 'بحث',
-            prefixIcon: IconButton(
-              onPressed: () {
-                // _searchingController.clear();
-                // _personCubit.getPeople();
-              },
-              icon: const Icon(Icons.close),
-            ),
-            suffixIcon: Icons.search,
-            bachgroundColor: AppColor.gray2,
-            // onChanged: (value) {
-            //   _delay?.cancel();
-            //   _delay = Timer(const Duration(milliseconds: 400), () {
-            //     _personCubit.getPeople(search: value.trim());
-            //   });
-            // } ,
-          ),
-        ),
-      ],
-    ),
-  );
 }

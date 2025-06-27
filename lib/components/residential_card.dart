@@ -20,7 +20,8 @@ class BuildHousingUnitCard extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ResiddentialBlocksDetail(block: block)),
+          builder: (context) => ResiddentialBlocksDetail(blockId: block.id),
+        ),
       ),
       onLongPress: () {
         onLongPressCallback(context, block);
@@ -42,7 +43,8 @@ class BuildHousingUnitCard extends StatelessWidget {
               ),
               child: AppImage.residentailimage.isEmpty
                   ? FadeInImage.assetNetwork(
-                      height: MediaQuery.of(context).size.width *
+                      height:
+                          MediaQuery.of(context).size.width *
                           0.5, // ارتفاع الصورة ديناميكي
                       width: double.infinity,
                       fit: BoxFit.cover,

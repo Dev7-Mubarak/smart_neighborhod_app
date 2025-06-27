@@ -24,13 +24,11 @@ import 'package:smart_negborhood_app/views/reconciliations/Reconciliation_counci
 import 'package:smart_negborhood_app/views/reconciliations/Reconciliation_councils.dart';
 import 'package:smart_negborhood_app/views/residdentailBlocks/add_update_block.dart';
 import 'package:smart_negborhood_app/views/residdentailBlocks/residential_block_detial.dart';
-
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'cubits/assistances/assistances_cubit.dart';
 import 'cubits/family_cubit/family_cubit.dart';
 import 'cubits/mainHome_cubit/main_home_cubit.dart';
-import 'models/Block.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -91,15 +89,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Login());
 
       case AppRoute.residentialBlockDetial:
-        final block = settings.arguments as Block;
+        final blockId = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider<FamilyCubit>(
-                create: (context) => FamilyCubit(api: DioConsumer(dio: Dio())),
-              ),
-            ],
-            child: ResiddentialBlocksDetail(block: block),
+          builder: (_) => BlocProvider<FamilyCubit>(
+            create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())),
+            child: ResiddentialBlocksDetail(blockId: blockId),
           ),
         );
 
@@ -120,22 +114,14 @@ class AppRouter {
           fullscreenDialog: false,
         );
       case AppRoute.addUpdateBlock:
-        final blockCubit = settings.arguments as BlockCubit;
         return MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider<PersonCubit>(
-                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
-              ),
-              BlocProvider.value(
-                value: blockCubit,
-                child: const AddUpdateBlock(),
-              ),
-            ],
+          builder: (context) => BlocProvider<PersonCubit>(
+            create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
             child: const AddUpdateBlock(),
           ),
           fullscreenDialog: false,
         );
+
       case AppRoute.familyDetiles:
         return MaterialPageRoute(
           builder: (_) => const FamilyDetiles(familyId: 1044),

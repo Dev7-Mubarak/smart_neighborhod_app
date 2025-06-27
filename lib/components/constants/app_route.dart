@@ -3,6 +3,7 @@ class AppRoute {
   static const String login = '/login';
   static const String mainHome = '/mainhome';
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
+  static const String residentialBlocks = '/ResidentialBlock';
   static const String forgetapassword = '/forgetapassword';
   static const String checkEmail = '/checkEmail';
   static const String createNewPassword = '/createNewPassword';

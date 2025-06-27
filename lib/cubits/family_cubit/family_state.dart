@@ -10,29 +10,21 @@ class FamilyInitial extends FamilyState {}
 
 class FamilyLoaded extends FamilyState {
   final List<Family> families;
-  final bool? hasNextPage;
 
-  FamilyLoaded({
-    required this.families,
-    required this.hasNextPage,
-  });
+  FamilyLoaded({required this.families});
 }
 
 class FamilyDetilesLoaded extends FamilyState {
   final FamilyDetilesModel familyDetiles;
 
-  FamilyDetilesLoaded({
-    required this.familyDetiles,
-  });
+  FamilyDetilesLoaded({required this.familyDetiles});
 }
 
 class FamilyLoading extends FamilyState {}
 
 class FamilyFailure extends FamilyState {
   final String errorMessage;
-  FamilyFailure({
-    required this.errorMessage,
-  });
+  FamilyFailure({required this.errorMessage});
 }
 
 class FamilyAddedSuccessfully extends FamilyState {
@@ -43,3 +35,5 @@ class FamilyAddedSuccessfully extends FamilyState {
 class changeFamilyHead extends FamilyState {}
 
 class ChangeFamilyCategory extends FamilyState {}
+
+class ChangeFamilyType extends FamilyState {}

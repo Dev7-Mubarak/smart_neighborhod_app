@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
-
 import '../../components/constants/app_image.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/smallButton.dart';
@@ -84,10 +83,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
   }) {
     return InkWell(
       onTap: () => {
+        BlocProvider.of<BlockCubit>(context)..setBlock(block),
         Navigator.pushNamed(
           context,
           AppRoute.residentialBlockDetial,
-          arguments: block,
+          arguments: block.id,
         ),
       },
       onLongPress: () {
@@ -165,11 +165,9 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               SmallButton(
                 text: 'أضافة',
                 onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoute.addUpdateBlock,
-                    arguments: BlocProvider.of<BlockCubit>(context),
-                  ).then((_) {
+                  Navigator.pushNamed(context, AppRoute.addUpdateBlock).then((
+                    _,
+                  ) {
                     _blockCubit.getBlocks();
                   });
                 },
@@ -213,12 +211,8 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               leading: const Icon(Icons.edit, color: Colors.blue),
               title: const Text('تعديل'),
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  AppRoute.addUpdateBlock,
-                  arguments: BlocProvider.of<BlockCubit>(passContext)
-                    ..setBlockForUpdate(bloc),
-                );
+                BlocProvider.of<BlockCubit>(passContext).setBlock(bloc);
+                Navigator.pushNamed(context, AppRoute.addUpdateBlock);
               },
             ),
             ListTile(

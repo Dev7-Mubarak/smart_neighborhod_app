@@ -19,28 +19,26 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16.0), // مسافة داخلية للعنصر
+        padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Stack(
           children: [
-            // الصورة مائلة إلى جهة اليمين
             Positioned(
-              right: 0, // محاذاة الصورة إلى الجهة اليمنى
-              top: 10, // إزاحة الصورة قليلاً نحو الأعلى
+              right: 0,
+              top: 10,
               child: Image.asset(
                 imagePath,
-                width: 80, // عرض الصورة
-                height: 80, // ارتفاع الصورة
-                fit: BoxFit.contain, // احتواء الصورة داخل الحجم
+                width: 80,
+                height: 80,
+                fit: BoxFit.contain,
               ),
             ),
-            // النص في الجهة اليسرى
             Positioned(
-              left: 0, // محاذاة النص إلى الجهة اليسرى
-              bottom: 10, // إزاحة النص قليلاً نحو الأسفل
+              right: 0,
+              bottom: 10,
               child: Text(
                 title,
                 textAlign: TextAlign.left,
