@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/FamilyListTable.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
@@ -27,20 +28,28 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const FamilyDetailsAppBar(),
-      body: BlocBuilder<FamilyCubit, FamilyState>(
-        builder: (context, state) {
-          if (state is FamilyFailure) {
-            return Center(child: Text(state.errorMessage));
-          }
-          if (state is FamilyDetilesLoaded) {
-            return FamilyDetailsBody(state: state);
-          }
-          return Container();
-        },
+    return BlocListener<FamilyCubit, FamilyState>(
+      listener: (context, state) {
+        if (state is FamilyMemberAddedSuccessfully) {
+          // Refresh family details when a member is added
+          context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+        }
+      },
+      child: Scaffold(
+        appBar: const FamilyDetailsAppBar(),
+        body: BlocBuilder<FamilyCubit, FamilyState>(
+          builder: (context, state) {
+            if (state is FamilyFailure) {
+              return Center(child: Text(state.errorMessage));
+            }
+            if (state is FamilyDetilesLoaded) {
+              return FamilyDetailsBody(state: state);
+            }
+            return Container();
+          },
+        ),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }
@@ -172,7 +181,26 @@ class _AddMemberButtonRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [SmallButton(text: 'إضافة فرد جديد', onPressed: () {})],
+        children: [
+          SmallButton(
+            text: 'إضافة فرد جديد',
+            onPressed: () async {
+              final familyCubit = context.read<FamilyCubit>();
+              final result = await Navigator.pushNamed(
+                context,
+                AppRoute.addFamilyMember,
+                arguments: {
+                  'familyId': familyCubit.familyId,
+                  'familyCubit': familyCubit,
+                },
+              );
+              // Refresh family details if member was added successfully
+              if (result == true) {
+                familyCubit.getFamilyDetilesById(familyCubit.familyId);
+              }
+            },
+          )
+        ],
       ),
     );
   }

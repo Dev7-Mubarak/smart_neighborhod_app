@@ -16,6 +16,7 @@ import 'package:smart_negborhood_app/views/auth/forgetapassword.dart';
 import 'package:smart_negborhood_app/views/auth/login.dart';
 import 'package:smart_negborhood_app/views/base/mainhome.dart';
 import 'package:smart_negborhood_app/views/families/addNewFamily.dart';
+import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
 import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
 import 'package:smart_negborhood_app/views/people/add_update_person.dart';
@@ -82,6 +83,17 @@ class AppRouter {
               ),
             ],
             child: AddNewFamily(blockId: familyCubit.blockId),
+          ),
+        );
+
+      case AppRoute.addFamilyMember:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        final familyId = arguments['familyId'] as int;
+        final familyCubit = arguments['familyCubit'] as FamilyCubit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: familyCubit,
+            child: AddFamilyMember(familyId: familyId),
           ),
         );
 
