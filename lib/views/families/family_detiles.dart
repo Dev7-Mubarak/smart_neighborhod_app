@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
@@ -82,7 +83,16 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SmallButton(text: 'إضافة فرد جديد', onPressed: () {}),
+                        SmallButton(text: 'إضافة فرد جديد', onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddFamilyMember(
+                                familyId: state.familyDetiles.id,
+                              ),
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
