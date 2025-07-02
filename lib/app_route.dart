@@ -100,7 +100,7 @@ class AppRouter {
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
           builder: (_) => forgetapassword(),
-          fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
+          fullscreenDialog: false,
         );
 
       case AppRoute.checkEmail:
@@ -123,8 +123,12 @@ class AppRouter {
         );
 
       case AppRoute.familyDetiles:
+        final familyCubit = settings.arguments as FamilyCubit;
         return MaterialPageRoute(
-          builder: (_) => const FamilyDetiles(familyId: 1044),
+          builder: (_) => BlocProvider.value(
+            value: familyCubit,
+            child: FamilyDetiles(familyId: familyCubit.familyId),
+          ),
           fullscreenDialog: false,
         );
       case AppRoute.annoucement1:

@@ -10,9 +10,10 @@ class get_AllBlockFamilys_Success extends ResiddentialBlockDetailState {
 
   get_AllBlockFamilys_Success({required this.AllBlockFamilys});
 }
+
 class get_AllBlockFamilys_Loading extends ResiddentialBlockDetailState {}
 
 class get_AllBlockFamilys_Failure extends ResiddentialBlockDetailState {
-    String errorMessage;
+  final String errorMessage;
   get_AllBlockFamilys_Failure({required this.errorMessage});
 }
