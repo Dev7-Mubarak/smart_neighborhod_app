@@ -122,42 +122,64 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           ),
                           const SizedBox(height: 20),
                           
-                          const Text(
-                            'اختيار من الأشخاص الموجودين:',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
+                          if (state.people.isNotEmpty) ...[
+                            const Text(
+                              'اختيار من الأشخاص الموجودين:',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          
-                          CustomDropdown<String>(
-                            items: state.people.map((person) => person.fullName).toList(),
-                            selectedValue: selectedPerson?.fullName,
-                            onChanged: (String? value) {
-                              setState(() {
-                                selectedPerson = state.people.firstWhere(
-                                  (person) => person.fullName == value,
-                                );
-                              });
-                            },
-                            text: 'اختر شخصاً',
-                          ),
-                          
-                          const SizedBox(height: 20),
-                          
-                          const Text(
-                            'أو',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                            const SizedBox(height: 10),
+                            
+                            CustomDropdown(
+                              items: state.people.map((person) => "${person.fullName} (ID: ${person.id})").toList(),
+                              selectedValue: selectedPerson != null 
+                                  ? "${selectedPerson!.fullName} (ID: ${selectedPerson!.id})" 
+                                  : null,
+                              onChanged: (String? value) {
+                                if (value != null) {
+                                  // Extract ID from the display string
+                                  final idMatch = RegExp(r'\(ID: (\d+)\)').firstMatch(value);
+                                  if (idMatch != null) {
+                                    final personId = int.parse(idMatch.group(1)!);
+                                    setState(() {
+                                      selectedPerson = state.people.firstWhere(
+                                        (person) => person.id == personId,
+                                      );
+                                    });
+                                  }
+                                }
+                              },
+                              text: 'اختر شخصاً',
+                              validator: null,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                          
-                          const SizedBox(height: 20),
+                            
+                            const SizedBox(height: 20),
+                            
+                            const Text(
+                              'أو',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            
+                            const SizedBox(height: 20),
+                          ] else ...[
+                            const Text(
+                              'لا توجد أشخاص في النظام. يمكنك إضافة شخص جديد:',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
                           
                           SmallButton(
                             text: 'إضافة شخص جديد',
@@ -193,9 +215,36 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                                     selectedPerson!.id,
                                   );
                                 }
-                              : null,
+                              : () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('يرجى اختيار شخص أولاً'),
+                                      backgroundColor: Colors.orange,
+                                    ),
+                                  );
+                                },
                         ),
                       ],
+                    ),
+                  ],
+                ),
+              );
+            }
+            
+            if (state is PersonFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'حدث خطأ في تحميل البيانات: ${state.errorMessage}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    const SizedBox(height: 20),
+                    SmallButton(
+                      text: 'إعادة المحاولة',
+                      onPressed: () => personCubit.getPeople(),
                     ),
                   ],
                 ),
