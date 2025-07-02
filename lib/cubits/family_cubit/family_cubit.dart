@@ -100,7 +100,7 @@ class FamilyCubit extends Cubit<FamilyState> {
     required bool isCall,
     String? job,
   }) async {
-    emit(FamilyInitial());
+    emit(FamilyLoading());
     try {
       final response = await api.post(
         ApiLink.addFamilyMember,
@@ -145,7 +145,7 @@ class FamilyCubit extends Cubit<FamilyState> {
   }
 
   Future<void> getFamilyDetilesById(int id) async {
-    emit(FamilyInitial());
+    emit(FamilyLoading());
     try {
       final response = await api.get(
         ApiLink.getFamilyDetailes,
@@ -179,7 +179,7 @@ class FamilyCubit extends Cubit<FamilyState> {
     required int personId,
     required String role,
   }) async {
-    emit(FamilyInitial());
+    emit(FamilyLoading());
     try {
       final response = await api.post(
         ApiLink.addExistingPersonToFamily,

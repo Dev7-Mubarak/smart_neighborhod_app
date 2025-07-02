@@ -42,12 +42,59 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
         body: BlocBuilder<FamilyCubit, FamilyState>(
           builder: (context, state) {
             if (state is FamilyFailure) {
-              return Center(child: Text(state.errorMessage));
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, size: 64, color: Colors.red),
+                    SizedBox(height: 16),
+                    Text(
+                      'حدث خطأ',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      state.errorMessage,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+                      },
+                      child: Text('إعادة المحاولة'),
+                    ),
+                  ],
+                ),
+              );
             }
             if (state is FamilyDetilesLoaded) {
               return FamilyDetailsBody(state: state);
             }
-            return Container();
+            if (state is FamilyLoading) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('جاري تحميل بيانات الأسرة...'),
+                  ],
+                ),
+              );
+            }
+            // Handle FamilyInitial and any other states
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('جاري التحضير...'),
+                ],
+              ),
+            );
           },
         ),
         bottomNavigationBar: const CustomNavigationBar(),
