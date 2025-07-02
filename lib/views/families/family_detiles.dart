@@ -23,7 +23,9 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   @override
   void initState() {
     super.initState();
-    context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+    final familyCubit = context.read<FamilyCubit>();
+    familyCubit.setFamilyId(widget.familyId);
+    familyCubit.getFamilyDetilesById(widget.familyId);
   }
 
   @override
@@ -186,17 +188,19 @@ class _AddMemberButtonRow extends StatelessWidget {
             text: 'إضافة فرد جديد',
             onPressed: () async {
               final familyCubit = context.read<FamilyCubit>();
+              // Get the current family ID from the widget
+              final familyId = familyCubit.familyId;
               final result = await Navigator.pushNamed(
                 context,
                 AppRoute.addFamilyMember,
                 arguments: {
-                  'familyId': familyCubit.familyId,
+                  'familyId': familyId,
                   'familyCubit': familyCubit,
                 },
               );
               // Refresh family details if member was added successfully
               if (result == true) {
-                familyCubit.getFamilyDetilesById(familyCubit.familyId);
+                familyCubit.getFamilyDetilesById(familyId);
               }
             },
           )

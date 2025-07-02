@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/components/CustomDropdown.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/constants/app_size.dart';
 import 'package:smart_negborhood_app/components/constants/small_text.dart';
-import 'package:smart_negborhood_app/components/custom_text_input_filed.dart';
 import 'package:smart_negborhood_app/components/smallButton.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/models/enums/blood_type.dart';
-import 'package:smart_negborhood_app/models/enums/gender.dart';
-import 'package:smart_negborhood_app/models/enums/identity_type.dart';
-import 'package:smart_negborhood_app/models/enums/marital_status.dart';
-import 'package:smart_negborhood_app/models/enums/occupation_status.dart';
+import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/cubits/person_cubit/person_state.dart';
+import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/enums/family_member_role.dart';
 
 class AddFamilyMember extends StatefulWidget {
   final int familyId;
@@ -27,91 +24,51 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
   final _formKey = GlobalKey<FormState>();
   
   late FamilyCubit familyCubit;
+  late PersonCubit personCubit;
   
-  // Controllers
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _secondNameController = TextEditingController();
-  final TextEditingController _thirdNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _identityNumberController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _birthDateController = TextEditingController();
-  final TextEditingController _jobController = TextEditingController();
-
   // Form state variables
-  String? selectedGender;
-  String? selectedBloodType;
-  String? selectedIdentityType;
-  String? selectedMaritalStatus;
-  String? selectedOccupationStatus;
-  DateTime? selectedDate;
-  bool isWhatsapp = false;
-  bool isCall = false;
+  Person? selectedPerson;
+  String? selectedPersonName;
+  String? selectedRole;
 
   @override
   void initState() {
     super.initState();
     familyCubit = context.read<FamilyCubit>();
+    personCubit = context.read<PersonCubit>();
     
-    // Set default values
-    selectedGender = GenderExtension.getDisplayNames().first;
-    selectedBloodType = BloodType.values.first.toString().split('.').last;
-    selectedIdentityType = IdentityType.values.first.toString().split('.').last;
-    selectedMaritalStatus = MaritalStatus.values.first.toString().split('.').last;
-    selectedOccupationStatus = OccupationStatus.values.first.toString().split('.').last;
-  }
-
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _secondNameController.dispose();
-    _thirdNameController.dispose();
-    _lastNameController.dispose();
-    _phoneNumberController.dispose();
-    _identityNumberController.dispose();
-    _emailController.dispose();
-    _birthDateController.dispose();
-    _jobController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime(2000),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
-      });
-    }
+    // Load people when the page loads
+    personCubit.getPeople();
+    
+    // Set default role
+    selectedRole = FamilyMemberRoleExtension.getDisplayNames().first;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<FamilyCubit, FamilyState>(
-      listener: (context, state) {
-        if (state is FamilyMemberAddedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context, true); // Return true to indicate success
-        } else if (state is FamilyFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<FamilyCubit, FamilyState>(
+          listener: (context, state) {
+            if (state is FamilyMemberAddedSuccessfully) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.pop(context, true); // Return true to indicate success
+            } else if (state is FamilyFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColor.white,
@@ -119,7 +76,7 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
           iconTheme: const IconThemeData(color: Colors.black),
           title: const Center(
             child: Text(
-              'إضافة فرد جديد',
+              'إضافة فرد للأسرة',
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -135,176 +92,171 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // First Name
-                const SmallText(text: 'الاسم الأول'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _firstNameController,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى إدخال الاسم الأول'
-                      : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Second Name
-                const SmallText(text: 'الاسم الثاني'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _secondNameController,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى إدخال الاسم الثاني'
-                      : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Third Name
-                const SmallText(text: 'الاسم الثالث'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _thirdNameController,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى إدخال الاسم الثالث'
-                      : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Last Name
-                const SmallText(text: 'اسم العائلة'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _lastNameController,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى إدخال اسم العائلة'
-                      : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Phone Number
-                const SmallText(text: 'رقم الجوال'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _phoneNumberController,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى إدخال رقم الجوال'
-                      : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Email
-                const SmallText(text: 'البريد الإلكتروني (اختياري)'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 20),
-
-                // Identity Number
-                const SmallText(text: 'رقم الهوية'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _identityNumberController,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى إدخال رقم الهوية'
-                      : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Birth Date
-                const SmallText(text: 'تاريخ الميلاد'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _birthDateController,
-                  readOnly: true,
-                  onTap: () => _selectDate(context),
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'يرجى اختيار تاريخ الميلاد'
-                      : null,
-                  suffixIcon: Icons.calendar_today,
-                ),
-                const SizedBox(height: 20),
-
-                // Gender
-                const SmallText(text: 'الجنس'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomDropdown<String>(
-                  items: GenderExtension.getDisplayNames(),
-                  selectedValue: selectedGender,
-                  onChanged: (value) => setState(() => selectedGender = value),
-                  validator: (value) => value == null ? 'يرجى اختيار الجنس' : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Blood Type
-                const SmallText(text: 'فصيلة الدم'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomDropdown<String>(
-                  items: BloodType.values.map((e) => e.toString().split('.').last).toList(),
-                  selectedValue: selectedBloodType,
-                  onChanged: (value) => setState(() => selectedBloodType = value),
-                  validator: (value) => value == null ? 'يرجى اختيار فصيلة الدم' : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Identity Type
-                const SmallText(text: 'نوع الهوية'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomDropdown<String>(
-                  items: IdentityType.values.map((e) => e.toString().split('.').last).toList(),
-                  selectedValue: selectedIdentityType,
-                  onChanged: (value) => setState(() => selectedIdentityType = value),
-                  validator: (value) => value == null ? 'يرجى اختيار نوع الهوية' : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Marital Status
-                const SmallText(text: 'الحالة الاجتماعية'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomDropdown<String>(
-                  items: MaritalStatus.values.map((e) => e.toString().split('.').last).toList(),
-                  selectedValue: selectedMaritalStatus,
-                  onChanged: (value) => setState(() => selectedMaritalStatus = value),
-                  validator: (value) => value == null ? 'يرجى اختيار الحالة الاجتماعية' : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Occupation Status
-                const SmallText(text: 'الحالة المهنية'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomDropdown<String>(
-                  items: OccupationStatus.values.map((e) => e.toString().split('.').last).toList(),
-                  selectedValue: selectedOccupationStatus,
-                  onChanged: (value) => setState(() => selectedOccupationStatus = value),
-                  validator: (value) => value == null ? 'يرجى اختيار الحالة المهنية' : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Job
-                const SmallText(text: 'المهنة (اختياري)'),
-                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomTextFormField(
-                  controller: _jobController,
-                ),
-                const SizedBox(height: 20),
-
-                // Contact preferences
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isWhatsapp,
-                      onChanged: (value) => setState(() => isWhatsapp = value ?? false),
+                // Instructions
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color: AppColor.gray.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColor.gray),
+                  ),
+                  child: const Text(
+                    'اختر شخص من القائمة وحدد دوره في الأسرة',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
                     ),
-                    const Text('واتساب'),
-                    const SizedBox(width: 20),
-                    Checkbox(
-                      value: isCall,
-                      onChanged: (value) => setState(() => isCall = value ?? false),
-                    ),
-                    const Text('مكالمات'),
-                  ],
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+                // People Dropdown
+                const SmallText(text: 'اختيار الشخص'),
+                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
+                BlocBuilder<PersonCubit, PersonState>(
+                  builder: (context, state) {
+                    if (state is PersonLoading && personCubit.people.isEmpty) {
+                      return Container(
+                        height: 56,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Row(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 12),
+                            Text('جاري تحميل الأشخاص...'),
+                          ],
+                        ),
+                      );
+                    }
+
+                    if (state is PersonFailure) {
+                      return Container(
+                        height: 56,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.red),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'خطأ في تحميل الأشخاص: ${state.errorMessage}',
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      );
+                    }
+
+                    final people = personCubit.people;
+                    if (people.isEmpty) {
+                      return Container(
+                        height: 56,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.orange),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          'لا توجد أشخاص متاحة. يرجى إضافة أشخاص أولاً.',
+                          style: TextStyle(color: Colors.orange),
+                        ),
+                      );
+                    }
+
+                    final peopleNames = people.map((person) => person.fullName).toList();
+
+                    return CustomDropdown<String>(
+                      items: peopleNames,
+                      selectedValue: selectedPersonName,
+                      onChanged: (personName) {
+                        setState(() {
+                          selectedPersonName = personName;
+                          selectedPerson = people.firstWhere(
+                            (person) => person.fullName == personName,
+                          );
+                        });
+                      },
+                      validator: (value) => value == null ? 'يرجى اختيار شخص' : null,
+                      text: 'اختر شخص من القائمة',
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                // Family Member Role Dropdown
+                const SmallText(text: 'دور الفرد في الأسرة'),
+                const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
+                CustomDropdown<String>(
+                  items: FamilyMemberRoleExtension.getDisplayNames(),
+                  selectedValue: selectedRole,
+                  onChanged: (value) => setState(() => selectedRole = value),
+                  validator: (value) => value == null ? 'يرجى اختيار دور الفرد' : null,
+                  text: 'اختر دور الفرد في الأسرة',
                 ),
                 const SizedBox(height: 30),
+
+                // Selected Person Info Card
+                if (selectedPerson != null) ...[
+                  const SmallText(text: 'معلومات الشخص المختار'),
+                  const SizedBox(height: 8),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor: AppColor.gray,
+                              child: Icon(
+                                selectedPerson!.gender == "Female" ? Icons.female : Icons.male,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    selectedPerson!.fullName,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    'رقم الجوال: ${selectedPerson!.phoneNumber}',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                ],
 
                 // Buttons
                 Row(
@@ -316,27 +268,14 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                     ),
                     const SizedBox(width: 10),
                     SmallButton(
-                      text: 'إضافة',
+                      text: 'إضافة للأسرة',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          familyCubit.addFamilyMember(
+                          final roleEnum = FamilyMemberRoleExtension.fromDisplayName(selectedRole!);
+                          familyCubit.addExistingPersonToFamily(
                             familyId: widget.familyId,
-                            firstName: _firstNameController.text,
-                            secondName: _secondNameController.text,
-                            thirdName: _thirdNameController.text,
-                            lastName: _lastNameController.text,
-                            phoneNumber: _phoneNumberController.text,
-                            identityNumber: _identityNumberController.text,
-                            email: _emailController.text.isEmpty ? null : _emailController.text,
-                            dateOfBirth: selectedDate!,
-                            gender: GenderExtension.fromDisplayName(selectedGender!).toString().split('.').last,
-                            bloodType: selectedBloodType!,
-                            identityType: selectedIdentityType!,
-                            maritalStatus: selectedMaritalStatus!,
-                            occupationStatus: selectedOccupationStatus!,
-                            isWhatsapp: isWhatsapp,
-                            isCall: isCall,
-                            job: _jobController.text.isEmpty ? null : _jobController.text,
+                            personId: selectedPerson!.id,
+                            role: roleEnum.toString().split('.').last,
                           );
                         }
                       },

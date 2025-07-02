@@ -172,4 +172,40 @@ class FamilyCubit extends Cubit<FamilyState> {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
   }
+
+  /// Adds an existing person to a family with a specific role
+  Future<void> addExistingPersonToFamily({
+    required int familyId,
+    required int personId,
+    required String role,
+  }) async {
+    emit(FamilyInitial());
+    try {
+      final response = await api.post(
+        ApiLink.addExistingPersonToFamily,
+        isFromData: true,
+        data: {
+          "FamilyId": familyId,
+          "PersonId": personId,
+          "Role": role,
+        },
+      );
+
+      if (response["isSuccess"]) {
+        emit(FamilyMemberAddedSuccessfully(message: "تم إضافة الشخص للأسرة بنجاح"));
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
 }

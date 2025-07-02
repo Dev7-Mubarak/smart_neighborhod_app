@@ -91,8 +91,13 @@ class AppRouter {
         final familyId = arguments['familyId'] as int;
         final familyCubit = arguments['familyCubit'] as FamilyCubit;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: familyCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
             child: AddFamilyMember(familyId: familyId),
           ),
         );
