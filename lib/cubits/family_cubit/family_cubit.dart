@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/models/Block.dart';
 import 'package:smart_negborhood_app/models/family_type.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
@@ -23,6 +22,11 @@ class FamilyCubit extends Cubit<FamilyState> {
   Person? selectedFamilyHead;
   FamilyCategory? selectedCategory;
   FamilyType? selectedFamilyType;
+  late int familyId;
+
+  void setFamilyId(int familyId) {
+    this.familyId = familyId;
+  }
 
   void setBlockId(int blockId) {
     this.blockId = blockId;
@@ -77,11 +81,12 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
-  Future<void> getFamilyDetilesById(int familyId) async {
+  Future<void> getFamilyDetilesById(int id) async {
     emit(FamilyInitial());
     try {
       final response = await api.get(
-        '${ApiLink.getFamilyDetilesById}/$familyId',
+        ApiLink.getFamilyDetailes,
+        queryparameters: {"id": id},
       );
 
       if (response["data"] == null) {
