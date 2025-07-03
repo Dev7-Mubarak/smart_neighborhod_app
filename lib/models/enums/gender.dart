@@ -20,4 +20,8 @@ extension GenderExtension on Gender {
         throw ArgumentError('Invalid gender display name');
     }
   }
+
+  static List<String> getDisplayNames() {
+    return Gender.values.map((e) => e.displayName).toList();
+  }
 }

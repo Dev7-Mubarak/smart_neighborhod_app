@@ -81,8 +81,73 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
+  Future<void> addFamilyMember({
+    required int familyId,
+    required String firstName,
+    required String secondName,
+    required String thirdName,
+    required String lastName,
+    required String phoneNumber,
+    required String identityNumber,
+    required String? email,
+    required DateTime dateOfBirth,
+    required String gender,
+    required String bloodType,
+    required String identityType,
+    required String maritalStatus,
+    required String occupationStatus,
+    required bool isWhatsapp,
+    required bool isCall,
+    String? job,
+  }) async {
+    emit(FamilyLoading());
+    try {
+      final response = await api.post(
+        ApiLink.addFamilyMember,
+        isFromData: true,
+        data: {
+          "FamilyId": familyId,
+          "FirstName": firstName,
+          "SecondName": secondName,
+          "ThirdName": thirdName,
+          "LastName": lastName,
+          "PhoneNumber": phoneNumber,
+          "IsWhatsapp": isWhatsapp,
+          "IsContactNumber": isCall,
+          "Email": email,
+          "DateOfBirth": dateOfBirth.toIso8601String(),
+          "Gender": gender,
+          "BloodType": bloodType,
+          "IdentityNumber": identityNumber,
+          "IdentityType": identityType,
+          "MaritalStatus": maritalStatus,
+          "OccupationStatus": occupationStatus,
+          "Job": job,
+        },
+      );
+
+      if (response["isSuccess"]) {
+        emit(
+          FamilyMemberAddedSuccessfully(message: "تم إضافة عضو الأسرة بنجاح"),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
   Future<void> getFamilyDetilesById(int id) async {
-    emit(FamilyInitial());
+    emit(FamilyLoading());
     try {
       final response = await api.get(
         ApiLink.getFamilyDetailes,
@@ -103,6 +168,38 @@ class FamilyCubit extends Cubit<FamilyState> {
           familyDetiles: FamilyDetilesModel.fromJson(response["data"]),
         ),
       );
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> addExistingPersonToFamily({
+    required int familyId,
+    required int personId,
+    required int roleId,
+  }) async {
+    emit(FamilyLoading());
+    try {
+      final response = await api.post(
+        ApiLink.addExistingPersonToFamily,
+        data: {"familyId": familyId, "personId": personId, "roleId": roleId},
+      );
+
+      if (response["isSuccess"]) {
+        emit(
+          FamilyMemberAddedSuccessfully(message: "تم إضافة الشخص للأسرة بنجاح"),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

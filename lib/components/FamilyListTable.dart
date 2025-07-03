@@ -34,7 +34,7 @@ class FamilyListTable extends StatelessWidget {
         Navigator.pushNamed(
           context,
           AppRoute.familyDetiles,
-          arguments: context.read<FamilyCubit>(),
+          arguments: familyCubit,
         );
       },
     );

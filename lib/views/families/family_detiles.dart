@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/FamilyListTable.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
@@ -22,25 +23,79 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   @override
   void initState() {
     super.initState();
-    context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+    final familyCubit = context.read<FamilyCubit>();
+    familyCubit.getFamilyDetilesById(widget.familyId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const FamilyDetailsAppBar(),
-      body: BlocBuilder<FamilyCubit, FamilyState>(
-        builder: (context, state) {
-          if (state is FamilyFailure) {
-            return Center(child: Text(state.errorMessage));
-          }
-          if (state is FamilyDetilesLoaded) {
-            return FamilyDetailsBody(state: state);
-          }
-          return Container();
-        },
+    return BlocListener<FamilyCubit, FamilyState>(
+      listener: (context, state) {
+        if (state is FamilyMemberAddedSuccessfully) {
+          context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+        }
+      },
+      child: Scaffold(
+        appBar: const FamilyDetailsAppBar(),
+        body: BlocBuilder<FamilyCubit, FamilyState>(
+          builder: (context, state) {
+            if (state is FamilyFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error_outline, size: 64, color: Colors.red),
+                    SizedBox(height: 16),
+                    Text(
+                      'حدث خطأ',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<FamilyCubit>().getFamilyDetilesById(
+                          widget.familyId,
+                        );
+                      },
+                      child: Text('إعادة المحاولة'),
+                    ),
+                  ],
+                ),
+              );
+            }
+            if (state is FamilyDetilesLoaded) {
+              return FamilyDetailsBody(state: state);
+            }
+            if (state is FamilyLoading) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('جاري تحميل بيانات الأسرة...'),
+                  ],
+                ),
+              );
+            }
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('جاري التحضير...'),
+                ],
+              ),
+            );
+          },
+        ),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }
@@ -81,7 +136,7 @@ class FamilyDetailsBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FamilyDetilesCard(familyDetiles: state.familyDetiles),
-          const _EditButtonRow(),
+          const _EditFamilyButton(),
           const SizedBox(height: 16),
           const _SectionTitle(title: 'أفراد الأسرة'),
           const SizedBox(height: 16),
@@ -134,8 +189,8 @@ class FamilyDetailsBody extends StatelessWidget {
   }
 }
 
-class _EditButtonRow extends StatelessWidget {
-  const _EditButtonRow();
+class _EditFamilyButton extends StatelessWidget {
+  const _EditFamilyButton();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -172,7 +227,19 @@ class _AddMemberButtonRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [SmallButton(text: 'إضافة فرد جديد', onPressed: () {})],
+        children: [
+          SmallButton(
+            text: 'إضافة فرد جديد',
+            onPressed: () {
+              final familyCubit = context.read<FamilyCubit>();
+              Navigator.pushNamed(
+                context,
+                AppRoute.addFamilyMember,
+                arguments: familyCubit,
+              );
+            },
+          ),
+        ],
       ),
     );
   }

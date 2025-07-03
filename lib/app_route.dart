@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
+import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_update_assistanc.dart';
@@ -16,6 +17,7 @@ import 'package:smart_negborhood_app/views/auth/forgetapassword.dart';
 import 'package:smart_negborhood_app/views/auth/login.dart';
 import 'package:smart_negborhood_app/views/base/mainhome.dart';
 import 'package:smart_negborhood_app/views/families/addNewFamily.dart';
+import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
 import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
 import 'package:smart_negborhood_app/views/people/add_update_person.dart';
@@ -130,6 +132,23 @@ class AppRouter {
             child: FamilyDetiles(familyId: familyCubit.familyId),
           ),
           fullscreenDialog: false,
+        );
+      case AppRoute.addFamilyMember:
+        final familyCubit = settings.arguments as FamilyCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    MemberFamilyRoleCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: AddFamilyMember(familyId: familyCubit.familyId),
+          ),
         );
       case AppRoute.annoucement1:
         return MaterialPageRoute(
