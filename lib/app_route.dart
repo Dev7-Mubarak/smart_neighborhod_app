@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
+import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_update_assistanc.dart';
@@ -86,22 +87,6 @@ class AppRouter {
           ),
         );
 
-      case AppRoute.addFamilyMember:
-        final arguments = settings.arguments as Map<String, dynamic>;
-        final familyId = arguments['familyId'] as int;
-        final familyCubit = arguments['familyCubit'] as FamilyCubit;
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: familyCubit),
-              BlocProvider(
-                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
-              ),
-            ],
-            child: AddFamilyMember(familyId: familyId),
-          ),
-        );
-
       case AppRoute.login:
         return MaterialPageRoute(builder: (_) => Login());
 
@@ -147,6 +132,23 @@ class AppRouter {
             child: FamilyDetiles(familyId: familyCubit.familyId),
           ),
           fullscreenDialog: false,
+        );
+      case AppRoute.addFamilyMember:
+        final familyCubit = settings.arguments as FamilyCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    MemberFamilyRoleCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: AddFamilyMember(familyId: familyCubit.familyId),
+          ),
         );
       case AppRoute.annoucement1:
         return MaterialPageRoute(

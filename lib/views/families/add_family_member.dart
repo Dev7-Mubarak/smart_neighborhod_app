@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/CustomDropdown.dart';
@@ -8,9 +9,10 @@ import 'package:smart_negborhood_app/components/smallButton.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_negborhood_app/cubits/person_cubit/person_state.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
-import 'package:smart_negborhood_app/models/enums/family_member_role.dart';
+import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
+import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_state.dart';
+import 'package:smart_negborhood_app/models/member_family_role.dart';
 
 class AddFamilyMember extends StatefulWidget {
   final int familyId;
@@ -22,26 +24,38 @@ class AddFamilyMember extends StatefulWidget {
 
 class _AddFamilyMemberState extends State<AddFamilyMember> {
   final _formKey = GlobalKey<FormState>();
-  
+
   late FamilyCubit familyCubit;
   late PersonCubit personCubit;
-  
-  // Form state variables
+
   Person? selectedPerson;
   String? selectedPersonName;
-  String? selectedRole;
+  MemberFamilyRole? selectedRole;
+
+  bool _peopleLoaded = false;
+  bool _rolesLoaded = false;
 
   @override
   void initState() {
     super.initState();
     familyCubit = context.read<FamilyCubit>();
     personCubit = context.read<PersonCubit>();
-    
-    // Load people when the page loads
-    personCubit.getPeople();
-    
-    // Set default role
-    selectedRole = FamilyMemberRoleExtension.getDisplayNames().first;
+    _fetchPeopleOnce();
+    _fetchRolesOnce();
+  }
+
+  void _fetchPeopleOnce() {
+    if (!_peopleLoaded) {
+      personCubit.getPeople();
+      _peopleLoaded = true;
+    }
+  }
+
+  void _fetchRolesOnce() {
+    if (!_rolesLoaded) {
+      context.read<MemberFamilyRoleCubit>().fetchRoles();
+      _rolesLoaded = true;
+    }
   }
 
   @override
@@ -57,7 +71,7 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                   backgroundColor: Colors.green,
                 ),
               );
-              Navigator.pop(context, true); // Return true to indicate success
+              Navigator.pop(context, true);
             } else if (state is FamilyFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -126,15 +140,26 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                               width: 20,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             ),
-                            SizedBox(width: 12),
-                            Text('جاري تحميل الأشخاص...'),
+                            const SizedBox(width: 12),
+                            const Text('جاري تحميل الأشخاص...'),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              tooltip: 'إعادة المحاولة',
+                              onPressed: () {
+                                setState(() {
+                                  _peopleLoaded = false;
+                                  _fetchPeopleOnce();
+                                });
+                              },
+                            ),
                           ],
                         ),
                       );
@@ -148,9 +173,25 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           border: Border.all(color: Colors.red),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(
-                          'خطأ في تحميل الأشخاص: ${state.errorMessage}',
-                          style: const TextStyle(color: Colors.red),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'خطأ في تحميل الأشخاص: ${state.errorMessage}',
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              tooltip: 'إعادة المحاولة',
+                              onPressed: () {
+                                setState(() {
+                                  _peopleLoaded = false;
+                                  _fetchPeopleOnce();
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       );
                     }
@@ -164,28 +205,54 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           border: Border.all(color: Colors.orange),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Text(
-                          'لا توجد أشخاص متاحة. يرجى إضافة أشخاص أولاً.',
-                          style: TextStyle(color: Colors.orange),
+                        child: Row(
+                          children: [
+                            const Expanded(
+                              child: Text(
+                                'لا توجد أشخاص متاحة. يرجى إضافة أشخاص أولاً.',
+                                style: TextStyle(color: Colors.orange),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              tooltip: 'إعادة المحاولة',
+                              onPressed: () {
+                                setState(() {
+                                  _peopleLoaded = false;
+                                  _fetchPeopleOnce();
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       );
                     }
-
-                    final peopleNames = people.map((person) => person.fullName).toList();
-
-                    return CustomDropdown<String>(
-                      items: peopleNames,
-                      selectedValue: selectedPersonName,
-                      onChanged: (personName) {
+                    return DropdownSearch<Person>(
+                      items: people,
+                      selectedItem: selectedPerson,
+                      itemAsString: (person) => person.fullName,
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          labelText: 'اختر شخص من القائمة',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      validator: (value) =>
+                          value == null ? 'يرجى اختيار شخص' : null,
+                      onChanged: (person) {
                         setState(() {
-                          selectedPersonName = personName;
-                          selectedPerson = people.firstWhere(
-                            (person) => person.fullName == personName,
-                          );
+                          selectedPerson = person;
+                          selectedPersonName = person?.fullName;
                         });
                       },
-                      validator: (value) => value == null ? 'يرجى اختيار شخص' : null,
-                      text: 'اختر شخص من القائمة',
+                      popupProps: const PopupProps.menu(
+                        showSearchBox: true,
+                        searchFieldProps: TextFieldProps(
+                          decoration: InputDecoration(labelText: 'بحث'),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -194,12 +261,72 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                 // Family Member Role Dropdown
                 const SmallText(text: 'دور الفرد في الأسرة'),
                 const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
-                CustomDropdown<String>(
-                  items: FamilyMemberRoleExtension.getDisplayNames(),
-                  selectedValue: selectedRole,
-                  onChanged: (value) => setState(() => selectedRole = value),
-                  validator: (value) => value == null ? 'يرجى اختيار دور الفرد' : null,
-                  text: 'اختر دور الفرد في الأسرة',
+                BlocBuilder<MemberFamilyRoleCubit, MemberFamilyRoleState>(
+                  builder: (context, roleState) {
+                    if (roleState is MemberFamilyRoleLoading) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            const Expanded(child: LinearProgressIndicator()),
+                            const SizedBox(width: 12),
+                            const Text('جاري تحميل الأدوار...'),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              tooltip: 'إعادة المحاولة',
+                              onPressed: () {
+                                setState(() {
+                                  _rolesLoaded = false;
+                                  _fetchRolesOnce();
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (roleState is MemberFamilyRoleFailure) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'خطأ في تحميل الأدوار: ${roleState.errorMessage}',
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.refresh),
+                            tooltip: 'إعادة المحاولة',
+                            onPressed: () {
+                              setState(() {
+                                _rolesLoaded = false;
+                                _fetchRolesOnce();
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    if (roleState is MemberFamilyRoleLoaded) {
+                      final roles = roleState.roles;
+                      return CustomDropdown(
+                        items: roles.map((r) => r.roleName).toList(),
+                        selectedValue: selectedRole?.roleName,
+                        onChanged: (roleName) {
+                          setState(() {
+                            selectedRole = roles.firstWhere(
+                              (r) => r.roleName == roleName,
+                            );
+                          });
+                        },
+                        validator: (value) =>
+                            value == null ? 'يرجى اختيار دور الفرد' : null,
+                        text: 'اختر دور الفرد في الأسرة',
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
                 const SizedBox(height: 30),
 
@@ -224,7 +351,9 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                               radius: 20,
                               backgroundColor: AppColor.gray,
                               child: Icon(
-                                selectedPerson!.gender == "Female" ? Icons.female : Icons.male,
+                                selectedPerson!.gender == "Female"
+                                    ? Icons.female
+                                    : Icons.male,
                                 color: Colors.blueGrey,
                               ),
                             ),
@@ -271,11 +400,10 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                       text: 'إضافة للأسرة',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          final roleEnum = FamilyMemberRoleExtension.fromDisplayName(selectedRole!);
                           familyCubit.addExistingPersonToFamily(
                             familyId: widget.familyId,
                             personId: selectedPerson!.id,
-                            role: roleEnum.toString().split('.').last,
+                            roleId: selectedRole!.id,
                           );
                         }
                       },

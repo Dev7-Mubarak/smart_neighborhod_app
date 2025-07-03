@@ -24,7 +24,6 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   void initState() {
     super.initState();
     final familyCubit = context.read<FamilyCubit>();
-    familyCubit.setFamilyId(widget.familyId);
     familyCubit.getFamilyDetilesById(widget.familyId);
   }
 
@@ -33,7 +32,6 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
     return BlocListener<FamilyCubit, FamilyState>(
       listener: (context, state) {
         if (state is FamilyMemberAddedSuccessfully) {
-          // Refresh family details when a member is added
           context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
         }
       },
@@ -50,18 +48,18 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
                     SizedBox(height: 16),
                     Text(
                       'حدث خطأ',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 8),
-                    Text(
-                      state.errorMessage,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.red),
-                    ),
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+                        context.read<FamilyCubit>().getFamilyDetilesById(
+                          widget.familyId,
+                        );
                       },
                       child: Text('إعادة المحاولة'),
                     ),
@@ -84,7 +82,6 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
                 ),
               );
             }
-            // Handle FamilyInitial and any other states
             return const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +136,7 @@ class FamilyDetailsBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FamilyDetilesCard(familyDetiles: state.familyDetiles),
-          const _EditButtonRow(),
+          const _EditFamilyButton(),
           const SizedBox(height: 16),
           const _SectionTitle(title: 'أفراد الأسرة'),
           const SizedBox(height: 16),
@@ -192,8 +189,8 @@ class FamilyDetailsBody extends StatelessWidget {
   }
 }
 
-class _EditButtonRow extends StatelessWidget {
-  const _EditButtonRow();
+class _EditFamilyButton extends StatelessWidget {
+  const _EditFamilyButton();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -233,24 +230,15 @@ class _AddMemberButtonRow extends StatelessWidget {
         children: [
           SmallButton(
             text: 'إضافة فرد جديد',
-            onPressed: () async {
+            onPressed: () {
               final familyCubit = context.read<FamilyCubit>();
-              // Get the current family ID from the widget
-              final familyId = familyCubit.familyId;
-              final result = await Navigator.pushNamed(
+              Navigator.pushNamed(
                 context,
                 AppRoute.addFamilyMember,
-                arguments: {
-                  'familyId': familyId,
-                  'familyCubit': familyCubit,
-                },
+                arguments: familyCubit,
               );
-              // Refresh family details if member was added successfully
-              if (result == true) {
-                familyCubit.getFamilyDetilesById(familyId);
-              }
             },
-          )
+          ),
         ],
       ),
     );

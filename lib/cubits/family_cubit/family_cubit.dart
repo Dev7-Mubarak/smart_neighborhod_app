@@ -127,7 +127,9 @@ class FamilyCubit extends Cubit<FamilyState> {
       );
 
       if (response["isSuccess"]) {
-        emit(FamilyMemberAddedSuccessfully(message: "تم إضافة عضو الأسرة بنجاح"));
+        emit(
+          FamilyMemberAddedSuccessfully(message: "تم إضافة عضو الأسرة بنجاح"),
+        );
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -173,26 +175,22 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
-  /// Adds an existing person to a family with a specific role
   Future<void> addExistingPersonToFamily({
     required int familyId,
     required int personId,
-    required String role,
+    required int roleId,
   }) async {
     emit(FamilyLoading());
     try {
       final response = await api.post(
         ApiLink.addExistingPersonToFamily,
-        isFromData: true,
-        data: {
-          "FamilyId": familyId,
-          "PersonId": personId,
-          "Role": role,
-        },
+        data: {"familyId": familyId, "personId": personId, "roleId": roleId},
       );
 
       if (response["isSuccess"]) {
-        emit(FamilyMemberAddedSuccessfully(message: "تم إضافة الشخص للأسرة بنجاح"));
+        emit(
+          FamilyMemberAddedSuccessfully(message: "تم إضافة الشخص للأسرة بنجاح"),
+        );
       } else {
         throw Serverexception(
           errModel: ErrorModel(
