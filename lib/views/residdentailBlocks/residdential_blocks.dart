@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/on_failure_widget.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/constants/app_size.dart';
@@ -44,27 +45,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         } else if (state is BlocksLoading) {
           return showLoadingIndicator();
         } else if (state is BlocksFailure) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.red),
-                SizedBox(height: 16),
-                Text(
-                  'حدث خطأ',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8),
-                SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    _blockCubit.getBlocks();
-                  },
-                  child: Text('إعادة المحاولة'),
-                ),
-              ],
-            ),
-          );
+          return OnFailureWidget(onRetry: () => _blockCubit.getBlocks());
         } else {
           return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
         }

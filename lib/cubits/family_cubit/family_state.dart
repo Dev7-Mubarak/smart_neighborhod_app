@@ -27,6 +27,11 @@ class FamilyFailure extends FamilyState {
   FamilyFailure({required this.errorMessage});
 }
 
+class FamilyDeletedSuccessfully extends FamilyState {
+  final String message;
+  FamilyDeletedSuccessfully({required this.message});
+}
+
 class FamilyAddedSuccessfully extends FamilyState {
   final String message;
   FamilyAddedSuccessfully({required this.message});

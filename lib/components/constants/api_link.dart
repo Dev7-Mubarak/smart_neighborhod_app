@@ -17,6 +17,7 @@ class ApiLink {
   static const String updateBlocke = '$server/Blocks/Update';
   static const String deleteBlocke = '$server/Blocks/Delete';
   static const String addFamily = '$server/Family/Add';
+  static const String deleteFamily = '$server/Family/Delete';
   static const String updateFamily = '$server/Family/Update';
   static const String addFamilyMember = '$server/Family/AddMember';
   static const String addExistingPersonToFamily = '$server/FamilyMembers/Add';
