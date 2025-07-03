@@ -24,12 +24,14 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   ProjectStatus? selectedProjectStatus;
   ProjectPriority? selectedProjectPriority;
   ProjectCategory? selectedProjectCategory;
+  List<Project> _allProjects = [];
 
   Future<void> getAssistances({String? search}) async {
     emit(AssistancesLoading());
     try {
-      final response = await api.get(ApiLink.getAllProjects);
-
+      final response = await api.get(
+        '${ApiLink.getAllProjects}?ProjectCategoryId=4',
+      );
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
@@ -40,13 +42,12 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         );
       }
       List<dynamic> projectsJson = response["data"];
-      List<Project> projectsObjects = projectsJson
-          .map((e) => Project.fromJson(e))
-          .toList();
-      List<Project> assistances = projectsObjects
-          .where((e) => e.projectCategory.name == "مساعدات")
-          .toList();
-      if (assistances == []) {
+      _allProjects = projectsJson.map((e) => Project.fromJson(e)).toList();
+      // List<Project> assistances = projectsObjects
+      //     .where((e) => e.projectCategory.name == "مساعدات")
+      //     .toList();
+
+      if (_allProjects == []) {
         throw Serverexception(
           errModel: ErrorModel(
             statusCode: '400',
@@ -55,12 +56,46 @@ class AssistancesCubit extends Cubit<AssistancesState> {
           ),
         );
       }
-      emit(AssistancesLoaded(assistances));
+      if (search != null && search.isNotEmpty) {
+        filterProjects(search);
+      } else {
+        emit(
+          AssistancesLoaded(
+            allProjects: _allProjects,
+            filteredProjects: _allProjects,
+          ),
+        );
+      }
     } on Serverexception catch (e) {
       emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(AssistancesFailure(errorMessage: e.toString()));
     }
+  }
+
+  void filterProjects(String query) {
+    if (query.isEmpty) {
+      emit(
+        AssistancesLoaded(
+          allProjects: _allProjects,
+          filteredProjects: _allProjects,
+        ),
+      );
+      return;
+    }
+
+    final _filteredList = _allProjects
+        .where(
+          (project) => project.name.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList();
+
+    emit(
+      AssistancesLoaded(
+        allProjects: _allProjects,
+        filteredProjects: _filteredList,
+      ),
+    );
   }
 
   Future<void> setAssistanceForUpdate(Project project) async {
@@ -79,11 +114,15 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     // }
   }
 
+  Future<void> setAssistanceForDetiles(Project project) async {
+    this.project = project;
+  }
+
   // void changeSelectedManager(Person? selectedManager) {
   //   this.selectedManager = selectedManager;
   //   emit(ChangeSelectedManager());
   // }
-  // دالة لتغيير المدير المختار بناءً على الـ ID
+
   void changeSelectedManager(int? id) {
     selectedManagerId = id;
 
@@ -226,7 +265,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       if (response["isSuccess"]) {
         emit(
           AssistanceUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح",
+            message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
         resetInputs();

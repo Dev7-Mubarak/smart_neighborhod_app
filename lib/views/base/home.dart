@@ -75,6 +75,14 @@ class _HomeState extends State<Home> {
         backgroundColor: const Color(0xFF5B27D5),
         onTap: () {},
       ),
+      CategoryCard(
+        title: 'قسم الفرق',
+        imagePath: AppImage.team,
+        backgroundColor: const Color(0xFFE8618C),
+        onTap: () {
+                    Navigator.pushNamed(context, AppRoute.allTeams);
+        },
+      ),
     ];
 
     final screenWidth = MediaQuery.of(context).size.width;

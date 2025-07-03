@@ -266,7 +266,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 items: state.projectCategories,
                                 itemAsString: (ProjectCategory? u) =>
                                     u?.name ?? '',
-                                onChanged: null,
+                                onChanged:null ,
                                 //  (ProjectCategory? data) {
                                 //   assistanceCubit
                                 //       .changeSelectedProjectCategory(data);

@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/models/enums/project_priority.dart';
 import 'package:smart_negborhood_app/models/project.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/custom_navigation_bar.dart';
@@ -22,8 +22,7 @@ class AllAssistances extends StatefulWidget {
 
 class _AllAssistancesState extends State<AllAssistances> {
   List<Project> _projectsListSearch = [];
-  List<Project> _projectsList = [];
-  late AssistancesCubit _assistancesCubit;
+   late AssistancesCubit _assistancesCubit;
   late TextEditingController _searchingController;
   Timer? _delay;
 
@@ -40,18 +39,12 @@ class _AllAssistancesState extends State<AllAssistances> {
     _delay?.cancel();
     super.dispose();
   }
-  // void updateSearchResults(List<Block> filteredList) {
-  //   setState(() {
-  //     residentialListSearch = filteredList;
-  //   });
-  // }
 
   Widget buildBlocWidget() {
     return BlocBuilder<AssistancesCubit, AssistancesState>(
       builder: (context, state) {
         if (state is AssistancesLoaded) {
-          _projectsList = state.allProjects;
-          _projectsListSearch = _projectsList;
+          _projectsListSearch = state.filteredProjects;
           return buildLoadedListWidgets();
         } else if (state is AssistancesLoading) {
           return showLoadingIndicator();
@@ -80,11 +73,19 @@ class _AllAssistancesState extends State<AllAssistances> {
       rowData: _projectsListSearch.asMap().entries.map((entry) {
         int index = entry.key;
         var project = entry.value;
-        return [project.projectPriority, project.name, '${index + 1}'];
+        return [project.projectPriority.displayName, project.name, '${index + 1}'];
       }).toList(),
       originalObjects: _projectsListSearch,
       onRowLongPress: (rowIndex, rowObject) {
         _showOptions(context, rowObject as Project);
+      },
+      onPress: (rowIndex, rowObject) {
+        Navigator.pushNamed(
+          context,
+          AppRoute.assistanceDetiles,
+          arguments: BlocProvider.of<AssistancesCubit>(context)
+            ..setAssistanceForDetiles(rowObject),
+        );
       },
     );
   }
@@ -145,21 +146,24 @@ class _AllAssistancesState extends State<AllAssistances> {
                 context,
                 AppRoute.addUpdateAssistanc,
                 arguments: BlocProvider.of<AssistancesCubit>(context),
-              ).then((_) {
-                _assistancesCubit.getAssistances();
-              });
+              );
+              // .then((_) {
+              //     _assistancesCubit.filterProjects(
+              //        _searchingController.text.trim(),
+              //     );
+              //   });
             },
           ),
           const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
               controller: _searchingController,
-              hintText: 'ابحث عن المربع السكني',
+              hintText: 'ابحث عن مشروع مساعدات',
               bachgroundColor: AppColor.gray2,
               prefixIcon: IconButton(
                 onPressed: () {
                   _searchingController.clear();
-                  _assistancesCubit.getAssistances();
+                  _assistancesCubit.filterProjects('');
                 },
                 icon: const Icon(Icons.close),
               ),
@@ -167,7 +171,7 @@ class _AllAssistancesState extends State<AllAssistances> {
               onChanged: (value) {
                 _delay?.cancel();
                 _delay = Timer(const Duration(milliseconds: 400), () {
-                  _assistancesCubit.getAssistances(search: value.trim());
+                  _assistancesCubit.filterProjects(value.trim());
                 });
               },
             ),
@@ -192,13 +196,17 @@ class _AllAssistancesState extends State<AllAssistances> {
               title: const Text('تعديل'),
               onTap: () {
                 Navigator.pop(context);
-
                 Navigator.pushNamed(
                   context,
                   AppRoute.addUpdateAssistanc,
                   arguments: BlocProvider.of<AssistancesCubit>(passContext)
                     ..setAssistanceForUpdate(project),
                 );
+                // .then((_) {
+                //   _assistancesCubit.getAssistances(
+                //     search: _searchingController.text.trim(),
+                //   );
+                // });
               },
             ),
             ListTile(

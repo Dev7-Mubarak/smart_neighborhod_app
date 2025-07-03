@@ -75,7 +75,6 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     );
   }
 
-  // الدالة التي تحل محل BuildHousingUnitCard Widget
   Widget _buildHousingUnitCard({
     required Block block,
     required void Function(BuildContext context, Block block)
