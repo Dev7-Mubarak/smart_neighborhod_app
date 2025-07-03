@@ -81,6 +81,40 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
+  Future<void> updateFamily(Family family) async {
+    emit(FamilyLoading());
+    try {
+      final response = await api.put(
+        '${ApiLink.updateFamily}/${family.id}',
+        data: {
+          "name": family.name,
+          "familyCatgoryId": family.familyCatgoryId,
+          "location": family.location,
+          "familyTypeId": family.familyTypeId,
+          "familyNotes": family.familyNotes,
+          "blockId": family.blockId,
+          "familyHeadId": family.familyHeadId,
+        },
+      );
+
+      if (response["isSuccess"]) {
+        emit(FamilyUpdatedSuccessfully(message: "تم تحديث الأسرة بنجاح"));
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
   Future<void> addFamilyMember({
     required int familyId,
     required String firstName,

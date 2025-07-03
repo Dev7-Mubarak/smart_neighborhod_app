@@ -6,10 +6,12 @@ import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart'
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/family.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/smallButton.dart';
 import '../../models/family_detiles_model.dart';
+import 'addNewFamily.dart';
 
 class FamilyDetiles extends StatefulWidget {
   const FamilyDetiles({super.key, required this.familyId});
@@ -136,7 +138,7 @@ class FamilyDetailsBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FamilyDetilesCard(familyDetiles: state.familyDetiles),
-          const _EditFamilyButton(),
+          _EditFamilyButton(familyDetiles: state.familyDetiles),
           const SizedBox(height: 16),
           const _SectionTitle(title: 'أفراد الأسرة'),
           const SizedBox(height: 16),
@@ -190,14 +192,45 @@ class FamilyDetailsBody extends StatelessWidget {
 }
 
 class _EditFamilyButton extends StatelessWidget {
-  const _EditFamilyButton();
+  final FamilyDetilesModel familyDetiles;
+  const _EditFamilyButton({required this.familyDetiles});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [SmallButton(text: 'تعديل', onPressed: () {})],
+        children: [
+          SmallButton(
+            text: 'تعديل',
+            onPressed: () {
+              // Create a Family object from familyDetiles
+              final family = Family(
+                name: familyDetiles.name,
+                location: familyDetiles.location,
+                familyCatgoryId: familyDetiles.familyCategoryId,
+                familyTypeId: familyDetiles.familyTypeId,
+                familyNotes: familyDetiles.familyNotes,
+                blockId: familyDetiles.blockId,
+                // We'll let the form handle finding the correct family head
+                // since familyDetiles doesn't include the family head ID
+                familyHeadId: 0,
+              );
+              family.id = familyDetiles.id;
+              
+              // Navigate to AddNewFamily page with family data
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddNewFamily(
+                    blockId: familyDetiles.blockId,
+                    family: family,
+                  ),
+                ),
+              );
+            },
+          )
+        ],
       ),
     );
   }

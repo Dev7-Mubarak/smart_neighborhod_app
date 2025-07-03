@@ -32,6 +32,11 @@ class FamilyAddedSuccessfully extends FamilyState {
   FamilyAddedSuccessfully({required this.message});
 }
 
+class FamilyUpdatedSuccessfully extends FamilyState {
+  final String message;
+  FamilyUpdatedSuccessfully({required this.message});
+}
+
 class FamilyMemberAddedSuccessfully extends FamilyState {
   final String message;
   FamilyMemberAddedSuccessfully({required this.message});

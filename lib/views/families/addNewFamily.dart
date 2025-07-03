@@ -22,7 +22,8 @@ import '../../models/family_type.dart';
 
 class AddNewFamily extends StatefulWidget {
   final int blockId;
-  const AddNewFamily({super.key, required this.blockId});
+  final Family? family;
+  const AddNewFamily({super.key, required this.blockId, this.family});
 
   @override
   State<AddNewFamily> createState() => _AddNewFamilyState();
@@ -54,6 +55,13 @@ class _AddNewFamilyState extends State<AddNewFamily> {
       ..getFamilyCategories();
     familyTypeCubit = context.read<FamilyTypeCubit>()..getFamilyTypies();
     blockCubit = context.read<BlockCubit>();
+    
+    // Pre-populate form fields if editing
+    if (widget.family != null) {
+      _familyNameController.text = widget.family!.name;
+      _locationController.text = widget.family!.location;
+      _notesController.text = widget.family!.familyNotes;
+    }
   }
 
   @override
@@ -78,6 +86,18 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                 ),
               );
               Navigator.pop(context);
+            } else if (state is FamilyUpdatedSuccessfully) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              // Refresh the family details if we're editing
+              if (widget.family != null) {
+                familyCubit.getFamilyDetilesById(widget.family!.id);
+              }
+              Navigator.pop(context);
             } else if (state is FamilyFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -90,30 +110,54 @@ class _AddNewFamilyState extends State<AddNewFamily> {
         ),
         BlocListener<PersonCubit, PersonState>(
           listener: (context, state) {
-            if (state is PersonLoaded &&
-                selectedFamilyHead == null &&
-                state.people.isNotEmpty) {
-              setState(() => selectedFamilyHead = state.people.first);
+            if (state is PersonLoaded && selectedFamilyHead == null) {
+              if (widget.family != null) {
+                // When editing, if we have a family head ID, use it
+                if (widget.family!.familyHeadId > 0) {
+                  final familyHead = state.people.firstWhere(
+                    (person) => person.id == widget.family!.familyHeadId,
+                    orElse: () => state.people.first,
+                  );
+                  setState(() => selectedFamilyHead = familyHead);
+                } else if (state.people.isNotEmpty) {
+                  // If no family head ID, default to first person
+                  setState(() => selectedFamilyHead = state.people.first);
+                }
+              } else if (state.people.isNotEmpty) {
+                setState(() => selectedFamilyHead = state.people.first);
+              }
             }
           },
         ),
         BlocListener<FamilyCategoryCubit, FamilyCategoryState>(
           listener: (context, state) {
-            if (state is FamilyCategoryLoaded &&
-                selectedFamilyCategory == null &&
-                state.familyCategories.isNotEmpty) {
-              setState(
-                () => selectedFamilyCategory = state.familyCategories.first,
-              );
+            if (state is FamilyCategoryLoaded && selectedFamilyCategory == null) {
+              if (widget.family != null) {
+                // Find the family category by ID when editing
+                final familyCategory = state.familyCategories.firstWhere(
+                  (category) => category.id == widget.family!.familyCatgoryId,
+                  orElse: () => state.familyCategories.first,
+                );
+                setState(() => selectedFamilyCategory = familyCategory);
+              } else if (state.familyCategories.isNotEmpty) {
+                setState(() => selectedFamilyCategory = state.familyCategories.first);
+              }
             }
           },
         ),
         BlocListener<FamilyTypeCubit, FamilyTypeState>(
           listener: (context, state) {
-            if (state is FamilyTypeLoaded &&
-                selectedFamilyType == null &&
-                state.familyTypes.isNotEmpty) {
-              setState(() => selectedFamilyType = state.familyTypes.first);
+            if (state is FamilyTypeLoaded && selectedFamilyType == null) {
+              if (widget.family != null) {
+                // Find the family type by ID when editing
+                final familyType = state.familyTypes.firstWhere(
+                  (type) => type.id == widget.family!.familyTypeId,
+                  orElse: () => state.familyTypes.first,
+                );
+                setState(() => selectedFamilyType = familyType);
+              } else if (state.familyTypes.isNotEmpty) {
+                setState(() => selectedFamilyType = state.familyTypes.first);
+              }
             }
           },
         ),
@@ -123,10 +167,10 @@ class _AddNewFamilyState extends State<AddNewFamily> {
           backgroundColor: AppColor.white,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: const Center(
+          title: Center(
             child: Text(
-              'إضافة أسرة جديدة',
-              style: TextStyle(
+              widget.family == null ? 'إضافة أسرة' : 'تعديل معلومات الأسرة',
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -316,22 +360,39 @@ class _AddNewFamilyState extends State<AddNewFamily> {
                           ),
                           const SizedBox(width: 10),
                           SmallButton(
-                            text: 'إضافة',
+                            text: widget.family == null ? 'إضافة' : 'تعديل',
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                final newFamily = Family(
-                                  name: _familyNameController.text,
-                                  location: _locationController.text,
-                                  familyNotes: _notesController.text,
-                                  familyCatgoryId:
-                                      selectedFamilyCategory?.id ?? 0,
-                                  familyTypeId: selectedFamilyType?.id ?? 0,
-                                  blockId: widget.blockId,
-                                  familyHeadId: selectedFamilyHead?.id ?? 0,
-                                );
-                                familyCubit.addNewFamily(newFamily).then((_) {
-                                  blockCubit.getBlockDetailes(widget.blockId);
-                                });
+                                if (widget.family == null) {
+                                  // Add new family
+                                  final newFamily = Family(
+                                    name: _familyNameController.text,
+                                    location: _locationController.text,
+                                    familyNotes: _notesController.text,
+                                    familyCatgoryId:
+                                        selectedFamilyCategory?.id ?? 0,
+                                    familyTypeId: selectedFamilyType?.id ?? 0,
+                                    blockId: widget.blockId,
+                                    familyHeadId: selectedFamilyHead?.id ?? 0,
+                                  );
+                                  familyCubit.addNewFamily(newFamily).then((_) {
+                                    blockCubit.getBlockDetailes(widget.blockId);
+                                  });
+                                } else {
+                                  // Update existing family
+                                  final updatedFamily = Family(
+                                    name: _familyNameController.text,
+                                    location: _locationController.text,
+                                    familyNotes: _notesController.text,
+                                    familyCatgoryId:
+                                        selectedFamilyCategory?.id ?? 0,
+                                    familyTypeId: selectedFamilyType?.id ?? 0,
+                                    blockId: widget.blockId,
+                                    familyHeadId: selectedFamilyHead?.id ?? 0,
+                                  );
+                                  updatedFamily.id = widget.family!.id;
+                                  familyCubit.updateFamily(updatedFamily);
+                                }
                               }
                             },
                           ),
