@@ -45,9 +45,24 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
           return showLoadingIndicator();
         } else if (state is BlocksFailure) {
           return Center(
-            child: Text(
-              state.errorMessage,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 64, color: Colors.red),
+                SizedBox(height: 16),
+                Text(
+                  'حدث خطأ',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    _blockCubit.getBlocks();
+                  },
+                  child: Text('إعادة المحاولة'),
+                ),
+              ],
             ),
           );
         } else {
