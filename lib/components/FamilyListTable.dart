@@ -33,7 +33,7 @@ class FamilyListTable extends StatelessWidget {
       }).toList(),
       onRowTap: (index) {
         final selectedFamily = families[index];
-        familyCubit.setFamilyId(selectedFamily.id);
+        familyCubit.setFamily(selectedFamily);
         Navigator.pushNamed(
           context,
           AppRoute.familyDetiles,
@@ -64,10 +64,11 @@ class FamilyListTable extends StatelessWidget {
                   label: const Text('تعديل الأسرة'),
                   onPressed: () {
                     Navigator.pop(context);
+                    familyCubit.setFamily(selectedFamily);
                     Navigator.pushNamed(
                       context,
-                      AppRoute.addNewFamily,
-                      arguments: selectedFamily,
+                      AppRoute.addUpdateFamily,
+                      arguments: familyCubit,
                     );
                   },
                 ),

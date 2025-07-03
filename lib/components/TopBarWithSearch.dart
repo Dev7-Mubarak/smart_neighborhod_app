@@ -26,10 +26,10 @@ class TopBarWithSearch extends StatelessWidget {
             text: 'أضافة',
             onPressed: () {
               var familyCubit = BlocProvider.of<FamilyCubit>(context);
-              familyCubit.setBlockId(blockId);
+              // familyCubit.setBlockId(blockId);
               Navigator.pushNamed(
                 context,
-                AppRoute.addNewFamily,
+                AppRoute.addUpdateFamily,
                 arguments: familyCubit,
               );
             },

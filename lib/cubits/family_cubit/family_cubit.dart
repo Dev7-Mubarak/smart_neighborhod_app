@@ -13,23 +13,19 @@ import '../../models/family_detiles_model.dart';
 
 class FamilyCubit extends Cubit<FamilyState> {
   final DioConsumer api;
-  FamilyCubit({required this.api}) : super(FamilyInitial());
+  FamilyCubit(this.blockId, {required this.api}) : super(FamilyInitial());
 
   static FamilyCubit get(context) => BlocProvider.of(context);
 
   List<Family> allFamilies = [];
-  late int blockId;
+  final int blockId;
   Person? selectedFamilyHead;
   FamilyCategory? selectedCategory;
   FamilyType? selectedFamilyType;
-  late int familyId;
+  Family? family;
 
-  void setFamilyId(int familyId) {
-    this.familyId = familyId;
-  }
-
-  void setBlockId(int blockId) {
-    this.blockId = blockId;
+  void setFamily(Family family) {
+    this.family = family;
   }
 
   void changeSelectedFamilyCategory(FamilyCategory? selectedCategory) {

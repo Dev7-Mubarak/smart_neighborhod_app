@@ -30,9 +30,6 @@ class FamilyAssistancesListTable extends StatelessWidget {
       }).toList(),
 
       onRowTap: (index) {
-        final selectedFamily = familyAssisytances[index];
-        FamilyCubit familyCubit = context.read<FamilyCubit>();
-        familyCubit.setFamilyId(selectedFamily.id);
         Navigator.pushNamed(
           context,
           AppRoute.familyDetiles,

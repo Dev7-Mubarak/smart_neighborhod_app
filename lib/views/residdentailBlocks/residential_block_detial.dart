@@ -145,10 +145,10 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                               onPressed: () {
                                 var familyCubit = BlocProvider.of<FamilyCubit>(
                                   context,
-                                )..setBlockId(widget.blockId);
+                                );
                                 Navigator.pushNamed(
                                   context,
-                                  AppRoute.addNewFamily,
+                                  AppRoute.addUpdateFamily,
                                   arguments: familyCubit,
                                 );
                               },
