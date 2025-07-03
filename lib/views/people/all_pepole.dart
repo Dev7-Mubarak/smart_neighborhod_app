@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/constants/app_size.dart';
+import 'package:smart_negborhood_app/components/on_failure_widget.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/searcable_text_input_filed.dart';
 import '../../components/smallButton.dart';
@@ -81,12 +82,7 @@ class _AllPeopleState extends State<AllPeople> {
       child: BlocBuilder<PersonCubit, PersonState>(
         builder: (context, state) {
           if (state is PersonFailure) {
-            return Center(
-              child: Text(
-                state.errorMessage,
-                style: const TextStyle(color: Colors.red),
-              ),
-            );
+            return OnFailureWidget(onRetry: () => _personCubit.getPeople());
           }
 
           if (state is PersonLoading && state.isFirstFetch) {

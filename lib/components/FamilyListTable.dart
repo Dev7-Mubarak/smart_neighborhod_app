@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/table.dart';
+import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/models/assistance.dart';
 import 'package:smart_negborhood_app/models/family.dart';
 
 class FamilyListTable extends StatelessWidget {
   final List<Family> families;
+  final FamilyCubit familyCubit;
 
-  const FamilyListTable({super.key, required this.families});
+  const FamilyListTable({
+    super.key,
+    required this.families,
+    required this.familyCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +31,8 @@ class FamilyListTable extends StatelessWidget {
           '${index + 1}',
         ];
       }).toList(),
-
       onRowTap: (index) {
         final selectedFamily = families[index];
-        FamilyCubit familyCubit = context.read<FamilyCubit>();
         familyCubit.setFamilyId(selectedFamily.id);
         Navigator.pushNamed(
           context,
@@ -37,42 +40,93 @@ class FamilyListTable extends StatelessWidget {
           arguments: familyCubit,
         );
       },
+      onRowLongPress: (index, rowObject) async {
+        final selectedFamily = families[index];
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'خيارات الأسرة',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.edit),
+                  label: const Text('تعديل الأسرة'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(
+                      context,
+                      AppRoute.addNewFamily,
+                      arguments: selectedFamily,
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.delete),
+                  label: const Text('حذف الأسرة'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _showDeleteConfirmationDialog(
+                      context,
+                      selectedFamily,
+                      familyCubit,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
-}
 
-class FamilyAssistancesListTable extends StatelessWidget {
-  final List<Assistance> familyAssisytances;
-
-  const FamilyAssistancesListTable({
-    super.key,
-    required this.familyAssisytances,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomTableWidget(
-      columnTitles: const ['ملاحظات', 'تاريخ الأستلام', 'نوع المساعدة', 'رقم'],
-      columnFlexes: const [4, 2, 3, 1],
-      rowData: familyAssisytances.asMap().entries.map((entry) {
-        int index = entry.key;
-        var familyAssisytance = entry.value;
-        return [
-          familyAssisytance.notes ?? 'لا يوجد ملاحظات',
-          familyAssisytance.deliverDate ?? 'لا يوجد تاريخ تسليم',
-          familyAssisytance.name,
-          '${index + 1}',
-        ];
-      }).toList(),
-
-      onRowTap: (index) {
-        final selectedFamily = familyAssisytances[index];
-        FamilyCubit familyCubit = context.read<FamilyCubit>();
-        familyCubit.setFamilyId(selectedFamily.id);
-        Navigator.pushNamed(
-          context,
-          AppRoute.familyDetiles,
-          arguments: context.read<FamilyCubit>(),
+  void _showDeleteConfirmationDialog(
+    BuildContext context,
+    Family family,
+    FamilyCubit familyCubit,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تأكيد الحذف'),
+          content: const Text('هل أنت متأكد أنك تريد حذف هذه الأسرة؟'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () {
+                familyCubit.deleteFamily(family.id);
+                Navigator.of(context).pop();
+                BlocProvider.of<BlockCubit>(
+                  context,
+                ).getBlockDetailes(family.blockId);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('تم حذف الأسرة بنجاح'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              },
+              child: const Text('حذف'),
+            ),
+          ],
         );
       },
     );

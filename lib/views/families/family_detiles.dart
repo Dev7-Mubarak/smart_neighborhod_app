@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/FamilyListTable.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/family_assistances_list_table.dart';
+import 'package:smart_negborhood_app/components/on_failure_widget.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
@@ -40,30 +42,9 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
         body: BlocBuilder<FamilyCubit, FamilyState>(
           builder: (context, state) {
             if (state is FamilyFailure) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    SizedBox(height: 16),
-                    Text(
-                      'حدث خطأ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<FamilyCubit>().getFamilyDetilesById(
-                          widget.familyId,
-                        );
-                      },
-                      child: Text('إعادة المحاولة'),
-                    ),
-                  ],
+              return OnFailureWidget(
+                onRetry: () => context.read<FamilyCubit>().getFamilyDetilesById(
+                  widget.familyId,
                 ),
               );
             }
@@ -136,7 +117,6 @@ class FamilyDetailsBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FamilyDetilesCard(familyDetiles: state.familyDetiles),
-          const _EditFamilyButton(),
           const SizedBox(height: 16),
           const _SectionTitle(title: 'أفراد الأسرة'),
           const SizedBox(height: 16),
@@ -184,20 +164,6 @@ class FamilyDetailsBody extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _EditFamilyButton extends StatelessWidget {
-  const _EditFamilyButton();
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [SmallButton(text: 'تعديل', onPressed: () {})],
       ),
     );
   }

@@ -27,9 +27,19 @@ class FamilyFailure extends FamilyState {
   FamilyFailure({required this.errorMessage});
 }
 
+class FamilyDeletedSuccessfully extends FamilyState {
+  final String message;
+  FamilyDeletedSuccessfully({required this.message});
+}
+
 class FamilyAddedSuccessfully extends FamilyState {
   final String message;
   FamilyAddedSuccessfully({required this.message});
+}
+
+class FamilyUpdatedSuccessfully extends FamilyState {
+  final String message;
+  FamilyUpdatedSuccessfully({required this.message});
 }
 
 class FamilyMemberAddedSuccessfully extends FamilyState {

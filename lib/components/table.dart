@@ -45,11 +45,8 @@ class CustomTableWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               List<dynamic> row = rowData[index];
               return InkWell(
-                onLongPress: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Row In long press $index tapped')),
-                  );
-                },
+                onLongPress: () =>
+                    onRowLongPress?.call(index, originalObjects?[index]),
                 onTap: () => onRowTap?.call(index),
 
                 child: Container(
