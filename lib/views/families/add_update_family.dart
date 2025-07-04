@@ -37,29 +37,32 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
   FamilyType? selectedFamilyType;
   Person? selectedFamilyHead;
 
+  final TextEditingController _familyNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+
   late PersonCubit personCubit;
   late FamilyCubit familyCubit;
   late FamilyCategoryCubit familyCategoryCubit;
   late FamilyTypeCubit familyTypeCubit;
   late BlockCubit blockCubit;
 
-  final TextEditingController _familyNameController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _notesController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
-    personCubit = context.read<PersonCubit>()..getPeople();
+
+    personCubit = context.read<PersonCubit>();
     familyCubit = context.read<FamilyCubit>();
-    familyCategoryCubit = context.read<FamilyCategoryCubit>()
-      ..getFamilyCategories();
-    familyTypeCubit = context.read<FamilyTypeCubit>()..getFamilyTypies();
+    familyCategoryCubit = context.read<FamilyCategoryCubit>();
+    familyTypeCubit = context.read<FamilyTypeCubit>();
     blockCubit = context.read<BlockCubit>();
+
+    _initializeData();
   }
 
   Future<void> _initializeData() async {
     await familyCategoryCubit.getFamilyCategories();
+    await familyTypeCubit.getFamilyTypies();
     await personCubit.getPeople();
 
     if (widget.family != null) {
@@ -69,12 +72,20 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
 
       selectedFamilyCategory = familyCategoryCubit.familyCategories.firstWhere(
         (category) => category.id == widget.family!.familyCatgoryId,
+        orElse: () => familyCategoryCubit.familyCategories.first,
+      );
+
+      selectedFamilyType = familyTypeCubit.familyTypes.firstWhere(
+        (type) => type.id == widget.family!.familyTypeId,
+        orElse: () => familyTypeCubit.familyTypes.first,
       );
 
       selectedFamilyHead = personCubit.people.firstWhere(
         (person) => person.id == widget.family!.familyHeadId,
+        orElse: () => personCubit.people.first,
       );
     }
+    setState(() {});
   }
 
   @override
@@ -219,7 +230,7 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
                               itemAsString: (p) => p.fullName,
                               onChanged: (value) {
                                 selectedFamilyHead = value;
-                                // setState(() => selectedFamilyHead = value);
+                                setState(() => selectedFamilyHead = value);
                                 familyCubit.changeSelectedFamilyHaed(value);
                               },
                               validator: (value) => value == null
