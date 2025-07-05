@@ -20,15 +20,17 @@ import '../../cubits/person_cubit/person_cubit.dart';
 import '../../models/Person.dart';
 import '../../models/family_type.dart';
 
-class AddNewFamily extends StatefulWidget {
+class AddUpdateFamily extends StatefulWidget {
   final int blockId;
-  const AddNewFamily({super.key, required this.blockId});
+  final Family? family;
+
+  const AddUpdateFamily({super.key, required this.blockId, this.family});
 
   @override
-  State<AddNewFamily> createState() => _AddNewFamilyState();
+  State<AddUpdateFamily> createState() => _AddNUpdateFamilyState();
 }
 
-class _AddNewFamilyState extends State<AddNewFamily> {
+class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
   final _formKey = GlobalKey<FormState>();
 
   FamilyCategory? selectedFamilyCategory;
@@ -54,6 +56,25 @@ class _AddNewFamilyState extends State<AddNewFamily> {
       ..getFamilyCategories();
     familyTypeCubit = context.read<FamilyTypeCubit>()..getFamilyTypies();
     blockCubit = context.read<BlockCubit>();
+  }
+
+  Future<void> _initializeData() async {
+    await familyCategoryCubit.getFamilyCategories();
+    await personCubit.getPeople();
+
+    if (widget.family != null) {
+      _familyNameController.text = widget.family!.name;
+      _locationController.text = widget.family!.location;
+      _notesController.text = widget.family!.familyNotes;
+
+      selectedFamilyCategory = familyCategoryCubit.familyCategories.firstWhere(
+        (category) => category.id == widget.family!.familyCatgoryId,
+      );
+
+      selectedFamilyHead = personCubit.people.firstWhere(
+        (person) => person.id == widget.family!.familyHeadId,
+      );
+    }
   }
 
   @override

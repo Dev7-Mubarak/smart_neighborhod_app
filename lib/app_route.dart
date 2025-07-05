@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
+import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
@@ -20,7 +21,8 @@ import 'package:smart_negborhood_app/views/auth/createNewPassword.dart';
 import 'package:smart_negborhood_app/views/auth/forgetapassword.dart';
 import 'package:smart_negborhood_app/views/auth/login.dart';
 import 'package:smart_negborhood_app/views/base/mainhome.dart';
-import 'package:smart_negborhood_app/views/families/addNewFamily.dart';
+import 'package:smart_negborhood_app/views/families/add_update_family.dart';
+import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
 import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
 import 'package:smart_negborhood_app/views/people/add_update_person.dart';
@@ -73,7 +75,7 @@ class AppRouter {
             child: AddUpdatePerson(person: personCubit.person),
           ),
         );
-      case AppRoute.addNewFamily:
+      case AppRoute.addUpdateFamily:
         final familyCubit = settings.arguments as FamilyCubit;
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
@@ -90,7 +92,10 @@ class AppRouter {
                 create: (_) => FamilyTypeCubit(api: DioConsumer(dio: Dio())),
               ),
             ],
-            child: AddNewFamily(blockId: familyCubit.blockId),
+            child: AddUpdateFamily(
+              blockId: familyCubit.blockId,
+              family: familyCubit.family,
+            ),
           ),
         );
 
@@ -101,7 +106,7 @@ class AppRouter {
         final blockId = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => BlocProvider<FamilyCubit>(
-            create: (_) => FamilyCubit(api: DioConsumer(dio: Dio())),
+            create: (_) => FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
             child: ResiddentialBlocksDetail(blockId: blockId),
           ),
         );
@@ -109,7 +114,7 @@ class AppRouter {
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
           builder: (_) => forgetapassword(),
-          fullscreenDialog: false, // يجب أن يكون false حتى يظهر زر الرجوع
+          fullscreenDialog: false,
         );
 
       case AppRoute.checkEmail:
@@ -132,9 +137,30 @@ class AppRouter {
         );
 
       case AppRoute.familyDetiles:
+        final familyCubit = settings.arguments as FamilyCubit;
         return MaterialPageRoute(
-          builder: (_) => const FamilyDetiles(familyId: 1044),
+          builder: (_) => BlocProvider.value(
+            value: familyCubit,
+            child: FamilyDetiles(familyId: familyCubit.family!.id),
+          ),
           fullscreenDialog: false,
+        );
+      case AppRoute.addFamilyMember:
+        final familyCubit = settings.arguments as FamilyCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    MemberFamilyRoleCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: AddFamilyMember(familyId: familyCubit.family!.id),
+          ),
         );
       case AppRoute.annoucement1:
         return MaterialPageRoute(

@@ -21,13 +21,18 @@ class ApiLink {
   static const String getAllTeamRoles = '$server/TeamRole/GetAll';
 
   static const String getAllFamilyCategories = '$server/FamilyCatgory/GetAll';
+  static const String getAllMemberFamilyRoles =
+      '$server/MemberFamilyRole/getAllMemberTypes';
   static const String getAllFamilyTypes = '$server/FamilyTypes/GetAll';
   static const String addBlocke = '$server/Blocks/Add';
   static const String updateBlocke = '$server/Blocks/Update';
   static const String deleteBlocke = '$server/Blocks/Delete';
   static const String addFamily = '$server/Family/Add';
-  static const String getFamilyDetilesById =
-      '$server/Family/GetFamilyDetilesById';
+  static const String deleteFamily = '$server/Family/Delete';
+  static const String updateFamily = '$server/Family/Update';
+  static const String addFamilyMember = '$server/Family/AddMember';
+  static const String addExistingPersonToFamily = '$server/FamilyMembers/Add';
+  static const String getFamilyDetailes = '$server/Family/GetDetailes';
   static const String getBlockDetails = '$server/Blocks/GetDetails';
   static const String addNewPerson = '$server/Person/Add';
   static const String deletePerson = '$server/Person/Delete';

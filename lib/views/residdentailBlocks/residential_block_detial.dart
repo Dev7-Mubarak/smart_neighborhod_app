@@ -145,10 +145,10 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                               onPressed: () {
                                 var familyCubit = BlocProvider.of<FamilyCubit>(
                                   context,
-                                )..setBlockId(widget.blockId);
+                                );
                                 Navigator.pushNamed(
                                   context,
-                                  AppRoute.addNewFamily,
+                                  AppRoute.addUpdateFamily,
                                   arguments: familyCubit,
                                 );
                               },
@@ -173,7 +173,10 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      FamilyListTable(families: searchedFamilies),
+                      FamilyListTable(
+                        families: searchedFamilies,
+                        familyCubit: context.read<FamilyCubit>(),
+                      ),
                     ],
                   ),
                 ),

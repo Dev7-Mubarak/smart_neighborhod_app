@@ -8,29 +8,31 @@ import 'family_catgory_state.dart';
 
 class FamilyCategoryCubit extends Cubit<FamilyCategoryState> {
   FamilyCategoryCubit({required this.api}) : super(FamilyCategoryInitial());
-  static FamilyCategoryCubit get(context) => BlocProvider.of(context);
+  static FamilyCategoryCubit of(context) => BlocProvider.of(context);
 
-  DioConsumer api;
+  final DioConsumer api;
+  List<FamilyCategory> familyCategories = [];
   Future<void> getFamilyCategories() async {
     emit(FamilyCategoryLoading());
     try {
-      final response = await api.get(
-        ApiLink.getAllFamilyCategories,
-      );
+      final response = await api.get(ApiLink.getAllFamilyCategories);
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "No data received",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
 
-      List<dynamic> familyCatgories = response["data"];
+      List<dynamic> familyCategoriesList = response["data"];
 
-      emit(FamilyCategoryLoaded(
-          familyCategories:
-              familyCatgories.map((e) => FamilyCategory.fromJson(e)).toList()));
+      familyCategories = familyCategoriesList
+          .map((e) => FamilyCategory.fromJson(e))
+          .toList();
+      emit(FamilyCategoryLoaded(familyCategories: familyCategories));
     } on Serverexception catch (e) {
       emit(FamilyCategoryFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/constants/app_route.dart';
+import 'package:smart_negborhood_app/components/on_failure_widget.dart';
 import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart';
 import '../../components/constants/app_image.dart';
 import '../../components/constants/app_size.dart';
@@ -44,12 +45,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         } else if (state is BlocksLoading) {
           return showLoadingIndicator();
         } else if (state is BlocksFailure) {
-          return Center(
-            child: Text(
-              state.errorMessage,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
-            ),
-          );
+          return OnFailureWidget(onRetry: () => _blockCubit.getBlocks());
         } else {
           return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
         }
