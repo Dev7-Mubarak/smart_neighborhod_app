@@ -12,26 +12,26 @@ class FamilyTypeCubit extends Cubit<FamilyTypeState> {
   static FamilyTypeCubit get(context) => BlocProvider.of(context);
 
   DioConsumer api;
+  List<FamilyType> familyTypes = [];
   Future<void> getFamilyTypies() async {
     emit(FamilyTypeLoading());
     try {
-      final response = await api.get(
-        ApiLink.getAllFamilyTypes,
-      );
+      final response = await api.get(ApiLink.getAllFamilyTypes);
 
       if (response["data"] == null) {
         throw Serverexception(
-            errModel: ErrorModel(
-                statusCode: '400',
-                errorMessage: "No data received",
-                isSuccess: response["isSuccess"] ?? false));
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
 
-      List<dynamic> familyTypes = response["data"];
+      List<dynamic> familyTypesList = response["data"];
+      familyTypes = familyTypesList.map((e) => FamilyType.fromJson(e)).toList();
 
-      emit(FamilyTypeLoaded(
-          familyTypes:
-              familyTypes.map((e) => FamilyType.fromJson(e)).toList()));
+      emit(FamilyTypeLoaded(familyTypes: familyTypes));
     } on Serverexception catch (e) {
       emit(FamilyTypeFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

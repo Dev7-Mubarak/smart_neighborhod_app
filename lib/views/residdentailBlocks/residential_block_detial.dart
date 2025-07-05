@@ -53,7 +53,8 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
       setState(() {
         searchedFamilies = blockDetails.families
             .where(
-              (family) => family.familyHeadName.toLowerCase().contains(query),
+              (family) =>
+                  (family.familyHeadName?.toLowerCase() ?? '').contains(query),
             )
             .toList();
       });

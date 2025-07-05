@@ -27,15 +27,19 @@ class AddUpdateFamily extends StatefulWidget {
   const AddUpdateFamily({super.key, required this.blockId, this.family});
 
   @override
-  State<AddUpdateFamily> createState() => _AddNUpdateFamilyState();
+  State<AddUpdateFamily> createState() => _AddUpdateFamilyState();
 }
 
-class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
+class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   final _formKey = GlobalKey<FormState>();
 
   FamilyCategory? selectedFamilyCategory;
   FamilyType? selectedFamilyType;
   Person? selectedFamilyHead;
+
+  final TextEditingController _familyNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
 
   late PersonCubit personCubit;
   late FamilyCubit familyCubit;
@@ -43,23 +47,21 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
   late FamilyTypeCubit familyTypeCubit;
   late BlockCubit blockCubit;
 
-  final TextEditingController _familyNameController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _notesController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
-    personCubit = context.read<PersonCubit>()..getPeople();
+    personCubit = context.read<PersonCubit>();
     familyCubit = context.read<FamilyCubit>();
-    familyCategoryCubit = context.read<FamilyCategoryCubit>()
-      ..getFamilyCategories();
-    familyTypeCubit = context.read<FamilyTypeCubit>()..getFamilyTypies();
+    familyCategoryCubit = context.read<FamilyCategoryCubit>();
+    familyTypeCubit = context.read<FamilyTypeCubit>();
     blockCubit = context.read<BlockCubit>();
+
+    _initializeData();
   }
 
   Future<void> _initializeData() async {
     await familyCategoryCubit.getFamilyCategories();
+    await familyTypeCubit.getFamilyTypies();
     await personCubit.getPeople();
 
     if (widget.family != null) {
@@ -69,12 +71,20 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
 
       selectedFamilyCategory = familyCategoryCubit.familyCategories.firstWhere(
         (category) => category.id == widget.family!.familyCatgoryId,
+        orElse: () => familyCategoryCubit.familyCategories.first,
+      );
+
+      selectedFamilyType = familyTypeCubit.familyTypes.firstWhere(
+        (type) => type.id == widget.family!.familyTypeId,
+        orElse: () => familyTypeCubit.familyTypes.first,
       );
 
       selectedFamilyHead = personCubit.people.firstWhere(
         (person) => person.id == widget.family!.familyHeadId,
+        orElse: () => personCubit.people.first,
       );
     }
+    setState(() {});
   }
 
   @override
@@ -85,16 +95,40 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
     super.dispose();
   }
 
+  Family _buildFamilyPayload() {
+    return Family(
+      id: widget.family?.id ?? 0,
+      name: _familyNameController.text,
+      location: _locationController.text,
+      familyNotes: _notesController.text,
+      familyCatgoryId: selectedFamilyCategory?.id ?? 0,
+      familyTypeId: selectedFamilyType?.id ?? 0,
+      blockId: widget.blockId,
+      familyHeadId: selectedFamilyHead?.id ?? 0,
+    );
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final family = _buildFamilyPayload();
+      final future = widget.family == null
+          ? familyCubit.addNewFamily(family)
+          : familyCubit.updateFamily(family);
+      future.then((_) => blockCubit.getBlockDetailes(widget.blockId));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
         BlocListener<FamilyCubit, FamilyState>(
           listener: (context, state) {
-            if (state is FamilyAddedSuccessfully) {
+            if (state is FamilyAddedSuccessfully ||
+                state is FamilyUpdatedSuccessfully) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.message),
+                  content: Text((state as dynamic).message),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -109,45 +143,18 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
             }
           },
         ),
-        BlocListener<PersonCubit, PersonState>(
-          listener: (context, state) {
-            if (state is PersonLoaded &&
-                selectedFamilyHead == null &&
-                state.people.isNotEmpty) {
-              setState(() => selectedFamilyHead = state.people.first);
-            }
-          },
-        ),
-        BlocListener<FamilyCategoryCubit, FamilyCategoryState>(
-          listener: (context, state) {
-            if (state is FamilyCategoryLoaded &&
-                selectedFamilyCategory == null &&
-                state.familyCategories.isNotEmpty) {
-              setState(
-                () => selectedFamilyCategory = state.familyCategories.first,
-              );
-            }
-          },
-        ),
-        BlocListener<FamilyTypeCubit, FamilyTypeState>(
-          listener: (context, state) {
-            if (state is FamilyTypeLoaded &&
-                selectedFamilyType == null &&
-                state.familyTypes.isNotEmpty) {
-              setState(() => selectedFamilyType = state.familyTypes.first);
-            }
-          },
-        ),
       ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColor.white,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: const Center(
+          title: Center(
             child: Text(
-              'إضافة أسرة جديدة',
-              style: TextStyle(
+              widget.family == null
+                  ? 'إضافة أسرة جديدة'
+                  : 'تحديث بيانات الأسرة',
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -217,11 +224,8 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
                               items: state.people,
                               selectedItem: selectedFamilyHead,
                               itemAsString: (p) => p.fullName,
-                              onChanged: (value) {
-                                selectedFamilyHead = value;
-                                // setState(() => selectedFamilyHead = value);
-                                familyCubit.changeSelectedFamilyHaed(value);
-                              },
+                              onChanged: (value) =>
+                                  familyCubit.changeSelectedFamilyHaed(value),
                               validator: (value) => value == null
                                   ? 'يرجى اختيار رب الأسرة'
                                   : null,
@@ -254,10 +258,8 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
                               items: state.familyCategories,
                               selectedValue: selectedFamilyCategory,
                               itemLabel: (item) => item.name,
-                              onChanged: (value) {
-                                setState(() => selectedFamilyCategory = value);
-                                familyCubit.changeSelectedFamilyCategory(value);
-                              },
+                              onChanged: (value) => familyCubit
+                                  .changeSelectedFamilyCategory(value),
                               text: 'اختيار تصنيف الأسرة',
                               validator: (value) => value == null
                                   ? 'يرجى اختيار تصنيف الأسرة'
@@ -286,10 +288,8 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
                               items: state.familyTypes,
                               selectedValue: selectedFamilyType,
                               itemLabel: (item) => item.name,
-                              onChanged: (value) {
-                                setState(() => selectedFamilyType = value);
-                                familyCubit.changeSelectedFamilyType(value);
-                              },
+                              onChanged: (value) =>
+                                  familyCubit.changeSelectedFamilyType(value),
                               text: 'اختيار نوع الأسرة',
                               validator: (value) => value == null
                                   ? 'يرجى اختيار نوع الأسرة'
@@ -337,24 +337,8 @@ class _AddNUpdateFamilyState extends State<AddUpdateFamily> {
                           ),
                           const SizedBox(width: 10),
                           SmallButton(
-                            text: 'إضافة',
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                final newFamily = Family(
-                                  name: _familyNameController.text,
-                                  location: _locationController.text,
-                                  familyNotes: _notesController.text,
-                                  familyCatgoryId:
-                                      selectedFamilyCategory?.id ?? 0,
-                                  familyTypeId: selectedFamilyType?.id ?? 0,
-                                  blockId: widget.blockId,
-                                  familyHeadId: selectedFamilyHead?.id ?? 0,
-                                );
-                                familyCubit.addNewFamily(newFamily).then((_) {
-                                  blockCubit.getBlockDetailes(widget.blockId);
-                                });
-                              }
-                            },
+                            text: widget.family == null ? 'إضافة' : 'تحديث',
+                            onPressed: _submitForm,
                           ),
                         ],
                       ),
