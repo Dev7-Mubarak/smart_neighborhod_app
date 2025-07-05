@@ -40,7 +40,7 @@ class FamilyCubit extends Cubit<FamilyState> {
 
   void changeSelectedFamilyHaed(Person? selectedFamilyHead) {
     this.selectedFamilyHead = selectedFamilyHead;
-    emit(changeFamilyHead());
+    emit(ChangeFamilyHead());
   }
 
   Future<void> addNewFamily(Family family) async {
@@ -50,7 +50,7 @@ class FamilyCubit extends Cubit<FamilyState> {
         ApiLink.addFamily,
         data: {
           "name": family.name,
-          "familyCatgoryId": family.familyCatgoryId,
+          "familyCatgoryId": selectedCategory!.id,
           "location": family.location,
           "familyTypeId": family.familyTypeId,
           "familyNotes": family.familyNotes,

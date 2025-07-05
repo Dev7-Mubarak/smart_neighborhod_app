@@ -47,7 +47,7 @@ class FamilyMemberAddedSuccessfully extends FamilyState {
   FamilyMemberAddedSuccessfully({required this.message});
 }
 
-class changeFamilyHead extends FamilyState {}
+class ChangeFamilyHead extends FamilyState {}
 
 class ChangeFamilyCategory extends FamilyState {}
 
