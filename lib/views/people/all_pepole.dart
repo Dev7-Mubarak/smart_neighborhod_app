@@ -94,7 +94,6 @@ class _AllPeopleState extends State<AllPeople> {
               (state is PersonLoading && !state.isFirstFetch)) {
             final people = _personCubit.people;
             final isLoadingMore = state is PersonLoading && !state.isFirstFetch;
-
             return ListView.separated(
               controller: _scrollController,
               padding: const EdgeInsets.all(16),

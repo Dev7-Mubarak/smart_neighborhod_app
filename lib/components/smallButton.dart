@@ -23,7 +23,7 @@ class SmallButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
       ),
     );
   }

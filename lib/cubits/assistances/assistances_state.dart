@@ -9,7 +9,8 @@ class AssistancesInitial extends AssistancesState {}
 class AssistancesLoaded extends AssistancesState {
   final List<Project> allProjects;
 
-  AssistancesLoaded(this.allProjects);
+  final List<Project> filteredProjects;
+  AssistancesLoaded({required this.allProjects, required this.filteredProjects});
 }
 
 class AssistancesLoading extends AssistancesState {}

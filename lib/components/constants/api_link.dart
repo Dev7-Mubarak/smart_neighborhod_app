@@ -9,6 +9,17 @@ class ApiLink {
   static const String deleteProject = '$server/Projects/Delete';
   static const String addProject = '$server/Projects/Add';
   static const String updateProject = '$server/Projects/Update';
+  static const String getAllTeams = '$server/Teams/GetAll';
+  static const String addTeam = '$server/Teams/Add';
+  static const String updateTeam = '$server/Teams/Update';
+  static const String deleteTeam = '$server/Teams/Delete';
+  static const String getTeamById = '$server/Teams/GetById';
+  static const String getProjectsByTeamId = '$server/Teams/by-team';
+  static const String addTeamMember = '$server/TeamMembers/Add';
+  static const String updateTeamMember = '$server/TeamMembers/Update';
+  static const String deleteTeamMember = '$server/TeamMembers/Delete';
+  static const String getAllTeamRoles = '$server/TeamRole/GetAll';
+
   static const String getAllFamilyCategories = '$server/FamilyCatgory/GetAll';
   static const String getAllMemberFamilyRoles =
       '$server/MemberFamilyRole/getAllMemberTypes';

@@ -3,8 +3,14 @@ class AppImage {
   static const String logo = '$rootImage/logo.png';
   static const String onBoardingImage = '$rootImage/onBoarding/onboarding.png';
   static const String homeMicrovon = '$rootImage/home/megaphone.png';
+  
+    static const String team = '$rootImage/1751560586702.png';
+
   static const String homehandshake = '$rootImage/home/handshake.png';
   static const String homehonesty = '$rootImage/home/honesty.png';
+  static const String teamgroup = '$rootImage/ee.png';
+  static const String teamgroupName = '$rootImage/1751454307823.png';
+  static const String teamgroupNumBer = '$rootImage/1751454219160.png';
   static const String homeplan = '$rootImage/home/plan.png';
   static const String homepoliceman = '$rootImage/home/policeman.png';
   static const String homeresidential = '$rootImage/home/residential.png';

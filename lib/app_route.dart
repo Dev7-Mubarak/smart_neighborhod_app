@@ -7,8 +7,13 @@ import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
 import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
+import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
+import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
+import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
+import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_update_assistanc.dart';
 import 'package:smart_negborhood_app/views/Assistances/all_assistances.dart';
+import 'package:smart_negborhood_app/views/Assistances/assistance_detiles.dart';
 import 'package:smart_negborhood_app/views/annoucements/addNewAnnouncement.dart';
 import 'package:smart_negborhood_app/views/annoucements/annoucement1.dart';
 import 'package:smart_negborhood_app/views/auth/checkEmail.dart';
@@ -26,6 +31,10 @@ import 'package:smart_negborhood_app/views/reconciliations/Reconciliation_counci
 import 'package:smart_negborhood_app/views/reconciliations/Reconciliation_councils.dart';
 import 'package:smart_negborhood_app/views/residdentailBlocks/add_update_block.dart';
 import 'package:smart_negborhood_app/views/residdentailBlocks/residential_block_detial.dart';
+import 'package:smart_negborhood_app/views/teams/add_update_team.dart';
+import 'package:smart_negborhood_app/views/teams/add_update_team_member.dart';
+import 'package:smart_negborhood_app/views/teams/all_teams.dart';
+import 'package:smart_negborhood_app/views/teams/team_details.dart';
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'cubits/assistances/assistances_cubit.dart';
@@ -201,6 +210,91 @@ class AppRouter {
               ),
             ],
             child: AddUpdateAssistanc(assistancProject: assistancCubit.project),
+          ),
+        );
+      case AppRoute.assistanceDetiles:
+        final assistancCubit = settings.arguments as AssistancesCubit;
+        return MaterialPageRoute(
+          builder: (_) => AssistanceDetiles(project: assistancCubit.project!),
+          fullscreenDialog: false,
+        );
+      // final assistancCubit = settings.arguments as AssistancesCubit;
+      // return MaterialPageRoute(
+      //   builder: (_) => MultiBlocProvider(
+      //     providers: [
+      //       BlocProvider<PersonCubit>(
+      //         create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+      //       ),
+      //       BlocProvider<ProjectCategoryCubit>(
+      //         create: (context) => ProjectCategoryCubit(api: DioConsumer(dio: Dio())),
+      //       ),
+      //       BlocProvider.value(
+      //         value: assistancCubit,
+      //         child: AddUpdateAssistanc(
+      //           assistancProject: assistancCubit.project,
+      //         ),
+      //       ),
+      //     ],
+      //     child: AddUpdateAssistanc(
+      //       assistancProject: assistancCubit.project,
+      //     ),
+      //   ),
+      // );
+      case AppRoute.allTeams:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<TeamCubit>(
+                create: (context) => TeamCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider<TeamMemberCubit>(
+                create: (context) =>
+                    TeamMemberCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: AllTeams(),
+          ),
+        );
+      case AppRoute.addUpdateTeam:
+        final teamCubit = settings.arguments as TeamCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: teamCubit),
+            ],
+            child: AddUpdateTeam(team: teamCubit.team),
+          ),
+        );
+      case AppRoute.addUpdateTeamMember:
+        final teamMemberCubit = settings.arguments as TeamMemberCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider<TeamRoleCubit>(
+                create: (context) =>
+                    TeamRoleCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: teamMemberCubit),
+            ],
+            child: AddUpdateTeamMember(teamMember: teamMemberCubit.teamMember),
+          ),
+        );
+      case AppRoute.teamDetails:
+        final team = settings.arguments as Team;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<TeamCubit>(
+                create: (context) => TeamCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: TeamDetails(team: team),
           ),
         );
       default:

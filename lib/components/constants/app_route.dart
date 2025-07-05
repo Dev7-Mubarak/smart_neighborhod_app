@@ -16,9 +16,10 @@ class AppRoute {
   static const String allPeople = '/AllPeople';
   static const String allAssistances = '/AllAssistances';
   static const String addUpdateAssistanc = '/AddUpdateAssistanc';
-
-  // static const String nnouncement ='/nnouncement';
-
+  static const String assistanceDetiles = '/AssistanceDetiles';
+  static const String allTeams = '/AllTeams';
+  static const String teamDetails = '/TeamDetails';
+  static const String addUpdateTeam = '/AddUpdateTeam';
   static const String reconciliationCouncilsScreen =
       '/ReconciliationCouncilsScreen';
 
@@ -26,4 +27,5 @@ class AppRoute {
   static const String addNewAnnouncement = '/addNewAnnouncement';
   static const String reconciliationCouncilDetials =
       '/Reconciliation_council_Detials';
+  static const String addUpdateTeamMember = '/AddUpdateTeamMember';
 }
