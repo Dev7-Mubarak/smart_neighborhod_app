@@ -9,6 +9,7 @@ class AppRoute {
   static const String createNewPassword = '/createNewPassword';
   static const String addUpdateBlock = '/AddUpdateBlock';
   static const String familyDetiles = '/FamilyDetiles';
+  static const String familyMemberDetails = '/FamilyMemberDetails';
   static const String addUpdateFamily = '/AddUpdateFamily';
   static const String addFamilyMember = '/AddFamilyMember';
   static const String addUpdatePerson = '/AddUpdatePerson';

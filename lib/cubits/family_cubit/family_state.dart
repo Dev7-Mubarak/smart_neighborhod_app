@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/family.dart';
 import '../../models/family_detiles_model.dart';
+import '../../models/family_member_details_model.dart';
 
 @immutable
 abstract class FamilyState {}
@@ -52,3 +53,17 @@ class ChangeFamilyHead extends FamilyState {}
 class ChangeFamilyCategory extends FamilyState {}
 
 class ChangeFamilyType extends FamilyState {}
+
+class FamilyMemberDetailsLoaded extends FamilyState {
+  final FamilyMemberDetailsModel familyMemberDetails;
+  
+  FamilyMemberDetailsLoaded({required this.familyMemberDetails});
+}
+
+class FamilyMemberDetailsLoading extends FamilyState {}
+
+class FamilyMemberDetailsFailure extends FamilyState {
+  final String errorMessage;
+  
+  FamilyMemberDetailsFailure({required this.errorMessage});
+}

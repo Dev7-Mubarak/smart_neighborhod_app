@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/family_type.dart';
+import 'package:smart_negborhood_app/models/family_member_details_model.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
 import 'dart:async';
@@ -258,6 +259,36 @@ class FamilyCubit extends Cubit<FamilyState> {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getFamilyMemberDetails(int memberId) async {
+    emit(FamilyMemberDetailsLoading());
+    try {
+      final response = await api.get(
+        ApiLink.getFamilyMemberDetails,
+        queryparameters: {"id": memberId},
+      );
+
+      if (response["isSuccess"] == true && response["data"] != null) {
+        emit(
+          FamilyMemberDetailsLoaded(
+            familyMemberDetails: FamilyMemberDetailsModel.fromJson(response["data"]),
+          ),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: response["message"] ?? "فشل في تحميل بيانات العضو",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(FamilyMemberDetailsFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyMemberDetailsFailure(errorMessage: e.toString()));
     }
   }
 }

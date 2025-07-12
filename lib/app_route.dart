@@ -24,6 +24,7 @@ import 'package:smart_negborhood_app/views/base/mainhome.dart';
 import 'package:smart_negborhood_app/views/families/add_update_family.dart';
 import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
+import 'package:smart_negborhood_app/views/families/family_member_details.dart';
 import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
 import 'package:smart_negborhood_app/views/people/add_update_person.dart';
 import 'package:smart_negborhood_app/views/people/all_pepole.dart';
@@ -142,6 +143,17 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: familyCubit,
             child: FamilyDetiles(familyId: familyCubit.family!.id),
+          ),
+          fullscreenDialog: false,
+        );
+      case AppRoute.familyMemberDetails:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        final familyCubit = arguments['familyCubit'] as FamilyCubit;
+        final memberId = arguments['memberId'] as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: familyCubit,
+            child: FamilyMemberDetailsPage(memberId: memberId),
           ),
           fullscreenDialog: false,
         );
