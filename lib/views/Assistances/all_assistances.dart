@@ -22,7 +22,7 @@ class AllAssistances extends StatefulWidget {
 
 class _AllAssistancesState extends State<AllAssistances> {
   List<Project> _projectsListSearch = [];
-   late AssistancesCubit _assistancesCubit;
+  late AssistancesCubit _assistancesCubit;
   late TextEditingController _searchingController;
   Timer? _delay;
 
@@ -73,19 +73,25 @@ class _AllAssistancesState extends State<AllAssistances> {
       rowData: _projectsListSearch.asMap().entries.map((entry) {
         int index = entry.key;
         var project = entry.value;
-        return [project.projectPriority.displayName, project.name, '${index + 1}'];
+        return [
+          project.projectPriority.displayName,
+          project.name,
+          '${index + 1}',
+        ];
       }).toList(),
       originalObjects: _projectsListSearch,
       onRowLongPress: (rowIndex, rowObject) {
         _showOptions(context, rowObject as Project);
       },
-      onPress: (rowIndex, rowObject) {
+      onRowTap: (rowIndex) {
         Navigator.pushNamed(
           context,
           AppRoute.assistanceDetiles,
           arguments: BlocProvider.of<AssistancesCubit>(context)
-            ..setAssistanceForDetiles(rowObject),
-        );
+            ..setAssistanceForDetiles(_projectsListSearch[rowIndex]),
+        ).then((_) {
+          _assistancesCubit.getAssistances(search: _searchingController.text.trim());
+        });
       },
     );
   }

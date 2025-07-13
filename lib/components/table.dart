@@ -25,7 +25,6 @@ class CustomTableWidget extends StatelessWidget {
         Container(
           decoration: const BoxDecoration(
             color: AppColor.primaryColor,
-            // 💥 إضافة حدود للرأس أيضاً لجعلها متكاملة مع باقي الجدول
             border: Border(
               top: BorderSide(color: Colors.black, width: 1.0),
               left: BorderSide(color: Colors.black, width: 1.0),
@@ -58,7 +57,6 @@ class CustomTableWidget extends StatelessWidget {
                     onRowLongPress?.call(index, originalObjects?[index]),
                 onTap: () => onRowTap?.call(index),
               child: IntrinsicHeight(
-                // IntrinsicHeight هنا للحفاظ على ارتفاع الصف متساوياً
                 child: Row(
                   children: row.asMap().entries.map((cellEntry) {
                     int cellIndex = cellEntry.key;
@@ -76,16 +74,15 @@ class CustomTableWidget extends StatelessWidget {
                             bottom: BorderSide(color: Colors.black, width: 1.0),
                           ),
                         ),
-                        // 💥 تعديل الـ padding لتطبيقه على الخلية وليس النص مباشرة
                         padding: const EdgeInsets.all(3),
-                        alignment: Alignment.center, // لمحاذاة النص في المنتصف
+                        alignment: Alignment.center, 
                         child: Text(
                           cellData.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: cellIndex == columnTitles.length - 1
                                 ? Colors
-                                      .white // 👈 لون النص أبيض في عمود الرقم
+                                      .white 
                                 : Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,

@@ -5,13 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/smallButton.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
-import 'package:smart_negborhood_app/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_member/team_member_state.dart';
 import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_role/team_role_state.dart';
-import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/models/team_member.dart';
 import 'package:smart_negborhood_app/models/team_role.dart';
 
@@ -70,6 +67,16 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
   Widget build(BuildContext context) {
     return BlocListener<TeamMemberCubit, TeamMemberState>(
       listener: (context, state) {
+        if (state is TeamMemberLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const PopScope(
+              canPop: false,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        }else
         if (state is TeamMemberAddedSuccessfully) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

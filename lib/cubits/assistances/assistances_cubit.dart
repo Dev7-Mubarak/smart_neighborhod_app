@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/models/ProjectBlockFamilies.dart';
 import 'package:smart_negborhood_app/models/project_catgory.dart';
+import 'package:smart_negborhood_app/models/team.dart';
 
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
@@ -17,14 +19,19 @@ class AssistancesCubit extends Cubit<AssistancesState> {
 
   DioConsumer api;
   Project? project;
-  // Person? selectedManager;
+  int? blockId;
   int? selectedManagerId;
+  int? selectedTeam;
+  int? selectedfamily;
+  
   DateTime? selectedStartDate;
   DateTime? selectedEndDate;
   ProjectStatus? selectedProjectStatus;
   ProjectPriority? selectedProjectPriority;
   ProjectCategory? selectedProjectCategory;
   List<Project> _allProjects = [];
+  List<Team> _allTeams = [];
+  List<ProjectBlockFamilies> _allBlockFamilies = [];
 
   Future<void> getAssistances({String? search}) async {
     emit(AssistancesLoading());
@@ -118,10 +125,123 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     this.project = project;
   }
 
-  // void changeSelectedManager(Person? selectedManager) {
-  //   this.selectedManager = selectedManager;
-  //   emit(ChangeSelectedManager());
-  // }
+ Future<void> setBlockIdForAddFamily(int blockid) async {
+    blockId = blockid;
+  }
+ 
+ Future<void> deleteTeamFromeProject(int teamId) async {
+    emit(AssistancesLoading());
+    try {
+      final response = await api.delete('${ApiLink.removeTeamFromeProject}/${project!.id}?teamId=$teamId');
+
+      if (response["isSuccess"]) {
+        emit(TeamDeletedSuccessfully(message: response["message"]));
+      } else {
+        Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"]?.toString() ?? '400',
+            errorMessage: response["message"],
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(AssistancesFailure(errorMessage: e.toString()));
+    }
+  }
+
+ Future<void> deleteFamilyFromeProject(int familyId) async {
+    emit(AssistancesLoading());
+    try {
+      final response = await api.delete('${ApiLink.removeFamilyFromeProject}/${project!.id}?famileId=$familyId');
+
+      if (response["isSuccess"]) {
+        emit(FamilyDeletedSuccessfully(message: response["message"]));
+      } else {
+        Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"]?.toString() ?? '400',
+            errorMessage: response["message"],
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(AssistancesFailure(errorMessage: e.toString()));
+    }
+  }
+  
+  Future<void> getProjectTeams({required int id}) async {
+    emit(ProjectTeamsLoading());
+    try {
+      final response = await api.get('${ApiLink.getProjectTeams}/$id');
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      List<dynamic> teamsJson = response["data"];
+      _allTeams = teamsJson.map((e) => Team.fromJson(e)).toList();
+
+      // if (_allTeams.isEmpty) {
+      //   throw Serverexception(
+      //     errModel: ErrorModel(
+      //       statusCode: '400',
+      //       errorMessage: "لا توجد فرق ",
+      //       isSuccess: response["isSuccess"] ?? false,
+      //     ),
+      //   );
+      // }
+      emit(TeamsLoaded(teams: _allTeams));
+    } on Serverexception catch (e) {
+      emit(ProjectTeamsFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(ProjectTeamsFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getProjectBlockFamilies({required int id}) async {
+    emit(BlockFamiliesLoading());
+    try {
+      final response = await api.get('${ApiLink.getProjectBlockFamilies}/$id');
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      List<dynamic> BlockFamiliesJson = response["data"];
+      _allBlockFamilies = BlockFamiliesJson.map(
+        (e) => ProjectBlockFamilies.fromJson(e),
+      ).toList();
+
+      // if (_allBlockFamilies == []) {
+      //   throw Serverexception(
+      //     errModel: ErrorModel(
+      //       statusCode: '400',
+      //       errorMessage: "لا توجد أسر ",
+      //       isSuccess: response["isSuccess"] ?? false,
+      //     ),
+      //   );
+      // }
+      emit(BlockFamiliesLoaded(BlockFamilies: _allBlockFamilies));
+    } on Serverexception catch (e) {
+      emit(BlockFamiliesFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(BlockFamiliesFailure(errorMessage: e.toString()));
+    }
+  }
 
   void changeSelectedManager(int? id) {
     selectedManagerId = id;
@@ -129,6 +249,16 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     // يمكنك هنا إطلاق حالة جديدة إذا كنت بحاجة إلى تحديث واجهة المستخدم
     // emit(PersonIdSelectedState(id));
     emit(ChangeSelectedManager());
+  }
+
+  void changeSelectedTeam(int? id) {
+    selectedTeam = id;
+    emit(ChangeSelectedTeam());
+  }
+
+  void changeSelectedFamily(int? id) {
+    selectedfamily = id;
+    emit(ChangeSelectedFamily());
   }
 
   void changeSelectedProjectCategory(ProjectCategory? selectedManager) {
@@ -225,6 +355,64 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     }
   }
 
+  Future<void> assignTeamToAssistance() async {
+    emit(AssistancesLoading());
+    try {
+      final response = await api.post(
+        '${ApiLink.assignTeamToProject}/${project!.id}?teamId=$selectedTeam',
+      );
+
+      if (response["isSuccess"]) {
+        emit(
+          TeamAssignedSuccessfully(
+            message: response["data"] ?? "تم إضافة الفريق بنجاح",
+          ),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(AssistancesFailure(errorMessage: e.toString()));
+    }
+  }
+ 
+ Future<void> assignFamilyToAssistance() async {
+    emit(AssistancesLoading());
+    try {
+      final response = await api.post(
+        '${ApiLink.assignFamilyToProject}/${project!.id}?familyId=$selectedfamily',
+      );
+
+      if (response["isSuccess"]) {
+        emit(
+          FamilyAssignedSuccessfully(
+            message: response["data"] ?? "تم إضافة الأسرة بنجاح",
+          ),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(AssistancesFailure(errorMessage: e.toString()));
+    }
+  }
+ 
   void resetInputs() {
     project = null;
     // selectedManager = null;

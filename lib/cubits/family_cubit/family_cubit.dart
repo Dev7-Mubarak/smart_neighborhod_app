@@ -260,4 +260,43 @@ class FamilyCubit extends Cubit<FamilyState> {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
   }
+
+  Future<void> getFamiliesByBlockId() async {
+    emit(FamilyLoading());
+    try {
+      final response = await api.get(ApiLink.getAllFamily);
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      List<dynamic> familiesJson = response["data"];
+      List<Family> familiesObjects = familiesJson
+          .map((e) => Family.fromJson(e))
+          .toList();
+      if (familiesObjects == []) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "لا توجد أسر",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      allFamilies = familiesObjects
+          .where((e) => e.blockId==blockId)
+          .toList();    
+      
+      
+      emit(FamilyLoaded(families: allFamilies));
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
 }

@@ -1,3 +1,4 @@
+// import 'package:collection/collection.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -172,7 +173,6 @@ class TeamDetailsState extends State<TeamDetails> {
                             fontWeight: FontWeight.bold,
                             fontSize: 22,
                           ),
-                          // textAlign: TextAlign.right,
                         ),
                         SizedBox(height: 10),
                         CustomTableWidget(
