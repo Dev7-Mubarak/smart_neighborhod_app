@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   Bloc.observer = AppBlocObserver();
-  runApp(SmartNeighbourhood(appRouter: AppRouter()));
+  runApp(SmartNeighbourhood(appRouter: AppRouter( )));
 }
 
 class SmartNeighbourhood extends StatelessWidget {
