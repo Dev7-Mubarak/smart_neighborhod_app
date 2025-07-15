@@ -15,6 +15,9 @@ class AppRoute {
   static const String arofilePage = '/ProfilePage';
   static const String allPeople = '/AllPeople';
   static const String allAssistances = '/AllAssistances';
+  static const String addTeamsToAssistance = '/AddTeamsToAssistance';
+  static const String addFamilyToAssistance = '/AddFamilyToAssistance';
+  
   static const String addUpdateAssistanc = '/AddUpdateAssistanc';
   static const String assistanceDetiles = '/AssistanceDetiles';
   static const String allTeams = '/AllTeams';

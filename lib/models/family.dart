@@ -27,21 +27,19 @@ class Family {
     this.familyHeadPhoneNumber,
   });
 
-  factory Family.fromJson(Map<String, dynamic> json) {
-    return Family(
-      id: json["id"] ?? 0,
-      name: json["name"] ?? '',
-      location: json["location"] ?? '',
-      familyCatgoryId: json["familyCatgoryId"] ?? 0,
-      familyCategoryName: json["familyCatgoryName"],
-      familyTypeId: json["familyTypeId"] ?? 0,
-      familyTypeName: json["familyTypeName"],
-      familyNotes: json["familyNotes"] ?? '',
-      blockId: json["blockId"] ?? 0,
-      familyHeadId: json["familyHeadId"] ?? 0,
-      familyHeadName: json["familyHeadName"],
-      familyHeadPhoneNumber: json["phoneNumber"],
-    );
+  Family.fromJson(Map<String, dynamic> json) {
+    id = json["id"] ?? 0;
+    name = json["name"] ?? "test";
+    familyCatgoryId = json["familyCatgoryId"]??0;
+    familyCategoryName = json["familyCatgoryName"]??"غير معروف";
+    familyTypeId = json["familyTypeId"]??0;
+    familyTypeName = json["familyTypeName"]??"غير معروف";
+    location = json["location"] ?? "test";
+    familyNotes = json["familyNotes"] ?? "test";
+    blockId = json["blockId"]??0;
+    familyHeadId = json["familyHeadId"] ?? 0;
+    familyHeadName = json["familyHeadName"] ?? "غير معروف";
+    familyHeadPhoneNumber = json["phoneNumber"]??"غير معروف";
   }
 
   Map<String, dynamic> toJson() {

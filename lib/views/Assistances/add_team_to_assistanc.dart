@@ -1,68 +1,41 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/components/constants/app_color.dart';
+import 'package:smart_negborhood_app/components/constants/app_route.dart';
 import 'package:smart_negborhood_app/components/smallButton.dart';
-import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/cubits/assistances/assistances_cubit.dart';
+import 'package:smart_negborhood_app/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/models/team.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/constants/small_text.dart';
-import '../../components/custom_text_input_filed.dart';
-import '../../models/Person.dart';
 
-class AddUpdateTeam extends StatefulWidget {
-  const AddUpdateTeam({super.key, this.team});
-  final Team? team;
+class AddTeamsToAssistance extends StatefulWidget {
+  const AddTeamsToAssistance({super.key});
   @override
-  State<AddUpdateTeam> createState() => AddUpdateTeamState();
+  State<AddTeamsToAssistance> createState() => AddTeamsToAssistanceState();
 }
 
-class AddUpdateTeamState extends State<AddUpdateTeam> {
-  late final TextEditingController teamNameController;
-  late final TextEditingController JoiedDateController;
-
+class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // int? _selectedPerson;
-  int? _selectedPerson;
-
-  late PersonCubit personCubit;
-  late TeamCubit teamCubit;
+  late TeamCubit _teamsCubit;
+  late AssistancesCubit _assistanceCubit;
 
   @override
   void initState() {
     super.initState();
-    personCubit = context.read<PersonCubit>()..getPeople();
-    teamCubit = context.read<TeamCubit>();
-    DateTime? joineddate = null;
-    if (widget.team != null) {
-      _selectedPerson = teamCubit.selectedPersonId;
-
-      joineddate = teamCubit.selectedJoiedDate;
-    }
-    teamNameController = TextEditingController(text: widget.team?.name ?? '');
-    JoiedDateController = TextEditingController(
-      text: joineddate != null
-          ? DateFormat('yyyy-MM-dd').format(joineddate)
-          : '',
-    );
-  }
-
-  @override
-  void dispose() {
-    teamNameController.dispose();
-    JoiedDateController.dispose();
-    super.dispose();
+    _teamsCubit = context.read<TeamCubit>()..getAllTeams();
+    _assistanceCubit = context.read<AssistancesCubit>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TeamCubit, TeamState>(
+    return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is TeamLoading) {
+        if (state is AssistancesLoading) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -71,7 +44,9 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        } else if (state is TeamAddedSuccessfully) {
+        }
+        else if (state is TeamAssignedSuccessfully) {
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -79,25 +54,15 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
             ),
           );
           Navigator.pop(context);
-        } else if (state is TeamUpdatedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+        }
+        else if (state is AssistancesFailure) {
           Navigator.pop(context);
-        } else if (state is TeamFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
               backgroundColor: Colors.red,
             ),
           );
-        } else if (state is ChangeSelectedJoiedDate) {
-          JoiedDateController.text = teamCubit.selectedJoiedDate != null
-              ? DateFormat('yyyy-MM-dd').format(teamCubit.selectedJoiedDate!)
-              : '';
         }
       },
       child: Scaffold(
@@ -108,7 +73,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
           // iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
-              'فريق',
+              'إضافة فريق  لتوزيع المساعدات',
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -125,17 +90,6 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Center(
-                    child: Text(
-                      widget.team == null ? 'إضافة فريق جديد' : 'تعديل فريق ',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -146,48 +100,25 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const SizedBox(height: 20),
-                        const SmallText(text: 'أسم الفريق'),
+                        const SmallText(text: 'إختر فريق'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        CustomTextFormField(
-                          bachgroundColor: AppColor.white,
-                          controller: teamNameController,
-                          keyboardType: TextInputType.name,
-                          suffixIcon: null,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'أسم الفريق';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'إختر قائد الفريق '),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        BlocBuilder<PersonCubit, PersonState>(
+                        BlocBuilder<TeamCubit, TeamState>(
                           builder: (context, state) {
-                            if (state is PersonLoading) {
+                            if (state is TeamLoading) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             }
-                            if (state is PersonLoaded) {
-                              if (state.people.isEmpty) {
-                                return const Center(
-                                  child: Text('لا يوجد أشخاص متاحين'),
-                                );
+                            if (state is TeamLoaded) {
+                              if (state.allTeams.isEmpty) {
+                                return const Center(child: Text('لا يوجد فرق'));
                               }
-                              Person? initialSelectedPerson;
-                              if (_selectedPerson != null) {
-                                initialSelectedPerson = state.people.firstWhere(
-                                  (person) => person.id == _selectedPerson,
-                                );
-                              }
-                              return DropdownSearch<Person>(
+                              return DropdownSearch<Team>(
                                 popupProps: PopupProps.menu(
                                   showSearchBox: true,
                                   searchFieldProps: TextFieldProps(
                                     decoration: InputDecoration(
-                                      hintText: "ابحث عن قائد...",
+                                      hintText: "ابحث عن فريق...",
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -197,10 +128,10 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                   menuProps: MenuProps(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  itemBuilder: (context, person, isSelected) {
+                                  itemBuilder: (context, team, isSelected) {
                                     return ListTile(
                                       title: Text(
-                                        person.fullName,
+                                        team.name,
                                         // textDirection: TextDirection.rtl,
                                       ),
                                       selected: isSelected,
@@ -208,16 +139,16 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                   },
                                   fit: FlexFit.loose,
                                 ),
-                                items: state.people,
-                                itemAsString: (Person? u) => u?.fullName ?? '',
-                                onChanged: (Person? data) {
-                                  teamCubit.changeSelectedManager(data?.id);
+                                items: state.allTeams,
+                                itemAsString: (Team? u) => u?.name ?? '',
+                                onChanged: (Team? data) {
+                                  _assistanceCubit.changeSelectedTeam(data!.id);
                                 },
-                                selectedItem: initialSelectedPerson,
+                                // selectedItem: ,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر قائد",
-                                    hintText: "اختر قائد",
+                                    labelText: "اختر فريق",
+                                    hintText: "اختر فريق",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -227,31 +158,34 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                     ),
                                   ),
                                 ),
-                                validator: (Person? item) {
+                                validator: (Team? item) {
                                   if (item == null) {
-                                    return "الرجاء اختيار قائد الفريق";
+                                    return "الرجاء اختيار فريق ";
                                   }
                                   return null;
                                 },
-                                enabled: widget.team == null ? true : false,
                               );
                             }
                             return Container();
                           },
                         ),
                         const SizedBox(height: 30),
-                        const SmallText(text: 'تاريخ انضمامه'),
+                        const SmallText(
+                        textAlign: TextAlign.right,
+                          text:
+                              'إذا كنت تريد إنشاء فريق جديد إنتقل إللى قسم الفرق من هنا',
+                        ),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        CustomTextFormField(
-                          controller: JoiedDateController,
-                          suffixIcon: Icons.calendar_today,
-                          readOnly: true,
-                          onTap: () => teamCubit.pickDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'الرجاء قم بإدخال تاريخ إنضمام قائد الفريق';
-                            }
-                            return null;
+                        SmallButton(
+                          text: 'إضافة فريق جديد',
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoute.addUpdateTeam,
+                              arguments: BlocProvider.of<TeamCubit>(context),
+                            ).then((_) {
+                              _teamsCubit.getAllTeams();
+                            });
                           },
                         ),
                       ],
@@ -261,32 +195,25 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BlocBuilder<TeamCubit, TeamState>(
+                      BlocBuilder<AssistancesCubit, AssistancesState>(
                         builder: (context, state) {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
                               Navigator.pop(context);
-                              teamCubit.resetInputs();
                             },
                           );
                         },
                       ),
                       const SizedBox(width: 10),
                       SmallButton(
-                        text: widget.team == null ? 'إضافة' : 'تعديل',
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            if (widget.team == null) {
-                              teamCubit.addNewTeam(teamNameController.text);
-                            } else {
-                              teamCubit.updateTeams(
-                                id: widget.team!.id,
-                                name: teamNameController.text,
-                              );
-                            }
+                            _assistanceCubit.assignTeamToAssistance(
+                            );
                           }
                         },
+                        text: 'إضافة',
                       ),
                     ],
                   ),

@@ -9,6 +9,12 @@ class ApiLink {
   static const String deleteProject = '$server/Projects/Delete';
   static const String addProject = '$server/Projects/Add';
   static const String updateProject = '$server/Projects/Update';
+  static const String getProjectTeams = '$server/Projects/GetProjectTeam';
+  static const String getProjectBlockFamilies = '$server/Projects/GetProjectBlocksWithBeneficiaryFamilies';
+  static const String assignTeamToProject = '$server/Projects/assign-team';
+  static const String assignFamilyToProject = '$server/Projects/assign-family';
+  static const String removeTeamFromeProject = '$server/Projects/remove-team';
+  static const String removeFamilyFromeProject = '$server/Projects/remove-family';
   static const String getAllTeams = '$server/Teams/GetAll';
   static const String addTeam = '$server/Teams/Add';
   static const String updateTeam = '$server/Teams/Update';
@@ -29,6 +35,7 @@ class ApiLink {
   static const String deleteBlocke = '$server/Blocks/Delete';
   static const String addFamily = '$server/Family/Add';
   static const String deleteFamily = '$server/Family/Delete';
+  static const String getAllFamily = '$server/Family/GetAll';
   static const String updateFamily = '$server/Family/Update';
   static const String addFamilyMember = '$server/Family/AddMember';
   static const String addExistingPersonToFamily = '$server/FamilyMembers/Add';

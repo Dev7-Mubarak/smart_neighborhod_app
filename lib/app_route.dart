@@ -11,6 +11,8 @@ import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
 import 'package:smart_negborhood_app/models/team.dart';
+import 'package:smart_negborhood_app/views/Assistances/add_family_to_assistanc.dart';
+import 'package:smart_negborhood_app/views/Assistances/add_team_to_assistanc.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_update_assistanc.dart';
 import 'package:smart_negborhood_app/views/Assistances/all_assistances.dart';
 import 'package:smart_negborhood_app/views/Assistances/assistance_detiles.dart';
@@ -98,7 +100,6 @@ class AppRouter {
             ),
           ),
         );
-
       case AppRoute.login:
         return MaterialPageRoute(builder: (_) => Login());
 
@@ -215,8 +216,10 @@ class AppRouter {
       case AppRoute.assistanceDetiles:
         final assistancCubit = settings.arguments as AssistancesCubit;
         return MaterialPageRoute(
-          builder: (_) => AssistanceDetiles(project: assistancCubit.project!),
-          fullscreenDialog: false,
+          builder: (_) => BlocProvider.value(
+            value: assistancCubit,
+            child: AssistanceDetiles(project: assistancCubit.project!),
+          ),
         );
       // final assistancCubit = settings.arguments as AssistancesCubit;
       // return MaterialPageRoute(
@@ -253,6 +256,33 @@ class AppRouter {
               ),
             ],
             child: AllTeams(),
+          ),
+        );
+
+      case AppRoute.addFamilyToAssistance:
+        final assistancCubit = settings.arguments as AssistancesCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<FamilyCubit>(
+                create: (context) => FamilyCubit(assistancCubit.blockId!,api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: assistancCubit),
+            ],
+            child: AddFamilyToAssistance(),
+          ),
+        );
+      case AppRoute.addTeamsToAssistance:
+        final assistancCubit = settings.arguments as AssistancesCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<TeamCubit>(
+                create: (context) => TeamCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: assistancCubit),
+            ],
+            child: AddTeamsToAssistance(),
           ),
         );
       case AppRoute.addUpdateTeam:

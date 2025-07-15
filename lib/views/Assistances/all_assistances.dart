@@ -84,13 +84,14 @@ class _AllAssistancesState extends State<AllAssistances> {
         _showOptions(context, rowObject as Project);
       },
       onRowTap: (rowIndex) {
-        final project = _projectsListSearch[rowIndex];
         Navigator.pushNamed(
           context,
           AppRoute.assistanceDetiles,
           arguments: BlocProvider.of<AssistancesCubit>(context)
-            ..setAssistanceForDetiles(project),
-        );
+            ..setAssistanceForDetiles(_projectsListSearch[rowIndex]),
+        ).then((_) {
+          _assistancesCubit.getAssistances(search: _searchingController.text.trim());
+        });
       },
     );
   }

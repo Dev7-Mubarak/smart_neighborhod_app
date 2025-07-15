@@ -97,7 +97,16 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
   Widget build(BuildContext context) {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is AssistancAddedSuccessfully) {
+        if (state is AssistancesLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const PopScope(
+              canPop: false,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        } else if (state is AssistancAddedSuccessfully) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -208,8 +217,8 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                         const SmallText(text: 'تصنيف المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         BlocBuilder<ProjectCategoryCubit, ProjectCategoryState>(
-                          buildWhen: (previous, current) =>
-                              current is ProjectCategoryLoaded,
+                          // buildWhen: (previous, current) =>
+                          //     current is ProjectCategoryLoaded,
                           builder: (context, state) {
                             if (state is ProjectCategoryLoading) {
                               return const Center(
@@ -266,7 +275,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 items: state.projectCategories,
                                 itemAsString: (ProjectCategory? u) =>
                                     u?.name ?? '',
-                                onChanged:null ,
+                                onChanged: null,
                                 //  (ProjectCategory? data) {
                                 //   assistanceCubit
                                 //       .changeSelectedProjectCategory(data);

@@ -1,23 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/models/ProjectBlockFamilies.dart';
 import 'package:smart_negborhood_app/models/project.dart';
+import 'package:smart_negborhood_app/models/team.dart';
 
 @immutable
 abstract class AssistancesState {}
 
 class AssistancesInitial extends AssistancesState {}
 
+class TeamsLoaded extends AssistancesState {
+  final List<Team> teams;
+  TeamsLoaded({required this.teams});
+}
+
+class BlockFamiliesLoaded extends AssistancesState {
+  final List<ProjectBlockFamilies> BlockFamilies;
+  BlockFamiliesLoaded({required this.BlockFamilies});
+}
+
 class AssistancesLoaded extends AssistancesState {
   final List<Project> allProjects;
 
   final List<Project> filteredProjects;
-  AssistancesLoaded({required this.allProjects, required this.filteredProjects});
+
+  AssistancesLoaded({
+    required this.allProjects,
+    required this.filteredProjects,
+  });
 }
 
 class AssistancesLoading extends AssistancesState {}
 
+class ProjectTeamsLoading extends AssistancesState {}
+
+class BlockFamiliesLoading extends AssistancesState {}
+
 class AssistancesFailure extends AssistancesState {
   final String errorMessage;
   AssistancesFailure({required this.errorMessage});
+}
+
+class ProjectTeamsFailure extends AssistancesState {
+  final String errorMessage;
+  ProjectTeamsFailure({required this.errorMessage});
+}
+
+class BlockFamiliesFailure extends AssistancesState {
+  final String errorMessage;
+  BlockFamiliesFailure({required this.errorMessage});
 }
 
 class AssistancAddedSuccessfully extends AssistancesState {
@@ -29,8 +59,20 @@ class AssistancDeletedSuccessfully extends AssistancesState {
   final String message;
   AssistancDeletedSuccessfully({required this.message});
 }
+class TeamDeletedSuccessfully extends AssistancesState {
+  final String message;
+  TeamDeletedSuccessfully({required this.message});
+}
 
+class FamilyDeletedSuccessfully extends AssistancesState {
+  final String message;
+  FamilyDeletedSuccessfully({required this.message});
+}
 class ChangeSelectedManager extends AssistancesState {}
+
+class ChangeSelectedTeam extends AssistancesState {}
+
+class ChangeSelectedFamily extends AssistancesState {}
 
 class ChangeSelectedProjectCategory extends AssistancesState {}
 
@@ -42,6 +84,14 @@ class ChangeSelectedStartDate extends AssistancesState {}
 
 class ChangeSelectedEndDate extends AssistancesState {}
 
+class TeamAssignedSuccessfully extends AssistancesState {
+  final String message;
+  TeamAssignedSuccessfully({required this.message});
+}
+class FamilyAssignedSuccessfully extends AssistancesState {
+  final String message;
+  FamilyAssignedSuccessfully({required this.message});
+}
 class AssistanceUpdatedSuccessfully extends AssistancesState {
   final String message;
   AssistanceUpdatedSuccessfully({required this.message});
