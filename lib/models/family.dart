@@ -1,16 +1,16 @@
 class Family {
-  final int id;
-  final String name;
-  final String location;
-  final int familyCatgoryId;
-  final String? familyCategoryName;
-  final String familyNotes;
-  final int familyTypeId;
-  final String? familyTypeName;
-  final int blockId;
-  final int familyHeadId;
-  final String? familyHeadName;
-  final String? familyHeadPhoneNumber;
+  late int id;
+  late String name;
+  late String location;
+  late int familyCatgoryId;
+  late String familyNotes;
+  late int familyTypeId;
+  late int blockId;
+  late int familyHeadId;
+  String? familyCategoryName;
+  String? familyTypeName;
+  String? familyHeadName;
+  String? familyHeadPhoneNumber;
 
   Family({
     required this.id,
@@ -30,28 +30,27 @@ class Family {
   Family.fromJson(Map<String, dynamic> json) {
     id = json["id"] ?? 0;
     name = json["name"] ?? "test";
-    familyCatgoryId = json["familyCatgoryId"]??0;
-    familyCategoryName = json["familyCatgoryName"]??"غير معروف";
-    familyTypeId = json["familyTypeId"]??0;
-    familyTypeName = json["familyTypeName"]??"غير معروف";
+    familyCatgoryId = json["familyCatgoryId"];
+    familyCategoryName = json["familyCatgoryName"];
+    familyTypeId = json["familyTypeId"];
+    familyTypeName = json["familyTypeName"];
     location = json["location"] ?? "test";
     familyNotes = json["familyNotes"] ?? "test";
-    blockId = json["blockId"]??0;
+    blockId = json["blockId"];
     familyHeadId = json["familyHeadId"] ?? 0;
-    familyHeadName = json["familyHeadName"] ?? "غير معروف";
-    familyHeadPhoneNumber = json["phoneNumber"]??"غير معروف";
+    familyHeadName = json["familyHeadName"] ?? 0;
+    familyHeadPhoneNumber = json["phoneNumber"];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(int? personId) {
     return {
-      "id": id,
       "name": name,
       "location": location,
       "familyCatgoryId": familyCatgoryId,
-      "familyTypeId": familyTypeId,
       "familyNotes": familyNotes,
+      "familyTypeId": familyTypeId,
       "blockId": blockId,
-      "familyHeadId": familyHeadId,
+      "personId": personId,
     };
   }
 }
