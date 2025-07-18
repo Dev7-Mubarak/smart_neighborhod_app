@@ -11,6 +11,7 @@ import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/family_member.dart';
 import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_family_to_assistanc.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_team_to_assistanc.dart';
@@ -267,7 +268,10 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<FamilyCubit>(
-                create: (context) => FamilyCubit(assistancCubit.blockId!,api: DioConsumer(dio: Dio())),
+                create: (context) => FamilyCubit(
+                  assistancCubit.blockId!,
+                  api: DioConsumer(dio: Dio()),
+                ),
               ),
               BlocProvider.value(value: assistancCubit),
             ],
@@ -330,7 +334,7 @@ class AppRouter {
           ),
         );
       case AppRoute.familyMemberDetails:
-        final familyMember = settings.arguments as Person;
+        final familyMember = settings.arguments as FamilyMember;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) => FamilyCubit(0, api: DioConsumer(dio: Dio())),

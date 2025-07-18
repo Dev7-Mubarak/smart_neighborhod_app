@@ -1,5 +1,6 @@
 import 'package:smart_negborhood_app/models/Person.dart';
 import 'package:smart_negborhood_app/models/assistance.dart';
+import 'package:smart_negborhood_app/models/family_member.dart';
 
 class HeadOfFamily {
   late String identityNumber;
@@ -31,7 +32,7 @@ class FamilyDetilesModel {
   late int blockId;
   late String blockName;
   HeadOfFamily? headOfFamily;
-  late List<Person> familyMembers;
+  late List<FamilyMember> familyMembers;
   late List<Assistance> assistances;
 
   FamilyDetilesModel({
@@ -65,7 +66,7 @@ class FamilyDetilesModel {
         ? HeadOfFamily.fromJson(json["headOfFamily"])
         : null;
     familyMembers = (json["familyMembers"] as List)
-        .map((e) => Person.fromJson(e["person"]))
+        .map((e) => FamilyMember.fromJson(e))
         .toList();
     assistances = (json["assistances"] as List)
         .map((e) => Assistance.fromJson(e))

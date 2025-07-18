@@ -4,18 +4,19 @@ import 'package:smart_negborhood_app/components/constants/app_color.dart';
 import 'package:smart_negborhood_app/components/on_failure_widget.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/models/Person.dart';
 import 'package:smart_negborhood_app/models/conflict_case.dart';
+import 'package:smart_negborhood_app/models/family_member.dart';
 
 import '../../components/custom_navigation_bar.dart';
 
 class FamilyMemberDetailsPage extends StatefulWidget {
-  final Person familyMember;
+  final FamilyMember familyMember;
 
   const FamilyMemberDetailsPage({super.key, required this.familyMember});
 
   @override
-  State<FamilyMemberDetailsPage> createState() => _FamilyMemberDetailsPageState();
+  State<FamilyMemberDetailsPage> createState() =>
+      _FamilyMemberDetailsPageState();
 }
 
 class _FamilyMemberDetailsPageState extends State<FamilyMemberDetailsPage> {
@@ -23,7 +24,9 @@ class _FamilyMemberDetailsPageState extends State<FamilyMemberDetailsPage> {
   void initState() {
     super.initState();
     final familyCubit = context.read<FamilyCubit>();
-    familyCubit.getConflictCasesByFamilyMember(widget.familyMember.id);
+    familyCubit.getConflictCasesByFamilyMember(
+      widget.familyMember.familyMemberId,
+    );
   }
 
   @override
@@ -66,7 +69,7 @@ class _FamilyMemberDetailsPageState extends State<FamilyMemberDetailsPage> {
 }
 
 class _MemberProfileSection extends StatelessWidget {
-  final Person familyMember;
+  final FamilyMember familyMember;
 
   const _MemberProfileSection({required this.familyMember});
 
@@ -93,7 +96,9 @@ class _MemberProfileSection extends StatelessWidget {
               radius: 45,
               backgroundColor: AppColor.gray,
               child: Icon(
-                familyMember.gender == "Female" ? Icons.female : Icons.male,
+                familyMember.person.gender == "Female"
+                    ? Icons.female
+                    : Icons.male,
                 size: 50,
                 color: Colors.blueGrey,
               ),
@@ -101,7 +106,7 @@ class _MemberProfileSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            familyMember.fullName,
+            familyMember.person.fullName,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -116,7 +121,7 @@ class _MemberProfileSection extends StatelessWidget {
 }
 
 class _MemberDetailsSection extends StatelessWidget {
-  final Person familyMember;
+  final FamilyMember familyMember;
 
   const _MemberDetailsSection({required this.familyMember});
 
@@ -135,16 +140,34 @@ class _MemberDetailsSection extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: Column(
               children: [
-                _DetailRow('الجنس', familyMember.gender == "Female" ? "أنثى" : "ذكر"),
-                _DetailRow('رقم الهوية', familyMember.identityNumber),
-                _DetailRow('نوع الهوية', familyMember.identityType.toString().split('.').last),
-                _DetailRow('تاريخ الميلاد', familyMember.dateOfBirth.toString().split(' ').first),
-                _DetailRow('فصيلة الدم', familyMember.bloodType.toString().split('.').last),
-                _DetailRow('رقم الجوال', familyMember.phoneNumber),
-                _DetailRow('طريقة التواصل', familyMember.isWhatsapp ? "واتساب" : "مكالمة"),
-                _DetailRow('الأيميل', familyMember.email ?? '-'),
-                _DetailRow('الحالة الاجتماعية', familyMember.maritalStatus.toString().split('.').last),
-                _DetailRow('المهنة', familyMember.job ?? '-'),
+                _DetailRow(
+                  'الجنس',
+                  familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
+                ),
+                _DetailRow('رقم الهوية', familyMember.person.identityNumber),
+                _DetailRow(
+                  'نوع الهوية',
+                  familyMember.person.identityType.toString().split('.').last,
+                ),
+                _DetailRow(
+                  'تاريخ الميلاد',
+                  familyMember.person.dateOfBirth.toString().split(' ').first,
+                ),
+                _DetailRow(
+                  'فصيلة الدم',
+                  familyMember.person.bloodType.toString().split('.').last,
+                ),
+                _DetailRow('رقم الجوال', familyMember.person.phoneNumber),
+                _DetailRow(
+                  'طريقة التواصل',
+                  familyMember.person.isWhatsapp ? "واتساب" : "مكالمة",
+                ),
+                _DetailRow('الأيميل', familyMember.person.email ?? '-'),
+                _DetailRow(
+                  'الحالة الاجتماعية',
+                  familyMember.person.maritalStatus.toString().split('.').last,
+                ),
+                _DetailRow('المهنة', familyMember.person.job ?? '-'),
               ],
             ),
           ),
@@ -182,10 +205,7 @@ class _DetailRow extends StatelessWidget {
             flex: 3,
             child: Text(
               value,
-              style: const TextStyle(
-                color: Colors.black54,
-                fontSize: 16,
-              ),
+              style: const TextStyle(color: Colors.black54, fontSize: 16),
               textAlign: TextAlign.right,
             ),
           ),
@@ -211,7 +231,7 @@ class _ConflictCasesSection extends StatelessWidget {
             ),
           );
         }
-        
+
         if (state is FamilyFailure) {
           return OnFailureWidget(
             onRetry: () {
@@ -220,14 +240,12 @@ class _ConflictCasesSection extends StatelessWidget {
             },
           );
         }
-        
+
         if (state is ConflictCasesLoaded) {
           return _ConflictCasesTable(conflictCases: state.conflictCases);
         }
-        
-        return const Center(
-          child: Text('لا توجد بيانات متاحة'),
-        );
+
+        return const Center(child: Text('لا توجد بيانات متاحة'));
       },
     );
   }
@@ -247,18 +265,11 @@ class _ConflictCasesTable extends StatelessWidget {
         child: const Center(
           child: Column(
             children: [
-              Icon(
-                Icons.info_outline,
-                size: 48,
-                color: Colors.grey,
-              ),
+              Icon(Icons.info_outline, size: 48, color: Colors.grey),
               SizedBox(height: 16),
               Text(
                 'لا توجد حالات نزاع مسجلة',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ],
           ),
@@ -277,17 +288,21 @@ class _ConflictCasesTable extends StatelessWidget {
             children: [
               // Table Header
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 8,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF6366F1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Row(
+                  textDirection: TextDirection.rtl,
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'نوع الخدمة',
+                        'العنوان',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -297,9 +312,9 @@ class _ConflictCasesTable extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 2,
                       child: Text(
-                        'العنوان',
+                        'نوع الخدمة',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -337,7 +352,9 @@ class _ConflictCasesTable extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               // Table Rows
-              ...conflictCases.map((conflictCase) => _ConflictCaseRow(conflictCase: conflictCase)),
+              ...conflictCases.map(
+                (conflictCase) => _ConflictCaseRow(conflictCase: conflictCase),
+              ),
             ],
           ),
         ),
@@ -362,11 +379,12 @@ class _ConflictCaseRow extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: Row(
+        textDirection: TextDirection.rtl,
         children: [
           Expanded(
             flex: 2,
             child: Text(
-              conflictCase.conflictTypeName,
+              conflictCase.title,
               style: const TextStyle(fontSize: 12),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -374,9 +392,9 @@ class _ConflictCaseRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Text(
-              conflictCase.title.isNotEmpty ? conflictCase.title : conflictCase.notes,
+              conflictCase.conflictTypeName,
               style: const TextStyle(fontSize: 12),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -396,7 +414,9 @@ class _ConflictCaseRow extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: conflictCase.isResolved ? Colors.green.shade100 : Colors.orange.shade100,
+                color: conflictCase.isResolved
+                    ? Colors.green.shade100
+                    : Colors.orange.shade100,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
@@ -404,7 +424,9 @@ class _ConflictCaseRow extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  color: conflictCase.isResolved ? Colors.green.shade700 : Colors.orange.shade700,
+                  color: conflictCase.isResolved
+                      ? Colors.green.shade700
+                      : Colors.orange.shade700,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -419,7 +441,7 @@ class _ConflictCaseRow extends StatelessWidget {
 class _SectionTitle extends StatelessWidget {
   final String title;
   const _SectionTitle({required this.title});
-  
+
   @override
   Widget build(BuildContext context) {
     return Text(
