@@ -1,14 +1,22 @@
 import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/family_member_role.dart';
 
 class FamilyMember {
-  late String memberTypeName;
-  late List<Person>? people;
+  final int familyMemberId;
+  final Role role;
+  final Person person;
 
-  FamilyMember({required this.memberTypeName, required this.people});
+  FamilyMember({
+    required this.familyMemberId,
+    required this.role,
+    required this.person,
+  });
 
-  FamilyMember.fromJson(Map<String, dynamic> json) {
-    memberTypeName = json["memberTypeName"] ?? "test";
-    var people = json["people"] as List;
-    people = people.map((e) => Person.fromJson(json)).toList();
+  factory FamilyMember.fromJson(Map<String, dynamic> json) {
+    return FamilyMember(
+      familyMemberId: json['familyMemberId'],
+      role: Role.fromJson(json['role']),
+      person: Person.fromJson(json['person']),
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart'
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/family_member.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/smallButton.dart';
@@ -244,7 +245,7 @@ class FamilyDetilesCard extends StatelessWidget {
                 infoRow(
                   'الأيميل',
                   familyDetiles.familyMembers.isNotEmpty
-                      ? familyDetiles.familyMembers.first.email ?? ''
+                      ? familyDetiles.familyMembers.first.person.email ?? ''
                       : '',
                 ),
               ],
@@ -292,7 +293,7 @@ class FamilyDetilesCard extends StatelessWidget {
 }
 
 class FamilyMembersSection extends StatelessWidget {
-  final List<Person> familyMembers;
+  final List<FamilyMember> familyMembers;
 
   const FamilyMembersSection({super.key, required this.familyMembers});
 
@@ -312,69 +313,100 @@ class FamilyMembersSection extends StatelessWidget {
 }
 
 class MemberCard extends StatelessWidget {
-  final Person familyMember;
+  final FamilyMember familyMember;
 
   const MemberCard({super.key, required this.familyMember});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 220,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: Card(
-        color: Colors.white,
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 32,
-                backgroundColor: AppColor.gray,
-                child: Icon(
-                  familyMember.gender == "Female" ? Icons.female : Icons.male,
-                  size: 36,
-                  color: Colors.blueGrey,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AppRoute.familyMemberDetails,
+          arguments: familyMember,
+        );
+      },
+      child: Container(
+        width: 220,
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Card(
+          color: Colors.white,
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 32,
+                  backgroundColor: AppColor.gray,
+                  child: Icon(
+                    familyMember.person.gender == "Female"
+                        ? Icons.female
+                        : Icons.male,
+                    size: 36,
+                    color: Colors.blueGrey,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                familyMember.fullName,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                const SizedBox(height: 10),
+                Text(
+                  familyMember.person.fullName,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              const Divider(height: 18, color: Colors.grey, thickness: 1),
-              infoRow('رقم الهوية', familyMember.identityNumber),
-              infoRow(
-                'نوع الهوية',
-                familyMember.identityType.toString().split('.').last,
-              ),
-              infoRow('رقم الجوال', familyMember.phoneNumber),
-              infoRow('البريد الإلكتروني', familyMember.email),
-              infoRow(
-                'الجنس',
-                familyMember.gender == "Female" ? "أنثى" : "ذكر",
-              ),
-              infoRow(
-                'تاريخ الميلاد',
-                familyMember.dateOfBirth.toString().split(' ').first,
-              ),
-              infoRow(
-                'فصيلة الدم',
-                familyMember.bloodType.toString().split('.').last,
-              ),
-              infoRow(
-                'الحالة الاجتماعية',
-                familyMember.maritalStatus.toString().split('.').last,
-              ),
-              infoRow('المهنة', familyMember.job),
-            ],
+                const Divider(height: 18, color: Colors.grey, thickness: 1),
+                infoRow('رقم الهوية', familyMember.person.identityNumber),
+                infoRow(
+                  'نوع الهوية',
+                  familyMember.person.identityType.toString().split('.').last,
+                ),
+                infoRow('رقم الجوال', familyMember.person.phoneNumber),
+                infoRow(
+                  'الجنس',
+                  familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
+                ),
+                infoRow(
+                  'تاريخ الميلاد',
+                  familyMember.person.dateOfBirth.toString().split(' ').first,
+                ),
+                infoRow(
+                  'فصيلة الدم',
+                  familyMember.person.bloodType.toString().split('.').last,
+                ),
+                infoRow(
+                  'الحالة الاجتماعية',
+                  familyMember.person.maritalStatus.toString().split('.').last,
+                ),
+                infoRow('المهنة', familyMember.person.job ?? 'غير محدد'),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColor.gray2,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    'اضغط للمزيد من التفاصيل',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

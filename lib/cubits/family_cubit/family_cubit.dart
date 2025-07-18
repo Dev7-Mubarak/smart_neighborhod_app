@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/models/conflict_case.dart';
 import 'package:smart_negborhood_app/models/family_type.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
@@ -293,6 +294,36 @@ class FamilyCubit extends Cubit<FamilyState> {
       
       
       emit(FamilyLoaded(families: allFamilies));
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getConflictCasesByFamilyMember(int familyMemberId) async {
+    emit(ConflictCasesLoading());
+    try {
+      final response = await api.get(
+        '${ApiLink.getConflictCasesByFamilyMember}/$familyMemberId',
+      );
+
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+
+      List<dynamic> conflictCasesJson = response["data"];
+      List<ConflictCase> conflictCases = conflictCasesJson
+          .map((e) => ConflictCase.fromJson(e))
+          .toList();
+
+      emit(ConflictCasesLoaded(conflictCases: conflictCases));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

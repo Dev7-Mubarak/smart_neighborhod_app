@@ -31,4 +31,5 @@ class AppRoute {
   static const String reconciliationCouncilDetials =
       '/Reconciliation_council_Detials';
   static const String addUpdateTeamMember = '/AddUpdateTeamMember';
+  static const String familyMemberDetails = '/FamilyMemberDetails';
 }
