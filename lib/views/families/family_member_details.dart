@@ -131,7 +131,7 @@ class _MemberDetailsSection extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 18),
       child: Card(
-        color: Colors.white,
+        color: Colors.grey.shade50,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 4,
         child: Padding(
