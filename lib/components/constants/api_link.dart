@@ -46,4 +46,5 @@ class ApiLink {
   static const String updatePerson = '$server/Person/Update';
   static const String getAllPepole = '$server/Person/GetAll';
   static const String getPersonById = '$server/Person/GetById';
+  static const String getConflictCasesByFamilyMember = '$server/ConflictCase/ByFamilyMember';
 }

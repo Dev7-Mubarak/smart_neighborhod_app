@@ -31,6 +31,8 @@ void main() {
         FamilyAddedSuccessfully(message: 'test'),
         FamilyUpdatedSuccessfully(message: 'test'),
         FamilyFailure(errorMessage: 'test'),
+        ConflictCasesLoading(),
+        ConflictCasesLoaded(conflictCases: []),
       ];
 
       for (final state in states) {

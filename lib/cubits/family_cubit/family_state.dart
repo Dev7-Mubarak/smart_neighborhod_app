@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/conflict_case.dart';
 import '../../models/family.dart';
 import '../../models/family_detiles_model.dart';
 
@@ -52,3 +53,10 @@ class ChangeFamilyHead extends FamilyState {}
 class ChangeFamilyCategory extends FamilyState {}
 
 class ChangeFamilyType extends FamilyState {}
+
+class ConflictCasesLoaded extends FamilyState {
+  final List<ConflictCase> conflictCases;
+  ConflictCasesLoaded({required this.conflictCases});
+}
+
+class ConflictCasesLoading extends FamilyState {}

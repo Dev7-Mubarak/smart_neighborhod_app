@@ -10,6 +10,7 @@ import 'package:smart_negborhood_app/cubits/project_category/project_category_cu
 import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
+import 'package:smart_negborhood_app/models/Person.dart';
 import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_family_to_assistanc.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_team_to_assistanc.dart';
@@ -26,6 +27,7 @@ import 'package:smart_negborhood_app/views/base/mainhome.dart';
 import 'package:smart_negborhood_app/views/families/add_update_family.dart';
 import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
+import 'package:smart_negborhood_app/views/families/family_member_details.dart';
 import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
 import 'package:smart_negborhood_app/views/people/add_update_person.dart';
 import 'package:smart_negborhood_app/views/people/all_pepole.dart';
@@ -325,6 +327,14 @@ class AppRouter {
               ),
             ],
             child: TeamDetails(team: team),
+          ),
+        );
+      case AppRoute.familyMemberDetails:
+        final familyMember = settings.arguments as Person;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => FamilyCubit(0, api: DioConsumer(dio: Dio())),
+            child: FamilyMemberDetailsPage(familyMember: familyMember),
           ),
         );
       default:
