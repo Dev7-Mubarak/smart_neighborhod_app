@@ -15,7 +15,7 @@ class Assistance {
     return Assistance(
       json["name"] ?? "",
       id: json["id"] ?? 0,
-      deliverDate: json["deliverDate"] ?? "",
+      deliverDate: json["dateReceived"] ?? "",
       notes: json["notes"] ?? "",
     );
   }

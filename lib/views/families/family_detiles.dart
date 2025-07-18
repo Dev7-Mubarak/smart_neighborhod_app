@@ -132,7 +132,7 @@ class FamilyDetailsBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const _SectionTitle(title: 'الأسر في المربع السكني'),
+          const _SectionTitle(title: 'المساعدات المقدمة للأسرة'),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

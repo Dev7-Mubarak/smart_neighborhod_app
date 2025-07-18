@@ -16,26 +16,17 @@ class FamilyAssistancesListTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTableWidget(
-      columnTitles: const ['ملاحظات', 'تاريخ الأستلام', 'نوع المساعدة', 'رقم'],
-      columnFlexes: const [4, 2, 3, 1],
+      columnTitles: const ['تاريخ الأستلام', 'نوع المساعدة', 'رقم'],
+      columnFlexes: const [2, 3, 1],
       rowData: familyAssisytances.asMap().entries.map((entry) {
         int index = entry.key;
         var familyAssisytance = entry.value;
         return [
-          familyAssisytance.notes,
           familyAssisytance.deliverDate,
           familyAssisytance.name,
           '${index + 1}',
         ];
       }).toList(),
-
-      onRowTap: (index) {
-        Navigator.pushNamed(
-          context,
-          AppRoute.familyDetiles,
-          arguments: context.read<FamilyCubit>(),
-        );
-      },
     );
   }
 }
