@@ -10,6 +10,7 @@ import '../../models/Person.dart';
 import '../../models/family.dart';
 import '../../models/family_category.dart';
 import '../../models/family_detiles_model.dart';
+import '../../models/conflict_case.dart';
 
 class FamilyCubit extends Cubit<FamilyState> {
   final DioConsumer api;
@@ -293,6 +294,31 @@ class FamilyCubit extends Cubit<FamilyState> {
       
       
       emit(FamilyLoaded(families: allFamilies));
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getConflictCasesByFamilyMember(int familyMemberId) async {
+    emit(FamilyLoading());
+    try {
+      final response = await api.get(
+        '${ApiLink.getConflictCasesByFamilyMember}/$familyMemberId',
+      );
+
+      if (response["data"] == null) {
+        emit(FamilyMemberConflictCasesLoaded(conflictCases: []));
+        return;
+      }
+
+      List<dynamic> conflictCasesJson = response["data"];
+      List<ConflictCase> conflictCases = conflictCasesJson
+          .map((e) => ConflictCase.fromJson(e))
+          .toList();
+
+      emit(FamilyMemberConflictCasesLoaded(conflictCases: conflictCases));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

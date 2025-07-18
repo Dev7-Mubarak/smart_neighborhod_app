@@ -11,6 +11,7 @@ class AppRoute {
   static const String familyDetiles = '/FamilyDetiles';
   static const String addUpdateFamily = '/AddUpdateFamily';
   static const String addFamilyMember = '/AddFamilyMember';
+  static const String familyMemberDetails = '/FamilyMemberDetails';
   static const String addUpdatePerson = '/AddUpdatePerson';
   static const String arofilePage = '/ProfilePage';
   static const String allPeople = '/AllPeople';

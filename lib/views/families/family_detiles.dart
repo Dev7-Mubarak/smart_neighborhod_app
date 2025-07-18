@@ -321,60 +321,73 @@ class MemberCard extends StatelessWidget {
     return Container(
       width: 220,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: Card(
-        color: Colors.white,
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 32,
-                backgroundColor: AppColor.gray,
-                child: Icon(
-                  familyMember.gender == "Female" ? Icons.female : Icons.male,
-                  size: 36,
-                  color: Colors.blueGrey,
+      child: InkWell(
+        onTap: () {
+          final familyCubit = context.read<FamilyCubit>();
+          Navigator.pushNamed(
+            context,
+            AppRoute.familyMemberDetails,
+            arguments: {
+              'familyMember': familyMember,
+              'familyCubit': familyCubit,
+            },
+          );
+        },
+        child: Card(
+          color: Colors.white,
+          elevation: 6,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 32,
+                  backgroundColor: AppColor.gray,
+                  child: Icon(
+                    familyMember.gender == "Female" ? Icons.female : Icons.male,
+                    size: 36,
+                    color: Colors.blueGrey,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                familyMember.fullName,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                const SizedBox(height: 10),
+                Text(
+                  familyMember.fullName,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              const Divider(height: 18, color: Colors.grey, thickness: 1),
-              infoRow('رقم الهوية', familyMember.identityNumber),
-              infoRow(
-                'نوع الهوية',
-                familyMember.identityType.toString().split('.').last,
-              ),
-              infoRow('رقم الجوال', familyMember.phoneNumber),
-              infoRow('البريد الإلكتروني', familyMember.email),
-              infoRow(
-                'الجنس',
-                familyMember.gender == "Female" ? "أنثى" : "ذكر",
-              ),
-              infoRow(
-                'تاريخ الميلاد',
-                familyMember.dateOfBirth.toString().split(' ').first,
-              ),
-              infoRow(
-                'فصيلة الدم',
-                familyMember.bloodType.toString().split('.').last,
-              ),
-              infoRow(
-                'الحالة الاجتماعية',
-                familyMember.maritalStatus.toString().split('.').last,
-              ),
-              infoRow('المهنة', familyMember.job),
-            ],
+                const Divider(height: 18, color: Colors.grey, thickness: 1),
+                infoRow('رقم الهوية', familyMember.identityNumber),
+                infoRow(
+                  'نوع الهوية',
+                  familyMember.identityType.toString().split('.').last,
+                ),
+                infoRow('رقم الجوال', familyMember.phoneNumber),
+                infoRow('البريد الإلكتروني', familyMember.email),
+                infoRow(
+                  'الجنس',
+                  familyMember.gender == "Female" ? "أنثى" : "ذكر",
+                ),
+                infoRow(
+                  'تاريخ الميلاد',
+                  familyMember.dateOfBirth.toString().split(' ').first,
+                ),
+                infoRow(
+                  'فصيلة الدم',
+                  familyMember.bloodType.toString().split('.').last,
+                ),
+                infoRow(
+                  'الحالة الاجتماعية',
+                  familyMember.maritalStatus.toString().split('.').last,
+                ),
+                infoRow('المهنة', familyMember.job),
+              ],
+            ),
           ),
         ),
       ),

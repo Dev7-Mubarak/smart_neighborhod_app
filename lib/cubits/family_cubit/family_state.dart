@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/family.dart';
 import '../../models/family_detiles_model.dart';
+import '../../models/conflict_case.dart';
 
 @immutable
 abstract class FamilyState {}
@@ -18,6 +19,12 @@ class FamilyDetilesLoaded extends FamilyState {
   final FamilyDetilesModel familyDetiles;
 
   FamilyDetilesLoaded({required this.familyDetiles});
+}
+
+class FamilyMemberConflictCasesLoaded extends FamilyState {
+  final List<ConflictCase> conflictCases;
+
+  FamilyMemberConflictCasesLoaded({required this.conflictCases});
 }
 
 class FamilyLoading extends FamilyState {}
