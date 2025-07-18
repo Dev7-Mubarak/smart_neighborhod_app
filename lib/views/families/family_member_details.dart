@@ -5,6 +5,9 @@ import 'package:smart_negborhood_app/components/on_failure_widget.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/conflict_case.dart';
+import 'package:smart_negborhood_app/models/enums/blood_type.dart';
+import 'package:smart_negborhood_app/models/enums/identity_type.dart';
+import 'package:smart_negborhood_app/models/enums/marital_status.dart';
 import 'package:smart_negborhood_app/models/family_member.dart';
 
 import '../../components/custom_navigation_bar.dart';
@@ -95,13 +98,16 @@ class _MemberProfileSection extends StatelessWidget {
             child: CircleAvatar(
               radius: 45,
               backgroundColor: AppColor.gray,
-              child: Icon(
-                familyMember.person.gender == "Female"
-                    ? Icons.female
-                    : Icons.male,
-                size: 50,
-                color: Colors.blueGrey,
-              ),
+              child: familyMember.person.image != null
+                  ? ClipOval(
+                      child: Image.network(
+                        familyMember.person.image!,
+                        fit: BoxFit.cover,
+                        width: 90,
+                        height: 90,
+                      ),
+                    )
+                  : const Icon(Icons.person, size: 60, color: Colors.white70),
             ),
           ),
           const SizedBox(height: 12),
@@ -147,7 +153,7 @@ class _MemberDetailsSection extends StatelessWidget {
                 _DetailRow('رقم الهوية', familyMember.person.identityNumber),
                 _DetailRow(
                   'نوع الهوية',
-                  familyMember.person.identityType.toString().split('.').last,
+                  familyMember.person.identityType.arabicName,
                 ),
                 _DetailRow(
                   'تاريخ الميلاد',
@@ -155,7 +161,7 @@ class _MemberDetailsSection extends StatelessWidget {
                 ),
                 _DetailRow(
                   'فصيلة الدم',
-                  familyMember.person.bloodType.toString().split('.').last,
+                  familyMember.person.bloodType.arabicName,
                 ),
                 _DetailRow('رقم الجوال', familyMember.person.phoneNumber),
                 _DetailRow(
@@ -165,7 +171,7 @@ class _MemberDetailsSection extends StatelessWidget {
                 _DetailRow('الأيميل', familyMember.person.email ?? '-'),
                 _DetailRow(
                   'الحالة الاجتماعية',
-                  familyMember.person.maritalStatus.toString().split('.').last,
+                  familyMember.person.maritalStatus.arabicName,
                 ),
                 _DetailRow('المهنة', familyMember.person.job ?? '-'),
               ],
@@ -300,7 +306,19 @@ class _ConflictCasesTable extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 1,
+                      child: Text(
+                        'رقم',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
                       child: Text(
                         'العنوان',
                         style: TextStyle(
@@ -326,18 +344,6 @@ class _ConflictCasesTable extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'التاريخ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
                         'الحالة',
                         style: TextStyle(
                           color: Colors.white,
@@ -352,8 +358,11 @@ class _ConflictCasesTable extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               // Table Rows
-              ...conflictCases.map(
-                (conflictCase) => _ConflictCaseRow(conflictCase: conflictCase),
+              ...conflictCases.asMap().entries.map(
+                (entry) => _ConflictCaseRow(
+                  conflictCase: entry.value,
+                  index: entry.key + 1,
+                ),
               ),
             ],
           ),
@@ -365,8 +374,9 @@ class _ConflictCasesTable extends StatelessWidget {
 
 class _ConflictCaseRow extends StatelessWidget {
   final ConflictCase conflictCase;
+  final int index;
 
-  const _ConflictCaseRow({required this.conflictCase});
+  const _ConflictCaseRow({required this.conflictCase, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -382,7 +392,15 @@ class _ConflictCaseRow extends StatelessWidget {
         textDirection: TextDirection.rtl,
         children: [
           Expanded(
-            flex: 2,
+            flex: 1,
+            child: Text(
+              index.toString(),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            flex: 3,
             child: Text(
               conflictCase.title,
               style: const TextStyle(fontSize: 12),
@@ -399,14 +417,6 @@ class _ConflictCaseRow extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              conflictCase.sessionDate.toString().split(' ').first,
-              style: const TextStyle(fontSize: 12),
-              textAlign: TextAlign.center,
             ),
           ),
           Expanded(

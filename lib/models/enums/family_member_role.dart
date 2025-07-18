@@ -1,20 +1,20 @@
 enum FamilyMemberRole {
-  father,      // الأب
-  mother,      // الأم
-  son,         // الابن
-  daughter,    // الابنة
+  father, // الأب
+  mother, // الأم
+  son, // الابن
+  daughter, // الابنة
   grandfather, // الجد
   grandmother, // الجدة
-  brother,     // الأخ
-  sister,      // الأخت
-  uncle,       // العم
-  aunt,        // العمة
-  cousin,      // ابن العم/الخال
-  other,       // أخرى
+  brother, // الأخ
+  sister, // الأخت
+  uncle, // العم
+  aunt, // العمة
+  cousin, // ابن العم/الخال
+  other, // أخرى
 }
 
 extension FamilyMemberRoleExtension on FamilyMemberRole {
-  String get displayName {
+  String get arabicName {
     switch (this) {
       case FamilyMemberRole.father:
         return 'الأب';
@@ -44,12 +44,12 @@ extension FamilyMemberRoleExtension on FamilyMemberRole {
   }
 
   static List<String> getDisplayNames() {
-    return FamilyMemberRole.values.map((role) => role.displayName).toList();
+    return FamilyMemberRole.values.map((role) => role.arabicName).toList();
   }
 
   static FamilyMemberRole fromDisplayName(String displayName) {
     return FamilyMemberRole.values.firstWhere(
-      (role) => role.displayName == displayName,
+      (role) => role.arabicName == displayName,
       orElse: () => FamilyMemberRole.other,
     );
   }

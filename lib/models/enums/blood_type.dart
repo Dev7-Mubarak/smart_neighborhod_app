@@ -10,7 +10,7 @@ enum BloodType {
 }
 
 extension BloodTypeExtension on BloodType {
-  String get displayName {
+  String get arabicName {
     switch (this) {
       case BloodType.aPositive:
         return 'A+';

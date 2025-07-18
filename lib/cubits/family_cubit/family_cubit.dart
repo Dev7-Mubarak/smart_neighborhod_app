@@ -288,11 +288,8 @@ class FamilyCubit extends Cubit<FamilyState> {
           ),
         );
       }
-      allFamilies = familiesObjects
-          .where((e) => e.blockId==blockId)
-          .toList();    
-      
-      
+      allFamilies = familiesObjects.where((e) => e.blockId == blockId).toList();
+
       emit(FamilyLoaded(families: allFamilies));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
@@ -307,16 +304,6 @@ class FamilyCubit extends Cubit<FamilyState> {
       final response = await api.get(
         '${ApiLink.getConflictCasesByFamilyMember}/$familyMemberId',
       );
-
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
 
       List<dynamic> conflictCasesJson = response["data"];
       List<ConflictCase> conflictCases = conflictCasesJson

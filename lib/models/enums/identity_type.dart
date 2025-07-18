@@ -1,11 +1,7 @@
-enum IdentityType {
-  identityCard,
-  passport,
-  birthCertificate,
-}
+enum IdentityType { identityCard, passport, birthCertificate }
 
 extension IdentityTypeExtension on IdentityType {
-  String get displayName {
+  String get arabicName {
     switch (this) {
       case IdentityType.identityCard:
         return 'بطاقة شخصية';

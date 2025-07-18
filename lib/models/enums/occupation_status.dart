@@ -6,7 +6,7 @@ enum OccupationStatus {
 }
 
 extension OccupationStatusExtension on OccupationStatus {
-  String get displayName {
+  String get arabicName {
     switch (this) {
       case OccupationStatus.employee:
         return 'موظف';

@@ -1,12 +1,7 @@
-enum MaritalStatus {
-  single,
-  married,
-  divorced,
-  widowed,
-}
+enum MaritalStatus { single, married, divorced, widowed }
 
 extension MaritalStatusExtension on MaritalStatus {
-  String get displayName {
+  String get arabicName {
     switch (this) {
       case MaritalStatus.single:
         return 'أعزب';

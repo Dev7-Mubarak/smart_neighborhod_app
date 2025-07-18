@@ -7,6 +7,9 @@ import 'package:smart_negborhood_app/components/searcable_text_input_filed.dart'
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
+import 'package:smart_negborhood_app/models/enums/blood_type.dart';
+import 'package:smart_negborhood_app/models/enums/identity_type.dart';
+import 'package:smart_negborhood_app/models/enums/marital_status.dart';
 import 'package:smart_negborhood_app/models/family_member.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
@@ -344,13 +347,22 @@ class MemberCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 32,
                   backgroundColor: AppColor.gray,
-                  child: Icon(
-                    familyMember.person.gender == "Female"
-                        ? Icons.female
-                        : Icons.male,
-                    size: 36,
-                    color: Colors.blueGrey,
-                  ),
+                  child: familyMember.person.image != null
+                      ? ClipOval(
+                          child: Image.network(
+                            familyMember.person.image!,
+                            fit: BoxFit.cover,
+                            width: 64,
+                            height: 64,
+                          ),
+                        )
+                      : Icon(
+                          familyMember.person.gender == "ذكر"
+                              ? Icons.male
+                              : Icons.female,
+                          size: 36,
+                          color: Colors.blueGrey,
+                        ),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -366,7 +378,7 @@ class MemberCard extends StatelessWidget {
                 infoRow('رقم الهوية', familyMember.person.identityNumber),
                 infoRow(
                   'نوع الهوية',
-                  familyMember.person.identityType.toString().split('.').last,
+                  familyMember.person.identityType.arabicName,
                 ),
                 infoRow('رقم الجوال', familyMember.person.phoneNumber),
                 infoRow(
@@ -377,13 +389,10 @@ class MemberCard extends StatelessWidget {
                   'تاريخ الميلاد',
                   familyMember.person.dateOfBirth.toString().split(' ').first,
                 ),
-                infoRow(
-                  'فصيلة الدم',
-                  familyMember.person.bloodType.toString().split('.').last,
-                ),
+                infoRow('فصيلة الدم', familyMember.person.bloodType.arabicName),
                 infoRow(
                   'الحالة الاجتماعية',
-                  familyMember.person.maritalStatus.toString().split('.').last,
+                  familyMember.person.maritalStatus.arabicName,
                 ),
                 infoRow('المهنة', familyMember.person.job ?? 'غير محدد'),
                 const SizedBox(height: 8),

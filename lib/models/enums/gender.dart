@@ -1,7 +1,7 @@
 enum Gender { male, female }
 
 extension GenderExtension on Gender {
-  String get displayName {
+  String get arabicName {
     switch (this) {
       case Gender.male:
         return 'ذكر';
@@ -22,6 +22,6 @@ extension GenderExtension on Gender {
   }
 
   static List<String> getDisplayNames() {
-    return Gender.values.map((e) => e.displayName).toList();
+    return Gender.values.map((e) => e.arabicName).toList();
   }
 }

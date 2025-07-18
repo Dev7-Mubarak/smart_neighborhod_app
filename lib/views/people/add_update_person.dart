@@ -215,18 +215,18 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         builder: (context, state) {
                           return CustomDropdown(
                             items: IdentityType.values
-                                .map((e) => e.displayName)
+                                .map((e) => e.arabicName)
                                 .toList(),
                             selectedValue: context
                                 .read<PersonCubit>()
                                 .selectedIdentityType
-                                ?.displayName,
+                                ?.arabicName,
                             onChanged: (String? newValue) {
                               context
                                   .read<PersonCubit>()
                                   .changeSelectedIdentityType(
                                     IdentityType.values.firstWhere(
-                                      (e) => e.displayName == newValue,
+                                      (e) => e.arabicName == newValue,
                                     ),
                                   );
                             },
@@ -383,13 +383,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         builder: (context, state) {
                           return CustomDropdown(
                             items: BloodType.values
-                                .map((e) => e.displayName)
+                                .map((e) => e.arabicName)
                                 .toList(),
-                            selectedValue: cubit.selectedBloodType?.displayName,
+                            selectedValue: cubit.selectedBloodType?.arabicName,
                             onChanged: (String? newValue) {
                               cubit.changeSelectedBloodType(
                                 BloodType.values.firstWhere(
-                                  (e) => e.displayName == newValue,
+                                  (e) => e.arabicName == newValue,
                                 ),
                               );
                             },
@@ -420,15 +420,15 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                   builder: (context, state) {
                                     return CustomDropdown(
                                       items: MaritalStatus.values
-                                          .map((e) => e.displayName)
+                                          .map((e) => e.arabicName)
                                           .toList(),
                                       selectedValue: cubit
                                           .selectedMaritalStatus
-                                          ?.displayName,
+                                          ?.arabicName,
                                       onChanged: (newValue) {
                                         cubit.changeSelectedMaritalStatus(
                                           MaritalStatus.values.firstWhere(
-                                            (e) => e.displayName == newValue,
+                                            (e) => e.arabicName == newValue,
                                           ),
                                         );
                                       },
@@ -455,16 +455,16 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                   builder: (context, state) {
                                     return CustomDropdown(
                                       items: OccupationStatus.values
-                                          .map((e) => e.displayName)
+                                          .map((e) => e.arabicName)
                                           .toList(),
                                       selectedValue: context
                                           .read<PersonCubit>()
                                           .selectedOccupationStatus
-                                          ?.displayName,
+                                          ?.arabicName,
                                       onChanged: (newValue) {
                                         cubit.changeSelectedOccupationStatus(
                                           OccupationStatus.values.firstWhere(
-                                            (e) => e.displayName == newValue,
+                                            (e) => e.arabicName == newValue,
                                           ),
                                         );
                                       },
@@ -593,7 +593,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 Row(
                   children: [
                     Radio<String>(
-                      value: Gender.male.displayName,
+                      value: Gender.male.arabicName,
                       groupValue: cubit.selectedGender,
                       onChanged: (value) {
                         cubit.changeSelctedGender(value!);
@@ -606,7 +606,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 Row(
                   children: [
                     Radio<String>(
-                      value: Gender.female.displayName,
+                      value: Gender.female.arabicName,
                       groupValue: cubit.selectedGender,
                       onChanged: (value) {
                         cubit.changeSelctedGender(value!);
