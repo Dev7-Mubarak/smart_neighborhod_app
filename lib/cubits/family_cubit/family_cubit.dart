@@ -288,12 +288,29 @@ class FamilyCubit extends Cubit<FamilyState> {
           ),
         );
       }
-      allFamilies = familiesObjects
-          .where((e) => e.blockId==blockId)
-          .toList();    
-      
-      
+      allFamilies = familiesObjects.where((e) => e.blockId == blockId).toList();
+
       emit(FamilyLoaded(families: allFamilies));
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getConflictCasesByFamilyMember(int familyMemberId) async {
+    emit(ConflictCasesLoading());
+    try {
+      final response = await api.get(
+        '${ApiLink.getConflictCasesByFamilyMember}/$familyMemberId',
+      );
+
+      List<dynamic> conflictCasesJson = response["data"];
+      List<ConflictCase> conflictCases = conflictCasesJson
+          .map((e) => ConflictCase.fromJson(e))
+          .toList();
+
+      emit(ConflictCasesLoaded(conflictCases: conflictCases));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
