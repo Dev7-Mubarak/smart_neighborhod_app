@@ -2,7 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/cubits/conflict/conflict_cubit.dart';
+import 'package:smart_negborhood_app/cubits/conflictType/conflict_type_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
+import 'package:smart_negborhood_app/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
 import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
@@ -10,8 +13,7 @@ import 'package:smart_negborhood_app/cubits/project_category/project_category_cu
 import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
-import 'package:smart_negborhood_app/models/Person.dart';
-import 'package:smart_negborhood_app/models/family_member.dart';
+import 'package:smart_negborhood_app/models/conflict.dart';
 import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_family_to_assistanc.dart';
 import 'package:smart_negborhood_app/views/Assistances/add_team_to_assistanc.dart';
@@ -25,6 +27,9 @@ import 'package:smart_negborhood_app/views/auth/createNewPassword.dart';
 import 'package:smart_negborhood_app/views/auth/forgetapassword.dart';
 import 'package:smart_negborhood_app/views/auth/login.dart';
 import 'package:smart_negborhood_app/views/base/mainhome.dart';
+import 'package:smart_negborhood_app/views/confilct/add_update_conflict.dart';
+import 'package:smart_negborhood_app/views/confilct/all_confilcts.dart';
+import 'package:smart_negborhood_app/views/confilct/conflict_detiles.dart';
 import 'package:smart_negborhood_app/views/families/add_update_family.dart';
 import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
@@ -224,28 +229,6 @@ class AppRouter {
             child: AssistanceDetiles(project: assistancCubit.project!),
           ),
         );
-      // final assistancCubit = settings.arguments as AssistancesCubit;
-      // return MaterialPageRoute(
-      //   builder: (_) => MultiBlocProvider(
-      //     providers: [
-      //       BlocProvider<PersonCubit>(
-      //         create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
-      //       ),
-      //       BlocProvider<ProjectCategoryCubit>(
-      //         create: (context) => ProjectCategoryCubit(api: DioConsumer(dio: Dio())),
-      //       ),
-      //       BlocProvider.value(
-      //         value: assistancCubit,
-      //         child: AddUpdateAssistanc(
-      //           assistancProject: assistancCubit.project,
-      //         ),
-      //       ),
-      //     ],
-      //     child: AddUpdateAssistanc(
-      //       assistancProject: assistancCubit.project,
-      //     ),
-      //   ),
-      // );
       case AppRoute.allTeams:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -324,22 +307,44 @@ class AppRouter {
       case AppRoute.teamDetails:
         final team = settings.arguments as Team;
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider<TeamCubit>(
-                create: (context) => TeamCubit(api: DioConsumer(dio: Dio())),
-              ),
-            ],
+          builder: (_) => BlocProvider<TeamCubit>(
+            create: ((BuildContext context) =>
+                TeamCubit(api: DioConsumer(dio: Dio()))),
             child: TeamDetails(team: team),
           ),
         );
-      case AppRoute.familyMemberDetails:
-        final familyMember = settings.arguments as FamilyMember;
+      case AppRoute.allConflict:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => FamilyCubit(0, api: DioConsumer(dio: Dio())),
-            child: FamilyMemberDetailsPage(familyMember: familyMember),
+          builder: (_) => BlocProvider<ConflictCubit>(
+            create: ((BuildContext context) =>
+                ConflictCubit(api: DioConsumer(dio: Dio()))),
+            child: const AllConflict(),
           ),
+          fullscreenDialog: false,
+        );
+      case AppRoute.addUpdateConflict:
+        final conflictCubit = settings.arguments as ConflictCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<FamilyMemberCubit>(
+                create: (context) =>
+                    FamilyMemberCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider<ConflictTypeCubit>(
+                create: (context) =>
+                    ConflictTypeCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: conflictCubit),
+            ],
+            child: AddUpdateConflict(conflict: conflictCubit.conflict),
+          ),
+        );
+      case AppRoute.conflictDetiles:
+        final conflict = settings.arguments as Conflict;
+
+        return MaterialPageRoute(
+          builder: (_) => ConflictDetiles(conflict: conflict),
         );
       default:
         return null;

@@ -104,7 +104,7 @@ class TeamCubit extends Cubit<TeamState> {
   }
 
   Future<void> addNewTeam(String name) async {
-    emit(TeamLoading());
+    emit(WiateAddedUpdatedTeam());
     try {
       final response = await api.post(
         ApiLink.addTeam,
@@ -145,7 +145,7 @@ class TeamCubit extends Cubit<TeamState> {
   }
 
   Future<void> updateTeams({required int id, String? name}) async {
-    emit(TeamLoading());
+    emit(WiateAddedUpdatedTeam());
     try {
       final response = await api.update(
         '${ApiLink.updateTeam}/$id',

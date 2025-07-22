@@ -52,10 +52,10 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
       id: json['id'] as int,
-      firstName: json['firstName'] as String,
-      secondName: json['secondName'] as String,
-      thirdName: json['thirdName'] as String,
-      lastName: json['lastName'] as String,
+      firstName: json['firstName']  as String? ?? "",
+      secondName: json['secondName'] as String? ?? "",
+      thirdName: json['thirdName'] as String? ?? "",
+      lastName: json['lastName'] as String? ?? "",
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
       phoneNumber: json['phoneNumber'] as String,
       email: json['email'],

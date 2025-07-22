@@ -18,6 +18,11 @@ class AppImage {
   static const String homehelping = '$rootImage/home/helping.png';
   static const String residentailimage = '$rootImage/residentail/Image37.png';
   static const String ReconciliationCouncil = '$rootImage/ReconciliationCouncil/Container33.png';
+  static const String admin = '$rootImage/ReconciliationCouncil/Admin.jpg';
+  static const String load = '$rootImage/loading.gif';
+  static const String notes = '$rootImage/notes.png';
+  
+  static const String handshake = '$rootImage/handshake.png';
   static const String loadingimage = '$rootImage/residentail/Animationloading.gif';
   static const String monashadatimage = '$rootImage/home/monashadat.png';
   static const String gas = '$rootImage/announcement/gas-cylinder.png';
@@ -25,5 +30,6 @@ class AppImage {
   static const String bread = '$rootImage/announcement/bread.png';
   static const String mic = '$rootImage/announcement/mic.png';
   static const String cheate = '$rootImage/announcement/cheate1.png';
+  
   
 }

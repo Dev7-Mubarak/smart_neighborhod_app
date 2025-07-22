@@ -67,7 +67,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
   Widget build(BuildContext context) {
     return BlocListener<TeamMemberCubit, TeamMemberState>(
       listener: (context, state) {
-        if (state is TeamMemberLoading) {
+        if (state is WiateAddedUpdatedTeamMember) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -76,24 +76,18 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        }else
-        if (state is TeamMemberAddedSuccessfully) {
+        } else if (state is TeamMemberAddedSuccessfully ||
+            state is TeamMemberUpdatedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
+          final message = (state is TeamMemberAddedSuccessfully)
+              ? state.message
+              : (state as TeamMemberUpdatedSuccessfully).message;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
+            SnackBar(content: Text(message), backgroundColor: Colors.green),
           );
-          Navigator.pop(context);
-        } else if (state is TeamMemberUpdatedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context);
         } else if (state is TeamMemberFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -231,7 +225,9 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                   }
                                   return null;
                                 },
-                                enabled:widget.teamMember==null?true:false,
+                                enabled: widget.teamMember == null
+                                    ? true
+                                    : false,
                               );
                             }
                             return Container();
@@ -347,7 +343,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
-                              Navigator.pop(context);
+          Navigator.of(context, rootNavigator: true).pop();
                               teamMemberCubit.resetInputs();
                             },
                           );

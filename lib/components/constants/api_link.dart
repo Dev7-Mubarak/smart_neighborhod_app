@@ -39,6 +39,7 @@ class ApiLink {
   static const String updateFamily = '$server/Family/Update';
   static const String addFamilyMember = '$server/Family/AddMember';
   static const String addExistingPersonToFamily = '$server/FamilyMembers/Add';
+  static const String getFamilyMembers = '$server/FamilyMembers/GetAll';
   static const String getFamilyDetailes = '$server/Family/GetDetailes';
   static const String getBlockDetails = '$server/Blocks/GetDetails';
   static const String addNewPerson = '$server/Person/Add';
@@ -46,5 +47,12 @@ class ApiLink {
   static const String updatePerson = '$server/Person/Update';
   static const String getAllPepole = '$server/Person/GetAll';
   static const String getPersonById = '$server/Person/GetById';
+  static const String getAllConflict = '$server/ConflictCase/GetAll';
+  static const String addConflict = '$server/ConflictCase/Add';
+  static const String updateConflict = '$server/ConflictCase/Update';
+  static const String deleteConflict = '$server/ConflictCase/Delete';
+  static const String getAllConfilctCaseTypes = '$server/ConfilctCaseType/GetAll';
+  
+
   static const String getConflictCasesByFamilyMember = '$server/ConflictCase/ByFamilyMember';
 }

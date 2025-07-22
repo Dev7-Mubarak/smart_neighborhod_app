@@ -81,13 +81,17 @@ class ChangeSelectedProjectStatus extends AssistancesState {}
 class ChangeSelectedProjectPriority extends AssistancesState {}
 
 class ChangeSelectedStartDate extends AssistancesState {}
+class WiateAssignFamilyToAssistance extends AssistancesState {}
+class WiateAssignTeamToAssistance extends AssistancesState {}
 
 class ChangeSelectedEndDate extends AssistancesState {}
+class WiateAddedUpdatedassistance extends AssistancesState {}
 
 class TeamAssignedSuccessfully extends AssistancesState {
   final String message;
   TeamAssignedSuccessfully({required this.message});
 }
+
 class FamilyAssignedSuccessfully extends AssistancesState {
   final String message;
   FamilyAssignedSuccessfully({required this.message});

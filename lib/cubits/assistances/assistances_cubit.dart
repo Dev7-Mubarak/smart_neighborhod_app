@@ -310,7 +310,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     String description,
     int budget,
   ) async {
-    emit(AssistancesLoading());
+    emit(WiateAddedUpdatedassistance());
     try {
       final response = await api.post(
         ApiLink.addProject,
@@ -356,7 +356,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }
 
   Future<void> assignTeamToAssistance() async {
-    emit(AssistancesLoading());
+    emit(WiateAssignTeamToAssistance());
     try {
       final response = await api.post(
         '${ApiLink.assignTeamToProject}/${project!.id}?teamId=$selectedTeam',
@@ -385,7 +385,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }
  
  Future<void> assignFamilyToAssistance() async {
-    emit(AssistancesLoading());
+    emit(WiateAssignFamilyToAssistance());
     try {
       final response = await api.post(
         '${ApiLink.assignFamilyToProject}/${project!.id}?familyId=$selectedfamily',
@@ -430,7 +430,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     String? description,
     int? budget,
   }) async {
-    emit(AssistancesLoading());
+    emit(WiateAddedUpdatedassistance());
     try {
       final response = await api.update(
         '${ApiLink.updateProject}/$id',

@@ -62,7 +62,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
   Widget build(BuildContext context) {
     return BlocListener<TeamCubit, TeamState>(
       listener: (context, state) {
-        if (state is TeamLoading) {
+        if (state is WiateAddedUpdatedTeam) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -71,23 +71,18 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        } else if (state is TeamAddedSuccessfully) {
+        } else if (state is TeamAddedSuccessfully ||
+            state is TeamUpdatedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
+          final message = (state is TeamAddedSuccessfully)
+              ? state.message
+              : (state as TeamUpdatedSuccessfully).message;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
+            SnackBar(content: Text(message), backgroundColor: Colors.green),
           );
-          Navigator.pop(context);
-        } else if (state is TeamUpdatedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context);
         } else if (state is TeamFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -266,7 +261,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context, rootNavigator: true).pop();
                               teamCubit.resetInputs();
                             },
                           );

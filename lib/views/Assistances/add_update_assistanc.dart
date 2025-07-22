@@ -97,7 +97,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
   Widget build(BuildContext context) {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is AssistancesLoading) {
+        if (state is WiateAddedUpdatedassistance) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -106,23 +106,35 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        } else if (state is AssistancAddedSuccessfully) {
+        } else if (state is AssistancAddedSuccessfully ||
+            state is AssistanceUpdatedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
+          final message = (state is AssistancAddedSuccessfully)
+              ? state.message
+              : (state as AssistanceUpdatedSuccessfully).message;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
+            SnackBar(content: Text(message), backgroundColor: Colors.green),
           );
-          Navigator.pop(context);
-        } else if (state is AssistanceUpdatedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.pop(context);
+          // }
+          //   else if (state is AssistancAddedSuccessfully) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     SnackBar(
+          //       content: Text(state.message),
+          //       backgroundColor: Colors.green,
+          //     ),
+          //   );
+          //   Navigator.pop(context);
+          // } else if (state is AssistanceUpdatedSuccessfully) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     SnackBar(
+          //       content: Text(state.message),
+          //       backgroundColor: Colors.green,
+          //     ),
+          //   );
+          //   Navigator.pop(context);
         } else if (state is AssistancesFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -471,30 +483,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                         const SizedBox(height: 30),
                         const SmallText(text: 'تاريخ نهاية التوزيع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        // BlocBuilder<AssistancesCubit, AssistancesState>(
-                        //   buildWhen: (previous, current) =>
-                        //       current is ChangeSelectedEndDate,
-                        //   builder: (context, state) {
-                        //     endDateController.text =
-                        //         assistanceCubit.selectedEndDate != null
-                        //             ? DateFormat('yyyy-MM-dd').format(
-                        //                 assistanceCubit.selectedEndDate!)
-                        //             : '';
 
-                        //     return CustomTextFormField(
-                        //       controller: endDateController,
-                        //       suffixIcon: Icons.calendar_today,
-                        //       readOnly: true,
-                        //       onTap: () => assistanceCubit.pickEndDate(context),
-                        //       validator: (value) {
-                        //         if (value == null || value.isEmpty) {
-                        //           return 'تاريخ نهايةالتوزيع';
-                        //         }
-                        //         return null;
-                        //       },
-                        //     );
-                        //   },
-                        // ),
                         CustomTextFormField(
                           controller: endDateController,
                           suffixIcon: Icons.calendar_today,
@@ -600,8 +589,8 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
-                              Navigator.pop(context);
                               assistanceCubit.resetInputs();
+                              Navigator.of(context).pop();
                             },
                           );
                         },
@@ -627,7 +616,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                     assistanceDescribtionController.text,
                                 budget: int.parse(budgetController.text),
                               );
-                              Navigator.pop(context);
                             }
                           }
                         },
