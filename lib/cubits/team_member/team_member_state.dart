@@ -25,6 +25,7 @@ class TeamMemberAddedSuccessfully extends TeamMemberState {
 }
 
 class ChangeSelectedMemberJoiedDate extends TeamMemberState {}
+class WiateAddedUpdatedTeamMember extends TeamMemberState {}
 
 class ChangeSelectedPersonId extends TeamMemberState {}
 class ChangeSelectedTeamRoleId extends TeamMemberState {}

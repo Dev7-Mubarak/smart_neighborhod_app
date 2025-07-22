@@ -7,12 +7,11 @@ import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/services/cache_helper.dart';
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   Bloc.observer = AppBlocObserver();
-  runApp(SmartNeighbourhood(appRouter: AppRouter( )));
+  runApp(SmartNeighbourhood(appRouter: AppRouter()));
 }
 
 class SmartNeighbourhood extends StatelessWidget {

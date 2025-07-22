@@ -21,6 +21,7 @@ class DioConsumer {
       'Content-Type': 'application/json',
       // 'Authorization': 'Bearer YOUR_TOKEN', // ربما لا تحتاج هذا لطلب تسجيل الدخول
     };
+
     dio.options.receiveDataWhenStatusError = true;
 
     dio.interceptors.add(ApiInterceptor());

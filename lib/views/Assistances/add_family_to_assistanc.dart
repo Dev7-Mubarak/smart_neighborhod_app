@@ -38,7 +38,7 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
   Widget build(BuildContext context) {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is AssistancesLoading) {
+        if (state is WiateAssignFamilyToAssistance) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -47,16 +47,17 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        }else
-        if (state is FamilyAssignedSuccessfully) {
+        } else if (state is FamilyAssignedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pop(context);
         } else if (state is AssistancesFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -212,7 +213,7 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context, rootNavigator: true).pop();
                             },
                           );
                         },

@@ -48,7 +48,9 @@ class _HomeState extends State<Home> {
         title: 'قسم الإتفاقات',
         imagePath: AppImage.homehandshake,
         backgroundColor: const Color(0xFF125D95),
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, AppRoute.allConflict);
+        },
       ),
 
       CategoryCard(

@@ -7,9 +7,6 @@ import 'package:smart_negborhood_app/models/team_member.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/API/dio_consumer.dart';
 import '../../../core/errors/exception.dart';
-import '../../models/enums/project_priority.dart';
-import '../../models/enums/project_status.dart';
-import '../../models/project.dart';
 import 'team_member_state.dart';
 
 class TeamMemberCubit extends Cubit<TeamMemberState> {
@@ -96,7 +93,7 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   }
 
   Future<void> addNewTeamMember() async {
-    emit(TeamMemberLoading());
+    emit(WiateAddedUpdatedTeamMember());
     try {
       final response = await api.post(
         ApiLink.addTeamMember,
@@ -140,7 +137,7 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   }
 
   Future<void> updateTeamMember({required int id}) async {
-    emit(TeamMemberLoading());
+    emit(WiateAddedUpdatedTeamMember());
     try {
       final response = await api.update(
         '${ApiLink.updateTeamMember}/$id',

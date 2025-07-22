@@ -35,7 +35,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
   Widget build(BuildContext context) {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is AssistancesLoading) {
+        if (state is WiateAssignTeamToAssistance) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -44,9 +44,9 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        }
-        else if (state is TeamAssignedSuccessfully) {
-          Navigator.pop(context);
+        } else if (state is TeamAssignedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
@@ -54,9 +54,8 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
             ),
           );
           Navigator.pop(context);
-        }
-        else if (state is AssistancesFailure) {
-          Navigator.pop(context);
+        } else if (state is AssistancesFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
@@ -171,7 +170,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                         ),
                         const SizedBox(height: 30),
                         const SmallText(
-                        textAlign: TextAlign.right,
+                          textAlign: TextAlign.right,
                           text:
                               'إذا كنت تريد إنشاء فريق جديد إنتقل إللى قسم الفرق من هنا',
                         ),
@@ -200,7 +199,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.of(context, rootNavigator: true).pop();
                             },
                           );
                         },
@@ -209,8 +208,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                       SmallButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            _assistanceCubit.assignTeamToAssistance(
-                            );
+                            _assistanceCubit.assignTeamToAssistance();
                           }
                         },
                         text: 'إضافة',

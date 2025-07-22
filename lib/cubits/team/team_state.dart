@@ -21,6 +21,7 @@ class ProjectsOfTeamLoaded extends TeamState {
 }
 
 class TeamLoading extends TeamState {}
+class WiateAddedUpdatedTeam extends TeamState {}
 
 class TeamFailure extends TeamState {
   final String errorMessage;
