@@ -409,65 +409,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                         const SizedBox(height: 30),
                         const SmallText(text: 'تاريخ بداية التوزيع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        // Row(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         await DateTimeHelper.selectDate(
-                        //             context, startDateController);
-                        //       },
-                        //       child: const Icon(
-                        //         Icons.calendar_month,
-                        //         color: AppColor.primaryColor,
-                        //         size: 30,
-                        //       ),
-                        //     ),
-                        //     const SizedBox(width: 10),
-                        //     Expanded(
-                        //       child: CustomTextFormField(
-                        //         controller: startDateController,
-                        //         keyboardType: TextInputType.none,
-                        //         suffixIcon: null,
-                        //         readOnly: true,
-                        //         onTap: () async {
-                        //           await DateTimeHelper.selectDate(
-                        //               context, startDateController);
-                        //         },
-                        //         validator: (value) {
-                        //           if (value == null || value.isEmpty) {
-                        //             return 'تاريخ  بداية التوزيع';
-                        //           }
-                        //           return null;
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // BlocBuilder<AssistancesCubit, AssistancesState>(
-                        //   buildWhen: (previous, current) =>
-                        //       current is ChangeSelectedStartDate,
-                        //   builder: (context, state) {
-                        //     startDateController.text =
-                        //         assistanceCubit.selectedStartDate != null
-                        //             ? DateFormat('yyyy-MM-dd').format(
-                        //                 assistanceCubit.selectedStartDate!)
-                        //             : '';
-
-                        //     return CustomTextFormField(
-                        //       controller: startDateController,
-                        //       suffixIcon: Icons.calendar_today,
-                        //       readOnly: true,
-                        //       onTap: () =>
-                        //           assistanceCubit.pickStartDate(context),
-                        //       validator: (value) {
-                        //         if (value == null || value.isEmpty) {
-                        //           return 'تاريخ بداية التوزيع';
-                        //         }
-                        //         return null;
-                        //       },
-                        //     );
-                        //   },
-                        // ),
+                        
                         CustomTextFormField(
                           controller: startDateController,
                           suffixIcon: Icons.calendar_today,

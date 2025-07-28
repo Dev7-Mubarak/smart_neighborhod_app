@@ -7,6 +7,7 @@ import 'package:smart_negborhood_app/cubits/conflictType/conflict_type_cubit.dar
 import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
+import 'package:smart_negborhood_app/cubits/forgetapassword/forgetapassword_cubit.dart';
 import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
@@ -122,7 +123,11 @@ class AppRouter {
 
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
-          builder: (_) => forgetapassword(),
+          builder: (_) =>
+          BlocProvider<ForgetapasswordCubit>(
+            create: (context) => ForgetapasswordCubit(api: DioConsumer(dio: Dio())),
+            child:  Forgetapassword(),
+          ),
           fullscreenDialog: false,
         );
 

@@ -55,4 +55,5 @@ class ApiLink {
   
 
   static const String getConflictCasesByFamilyMember = '$server/ConflictCase/ByFamilyMember';
+  static const String sendEmail = '$server/ConflictCase/ByFamilyMember';
 }
