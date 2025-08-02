@@ -5,7 +5,7 @@ class AppRoute {
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
   static const String residentialBlocks = '/ResidentialBlock';
   static const String forgetapassword = '/forgetapassword';
-  static const String checkEmail = '/checkEmail';
+  static const String checkEmail = '/CheckEmail';
   static const String createNewPassword = '/createNewPassword';
   static const String addUpdateBlock = '/AddUpdateBlock';
   static const String familyDetiles = '/FamilyDetiles';

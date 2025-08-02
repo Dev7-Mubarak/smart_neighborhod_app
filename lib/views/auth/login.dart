@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/components/custom_text_input_filed.dart';
 import 'package:smart_negborhood_app/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/cubits/login_cubit/login_state.dart';
 
@@ -100,7 +101,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          DefaultTextFormFiled(
+                          CustomTextFormField(
                             hintText: 'قم بإدخال كلمة المرور',
                             controller: passwordContoller,
                             keyboardType: TextInputType.visiblePassword,
@@ -111,7 +112,7 @@ class Login extends StatelessWidget {
                               return null;
                             },
                             suffixIcon: Icons.key,
-                            isPassword: LoginCubit.get(context).isPassword,
+                            obscureText: LoginCubit.get(context).isPassword,
                             prefixIcon: LoginCubit.get(context).prefixIcon,
                             onPrefixIconPressed: () {
                               LoginCubit.get(context).changePasswordVisibilty();

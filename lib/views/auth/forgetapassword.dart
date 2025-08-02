@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/components/custom_text_input_filed.dart';
 
 import '../../components/boldText.dart';
 import '../../components/circular_logo.dart';
@@ -11,7 +12,7 @@ import '../../components/defult_button.dart';
 import '../../cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class Forgetapassword extends StatefulWidget {
-  Forgetapassword({super.key});
+  const Forgetapassword({super.key});
 
   @override
   State<Forgetapassword> createState() => _ForgetapasswordState();
@@ -38,7 +39,8 @@ class _ForgetapasswordState extends State<Forgetapassword> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
+    return
+     BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendEmailLoading){
           showDialog(
@@ -126,17 +128,15 @@ class _ForgetapasswordState extends State<Forgetapassword> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      DefaultTextFormFiled(
+                      CustomTextFormField(
                         hintText: 'قم بإدخال الأيميل',
                         controller: passwordContoller,
                         keyboardType: TextInputType
-                            .emailAddress, // تحديد نوع الإدخال كإيميل
+                            .emailAddress, 
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'قم بإدخال عنوان البريد الإلكتروني';
                           }
-
-                          // التحقق من صحة البريد الإلكتروني باستخدام RegExp
                           final emailRegex = RegExp(
                             r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
                           );
@@ -147,7 +147,6 @@ class _ForgetapasswordState extends State<Forgetapassword> {
 
                           return null;
                         },
-                        isPassword: false,
                         suffixIcon: null,
                       ),
                     ],

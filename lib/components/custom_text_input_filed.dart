@@ -16,8 +16,12 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines; // تمت إضافته لدعم الأسطر المتعددة
   final int? minLines; // تمت إضافته لدعم الأسطر المتعددة
   final void Function(String)? onChanged;
+    final void Function()? onPrefixIconPressed;
+
 
   const CustomTextFormField({
+        this.onPrefixIconPressed,
+
     super.key,
     this.hintText,
     this.controller,
@@ -52,25 +56,21 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: bachgroundColor,
         filled: true,
         isDense: true,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 14,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 12,
         ),
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Colors.black, fontSize: 14),
         prefixIcon: prefixIcon == null
             ? null
-            : Icon(
-                prefixIcon,
-                color: Colors.black,
-              ),
+            :IconButton(
+                  icon: Icon(prefixIcon,color: Colors.black),
+                  onPressed: onPrefixIconPressed,
+                ) ,
         suffixIcon: suffixIcon == null
             ? null
-            : Icon(
-                suffixIcon,
-                color: Colors.black,
-              ),
+            : Icon(suffixIcon, color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
           borderSide: const BorderSide(color: Color(0xFFE4E4E4), width: 2),

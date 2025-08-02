@@ -123,22 +123,30 @@ class AppRouter {
 
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
-          builder: (_) =>
-          BlocProvider<ForgetapasswordCubit>(
-            create: (context) => ForgetapasswordCubit(api: DioConsumer(dio: Dio())),
-            child:  Forgetapassword(),
+          builder: (_) => BlocProvider<ForgetapasswordCubit>(
+            create: (context) =>
+                ForgetapasswordCubit(api: DioConsumer(dio: Dio())),
+            child: Forgetapassword(),
           ),
           fullscreenDialog: false,
         );
 
       case AppRoute.checkEmail:
+        final forgetapasswordCubit = settings.arguments as ForgetapasswordCubit;
         return MaterialPageRoute(
-          builder: (_) => checkEmail(),
+          builder: (_) => BlocProvider.value(
+            value: forgetapasswordCubit,
+            child: CheckEmail(),
+          ),
           fullscreenDialog: false,
         );
       case AppRoute.createNewPassword:
+       final forgetapasswordCubit = settings.arguments as ForgetapasswordCubit;
         return MaterialPageRoute(
-          builder: (_) => createNewPassword(),
+          builder: (_) => BlocProvider.value(
+            value: forgetapasswordCubit,
+            child: CreateNewPassword(),
+          ),
           fullscreenDialog: false,
         );
       case AppRoute.addUpdateBlock:

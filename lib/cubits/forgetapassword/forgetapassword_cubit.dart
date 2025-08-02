@@ -13,6 +13,10 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
   static ForgetapasswordCubit get(context) => BlocProvider.of(context);
 
   DioConsumer api;
+  IconData FirstprefixIcon = Icons.visibility;
+  bool FirstisPassword = true;
+  IconData SecondprefixIcon = Icons.visibility;
+  bool SecondisPassword = true;
 
   Future<void> sendEmail(String emailAddress) async {
     emit(SendEmailLoading());
@@ -22,7 +26,12 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
         data: {'emailAddress': emailAddress},
       );
       if (response["isSuccess"]) {
-        emit(SendEmailSuccess(response["message"] ?? "تم إرسال الإيميل بنجاح, سيتم إرسال رمز التأكيد إلى بريدك الإلكتروني "));
+        emit(
+          SendEmailSuccess(
+            response["message"] ??
+                "تم إرسال الإيميل بنجاح, سيتم إرسال رمز التأكيد إلى بريدك الإلكتروني ",
+          ),
+        );
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -37,5 +46,77 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
     } catch (e) {
       emit(SendEmailFailure(errorMessage: e.toString()));
     }
+  }
+
+  Future<void> sendConfirmationCode(String confirmationCode) async {
+    emit(SendConfirmationCodeLoading());
+    try {
+      final response = await api.post(
+        ApiLink.sendConfirmationCode,
+        data: {'ConfirmationCode': confirmationCode},
+      );
+      if (response["isSuccess"]) {
+        emit(
+          SendConfirmationCodeSuccess(
+            response["message"] ?? "تم التأكد من البريد الإلكتروني  ",
+          ),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(SendConfirmationCodeFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(SendConfirmationCodeFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> sendNewPassword(String password) async {
+    emit(SendNewPasswordLoading());
+    try {
+      final response = await api.post(
+        ApiLink.sendNewPassword,
+        data: {'password': password},
+      );
+      if (response["isSuccess"]) {
+        emit(
+          SendNewPasswordSuccess(
+            response["message"] ?? "تم تعديل كلمة المرور بنجاح",
+          ),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(SendNewPasswordFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(SendNewPasswordFailure(errorMessage: e.toString()));
+    }
+  }
+
+  void changeFirstPasswordVisibilty() {
+    FirstisPassword = !FirstisPassword;
+    FirstprefixIcon = FirstisPassword ? Icons.visibility : Icons.visibility_off;
+    emit(ChangeFirstPasswordVisibility());
+  }
+
+  void changeSecondPasswordVisibilty() {
+    SecondisPassword = !SecondisPassword;
+    SecondprefixIcon = SecondisPassword
+        ? Icons.visibility
+        : Icons.visibility_off;
+    emit(ChangeSecondPasswordVisibility());
   }
 }
