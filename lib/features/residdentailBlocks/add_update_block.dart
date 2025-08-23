@@ -4,13 +4,13 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/custom_navigation_bar.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 
 import '../../core/constants/small_text.dart';
 import '../../core/common/widgets/custom_text_input_filed.dart';
-import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
-import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
-import '../../models/Person.dart';
+import 'cubits/cubit/block_cubit.dart';
+import 'cubits/cubit/block_state.dart';
+import '../people/data/models/Person.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
 

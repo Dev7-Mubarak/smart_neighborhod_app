@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/models/conflict_case.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/features/confilct/data/models/conflict_case.dart';
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
-import 'package:smart_negborhood_app/models/family_member.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 
 import '../../core/common/widgets/custom_navigation_bar.dart';
 

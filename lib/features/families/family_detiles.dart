@@ -4,16 +4,16 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/family_assistances_list_table.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
-import 'package:smart_negborhood_app/models/family_member.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 import '../../core/common/widgets/custom_navigation_bar.dart';
 import '../../core/constants/app_color.dart';
 import '../../core/common/widgets/smallButton.dart';
-import '../../models/family_detiles_model.dart';
+import 'data/models/family_detiles_model.dart';
 
 class FamilyDetiles extends StatefulWidget {
   const FamilyDetiles({super.key, required this.familyId});

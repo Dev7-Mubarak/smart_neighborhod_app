@@ -4,7 +4,7 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import '../../core/common/widgets/custom_navigation_bar.dart';
 import '../../core/constants/app_image.dart';
 import '../../core/common/widgets/searcharea.dart';
-import '../../models/Announcemwnt.dart';
+import 'Announcemwnt.dart';
 
 class announcement1 extends StatefulWidget {
   const announcement1({super.key});

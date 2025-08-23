@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_negborhood_app/models/BlockDetails.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
 
 class BlockStatsSection extends StatelessWidget {
   final BlockDetails details;

@@ -3,17 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
-import 'package:smart_negborhood_app/cubits/assistances/assistances_state.dart';
-import 'package:smart_negborhood_app/models/ProjectBlockFamilies.dart';
+import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/features/Assistances/data/models/ProjectBlockFamilies.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_status.dart';
-import 'package:smart_negborhood_app/models/family.dart';
-import 'package:smart_negborhood_app/models/project.dart';
-import 'package:smart_negborhood_app/models/team.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family.dart';
+import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
+import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import '../../core/common/widgets/custom_navigation_bar.dart';
 import '../../core/common/widgets/smallButton.dart';
 import '../../core/common/widgets/table.dart';
-import '../../cubits/assistances/assistances_cubit.dart';
+import '../annoucements/cubits/assistances/assistances_cubit.dart';
 
 class AssistanceDetiles extends StatefulWidget {
   const AssistanceDetiles({super.key, required this.project});

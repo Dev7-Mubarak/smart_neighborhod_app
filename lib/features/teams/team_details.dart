@@ -7,11 +7,11 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_image.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/table.dart';
-import 'package:smart_negborhood_app/cubits/team/team_cubit.dart';
-import 'package:smart_negborhood_app/cubits/team/team_state.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_status.dart';
-import 'package:smart_negborhood_app/models/team.dart';
-import 'package:smart_negborhood_app/models/team_member.dart';
+import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
+import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
 import '../../core/common/widgets/custom_navigation_bar.dart';
 import '../../core/constants/small_text.dart';
 

@@ -4,7 +4,7 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/residdential_blocks.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
-import '../../../../cubits/mainHome_cubit/main_home_cubit.dart';
+import '../../cubits/mainHome_cubit/main_home_cubit.dart';
 import 'home.dart';
 
 class MainHome extends StatefulWidget {

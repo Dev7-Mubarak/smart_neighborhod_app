@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/gender.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
@@ -16,7 +16,7 @@ import '../../core/common/widgets/custom_navigation_bar.dart';
 import '../../core/constants/app_size.dart';
 import '../../core/constants/small_text.dart';
 import '../../core/common/widgets/custom_text_input_filed.dart';
-import '../../models/Person.dart';
+import 'data/models/Person.dart';
 import '../../core/common/enums/identity_type.dart';
 
 class AddUpdatePerson extends StatefulWidget {

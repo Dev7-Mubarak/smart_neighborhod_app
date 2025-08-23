@@ -6,13 +6,13 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/constants/small_text.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_negborhood_app/models/Person.dart';
-import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
-import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_state.dart';
-import 'package:smart_negborhood_app/models/member_family_role.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
+import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/features/people/data/models/Person.dart';
+import 'package:smart_negborhood_app/features/families/cubits/member_family_role_cubit/member_family_role_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/member_family_role_cubit/member_family_role_state.dart';
+import 'package:smart_negborhood_app/features/families/data/models/member_family_role.dart';
 
 class AddFamilyMember extends StatefulWidget {
   final int familyId;

@@ -4,7 +4,7 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_image.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/constants/small_text.dart';
-import 'package:smart_negborhood_app/models/conflict.dart';
+import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
 import '../../core/common/widgets/custom_navigation_bar.dart';
 
 class ConflictDetiles extends StatefulWidget {

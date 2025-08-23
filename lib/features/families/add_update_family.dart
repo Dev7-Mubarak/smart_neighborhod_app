@@ -3,19 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_state.dart';
-import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
-import 'package:smart_negborhood_app/models/family.dart';
-import 'package:smart_negborhood_app/models/family_category.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_state.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family_category.dart';
 import '../../core/common/widgets/CustomDropdownGeneric.dart';
 import '../../core/constants/app_size.dart';
 import '../../core/constants/small_text.dart';
 import '../../core/common/widgets/custom_text_input_filed.dart';
-import '../../cubits/family_cubit/family_state.dart';
-import '../../cubits/person_cubit/person_cubit.dart';
-import '../../models/Person.dart';
+import 'cubits/family_cubit/family_state.dart';
+import '../people/cubits/person_cubit/person_cubit.dart';
+import '../people/data/models/Person.dart';
 
 class AddUpdateFamily extends StatefulWidget {
   final int blockId;

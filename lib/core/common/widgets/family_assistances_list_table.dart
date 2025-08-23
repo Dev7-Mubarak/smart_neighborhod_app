@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/common/widgets/table.dart';
-import 'package:smart_negborhood_app/models/assistance.dart';
+import 'package:smart_negborhood_app/features/Assistances/data/models/assistance.dart';
 
 class FamilyAssistancesListTable extends StatelessWidget {
   final List<Assistance> familyAssisytances;

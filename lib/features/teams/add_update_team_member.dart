@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
-import 'package:smart_negborhood_app/cubits/team_member/team_member_cubit.dart';
-import 'package:smart_negborhood_app/cubits/team_member/team_member_state.dart';
-import 'package:smart_negborhood_app/cubits/team_role/team_role_cubit.dart';
-import 'package:smart_negborhood_app/cubits/team_role/team_role_state.dart';
-import 'package:smart_negborhood_app/models/team_member.dart';
-import 'package:smart_negborhood_app/models/team_role.dart';
+import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_state.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team_role/team_role_cubit.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team_role/team_role_state.dart';
+import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
+import 'package:smart_negborhood_app/features/teams/data/models/team_role.dart';
 
 import '../../core/common/widgets/custom_navigation_bar.dart';
 import '../../core/constants/app_size.dart';
 import '../../core/constants/small_text.dart';
 import '../../core/common/widgets/custom_text_input_filed.dart';
-import '../../models/Person.dart';
+import '../people/data/models/Person.dart';
 
 class AddUpdateTeamMember extends StatefulWidget {
   const AddUpdateTeamMember({super.key, this.teamMember});

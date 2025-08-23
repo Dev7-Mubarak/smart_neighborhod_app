@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/cubits/login_cubit/login_state.dart';
+import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_state.dart';
 
 import '../../../../core/common/widgets/boldText.dart';
 import '../../../../core/common/widgets/circular_logo.dart';

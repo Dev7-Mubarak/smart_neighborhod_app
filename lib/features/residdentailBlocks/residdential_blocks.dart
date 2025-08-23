@@ -8,9 +8,9 @@ import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_fi
 import '../../core/constants/app_image.dart';
 import '../../core/constants/app_size.dart';
 import '../../core/common/widgets/smallButton.dart';
-import '../../cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
-import '../../cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
-import '../../models/Block.dart';
+import 'cubits/cubit/block_cubit.dart';
+import 'cubits/cubit/block_state.dart';
+import 'data/models/Block.dart';
 // Add this import at the top
 
 class ResidentialBlock extends StatefulWidget {

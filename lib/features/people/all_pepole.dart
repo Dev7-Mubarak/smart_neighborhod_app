@@ -7,7 +7,7 @@ import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart'
 import '../../core/constants/app_color.dart';
 import '../../core/common/widgets/searcable_text_input_filed.dart';
 import '../../core/common/widgets/smallButton.dart';
-import '../../cubits/person_cubit/person_cubit.dart';
+import 'cubits/person_cubit/person_cubit.dart';
 
 class AllPeople extends StatefulWidget {
   const AllPeople({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../models/Announcemwnt.dart';
+import 'Announcemwnt.dart';
 
 class announcement extends StatefulWidget {
   const announcement({super.key});
