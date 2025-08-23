@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
-import '../../generated/l10n.dart';
+import '../config/generated/l10n.dart';
 
 extension ContextExtension on BuildContext {
   Size get screenSize => MediaQuery.sizeOf(this);

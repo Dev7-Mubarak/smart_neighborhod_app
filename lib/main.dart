@@ -7,7 +7,7 @@ import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/core/services/cache_helper.dart';
 import 'features/residdentailBlocks/cubits/cubit/block_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'generated/l10n.dart';
+import 'core/config/generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
