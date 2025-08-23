@@ -11,6 +11,7 @@ import 'package:smart_negborhood_app/models/enums/blood_type.dart';
 import 'package:smart_negborhood_app/models/enums/gender.dart';
 import 'package:smart_negborhood_app/models/enums/marital_status.dart';
 import 'package:smart_negborhood_app/models/enums/occupation_status.dart';
+import 'package:smart_negborhood_app/generated/l10n.dart';
 import '../../components/CustomDropdown.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_size.dart';
@@ -106,8 +107,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
           title: Center(
             child: Text(
               context.read<PersonCubit>().person == null
-                  ? 'إضافة شخص جديد'
-                  : 'تعديل بيانات الشخص',
+                  ? S.of(context).addNewPerson
+                  : S.of(context).editPersonData,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -132,7 +133,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const SmallText(text: 'الاسم الاول'),
+                      SmallText(text: S.of(context).firstName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -140,13 +141,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         controller: firstNameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الاسم الاول مطلوب';
+                            return S.of(context).firstNameRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الاسم الثاني'),
+                      SmallText(text: S.of(context).secondName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -154,13 +155,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         controller: secondNameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الاسم الثاني مطلوب';
+                            return S.of(context).secondNameRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الاسم الثالث'),
+                      SmallText(text: S.of(context).thirdName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -168,13 +169,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         controller: thirdNameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الاسم الثالث مطلوب';
+                            return S.of(context).thirdNameRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الاسم الربع'),
+                      SmallText(text: S.of(context).fourthName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -182,13 +183,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         controller: lastNameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'الاسم الرابع مطلوب';
+                            return S.of(context).fourthNameRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'رقم الهوية'),
+                      SmallText(text: S.of(context).identityNumber),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -196,16 +197,16 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         controller: identityNumberController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'رقم الهوية مطلوب';
+                            return S.of(context).identityNumberRequired;
                           }
                           if (value.length < 6) {
-                            return 'رقم الهوية يجب أن يكون 6 أرقام أو أكثر';
+                            return S.of(context).identityNumberMinLength;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'نوع الهوية'),
+                      SmallText(text: S.of(context).identityType),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -230,10 +231,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                     ),
                                   );
                             },
-                            text: 'اختيار نوع الهوية',
+                            text: S.of(context).chooseIdentityType,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'يرجى اختيار نوع الهوية';
+                                return S.of(context).pleaseChooseIdentityType;
                               }
                               return null;
                             },
@@ -243,7 +244,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       _buildGenderSelector(cubit),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'رقم التواصل'),
+                      SmallText(text: S.of(context).contactNumber),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -375,7 +376,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'فصيلة الدم'),
+                      SmallText(text: S.of(context).bloodType),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -393,10 +394,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                                 ),
                               );
                             },
-                            text: 'اختبار فصيلة الدم',
+                            text: S.of(context).chooseBloodType,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'يرجى اختيار فصيلة الدم';
+                                return S.of(context).pleaseChooseBloodType;
                               }
                               return null;
                             },
@@ -582,7 +583,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const SmallText(text: 'الجنس'),
+        SmallText(text: S.of(context).gender),
         const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
         BlocBuilder<PersonCubit, PersonState>(
           buildWhen: (previous, current) => current is ChangeSelctedGender,
@@ -599,7 +600,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         cubit.changeSelctedGender(value!);
                       },
                     ),
-                    const SmallText(text: 'ذكر'),
+                    SmallText(text: S.of(context).male),
                   ],
                 ),
                 const SizedBox(width: 30),
@@ -612,7 +613,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         cubit.changeSelctedGender(value!);
                       },
                     ),
-                    const SmallText(text: 'انثى'),
+                    SmallText(text: S.of(context).female),
                   ],
                 ),
               ],

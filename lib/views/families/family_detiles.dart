@@ -11,6 +11,7 @@ import 'package:smart_negborhood_app/models/enums/blood_type.dart';
 import 'package:smart_negborhood_app/models/enums/identity_type.dart';
 import 'package:smart_negborhood_app/models/enums/marital_status.dart';
 import 'package:smart_negborhood_app/models/family_member.dart';
+import 'package:smart_negborhood_app/generated/l10n.dart';
 import '../../components/custom_navigation_bar.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/smallButton.dart';
@@ -198,7 +199,7 @@ class _AddMemberButtonRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SmallButton(
-            text: 'إضافة فرد جديد',
+            text: S.of(context).addNewMember,
             onPressed: () {
               final familyCubit = context.read<FamilyCubit>();
               Navigator.pushNamed(
@@ -232,21 +233,21 @@ class FamilyDetilesCard extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: Column(
               children: [
-                infoRow('أسم الأسرة', familyDetiles.name),
-                infoRow('المربع السكني', familyDetiles.blockName),
-                infoRow('الموقع', familyDetiles.location),
-                infoRow('نوع الأسرة', familyDetiles.familyTypeName),
-                infoRow('تصنيف الأسرة', familyDetiles.familyCategoryName),
+                infoRow(S.of(context).familyName, familyDetiles.name),
+                infoRow(S.of(context).residentialBlock, familyDetiles.blockName),
+                infoRow(S.of(context).location, familyDetiles.location),
+                infoRow(S.of(context).familyType, familyDetiles.familyTypeName),
+                infoRow(S.of(context).familyCategory, familyDetiles.familyCategoryName),
                 infoRow(
-                  'رب الأسرة',
+                  S.of(context).familyHead,
                   familyDetiles.headOfFamily?.fullName ?? '',
                 ),
                 infoRow(
-                  'رقم الجوال',
+                  S.of(context).phoneNumber,
                   familyDetiles.headOfFamily?.phoneNumber ?? '',
                 ),
                 infoRow(
-                  'الأيميل',
+                  S.of(context).email,
                   familyDetiles.familyMembers.isNotEmpty
                       ? familyDetiles.familyMembers.first.person.email ?? ''
                       : '',
@@ -375,26 +376,26 @@ class MemberCard extends StatelessWidget {
                   ),
                 ),
                 const Divider(height: 18, color: Colors.grey, thickness: 1),
-                infoRow('رقم الهوية', familyMember.person.identityNumber),
+                infoRow(S.of(context).identityNumber, familyMember.person.identityNumber),
                 infoRow(
-                  'نوع الهوية',
+                  S.of(context).identityType,
                   familyMember.person.identityType.arabicName,
                 ),
-                infoRow('رقم الجوال', familyMember.person.phoneNumber),
+                infoRow(S.of(context).phoneNumber, familyMember.person.phoneNumber),
                 infoRow(
-                  'الجنس',
-                  familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
+                  S.of(context).gender,
+                  familyMember.person.gender == "Female" ? S.of(context).female : S.of(context).male,
                 ),
                 infoRow(
-                  'تاريخ الميلاد',
+                  S.of(context).birthDate,
                   familyMember.person.dateOfBirth.toString().split(' ').first,
                 ),
-                infoRow('فصيلة الدم', familyMember.person.bloodType.arabicName),
+                infoRow(S.of(context).bloodType, familyMember.person.bloodType.arabicName),
                 infoRow(
-                  'الحالة الاجتماعية',
+                  S.of(context).maritalStatus,
                   familyMember.person.maritalStatus.arabicName,
                 ),
-                infoRow('المهنة', familyMember.person.job ?? 'غير محدد'),
+                infoRow(S.of(context).job, familyMember.person.job ?? S.of(context).notSpecified),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -405,9 +406,9 @@ class MemberCard extends StatelessWidget {
                     color: AppColor.gray2,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    'اضغط للمزيد من التفاصيل',
-                    style: TextStyle(
+                  child: Text(
+                    S.of(context).clickForMoreDetails,
+                    style: const TextStyle(
                       fontSize: 12,
                       color: Colors.blueGrey,
                       fontWeight: FontWeight.w500,

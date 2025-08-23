@@ -294,5 +294,20 @@
   "identityNumberRequired": "Identity number is required",
   "@identityNumberRequired": {
     "description": "Identity number required validation"
+  },
+  
+  "addNewMember": "Add New Member",
+  "@addNewMember": {
+    "description": "Add new member button"
+  },
+  
+  "residentialBlock": "Residential Block",
+  "@residentialBlock": {
+    "description": "Residential block label"
+  },
+  
+  "identityNumberMinLength": "Identity number must be 6 digits or more",
+  "@identityNumberMinLength": {
+    "description": "Identity number minimum length validation"
   }
 }

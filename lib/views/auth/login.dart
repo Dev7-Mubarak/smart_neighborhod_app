@@ -11,6 +11,7 @@ import '../../components/constants/app_color.dart';
 import '../../components/constants/app_route.dart';
 import '../../components/default_text_form_filed.dart';
 import '../../components/defult_button.dart';
+import '../../components/language_toggle_button.dart';
 import '../../core/API/dio_consumer.dart';
 
 class Login extends StatelessWidget {
@@ -43,6 +44,14 @@ class Login extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: [
+                LanguageToggleButton(),
+                const SizedBox(width: 16),
+              ],
+            ),
             body: Center(
               child: SingleChildScrollView(
                 child: Column(

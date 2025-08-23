@@ -294,5 +294,20 @@
   "identityNumberRequired": "رقم الهوية مطلوب",
   "@identityNumberRequired": {
     "description": "Identity number required validation"
+  },
+  
+  "addNewMember": "إضافة فرد جديد",
+  "@addNewMember": {
+    "description": "Add new member button"
+  },
+  
+  "residentialBlock": "المربع السكني",
+  "@residentialBlock": {
+    "description": "Residential block label"
+  },
+  
+  "identityNumberMinLength": "رقم الهوية يجب أن يكون 6 أرقام أو أكثر",
+  "@identityNumberMinLength": {
+    "description": "Identity number minimum length validation"
   }
 }
