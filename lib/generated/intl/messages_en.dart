@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("Add"),
+        "addNewMember": MessageLookupByLibrary.simpleMessage("Add New Member"),
         "addNewPerson": MessageLookupByLibrary.simpleMessage("Add New Person"),
         "appTitle": MessageLookupByLibrary.simpleMessage("Smart Neighborhood"),
         "birthDate": MessageLookupByLibrary.simpleMessage("Birth Date"),
@@ -53,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fourthNameRequired": MessageLookupByLibrary.simpleMessage("Fourth name is required"),
         "gender": MessageLookupByLibrary.simpleMessage("Gender"),
         "identityNumber": MessageLookupByLibrary.simpleMessage("Identity Number"),
+        "identityNumberMinLength": MessageLookupByLibrary.simpleMessage("Identity number must be 6 digits or more"),
         "identityNumberRequired": MessageLookupByLibrary.simpleMessage("Identity number is required"),
         "identityType": MessageLookupByLibrary.simpleMessage("Identity Type"),
         "job": MessageLookupByLibrary.simpleMessage("Job"),
@@ -73,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterLocation": MessageLookupByLibrary.simpleMessage("Please enter location"),
         "pleaseEnterPassword": MessageLookupByLibrary.simpleMessage("Please enter password"),
         "pleaseEnterUsername": MessageLookupByLibrary.simpleMessage("Please enter username"),
+        "residentialBlock": MessageLookupByLibrary.simpleMessage("Residential Block"),
         "searchFamilyHead": MessageLookupByLibrary.simpleMessage("Search for family head..."),
         "secondName": MessageLookupByLibrary.simpleMessage("Second Name"),
         "secondNameRequired": MessageLookupByLibrary.simpleMessage("Second name is required"),

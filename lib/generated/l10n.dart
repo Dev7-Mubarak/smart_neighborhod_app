@@ -644,6 +644,36 @@ class S {
     );
   }
 
+  /// `إضافة فرد جديد`
+  String get addNewMember {
+    return Intl.message(
+      'إضافة فرد جديد',
+      name: 'addNewMember',
+      desc: 'Add new member button',
+      locale: localeName,
+    );
+  }
+
+  /// `المربع السكني`
+  String get residentialBlock {
+    return Intl.message(
+      'المربع السكني',
+      name: 'residentialBlock',
+      desc: 'Residential block label',
+      locale: localeName,
+    );
+  }
+
+  /// `رقم الهوية يجب أن يكون 6 أرقام أو أكثر`
+  String get identityNumberMinLength {
+    return Intl.message(
+      'رقم الهوية يجب أن يكون 6 أرقام أو أكثر',
+      name: 'identityNumberMinLength',
+      desc: 'Identity number minimum length validation',
+      locale: localeName,
+    );
+  }
+
   String get localeName => Intl.getCurrentLocale();
 }
 

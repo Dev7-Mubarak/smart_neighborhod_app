@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("إضافة"),
+        "addNewMember": MessageLookupByLibrary.simpleMessage("إضافة فرد جديد"),
         "addNewPerson": MessageLookupByLibrary.simpleMessage("إضافة شخص جديد"),
         "appTitle": MessageLookupByLibrary.simpleMessage("الحارة الذكية"),
         "birthDate": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
@@ -53,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "fourthNameRequired": MessageLookupByLibrary.simpleMessage("الاسم الرابع مطلوب"),
         "gender": MessageLookupByLibrary.simpleMessage("الجنس"),
         "identityNumber": MessageLookupByLibrary.simpleMessage("رقم الهوية"),
+        "identityNumberMinLength": MessageLookupByLibrary.simpleMessage("رقم الهوية يجب أن يكون 6 أرقام أو أكثر"),
         "identityNumberRequired": MessageLookupByLibrary.simpleMessage("رقم الهوية مطلوب"),
         "identityType": MessageLookupByLibrary.simpleMessage("نوع الهوية"),
         "job": MessageLookupByLibrary.simpleMessage("المهنة"),
@@ -73,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterLocation": MessageLookupByLibrary.simpleMessage("يرجى إدخال الموقع"),
         "pleaseEnterPassword": MessageLookupByLibrary.simpleMessage("الرجاء إدخال كلمة المرور"),
         "pleaseEnterUsername": MessageLookupByLibrary.simpleMessage("الرجاء إدخال إسم المستخدم"),
+        "residentialBlock": MessageLookupByLibrary.simpleMessage("المربع السكني"),
         "searchFamilyHead": MessageLookupByLibrary.simpleMessage("ابحث عن رب الأسرة..."),
         "secondName": MessageLookupByLibrary.simpleMessage("الاسم الثاني"),
         "secondNameRequired": MessageLookupByLibrary.simpleMessage("الاسم الثاني مطلوب"),
