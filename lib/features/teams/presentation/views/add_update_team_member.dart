@@ -12,11 +12,11 @@ import 'package:smart_negborhood_app/features/teams/cubits/team_role/team_role_s
 import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_role.dart';
 
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/constants/small_text.dart';
-import '../../core/common/widgets/custom_text_input_filed.dart';
-import '../people/data/models/Person.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/constants/small_text.dart';
+import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../../people/data/models/Person.dart';
 
 class AddUpdateTeamMember extends StatefulWidget {
   const AddUpdateTeamMember({super.key, this.teamMember});

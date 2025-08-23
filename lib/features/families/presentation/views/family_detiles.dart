@@ -10,10 +10,10 @@ import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_color.dart';
-import '../../core/common/widgets/smallButton.dart';
-import 'data/models/family_detiles_model.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_color.dart';
+import '../../../../core/common/widgets/smallButton.dart';
+import '../../data/models/family_detiles_model.dart';
 
 class FamilyDetiles extends StatefulWidget {
   const FamilyDetiles({super.key, required this.familyId});

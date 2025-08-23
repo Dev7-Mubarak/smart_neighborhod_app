@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_image.dart';
-import '../../core/common/widgets/circular_logo.dart';
-import '../../core/constants/app_color.dart';
-import '../../core/constants/app_route.dart';
-import '../../core/common/widgets/defult_button.dart';
+import '../../../../core/common/widgets/circular_logo.dart';
+import '../../../../core/constants/app_color.dart';
+import '../../../../core/constants/app_route.dart';
+import '../../../../core/common/widgets/defult_button.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});

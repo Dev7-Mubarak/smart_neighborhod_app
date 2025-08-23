@@ -10,10 +10,10 @@ import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart'
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/common/widgets/smallButton.dart';
-import '../../core/common/widgets/table.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/common/widgets/smallButton.dart';
+import '../../../../core/common/widgets/table.dart';
 
 class AllTeams extends StatefulWidget {
   const AllTeams({super.key});

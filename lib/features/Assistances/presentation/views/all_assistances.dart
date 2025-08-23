@@ -7,11 +7,11 @@ import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_fi
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/common/widgets/smallButton.dart';
-import '../../core/common/widgets/table.dart';
-import '../annoucements/cubits/assistances/assistances_cubit.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/common/widgets/smallButton.dart';
+import '../../../../core/common/widgets/table.dart';
+import '../../../annoucements/cubits/assistances/assistances_cubit.dart';
 
 class AllAssistances extends StatefulWidget {
   const AllAssistances({super.key});

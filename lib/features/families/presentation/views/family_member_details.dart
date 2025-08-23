@@ -10,7 +10,7 @@ import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 
-import '../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
 
 class FamilyMemberDetailsPage extends StatefulWidget {
   final FamilyMember familyMember;

@@ -12,8 +12,8 @@ import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart'
 import 'package:smart_negborhood_app/core/common/enums/project_status.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/small_text.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/small_text.dart';
 
 class TeamDetails extends StatefulWidget {
   const TeamDetails({super.key, required this.team});
@@ -113,7 +113,8 @@ class TeamDetailsState extends State<TeamDetails> {
                         Expanded(
                           child: SmallText(
                             text:
-                                "عدد أعضاء الفريق: " '${widget.team.teamMembers.length}',
+                                "عدد أعضاء الفريق: "
+                                '${widget.team.teamMembers.length}',
                             textAlign: TextAlign.end,
                           ),
                         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/residdential_blocks.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/residdential_blocks.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../cubits/mainHome_cubit/main_home_cubit.dart';

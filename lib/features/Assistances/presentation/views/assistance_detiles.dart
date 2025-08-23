@@ -10,10 +10,10 @@ import 'package:smart_negborhood_app/core/common/enums/project_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/common/widgets/smallButton.dart';
-import '../../core/common/widgets/table.dart';
-import '../annoucements/cubits/assistances/assistances_cubit.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/common/widgets/smallButton.dart';
+import '../../../../core/common/widgets/table.dart';
+import '../../../annoucements/cubits/assistances/assistances_cubit.dart';
 
 class AssistanceDetiles extends StatefulWidget {
   const AssistanceDetiles({super.key, required this.project});

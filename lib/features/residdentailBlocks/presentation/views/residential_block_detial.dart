@@ -12,9 +12,9 @@ import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/bl
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_color.dart';
-import '../../core/constants/app_image.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_color.dart';
+import '../../../../core/constants/app_image.dart';
 
 //Edit Searching and use pagination
 class ResiddentialBlocksDetail extends StatefulWidget {

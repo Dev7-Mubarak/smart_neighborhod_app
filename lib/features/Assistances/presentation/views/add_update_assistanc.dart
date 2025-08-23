@@ -12,14 +12,14 @@ import 'package:smart_negborhood_app/features/people/cubits/project_category/pro
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project_catgory.dart';
 
-import '../../core/common/widgets/CustomDropdown.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/constants/small_text.dart';
-import '../../core/common/widgets/custom_text_input_filed.dart';
-import '../people/data/models/Person.dart';
-import '../../core/common/enums/project_priority.dart';
-import '../../core/common/enums/project_status.dart';
+import '../../../../core/common/widgets/CustomDropdown.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/constants/small_text.dart';
+import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../../people/data/models/Person.dart';
+import '../../../../core/common/enums/project_priority.dart';
+import '../../../../core/common/enums/project_status.dart';
 // import '../../services/DateHelper.dart';
 
 class AddUpdateAssistanc extends StatefulWidget {

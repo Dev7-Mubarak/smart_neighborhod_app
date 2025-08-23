@@ -11,13 +11,13 @@ import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/gender.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/core/common/enums/occupation_status.dart';
-import '../../core/common/widgets/CustomDropdown.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/constants/small_text.dart';
-import '../../core/common/widgets/custom_text_input_filed.dart';
-import 'data/models/Person.dart';
-import '../../core/common/enums/identity_type.dart';
+import '../../../../core/common/widgets/CustomDropdown.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/constants/small_text.dart';
+import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../data/models/Person.dart';
+import '../../../../core/common/enums/identity_type.dart';
 
 class AddUpdatePerson extends StatefulWidget {
   const AddUpdatePerson({super.key, this.person});

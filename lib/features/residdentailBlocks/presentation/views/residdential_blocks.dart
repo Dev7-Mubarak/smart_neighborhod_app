@@ -5,12 +5,12 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
-import '../../core/constants/app_image.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/common/widgets/smallButton.dart';
-import 'cubits/cubit/block_cubit.dart';
-import 'cubits/cubit/block_state.dart';
-import 'data/models/Block.dart';
+import '../../../../core/constants/app_image.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/common/widgets/smallButton.dart';
+import '../../cubits/cubit/block_cubit.dart';
+import '../../cubits/cubit/block_state.dart';
+import '../../data/models/Block.dart';
 // Add this import at the top
 
 class ResidentialBlock extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import 'Announcemwnt.dart';
 
 class announcement extends StatefulWidget {

@@ -15,10 +15,10 @@ import 'package:smart_negborhood_app/features/families/cubits/family_member/fami
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict_type.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member2.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/constants/small_text.dart';
-import '../../core/common/widgets/custom_text_input_filed.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/constants/small_text.dart';
+import '../../../../core/common/widgets/custom_text_input_filed.dart';
 
 class AddUpdateConflict extends StatefulWidget {
   const AddUpdateConflict({super.key, this.conflict});

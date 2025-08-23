@@ -9,13 +9,13 @@ import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cub
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_category.dart';
-import '../../core/common/widgets/CustomDropdownGeneric.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/constants/small_text.dart';
-import '../../core/common/widgets/custom_text_input_filed.dart';
-import 'cubits/family_cubit/family_state.dart';
-import '../people/cubits/person_cubit/person_cubit.dart';
-import '../people/data/models/Person.dart';
+import '../../../../core/common/widgets/CustomDropdownGeneric.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/constants/small_text.dart';
+import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../cubits/family_cubit/family_state.dart';
+import '../../../people/cubits/person_cubit/person_cubit.dart';
+import '../../../people/data/models/Person.dart';
 
 class AddUpdateFamily extends StatefulWidget {
   final int blockId;

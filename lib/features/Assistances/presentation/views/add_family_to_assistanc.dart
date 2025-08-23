@@ -6,28 +6,31 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
-import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
-import '../../core/common/widgets/custom_navigation_bar.dart';
-import '../../core/constants/app_size.dart';
-import '../../core/constants/small_text.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/constants/app_size.dart';
+import '../../../../core/constants/small_text.dart';
 
-class AddTeamsToAssistance extends StatefulWidget {
-  const AddTeamsToAssistance({super.key});
+class AddFamilyToAssistance extends StatefulWidget {
+  const AddFamilyToAssistance({super.key});
   @override
-  State<AddTeamsToAssistance> createState() => AddTeamsToAssistanceState();
+  State<AddFamilyToAssistance> createState() => AddFamilyToAssistanceState();
 }
 
-class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
+class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late TeamCubit _teamsCubit;
+
+  late FamilyCubit _familyCubit;
   late AssistancesCubit _assistanceCubit;
 
   @override
   void initState() {
     super.initState();
-    _teamsCubit = context.read<TeamCubit>()..getAllTeams();
+    _familyCubit = context.read<FamilyCubit>()..getFamiliesByBlockId();
     _assistanceCubit = context.read<AssistancesCubit>();
   }
 
@@ -35,7 +38,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
   Widget build(BuildContext context) {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
-        if (state is WiateAssignTeamToAssistance) {
+        if (state is WiateAssignFamilyToAssistance) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -44,7 +47,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
               child: Center(child: CircularProgressIndicator()),
             ),
           );
-        } else if (state is TeamAssignedSuccessfully) {
+        } else if (state is FamilyAssignedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -53,7 +56,6 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pop(context);
         } else if (state is AssistancesFailure) {
           Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -66,13 +68,13 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
-              'إضافة فريق  لتوزيع المساعدات',
+              'إضافة أسرة  لتوزيع المساعدات لها',
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -99,25 +101,36 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const SizedBox(height: 20),
-                        const SmallText(text: 'إختر فريق'),
+                        const SmallText(text: 'إختر اسرة'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        BlocBuilder<TeamCubit, TeamState>(
+                        BlocBuilder<FamilyCubit, FamilyState>(
                           builder: (context, state) {
-                            if (state is TeamLoading) {
+                            if (state is FamilyLoading) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             }
-                            if (state is TeamLoaded) {
-                              if (state.allTeams.isEmpty) {
-                                return const Center(child: Text('لا يوجد فرق'));
+                            if (state is FamilyFailure) {
+                              return Center(
+                                child: Text(
+                                  state.errorMessage,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              );
+                            }
+                            if (state is FamilyLoaded) {
+                              if (state.families.isEmpty) {
+                                return const Center(child: Text('لا يوجد أسر'));
                               }
-                              return DropdownSearch<Team>(
+                              return DropdownSearch<Family>(
                                 popupProps: PopupProps.menu(
                                   showSearchBox: true,
                                   searchFieldProps: TextFieldProps(
                                     decoration: InputDecoration(
-                                      hintText: "ابحث عن فريق...",
+                                      hintText: "ابحث عن أسرة...",
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -127,10 +140,10 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                                   menuProps: MenuProps(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  itemBuilder: (context, team, isSelected) {
+                                  itemBuilder: (context, family, isSelected) {
                                     return ListTile(
                                       title: Text(
-                                        team.name,
+                                        family.name,
                                         // textDirection: TextDirection.rtl,
                                       ),
                                       selected: isSelected,
@@ -138,16 +151,17 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                                   },
                                   fit: FlexFit.loose,
                                 ),
-                                items: state.allTeams,
-                                itemAsString: (Team? u) => u?.name ?? '',
-                                onChanged: (Team? data) {
-                                  _assistanceCubit.changeSelectedTeam(data!.id);
+                                items: state.families,
+                                itemAsString: (Family? u) => u?.name ?? '',
+                                onChanged: (Family? data) {
+                                  _assistanceCubit.changeSelectedFamily(
+                                    data!.id,
+                                  );
                                 },
-                                // selectedItem: ,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر فريق",
-                                    hintText: "اختر فريق",
+                                    labelText: "اختر أسرة",
+                                    hintText: "اختر أسرة",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -157,9 +171,9 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                                     ),
                                   ),
                                 ),
-                                validator: (Team? item) {
+                                validator: (Family? item) {
                                   if (item == null) {
-                                    return "الرجاء اختيار فريق ";
+                                    return "الرجاء اختيار أسرة ";
                                   }
                                   return null;
                                 },
@@ -172,18 +186,18 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                         const SmallText(
                           textAlign: TextAlign.right,
                           text:
-                              'إذا كنت تريد إنشاء فريق جديد إنتقل إللى قسم الفرق من هنا',
+                              'إذا كنت تريد إنشاء أسرة جديدة إنتقل الى قسم المربعات السكنية من هنا',
                         ),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         SmallButton(
-                          text: 'إضافة فريق جديد',
+                          text: 'إنشاء أسرة  جديد',
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
-                              AppRoute.addUpdateTeam,
-                              arguments: BlocProvider.of<TeamCubit>(context),
+                              AppRoute.addUpdateFamily,
+                              arguments: BlocProvider.of<FamilyCubit>(context),
                             ).then((_) {
-                              _teamsCubit.getAllTeams();
+                              _familyCubit.getFamiliesByBlockId();
                             });
                           },
                         ),
@@ -208,7 +222,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                       SmallButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            _assistanceCubit.assignTeamToAssistance();
+                            _assistanceCubit.assignFamilyToAssistance();
                           }
                         },
                         text: 'إضافة',
