@@ -362,6 +362,10 @@
   "residentialBlocks": "Residential Blocks",
   "@residentialBlocks": {},
   "searchResidentialBlock": "Search for a residential block...",
+  "blockManager": "مدير المربع",
+  "@blockManager": {
+    "description": "Label for the manager of the block"
+  },
   "@searchResidentialBlock": {
     "description": "Search for a residential block hint"
   }

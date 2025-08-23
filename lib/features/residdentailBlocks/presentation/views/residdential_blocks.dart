@@ -5,12 +5,12 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
-import '../../../../core/constants/app_image.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../cubits/cubit/block_cubit.dart';
 import '../../cubits/cubit/block_state.dart';
 import '../../data/models/Block.dart';
+import 'widgets/residential_block_card_widget.dart';
 // Add this import at the top
 
 class ResidentialBlock extends StatefulWidget {
@@ -63,89 +63,13 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     return ListView.builder(
       itemCount: residentialListSearch.length,
       itemBuilder: (context, index) {
-        return _buildHousingUnitCard(
+        return ResidentialBlockCardWidget(
           block: residentialListSearch[index],
           onLongPressCallback: (ctx, block) {
             _showOptions(ctx, block);
           },
         );
       },
-    );
-  }
-
-  Widget _buildHousingUnitCard({
-    required Block block,
-    required void Function(BuildContext context, Block block)
-    onLongPressCallback,
-  }) {
-    return InkWell(
-      onTap: () => {
-        BlocProvider.of<BlockCubit>(context)..setBlock(block),
-        Navigator.pushNamed(
-          context,
-          AppRoute.residentialBlockDetial,
-          arguments: block.id,
-        ),
-      },
-      onLongPress: () {
-        onLongPressCallback(context, block);
-      },
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: AppColor.gray,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-              child: AppImage.residentailimage.isNotEmpty
-                  ? Image.asset(
-                      AppImage.residentailimage,
-                      height: MediaQuery.of(context).size.width * 0.5,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    )
-                  : FadeInImage.assetNetwork(
-                      height: MediaQuery.of(context).size.width * 0.5,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      placeholder: AppImage.loadingimage,
-                      image: AppImage.residentailimage,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(AppImage.residentailimage);
-                      },
-                    ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    block.name,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "مدير المربع: ${block.fullName}",
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

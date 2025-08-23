@@ -5,6 +5,7 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/core/services/cache_helper.dart';
+import 'core/config/app_Bloc_observer.dart';
 import 'features/residdentailBlocks/cubits/cubit/block_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/config/generated/l10n.dart';
@@ -43,31 +44,5 @@ class SmartNeighbourhood extends StatelessWidget {
         initialRoute: AppRoute.mainHome,
       ),
     );
-  }
-}
-
-class AppBlocObserver extends BlocObserver {
-  @override
-  void onEvent(Bloc bloc, Object? event) {
-    super.onEvent(bloc, event);
-    debugPrint('Event: ${bloc.runtimeType}, $event');
-  }
-
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    debugPrint('State Change: ${bloc.runtimeType}, $change');
-  }
-
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    debugPrint('Transition: ${bloc.runtimeType}, $transition');
-  }
-
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    super.onError(bloc, error, stackTrace);
-    debugPrint('Error: ${bloc.runtimeType}, $error');
   }
 }

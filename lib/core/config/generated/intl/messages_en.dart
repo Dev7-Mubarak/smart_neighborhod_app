@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "birthDateRequired": MessageLookupByLibrary.simpleMessage(
       "Birth date is required",
     ),
+    "blockManager": MessageLookupByLibrary.simpleMessage("مدير المربع"),
     "bloodType": MessageLookupByLibrary.simpleMessage("Blood Type"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "changeManager": MessageLookupByLibrary.simpleMessage("Change Manager"),

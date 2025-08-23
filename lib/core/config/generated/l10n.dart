@@ -778,6 +778,16 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `مدير المربع`
+  String get blockManager {
+    return Intl.message(
+      'مدير المربع',
+      name: 'blockManager',
+      desc: 'Label for the manager of the block',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
