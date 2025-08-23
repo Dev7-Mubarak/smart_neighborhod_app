@@ -32,7 +32,6 @@ import 'package:smart_negborhood_app/views/confilct/conflict_detiles.dart';
 import 'package:smart_negborhood_app/views/families/add_update_family.dart';
 import 'package:smart_negborhood_app/views/families/add_family_member.dart';
 import 'package:smart_negborhood_app/views/families/family_detiles.dart';
-import 'package:smart_negborhood_app/views/families/family_member_details.dart';
 import 'package:smart_negborhood_app/views/onBoarding/onboarding.dart';
 import 'package:smart_negborhood_app/views/people/add_update_person.dart';
 import 'package:smart_negborhood_app/views/people/all_pepole.dart';

@@ -38,12 +38,12 @@ class _HomeState extends State<Home> {
           Navigator.pushNamed(context, AppRoute.allAssistances);
         },
       ),
-      CategoryCard(
-        title: 'قسم التعهدات',
-        imagePath: AppImage.homehonesty,
-        backgroundColor: const Color(0xFF237885),
-        onTap: () {},
-      ),
+      // CategoryCard(
+      //   title: 'قسم التعهدات',
+      //   imagePath: AppImage.homehonesty,
+      //   backgroundColor: const Color(0xFF237885),
+      //   onTap: () {},
+      // ),
       CategoryCard(
         title: 'قسم الإتفاقات',
         imagePath: AppImage.homehandshake,
@@ -53,36 +53,36 @@ class _HomeState extends State<Home> {
         },
       ),
 
-      CategoryCard(
-        title: 'خطط الأزمات',
-        imagePath: AppImage.homeplan,
-        backgroundColor: const Color(0xFF545CEA),
-        onTap: () {},
-      ),
-      CategoryCard(
-        title: 'قسم الأمن',
-        imagePath: AppImage.homepoliceman,
-        backgroundColor: const Color(0xFF22CCB2),
-        onTap: () {},
-      ),
-      CategoryCard(
-        title: 'قسم المناشدات',
-        imagePath: AppImage.monashadatimage,
-        backgroundColor: const Color(0xFF878CED),
-        onTap: () {},
-      ),
-      CategoryCard(
-        title: 'جلسات الصلح',
-        imagePath: AppImage.homecomplan,
-        backgroundColor: const Color(0xFF5B27D5),
-        onTap: () {},
-      ),
+      // CategoryCard(
+      //   title: 'خطط الأزمات',
+      //   imagePath: AppImage.homeplan,
+      //   backgroundColor: const Color(0xFF545CEA),
+      //   onTap: () {},
+      // ),
+      // CategoryCard(
+      //   title: 'قسم الأمن',
+      //   imagePath: AppImage.homepoliceman,
+      //   backgroundColor: const Color(0xFF22CCB2),
+      //   onTap: () {},
+      // ),
+      // CategoryCard(
+      //   title: 'قسم المناشدات',
+      //   imagePath: AppImage.monashadatimage,
+      //   backgroundColor: const Color(0xFF878CED),
+      //   onTap: () {},
+      // ),
+      // CategoryCard(
+      //   title: 'جلسات الصلح',
+      //   imagePath: AppImage.homecomplan,
+      //   backgroundColor: const Color(0xFF5B27D5),
+      //   onTap: () {},
+      // ),
       CategoryCard(
         title: 'قسم الفرق',
         imagePath: AppImage.team,
         backgroundColor: const Color(0xFFE8618C),
         onTap: () {
-                    Navigator.pushNamed(context, AppRoute.allTeams);
+          Navigator.pushNamed(context, AppRoute.allTeams);
         },
       ),
     ];
