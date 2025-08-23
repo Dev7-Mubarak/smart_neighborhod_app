@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/models/team_member.dart';
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/API/dio_consumer.dart';
+import '../../core/services/errors/exception.dart';
 import '../../models/project.dart';
 import 'team_state.dart';
 
@@ -219,9 +219,11 @@ class TeamCubit extends Cubit<TeamState> {
         );
       }
       List<dynamic> ProjectJson = response["data"];
-      List<Project> _allProjects = ProjectJson.map((e) => Project.fromJson(e)).toList();
+      List<Project> allProjects = ProjectJson.map(
+        (e) => Project.fromJson(e),
+      ).toList();
 
-      if (_allProjects.isEmpty) {
+      if (allProjects.isEmpty) {
         throw Serverexception(
           errModel: ErrorModel(
             statusCode: '400',
@@ -230,7 +232,7 @@ class TeamCubit extends Cubit<TeamState> {
           ),
         );
       }
-      emit(ProjectsOfTeamLoaded(allProjects: _allProjects));
+      emit(ProjectsOfTeamLoaded(allProjects: allProjects));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
@@ -252,7 +254,6 @@ class TeamCubit extends Cubit<TeamState> {
           ),
         );
       }
-      ;
       emit(TeamByIdLoaded(team: Team.fromJson(response["data"])));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));

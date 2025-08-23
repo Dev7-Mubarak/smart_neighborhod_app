@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_negborhood_app/models/project.dart';
-import 'package:smart_negborhood_app/models/team.dart';
 import 'package:smart_negborhood_app/models/team_role.dart';
 
 @immutable

@@ -1,1 +1,368 @@
-{}
+{
+  "@@locale": "en",
+  
+  "appTitle": "Smart Neighborhood",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "username": "Username",
+  "@username": {
+    "description": "Username label"
+  },
+  
+  "usernameLabel": "Username:",
+  "@usernameLabel": {
+    "description": "Username label with colon"
+  },
+  
+  "password": "Password",
+  "@password": {
+    "description": "Password label"
+  },
+  
+  "passwordLabel": "Password:",
+  "@passwordLabel": {
+    "description": "Password label with colon"
+  },
+  
+  "enterUsername": "Enter username",
+  "@enterUsername": {
+    "description": "Enter username hint"
+  },
+  
+  "enterPassword": "Enter password",
+  "@enterPassword": {
+    "description": "Enter password hint"
+  },
+  
+  "pleaseEnterUsername": "Please enter username",
+  "@pleaseEnterUsername": {
+    "description": "Please enter username validation"
+  },
+  
+  "pleaseEnterPassword": "Please enter password",
+  "@pleaseEnterPassword": {
+    "description": "Please enter password validation"
+  },
+  
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "description": "Forgot password text"
+  },
+  
+  "login": "Login",
+  "@login": {
+    "description": "Login button text"
+  },
+  
+  "familyName": "Family Name",
+  "@familyName": {
+    "description": "Family name label"
+  },
+  
+  "pleaseEnterFamilyName": "Please enter family name",
+  "@pleaseEnterFamilyName": {
+    "description": "Please enter family name validation"
+  },
+  
+  "familyHead": "Family Head",
+  "@familyHead": {
+    "description": "Family head label"
+  },
+  
+  "searchFamilyHead": "Search for family head...",
+  "@searchFamilyHead": {
+    "description": "Search for family head hint"
+  },
+  
+  "chooseFamilyHead": "Choose Family Head",
+  "@chooseFamilyHead": {
+    "description": "Choose family head label"
+  },
+  
+  "pleaseChooseFamilyHead": "Please choose family head",
+  "@pleaseChooseFamilyHead": {
+    "description": "Please choose family head validation"
+  },
+  
+  "failedToLoadPeople": "Failed to load people",
+  "@failedToLoadPeople": {
+    "description": "Failed to load people error"
+  },
+  
+  "familyCategory": "Family Category",
+  "@familyCategory": {
+    "description": "Family category label"
+  },
+  
+  "chooseFamilyCategory": "Choose Family Category",
+  "@chooseFamilyCategory": {
+    "description": "Choose family category label"
+  },
+  
+  "pleaseChooseFamilyCategory": "Please choose family category",
+  "@pleaseChooseFamilyCategory": {
+    "description": "Please choose family category validation"
+  },
+  
+  "failedToLoadCategories": "Failed to load categories",
+  "@failedToLoadCategories": {
+    "description": "Failed to load categories error"
+  },
+  
+  "location": "Location",
+  "@location": {
+    "description": "Location label"
+  },
+  
+  "pleaseEnterLocation": "Please enter location",
+  "@pleaseEnterLocation": {
+    "description": "Please enter location validation"
+  },
+  
+  "notes": "Notes",
+  "@notes": {
+    "description": "Notes label"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  
+  "add": "Add",
+  "@add": {
+    "description": "Add button"
+  },
+  
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button"
+  },
+  
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button"
+  },
+  
+  "changeManager": "Change Manager",
+  "@changeManager": {
+    "description": "Change manager label"
+  },
+  
+  "changeManagerLogic": "Here you can implement the logic to change the manager.",
+  "@changeManagerLogic": {
+    "description": "Change manager logic text"
+  },
+  
+  "close": "Close",
+  "@close": {
+    "description": "Close button"
+  },
+  
+  "confirmDelete": "Confirm Delete",
+  "@confirmDelete": {
+    "description": "Confirm delete text"
+  },
+  
+  "confirmDeleteBlock": "Are you sure you want to delete this block?",
+  "@confirmDeleteBlock": {
+    "description": "Confirm delete block text"
+  },
+  
+  "update": "Update",
+  "@update": {
+    "description": "Update button"
+  },
+  
+  "thirdName": "Third Name",
+  "@thirdName": {
+    "description": "Third name label"
+  },
+  
+  "thirdNameRequired": "Third name is required",
+  "@thirdNameRequired": {
+    "description": "Third name required validation"
+  },
+  
+  "fourthName": "Fourth Name",
+  "@fourthName": {
+    "description": "Fourth name label"
+  },
+  
+  "fourthNameRequired": "Fourth name is required",
+  "@fourthNameRequired": {
+    "description": "Fourth name required validation"
+  },
+  
+  "identityNumber": "Identity Number",
+  "@identityNumber": {
+    "description": "Identity number label"
+  },
+  
+  "identityType": "Identity Type",
+  "@identityType": {
+    "description": "Identity type label"
+  },
+  
+  "chooseIdentityType": "Choose Identity Type",
+  "@chooseIdentityType": {
+    "description": "Choose identity type label"
+  },
+  
+  "pleaseChooseIdentityType": "Please choose identity type",
+  "@pleaseChooseIdentityType": {
+    "description": "Please choose identity type validation"
+  },
+  
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Phone number label"
+  },
+  
+  "contactNumber": "Contact Number",
+  "@contactNumber": {
+    "description": "Contact number label"
+  },
+  
+  "gender": "Gender",
+  "@gender": {
+    "description": "Gender label"
+  },
+  
+  "male": "Male",
+  "@male": {
+    "description": "Male gender"
+  },
+  
+  "female": "Female",
+  "@female": {
+    "description": "Female gender"
+  },
+  
+  "birthDate": "Birth Date",
+  "@birthDate": {
+    "description": "Birth date label"
+  },
+  
+  "birthDateRequired": "Birth date is required",
+  "@birthDateRequired": {
+    "description": "Birth date required validation"
+  },
+  
+  "bloodType": "Blood Type",
+  "@bloodType": {
+    "description": "Blood type label"
+  },
+  
+  "chooseBloodType": "Choose Blood Type",
+  "@chooseBloodType": {
+    "description": "Choose blood type label"
+  },
+  
+  "pleaseChooseBloodType": "Please choose blood type",
+  "@pleaseChooseBloodType": {
+    "description": "Please choose blood type validation"
+  },
+  
+  "maritalStatus": "Marital Status",
+  "@maritalStatus": {
+    "description": "Marital status label"
+  },
+  
+  "job": "Job",
+  "@job": {
+    "description": "Job label"
+  },
+  
+  "notSpecified": "Not specified",
+  "@notSpecified": {
+    "description": "Not specified text"
+  },
+  
+  "clickForMoreDetails": "Click for more details",
+  "@clickForMoreDetails": {
+    "description": "Click for more details text"
+  },
+  
+  "email": "Email",
+  "@email": {
+    "description": "Email label"
+  },
+  
+  "familyType": "Family Type",
+  "@familyType": {
+    "description": "Family type label"
+  },
+  
+  "addNewPerson": "Add New Person",
+  "@addNewPerson": {
+    "description": "Add new person title"
+  },
+  
+  "editPersonData": "Edit Person Data",
+  "@editPersonData": {
+    "description": "Edit person data title"
+  },
+  
+  "firstName": "First Name",
+  "@firstName": {
+    "description": "First name label"
+  },
+  
+  "firstNameRequired": "First name is required",
+  "@firstNameRequired": {
+    "description": "First name required validation"
+  },
+  
+  "secondName": "Second Name",
+  "@secondName": {
+    "description": "Second name label"
+  },
+  
+  "secondNameRequired": "Second name is required",
+  "@secondNameRequired": {
+    "description": "Second name required validation"
+  },
+  
+  "identityNumberRequired": "Identity number is required",
+  "@identityNumberRequired": {
+    "description": "Identity number required validation"
+  },
+  
+  "addNewMember": "Add New Member",
+  "@addNewMember": {
+    "description": "Add new member button"
+  },
+  
+  "residentialBlock": "Residential Block",
+  "@residentialBlock": {
+    "description": "Residential block label"
+  },
+  
+  "identityNumberMinLength": "Identity number must be 6 digits or more",
+  "@identityNumberMinLength": {
+    "description": "Identity number minimum length validation"
+  },
+
+  "allPeople": "All People",
+  "@allPeople": {},
+  "generalUnitReport": "General Unit Report",
+  "@generalUnitReport": {},
+  "assistanceSection": "Assistance Section",
+  "@assistanceSection": {},
+  "conflictSection": "Conflict Section",
+  "@conflictSection": {},
+  "teamsSection": "Teams Section",
+  "@teamsSection": {},
+  
+  "main": "Home",
+  "@main": {},
+  "residentialBlocks": "Residential Blocks",
+  "@residentialBlocks": {},
+  "searchResidentialBlock": "Search for a residential block...",
+  "@searchResidentialBlock": {
+    "description": "Search for a residential block hint"
+  }
+}

@@ -2,11 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:smart_negborhood_app/models/family.dart';
 
-import '../../../components/constants/api_link.dart';
-import '../../../core/errors/exception.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/errors/exception.dart';
 import 'dart:async';
 
-import '../../core/API/dio_consumer.dart'; // لإستخدام TimeoutException
+import '../../core/services/API/dio_consumer.dart'; // لإستخدام TimeoutException
 
 part 'residdential_blocksdential_state.dart';
 

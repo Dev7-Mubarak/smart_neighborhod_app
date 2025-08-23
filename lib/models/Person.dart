@@ -1,7 +1,7 @@
-import 'enums/blood_type.dart';
-import 'enums/identity_type.dart';
-import 'enums/marital_status.dart';
-import 'enums/occupation_status.dart';
+import '../core/common/enums/blood_type.dart';
+import '../core/common/enums/identity_type.dart';
+import '../core/common/enums/marital_status.dart';
+import '../core/common/enums/occupation_status.dart';
 
 class Person {
   final int id;
@@ -23,25 +23,26 @@ class Person {
   MaritalStatus maritalStatus;
   String? job;
 
-  Person(
-      {required this.id,
-      required this.firstName,
-      required this.secondName,
-      required this.thirdName,
-      required this.lastName,
-      required this.phoneNumber,
-      this.email,
-      this.image,
-      required this.dateOfBirth,
-      required this.gender,
-      required this.bloodType,
-      required this.identityNumber,
-      required this.identityType,
-      required this.occupationStatus,
-      required this.maritalStatus,
-      this.job,
-      required this.isCall,
-      required this.isWhatsapp});
+  Person({
+    required this.id,
+    required this.firstName,
+    required this.secondName,
+    required this.thirdName,
+    required this.lastName,
+    required this.phoneNumber,
+    this.email,
+    this.image,
+    required this.dateOfBirth,
+    required this.gender,
+    required this.bloodType,
+    required this.identityNumber,
+    required this.identityType,
+    required this.occupationStatus,
+    required this.maritalStatus,
+    this.job,
+    required this.isCall,
+    required this.isWhatsapp,
+  });
 
   // Getter for full name
   String get fullName {
@@ -52,7 +53,7 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
       id: json['id'] as int,
-      firstName: json['firstName']  as String? ?? "",
+      firstName: json['firstName'] as String? ?? "",
       secondName: json['secondName'] as String? ?? "",
       thirdName: json['thirdName'] as String? ?? "",
       lastName: json['lastName'] as String? ?? "",
@@ -66,8 +67,8 @@ class Person {
       identityType: _identityTypeFromString(json['identityType']),
       occupationStatus: _occupationStatusFromString(json['occupationStatus']),
       maritalStatus: _maritalStatusFromString(json['maritalStatus']),
-      isCall: json['isCall']as bool? ?? false,
-      isWhatsapp: json['isWhatsapp']as bool? ?? false, 
+      isCall: json['isCall'] as bool? ?? false,
+      isWhatsapp: json['isWhatsapp'] as bool? ?? false,
       job: json['job'],
     );
   }

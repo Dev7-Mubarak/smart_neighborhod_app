@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/models/ProjectBlockFamilies.dart';
 import 'package:smart_negborhood_app/models/project_catgory.dart';
 import 'package:smart_negborhood_app/models/team.dart';
 
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
-import '../../models/enums/project_priority.dart';
-import '../../models/enums/project_status.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/API/dio_consumer.dart';
+import '../../core/services/errors/exception.dart';
+import '../../core/common/enums/project_priority.dart';
+import '../../core/common/enums/project_status.dart';
 import '../../models/project.dart';
 import 'assistances_state.dart';
 
@@ -23,7 +23,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   int? selectedManagerId;
   int? selectedTeam;
   int? selectedfamily;
-  
+
   DateTime? selectedStartDate;
   DateTime? selectedEndDate;
   ProjectStatus? selectedProjectStatus;
@@ -91,7 +91,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       return;
     }
 
-    final _filteredList = _allProjects
+    final filteredList = _allProjects
         .where(
           (project) => project.name.toLowerCase().contains(query.toLowerCase()),
         )
@@ -100,7 +100,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(
       AssistancesLoaded(
         allProjects: _allProjects,
-        filteredProjects: _filteredList,
+        filteredProjects: filteredList,
       ),
     );
   }
@@ -125,14 +125,16 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     this.project = project;
   }
 
- Future<void> setBlockIdForAddFamily(int blockid) async {
+  Future<void> setBlockIdForAddFamily(int blockid) async {
     blockId = blockid;
   }
- 
- Future<void> deleteTeamFromeProject(int teamId) async {
+
+  Future<void> deleteTeamFromeProject(int teamId) async {
     emit(AssistancesLoading());
     try {
-      final response = await api.delete('${ApiLink.removeTeamFromeProject}/${project!.id}?teamId=$teamId');
+      final response = await api.delete(
+        '${ApiLink.removeTeamFromeProject}/${project!.id}?teamId=$teamId',
+      );
 
       if (response["isSuccess"]) {
         emit(TeamDeletedSuccessfully(message: response["message"]));
@@ -152,10 +154,12 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     }
   }
 
- Future<void> deleteFamilyFromeProject(int familyId) async {
+  Future<void> deleteFamilyFromeProject(int familyId) async {
     emit(AssistancesLoading());
     try {
-      final response = await api.delete('${ApiLink.removeFamilyFromeProject}/${project!.id}?famileId=$familyId');
+      final response = await api.delete(
+        '${ApiLink.removeFamilyFromeProject}/${project!.id}?famileId=$familyId',
+      );
 
       if (response["isSuccess"]) {
         emit(FamilyDeletedSuccessfully(message: response["message"]));
@@ -174,7 +178,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       emit(AssistancesFailure(errorMessage: e.toString()));
     }
   }
-  
+
   Future<void> getProjectTeams({required int id}) async {
     emit(ProjectTeamsLoading());
     try {
@@ -383,8 +387,8 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       emit(AssistancesFailure(errorMessage: e.toString()));
     }
   }
- 
- Future<void> assignFamilyToAssistance() async {
+
+  Future<void> assignFamilyToAssistance() async {
     emit(WiateAssignFamilyToAssistance());
     try {
       final response = await api.post(
@@ -412,7 +416,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       emit(AssistancesFailure(errorMessage: e.toString()));
     }
   }
- 
+
   void resetInputs() {
     project = null;
     // selectedManager = null;

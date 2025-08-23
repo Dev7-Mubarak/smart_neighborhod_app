@@ -1,0 +1,627 @@
+import 'dart:io';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/constants/app_color.dart';
+import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/cubits/conflict/conflict_cubit.dart';
+import 'package:smart_negborhood_app/cubits/conflict/conflict_state.dart';
+import 'package:smart_negborhood_app/cubits/conflictType/conflict_type_cubit.dart';
+import 'package:smart_negborhood_app/cubits/conflictType/conflict_type_state.dart';
+import 'package:smart_negborhood_app/cubits/family_member/family_member_cubit.dart';
+import 'package:smart_negborhood_app/cubits/family_member/family_member_state.dart';
+import 'package:smart_negborhood_app/models/conflict.dart';
+import 'package:smart_negborhood_app/models/conflict_type.dart';
+import 'package:smart_negborhood_app/models/family_member2.dart';
+import '../../core/common/widgets/custom_navigation_bar.dart';
+import '../../core/constants/app_size.dart';
+import '../../core/constants/small_text.dart';
+import '../../core/common/widgets/custom_text_input_filed.dart';
+
+class AddUpdateConflict extends StatefulWidget {
+  const AddUpdateConflict({super.key, this.conflict});
+  final Conflict? conflict;
+  @override
+  State<AddUpdateConflict> createState() => AddUpdateConflictState();
+}
+
+class AddUpdateConflictState extends State<AddUpdateConflict> {
+  late final TextEditingController conflictTitleController;
+  late final TextEditingController conflictNoteController;
+  late final TextEditingController conflictDateController;
+  late ConflictCubit conflictCubit;
+  late ConflictTypeCubit conflictTypeCubit;
+  late FamilyMemberCubit familyMemberCubit;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  int? _selectedFirstPart;
+  int? _selectedSecondPart;
+  int? _selectedConflictType;
+  @override
+  void initState() {
+    super.initState();
+    conflictCubit = context.read<ConflictCubit>();
+    familyMemberCubit = context.read<FamilyMemberCubit>()..getFamilyMembers();
+    conflictTypeCubit = context.read<ConflictTypeCubit>()
+      ..getConflictTypeCubit();
+
+    conflictTitleController = TextEditingController(
+      text: widget.conflict?.title ?? '',
+    );
+    conflictNoteController = TextEditingController(
+      text: widget.conflict?.notes ?? '',
+    );
+    final conflictdate =
+        conflictCubit.sessionDate ?? widget.conflict?.sessionDate;
+    conflictDateController = TextEditingController(
+      text: conflictdate != null
+          ? DateFormat('yyyy-MM-dd').format(conflictdate)
+          : '',
+    );
+
+    if (widget.conflict != null) {
+      _selectedFirstPart = conflictCubit.selectedfirstPartId;
+      _selectedSecondPart = conflictCubit.selectedSecondPartId;
+      _selectedConflictType = conflictCubit.selectedConflictTypeId;
+    }
+  }
+
+  @override
+  void dispose() {
+    conflictTitleController.dispose();
+    conflictDateController.dispose();
+    conflictNoteController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<ConflictCubit, ConflictState>(
+      listener: (context, state) {
+        if (state is WiateAddedUpdatedConflict) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const PopScope(
+              canPop: false,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        } else if (state is ConflictAddedSuccessfully ||
+            state is ConflictUpdatedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
+          final message = (state is ConflictAddedSuccessfully)
+              ? state.message
+              : (state as ConflictUpdatedSuccessfully).message;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message), backgroundColor: Colors.green),
+          );
+        } else if (state is ConflictFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (state is ChangeSelectedSessionDate) {
+          conflictDateController.text = conflictCubit.sessionDate != null
+              ? DateFormat('yyyy-MM-dd').format(conflictCubit.sessionDate!)
+              : '';
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          // iconTheme: const IconThemeData(color: Colors.black),
+          title: Center(
+            child: Text(
+              conflictCubit.conflict == null
+                  ? 'إضافة إتفاقية'
+                  : 'تعديل إتفاقية',
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+            ),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: AppColor.gray,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const SizedBox(height: 20),
+                        const SmallText(text: 'عنوان الإتفاقية'),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        CustomTextFormField(
+                          bachgroundColor: AppColor.white,
+                          controller: conflictTitleController,
+                          keyboardType: TextInputType.name,
+                          suffixIcon: null,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return ' يجب إضافة عنوان الإتفاقية';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        const SmallText(text: 'نوع الخلاف'),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        BlocBuilder<ConflictTypeCubit, ConflictTypeState>(
+                          builder: (context, state) {
+                            if (state is ConflictTypeLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (state is ConflictTypeLoaded) {
+                              if (state.conflictTypes.isEmpty) {
+                                return const Center(
+                                  child: Text('لا يوجد أنواع'),
+                                );
+                              }
+                              ConflictType? initialSelectedConflictType;
+                              if (_selectedConflictType != null) {
+                                initialSelectedConflictType = state
+                                    .conflictTypes
+                                    .firstWhere(
+                                      (conflictType) =>
+                                          conflictType.id ==
+                                          _selectedConflictType,
+                                    );
+                              }
+                              return DropdownSearch<ConflictType>(
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      hintText: "ابحث عن  نوع الخلاف...",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  menuProps: MenuProps(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  itemBuilder:
+                                      (context, conflictType, isSelected) {
+                                        return ListTile(
+                                          title: Text(conflictType.name),
+                                          selected: isSelected,
+                                        );
+                                      },
+                                  fit: FlexFit.loose,
+                                ),
+                                items: state.conflictTypes,
+                                itemAsString: (ConflictType? u) =>
+                                    u?.name ?? '',
+                                onChanged: (ConflictType? data) {
+                                  conflictCubit.changeSelectedConflictType(
+                                    data!.id,
+                                  );
+                                },
+                                selectedItem: initialSelectedConflictType,
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "اختر  نوع الخلاف",
+                                    hintText: "اختر نوع الخلاف",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                  ),
+                                ),
+                                validator: (ConflictType? item) {
+                                  if (item == null) {
+                                    return "الرجاء اختيار نوع الخلاف";
+                                  }
+                                  return null;
+                                },
+                              );
+                            }
+                            if (state is ConflictTypeFailure) {
+                              Center(
+                                child: Text(
+                                  state.errorMessage,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        const SmallText(text: 'الملاحظات'),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        CustomTextFormField(
+                          bachgroundColor: AppColor.white,
+                          controller: conflictNoteController,
+                          keyboardType: TextInputType.name,
+                          suffixIcon: null,
+                          maxLines: null,
+                          minLines: 3,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'يجب إضافة ملاحظات';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        const SmallText(text: 'تاريخ الإتفاقية'),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        CustomTextFormField(
+                          controller: conflictDateController,
+                          suffixIcon: Icons.calendar_today,
+                          readOnly: true,
+                          onTap: () => conflictCubit.pickDate(context),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'يجب إختيار تاريج الإتفاقية';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        const SmallText(text: 'الطرف الأول'),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        BlocBuilder<FamilyMemberCubit, FamilyMemberState>(
+                          builder: (context, state) {
+                            if (state is FamilyMemberLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (state is FamilyMemberLoaded) {
+                              if (state.familyMembers.isEmpty) {
+                                return const Center(
+                                  child: Text('لا يوجد أفراد متاحين'),
+                                );
+                              }
+                              FamilyMember2? initialSelectedPerson;
+                              if (_selectedFirstPart != null) {
+                                initialSelectedPerson = state.familyMembers
+                                    .firstWhere(
+                                      (familyMember) =>
+                                          familyMember.familyMemberId ==
+                                          _selectedFirstPart,
+                                    );
+                              }
+                              return DropdownSearch<FamilyMember2>(
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      hintText: "ابحث عن الطرف الأول...",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  menuProps: MenuProps(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  itemBuilder:
+                                      (context, familyMember, isSelected) {
+                                        return ListTile(
+                                          title: Text(
+                                            familyMember.person.fullName,
+                                          ),
+                                          selected: isSelected,
+                                        );
+                                      },
+                                  fit: FlexFit.loose,
+                                ),
+                                items: state.familyMembers,
+                                itemAsString: (FamilyMember2? u) =>
+                                    u?.person.fullName ?? '',
+                                onChanged: (FamilyMember2? data) {
+                                  conflictCubit.changeSelectedFirstParty(
+                                    data!.familyMemberId,
+                                  );
+                                },
+                                selectedItem: initialSelectedPerson,
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "اختر الطرف الأول",
+                                    hintText: "اختر الطرف الأول",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                  ),
+                                ),
+                                validator: (FamilyMember2? item) {
+                                  if (item == null) {
+                                    return "الرجاء اختيار الطرف الأول";
+                                  }
+                                  return null;
+                                },
+                              );
+                            }
+                            if (state is FamilyMemberFailure) {
+                              Center(
+                                child: Text(
+                                  state.errorMessage,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        const SmallText(text: 'الطرف الثاني'),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        BlocBuilder<FamilyMemberCubit, FamilyMemberState>(
+                          builder: (context, state) {
+                            if (state is FamilyMemberLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (state is FamilyMemberFailure) {
+                              Center(
+                                child: Text(
+                                  state.errorMessage,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              );
+                            }
+                            if (state is FamilyMemberLoaded) {
+                              if (state.familyMembers.isEmpty) {
+                                return const Center(
+                                  child: Text('لا يوجد أفراد متاحين'),
+                                );
+                              }
+                              FamilyMember2? initialSelectedPerson2;
+                              if (_selectedSecondPart != null) {
+                                initialSelectedPerson2 = state.familyMembers
+                                    .firstWhere(
+                                      (familyMember) =>
+                                          familyMember.familyMemberId ==
+                                          _selectedSecondPart,
+                                    );
+                              }
+                              return DropdownSearch<FamilyMember2>(
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      hintText: "ابحث عن الطرف الثاني...",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  menuProps: MenuProps(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  itemBuilder:
+                                      (context, familyMember, isSelected) {
+                                        return ListTile(
+                                          title: Text(
+                                            familyMember.person.fullName,
+                                          ),
+                                          selected: isSelected,
+                                        );
+                                      },
+                                  fit: FlexFit.loose,
+                                ),
+                                items: state.familyMembers,
+                                itemAsString: (FamilyMember2? u) =>
+                                    u?.person.fullName ?? '',
+                                onChanged: (FamilyMember2? data) {
+                                  conflictCubit.changeSelectedSecondParty(
+                                    data!.familyMemberId,
+                                  );
+                                },
+                                selectedItem: initialSelectedPerson2,
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "اختر الطرف الثاني",
+                                    hintText: "اختر الطرف الثاني",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                  ),
+                                ),
+                                validator: (FamilyMember2? item) {
+                                  if (item == null) {
+                                    return "الرجاء اختيار الطرف الثاني";
+                                  }
+                                  return null;
+                                },
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        BlocBuilder<ConflictCubit, ConflictState>(
+                          buildWhen: (previous, current) =>
+                              current is ChangeIsResolved,
+                          builder: (context, state) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const SmallText(text: 'تم إنهاء الخلاف'),
+                                Checkbox(
+                                  value: conflictCubit.isResolved ?? false,
+                                  activeColor: AppColor.primaryColor,
+                                  onChanged: (bool? value) {
+                                    conflictCubit.changeIsResolved(value);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        _buildImagePicker(context, conflictCubit),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SmallButton(
+                        text: 'إلغاء',
+                        onPressed: () {
+                          conflictCubit.resetInputs();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      SmallButton(
+                        text: conflictCubit.conflict == null
+                            ? 'إضافة'
+                            : 'تعديل',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (conflictCubit.conflict == null) {
+                              conflictCubit.addConflict(
+                                conflictNoteController.text,
+                                conflictTitleController.text,
+                              );
+                            } else {
+                              conflictCubit.updateConflict(
+                                id: widget.conflict!.id,
+                                title: conflictTitleController.text,
+                                notes: conflictNoteController.text,
+                              );
+                            }
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: const CustomNavigationBar(),
+      ),
+    );
+  }
+
+  Widget _buildImagePicker(BuildContext context, ConflictCubit cubit) {
+    return Center(
+      child: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
+              border: Border.all(color: AppColor.primaryColor, width: 2),
+            ),
+            child: GestureDetector(
+              onTap: () async {
+                final picked = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
+                if (picked != null) {
+                  cubit.uplodeConflictPicture(picked);
+                }
+              },
+              child: BlocBuilder<ConflictCubit, ConflictState>(
+                buildWhen: (previous, current) =>
+                    current is UplodeConflictPicture,
+                builder: (context, state) {
+                  if (cubit.conflictPicture != null) {
+                    return CircleAvatar(
+                      backgroundImage: FileImage(
+                        File(cubit.conflictPicture!.path),
+                      ),
+                      radius: 48,
+                    );
+                  } else if (widget.conflict?.imageUrl != null &&
+                      widget.conflict!.imageUrl.isNotEmpty) {
+                    return CircleAvatar(
+                      backgroundImage: NetworkImage(widget.conflict!.imageUrl),
+                      radius: 48,
+                    );
+                  } else {
+                    return CircleAvatar(
+                      radius: 48,
+                      backgroundColor: Colors.grey[200],
+                      child: Icon(
+                        Icons.person,
+                        size: 48,
+                        color: Colors.grey[600],
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 4,
+            right: 4,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColor.primaryColor,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: const Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
-import 'package:smart_negborhood_app/models/project_catgory.dart';
-import 'package:smart_negborhood_app/models/team.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/models/team_member.dart';
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/API/dio_consumer.dart';
+import '../../core/services/errors/exception.dart';
 import 'team_member_state.dart';
 
 class TeamMemberCubit extends Cubit<TeamMemberState> {

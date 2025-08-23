@@ -1,7 +1,7 @@
 import 'package:smart_negborhood_app/models/project_catgory.dart';
 
-import 'enums/project_priority.dart';
-import 'enums/project_status.dart';
+import '../core/common/enums/project_priority.dart';
+import '../core/common/enums/project_status.dart';
 
 class Project {
   late int id;

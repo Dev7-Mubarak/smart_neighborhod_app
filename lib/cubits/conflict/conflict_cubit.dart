@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/models/conflict.dart';
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/API/dio_consumer.dart';
+import '../../core/services/errors/exception.dart';
 import 'conflict_state.dart';
 
 class ConflictCubit extends Cubit<ConflictState> {
@@ -146,9 +146,9 @@ class ConflictCubit extends Cubit<ConflictState> {
     emit(WiateAddedUpdatedConflict());
     try {
       final response = await api.post(
-        '${ApiLink.addConflict}?ConflictTypeId=$selectedConflictTypeId&ManagerId=10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf&FirstPartyId=$selectedfirstPartId&SecondPartyId=$selectedSecondPartId&Notes=$notes&SessionDate=$sessionDate&Title=$title&IsResolved=${isResolved??false}',
-        data:{
-          'Image':conflictPicture != null
+        '${ApiLink.addConflict}?ConflictTypeId=$selectedConflictTypeId&ManagerId=10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf&FirstPartyId=$selectedfirstPartId&SecondPartyId=$selectedSecondPartId&Notes=$notes&SessionDate=$sessionDate&Title=$title&IsResolved=${isResolved ?? false}',
+        data: {
+          'Image': conflictPicture != null
               ? await MultipartFile.fromFile(
                   conflictPicture!.path,
                   filename: conflictPicture!.name,
@@ -200,8 +200,8 @@ class ConflictCubit extends Cubit<ConflictState> {
     try {
       final response = await api.update(
         '${ApiLink.updateConflict}/$id?Title=$title&ConflictTypeId=$selectedConflictTypeId&ManagerId=10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf&FirstPartyId=$selectedfirstPartId&SecondPartyId=$selectedSecondPartId&Notes=$notes&SessionDate=$sessionDate&IsResolved=$isResolved',
-        data:{
-          'Image':conflictPicture != null
+        data: {
+          'Image': conflictPicture != null
               ? await MultipartFile.fromFile(
                   conflictPicture!.path,
                   filename: conflictPicture!.name,

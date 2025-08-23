@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
-import 'package:smart_negborhood_app/models/team.dart';
-import 'package:smart_negborhood_app/models/team_member.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/models/team_role.dart';
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/API/dio_consumer.dart';
+import '../../core/services/errors/exception.dart';
 import 'team_role_state.dart';
 
 class TeamRoleCubit extends Cubit<TeamRoleState> {
@@ -33,7 +30,9 @@ class TeamRoleCubit extends Cubit<TeamRoleState> {
         );
       }
       List<dynamic> teamsRoleJson = response["data"];
-      List<TeamRole> teamRolesObjects = teamsRoleJson.map((e) => TeamRole.fromJson(e)).toList();
+      List<TeamRole> teamRolesObjects = teamsRoleJson
+          .map((e) => TeamRole.fromJson(e))
+          .toList();
       if (teamRolesObjects.isEmpty) {
         throw Serverexception(
           errModel: ErrorModel(

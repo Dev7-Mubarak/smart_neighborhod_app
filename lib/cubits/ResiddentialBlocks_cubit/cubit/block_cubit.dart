@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/cubits/ResiddentialBlocks_cubit/cubit/block_state.dart';
 import 'package:smart_negborhood_app/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/models/Person.dart';
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
+import '../../../core/constants/api_link.dart';
+import '../../../core/services/API/dio_consumer.dart';
+import '../../../core/services/errors/exception.dart';
 import '../../../models/Block.dart';
 
 class BlockCubit extends Cubit<BlockState> {

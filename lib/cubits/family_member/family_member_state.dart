@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/models/family_member2.dart';
-import 'package:smart_negborhood_app/models/project_catgory.dart';
 
 @immutable
 abstract class FamilyMemberState {}

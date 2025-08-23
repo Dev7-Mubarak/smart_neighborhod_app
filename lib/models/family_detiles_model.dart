@@ -1,4 +1,3 @@
-import 'package:smart_negborhood_app/models/Person.dart';
 import 'package:smart_negborhood_app/models/assistance.dart';
 import 'package:smart_negborhood_app/models/family_member.dart';
 

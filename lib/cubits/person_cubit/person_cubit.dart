@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'package:smart_negborhood_app/core/errors/errormodel.dart';
-import 'package:smart_negborhood_app/models/enums/gender.dart';
-import '../../../components/constants/api_link.dart';
-import '../../../core/API/dio_consumer.dart';
-import '../../../core/errors/exception.dart';
+import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
+import 'package:smart_negborhood_app/core/common/enums/gender.dart';
+import '../../core/constants/api_link.dart';
+import '../../core/services/API/dio_consumer.dart';
+import '../../core/services/errors/exception.dart';
 import '../../models/Person.dart';
-import '../../models/enums/blood_type.dart';
-import '../../models/enums/identity_type.dart';
-import '../../models/enums/marital_status.dart';
-import '../../models/enums/occupation_status.dart';
+import '../../core/common/enums/blood_type.dart';
+import '../../core/common/enums/identity_type.dart';
+import '../../core/common/enums/marital_status.dart';
+import '../../core/common/enums/occupation_status.dart';
 part 'person_state.dart';
 
 class PersonCubit extends Cubit<PersonState> {

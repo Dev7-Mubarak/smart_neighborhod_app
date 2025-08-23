@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../components/constants/app_color.dart';
+import '../../core/constants/app_color.dart';
 part 'main_home_state.dart';
 
 class MainHomeCubit extends Cubit<MainHomeState> {
