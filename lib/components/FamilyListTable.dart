@@ -26,7 +26,7 @@ class FamilyListTable extends StatelessWidget {
         var family = entry.value;
         return [
           family.familyHeadPhoneNumber,
-          family.familyTypeName,
+          family.familyCategoryName,
           family.familyHeadName,
           '${index + 1}',
         ];

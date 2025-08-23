@@ -6,7 +6,6 @@ import 'package:smart_negborhood_app/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/cubits/conflictType/conflict_type_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/cubits/family_member/family_member_cubit.dart';
-import 'package:smart_negborhood_app/cubits/family_type/family_type_cubit.dart';
 import 'package:smart_negborhood_app/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/cubits/project_category/project_category_cubit.dart';
@@ -97,9 +96,6 @@ class AppRouter {
               BlocProvider(
                 create: (_) =>
                     FamilyCategoryCubit(api: DioConsumer(dio: Dio())),
-              ),
-              BlocProvider(
-                create: (_) => FamilyTypeCubit(api: DioConsumer(dio: Dio())),
               ),
             ],
             child: AddUpdateFamily(

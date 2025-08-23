@@ -14,11 +14,8 @@ import '../../components/constants/app_size.dart';
 import '../../components/constants/small_text.dart';
 import '../../components/custom_text_input_filed.dart';
 import '../../cubits/family_cubit/family_state.dart';
-import '../../cubits/family_type/family_type_cubit.dart';
-import '../../cubits/family_type/family_type_state.dart';
 import '../../cubits/person_cubit/person_cubit.dart';
 import '../../models/Person.dart';
-import '../../models/family_type.dart';
 
 class AddUpdateFamily extends StatefulWidget {
   final int blockId;
@@ -34,7 +31,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   final _formKey = GlobalKey<FormState>();
 
   FamilyCategory? selectedFamilyCategory;
-  FamilyType? selectedFamilyType;
   Person? selectedFamilyHead;
 
   final TextEditingController _familyNameController = TextEditingController();
@@ -44,7 +40,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   late PersonCubit personCubit;
   late FamilyCubit familyCubit;
   late FamilyCategoryCubit familyCategoryCubit;
-  late FamilyTypeCubit familyTypeCubit;
   late BlockCubit blockCubit;
 
   @override
@@ -53,7 +48,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
     personCubit = context.read<PersonCubit>();
     familyCubit = context.read<FamilyCubit>();
     familyCategoryCubit = context.read<FamilyCategoryCubit>();
-    familyTypeCubit = context.read<FamilyTypeCubit>();
     blockCubit = context.read<BlockCubit>();
 
     _initializeData();
@@ -61,7 +55,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
 
   Future<void> _initializeData() async {
     await familyCategoryCubit.getFamilyCategories();
-    await familyTypeCubit.getFamilyTypies();
     await personCubit.getPeople();
 
     if (widget.family != null) {
@@ -72,11 +65,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
       selectedFamilyCategory = familyCategoryCubit.familyCategories.firstWhere(
         (category) => category.id == widget.family!.familyCatgoryId,
         orElse: () => familyCategoryCubit.familyCategories.first,
-      );
-
-      selectedFamilyType = familyTypeCubit.familyTypes.firstWhere(
-        (type) => type.id == widget.family!.familyTypeId,
-        orElse: () => familyTypeCubit.familyTypes.first,
       );
 
       selectedFamilyHead = personCubit.people.firstWhere(
@@ -102,7 +90,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
       location: _locationController.text,
       familyNotes: _notesController.text,
       familyCatgoryId: selectedFamilyCategory?.id ?? 0,
-      familyTypeId: selectedFamilyType?.id ?? 0,
       blockId: widget.blockId,
       familyHeadId: selectedFamilyHead?.id ?? 0,
     );
@@ -275,36 +262,6 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-
-                      /// Family Type
-                      const SmallText(text: 'نوع الأسرة'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      BlocBuilder<FamilyTypeCubit, FamilyTypeState>(
-                        builder: (context, state) {
-                          if (state is FamilyTypeLoaded) {
-                            return CustomDropdown<FamilyType>(
-                              items: state.familyTypes,
-                              selectedValue: selectedFamilyType,
-                              itemLabel: (item) => item.name,
-                              onChanged: (value) =>
-                                  familyCubit.changeSelectedFamilyType(value),
-                              text: 'اختيار نوع الأسرة',
-                              validator: (value) => value == null
-                                  ? 'يرجى اختيار نوع الأسرة'
-                                  : null,
-                            );
-                          } else if (state is FamilyTypeLoading) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else {
-                            return const Text("فشل تحميل أنواع الأسرة");
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 20),
 
                       /// Location
                       const SmallText(text: 'الموقع'),

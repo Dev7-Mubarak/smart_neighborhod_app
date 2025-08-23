@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/models/conflict_case.dart';
-import 'package:smart_negborhood_app/models/family_type.dart';
 import '../../../components/constants/api_link.dart';
 import '../../../core/errors/exception.dart';
 import 'dart:async';
@@ -22,7 +21,6 @@ class FamilyCubit extends Cubit<FamilyState> {
   final int blockId;
   Person? selectedFamilyHead;
   FamilyCategory? selectedCategory;
-  FamilyType? selectedFamilyType;
   Family? family;
 
   void setFamily(Family family) {
@@ -32,11 +30,6 @@ class FamilyCubit extends Cubit<FamilyState> {
   void changeSelectedFamilyCategory(FamilyCategory? selectedCategory) {
     this.selectedCategory = selectedCategory;
     emit(ChangeFamilyCategory());
-  }
-
-  void changeSelectedFamilyType(FamilyType? selectedFamilyType) {
-    this.selectedFamilyType = selectedFamilyType;
-    emit(ChangeFamilyType());
   }
 
   void changeSelectedFamilyHaed(Person? selectedFamilyHead) {
@@ -53,7 +46,6 @@ class FamilyCubit extends Cubit<FamilyState> {
           "name": family.name,
           "familyCatgoryId": selectedCategory!.id,
           "location": family.location,
-          "familyTypeId": family.familyTypeId,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
           "familyHeadId": family.familyHeadId,
@@ -87,7 +79,6 @@ class FamilyCubit extends Cubit<FamilyState> {
           "name": family.name,
           "familyCatgoryId": family.familyCatgoryId,
           "location": family.location,
-          "familyTypeId": family.familyTypeId,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
           "familyHeadId": family.familyHeadId,
