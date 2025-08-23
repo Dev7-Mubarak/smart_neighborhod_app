@@ -1,1 +1,298 @@
-{}
+{
+  "@@locale": "ar",
+  
+  "appTitle": "الحارة الذكية",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "username": "إسم المستخدم",
+  "@username": {
+    "description": "Username label"
+  },
+  
+  "usernameLabel": ":إسم المستخدم",
+  "@usernameLabel": {
+    "description": "Username label with colon"
+  },
+  
+  "password": "كلمة المرور",
+  "@password": {
+    "description": "Password label"
+  },
+  
+  "passwordLabel": ":كلمة المرور",
+  "@passwordLabel": {
+    "description": "Password label with colon"
+  },
+  
+  "enterUsername": "قم بإدخال اسم المستخدم",
+  "@enterUsername": {
+    "description": "Enter username hint"
+  },
+  
+  "enterPassword": "قم بإدخال كلمة المرور",
+  "@enterPassword": {
+    "description": "Enter password hint"
+  },
+  
+  "pleaseEnterUsername": "الرجاء إدخال إسم المستخدم",
+  "@pleaseEnterUsername": {
+    "description": "Please enter username validation"
+  },
+  
+  "pleaseEnterPassword": "الرجاء إدخال كلمة المرور",
+  "@pleaseEnterPassword": {
+    "description": "Please enter password validation"
+  },
+  
+  "forgotPassword": "هل نسيت كلمة السر؟",
+  "@forgotPassword": {
+    "description": "Forgot password text"
+  },
+  
+  "login": "تسجيل الدخول",
+  "@login": {
+    "description": "Login button text"
+  },
+  
+  "familyName": "اسم الأسرة",
+  "@familyName": {
+    "description": "Family name label"
+  },
+  
+  "pleaseEnterFamilyName": "يرجى إدخال اسم الأسرة",
+  "@pleaseEnterFamilyName": {
+    "description": "Please enter family name validation"
+  },
+  
+  "familyHead": "رب الأسرة",
+  "@familyHead": {
+    "description": "Family head label"
+  },
+  
+  "searchFamilyHead": "ابحث عن رب الأسرة...",
+  "@searchFamilyHead": {
+    "description": "Search for family head hint"
+  },
+  
+  "chooseFamilyHead": "أختر رب الأسرة",
+  "@chooseFamilyHead": {
+    "description": "Choose family head label"
+  },
+  
+  "pleaseChooseFamilyHead": "يرجى اختيار رب الأسرة",
+  "@pleaseChooseFamilyHead": {
+    "description": "Please choose family head validation"
+  },
+  
+  "failedToLoadPeople": "فشل تحميل الأشخاص",
+  "@failedToLoadPeople": {
+    "description": "Failed to load people error"
+  },
+  
+  "familyCategory": "تصنيف الأسرة",
+  "@familyCategory": {
+    "description": "Family category label"
+  },
+  
+  "chooseFamilyCategory": "اختيار تصنيف الأسرة",
+  "@chooseFamilyCategory": {
+    "description": "Choose family category label"
+  },
+  
+  "pleaseChooseFamilyCategory": "يرجى اختيار تصنيف الأسرة",
+  "@pleaseChooseFamilyCategory": {
+    "description": "Please choose family category validation"
+  },
+  
+  "failedToLoadCategories": "فشل تحميل التصنيفات",
+  "@failedToLoadCategories": {
+    "description": "Failed to load categories error"
+  },
+  
+  "location": "الموقع",
+  "@location": {
+    "description": "Location label"
+  },
+  
+  "pleaseEnterLocation": "يرجى إدخال الموقع",
+  "@pleaseEnterLocation": {
+    "description": "Please enter location validation"
+  },
+  
+  "notes": "ملاحظات",
+  "@notes": {
+    "description": "Notes label"
+  },
+  
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  
+  "add": "إضافة",
+  "@add": {
+    "description": "Add button"
+  },
+  
+  "update": "تحديث",
+  "@update": {
+    "description": "Update button"
+  },
+  
+  "thirdName": "الاسم الثالث",
+  "@thirdName": {
+    "description": "Third name label"
+  },
+  
+  "thirdNameRequired": "الاسم الثالث مطلوب",
+  "@thirdNameRequired": {
+    "description": "Third name required validation"
+  },
+  
+  "fourthName": "الاسم الربع",
+  "@fourthName": {
+    "description": "Fourth name label"
+  },
+  
+  "fourthNameRequired": "الاسم الرابع مطلوب",
+  "@fourthNameRequired": {
+    "description": "Fourth name required validation"
+  },
+  
+  "identityNumber": "رقم الهوية",
+  "@identityNumber": {
+    "description": "Identity number label"
+  },
+  
+  "identityType": "نوع الهوية",
+  "@identityType": {
+    "description": "Identity type label"
+  },
+  
+  "chooseIdentityType": "اختيار نوع الهوية",
+  "@chooseIdentityType": {
+    "description": "Choose identity type label"
+  },
+  
+  "pleaseChooseIdentityType": "يرجى اختيار نوع الهوية",
+  "@pleaseChooseIdentityType": {
+    "description": "Please choose identity type validation"
+  },
+  
+  "phoneNumber": "رقم الجوال",
+  "@phoneNumber": {
+    "description": "Phone number label"
+  },
+  
+  "contactNumber": "رقم التواصل",
+  "@contactNumber": {
+    "description": "Contact number label"
+  },
+  
+  "gender": "الجنس",
+  "@gender": {
+    "description": "Gender label"
+  },
+  
+  "male": "ذكر",
+  "@male": {
+    "description": "Male gender"
+  },
+  
+  "female": "أنثى",
+  "@female": {
+    "description": "Female gender"
+  },
+  
+  "birthDate": "تاريخ الميلاد",
+  "@birthDate": {
+    "description": "Birth date label"
+  },
+  
+  "birthDateRequired": "تاريخ الميلاد مطلوب",
+  "@birthDateRequired": {
+    "description": "Birth date required validation"
+  },
+  
+  "bloodType": "فصيلة الدم",
+  "@bloodType": {
+    "description": "Blood type label"
+  },
+  
+  "chooseBloodType": "اختبار فصيلة الدم",
+  "@chooseBloodType": {
+    "description": "Choose blood type label"
+  },
+  
+  "pleaseChooseBloodType": "يرجى اختيار فصيلة الدم",
+  "@pleaseChooseBloodType": {
+    "description": "Please choose blood type validation"
+  },
+  
+  "maritalStatus": "الحالة الاجتماعية",
+  "@maritalStatus": {
+    "description": "Marital status label"
+  },
+  
+  "job": "المهنة",
+  "@job": {
+    "description": "Job label"
+  },
+  
+  "notSpecified": "غير محدد",
+  "@notSpecified": {
+    "description": "Not specified text"
+  },
+  
+  "clickForMoreDetails": "اضغط للمزيد من التفاصيل",
+  "@clickForMoreDetails": {
+    "description": "Click for more details text"
+  },
+  
+  "email": "الأيميل",
+  "@email": {
+    "description": "Email label"
+  },
+  
+  "familyType": "نوع الأسرة",
+  "@familyType": {
+    "description": "Family type label"
+  },
+  
+  "addNewPerson": "إضافة شخص جديد",
+  "@addNewPerson": {
+    "description": "Add new person title"
+  },
+  
+  "editPersonData": "تعديل بيانات الشخص",
+  "@editPersonData": {
+    "description": "Edit person data title"
+  },
+  
+  "firstName": "الاسم الاول",
+  "@firstName": {
+    "description": "First name label"
+  },
+  
+  "firstNameRequired": "الاسم الاول مطلوب",
+  "@firstNameRequired": {
+    "description": "First name required validation"
+  },
+  
+  "secondName": "الاسم الثاني",
+  "@secondName": {
+    "description": "Second name label"
+  },
+  
+  "secondNameRequired": "الاسم الثاني مطلوب",
+  "@secondNameRequired": {
+    "description": "Second name required validation"
+  },
+  
+  "identityNumberRequired": "رقم الهوية مطلوب",
+  "@identityNumberRequired": {
+    "description": "Identity number required validation"
+  }
+}

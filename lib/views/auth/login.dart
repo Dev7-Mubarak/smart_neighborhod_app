@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/cubits/login_cubit/login_state.dart';
+import 'package:smart_negborhood_app/generated/l10n.dart';
 
 import '../../components/circular_logo.dart';
 import '../../components/constants/app_color.dart';
@@ -54,9 +55,9 @@ class Login extends StatelessWidget {
                         child: CircularLogo(),
                       ),
                     ),
-                    const Text(
-                      "الحارة الذكية",
-                      style: TextStyle(
+                    Text(
+                      S.of(context).appTitle,
+                      style: const TextStyle(
                         color: AppColor.primaryColor,
                         fontSize: 45,
                         fontWeight: FontWeight.bold,
@@ -68,9 +69,9 @@ class Login extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text(
-                            ":إسم المستخدم",
-                            style: TextStyle(
+                          Text(
+                            S.of(context).usernameLabel,
+                            style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -78,12 +79,12 @@ class Login extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           DefaultTextFormFiled(
-                            hintText: 'قم بإدخال اسم المستخدم',
+                            hintText: S.of(context).enterUsername,
                             controller: emailContoller,
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'الرجاء إدخال إسم المستخدم';
+                                return S.of(context).pleaseEnterUsername;
                               }
                               return null;
                             },
@@ -91,9 +92,9 @@ class Login extends StatelessWidget {
                             isPassword: false,
                           ),
                           const SizedBox(height: 20),
-                          const Text(
-                            ":كلمة المرور",
-                            style: TextStyle(
+                          Text(
+                            S.of(context).passwordLabel,
+                            style: const TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -101,12 +102,12 @@ class Login extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           DefaultTextFormFiled(
-                            hintText: 'قم بإدخال كلمة المرور',
+                            hintText: S.of(context).enterPassword,
                             controller: passwordContoller,
                             keyboardType: TextInputType.visiblePassword,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'الرجاء إدخال كلمة المرور';
+                                return S.of(context).pleaseEnterPassword;
                               }
                               return null;
                             },
@@ -125,9 +126,9 @@ class Login extends StatelessWidget {
                                 AppRoute.forgetapassword,
                               );
                             },
-                            child: const Text(
-                              "هل نسيت كلمة السر؟",
-                              style: TextStyle(
+                            child: Text(
+                              S.of(context).forgotPassword,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: AppColor.primaryColor,
                                 fontWeight: FontWeight.bold,
@@ -143,7 +144,7 @@ class Login extends StatelessWidget {
                       fallback: (context) =>
                           const Center(child: CircularProgressIndicator()),
                       builder: (context) => DefaultButton(
-                        text: 'تسجيل الدخول',
+                        text: S.of(context).login,
                         backgroundColor: AppColor.primaryColor,
                         color: AppColor.white,
                         onPressed: () {

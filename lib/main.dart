@@ -9,6 +9,8 @@ import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'generated/l10n.dart';
+import 'cubits/locale_cubit/locale_cubit.dart';
+import 'cubits/locale_cubit/locale_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,24 +26,35 @@ class SmartNeighbourhood extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BlockCubit>(
-      create: (_) => BlockCubit(api: DioConsumer(dio: Dio())),
-      child: MaterialApp(
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        locale: const Locale('ar'),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: AppColor.white,
-          fontFamily: 'Tajawal-Regular',
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BlockCubit>(
+          create: (_) => BlockCubit(api: DioConsumer(dio: Dio())),
         ),
-        onGenerateRoute: appRouter.generateRoute,
-        initialRoute: AppRoute.mainHome,
+        BlocProvider<LocaleCubit>(
+          create: (_) => LocaleCubit(),
+        ),
+      ],
+      child: BlocBuilder<LocaleCubit, LocaleState>(
+        builder: (context, localeState) {
+          return MaterialApp(
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            locale: localeState.locale,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: AppColor.white,
+              fontFamily: 'Tajawal-Regular',
+            ),
+            onGenerateRoute: appRouter.generateRoute,
+            initialRoute: AppRoute.mainHome,
+          );
+        },
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:smart_negborhood_app/cubits/family_catgory_cubit/family_catgory_
 import 'package:smart_negborhood_app/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/models/family.dart';
 import 'package:smart_negborhood_app/models/family_category.dart';
+import 'package:smart_negborhood_app/generated/l10n.dart';
 import '../../components/CustomDropdownGeneric.dart';
 import '../../components/constants/app_size.dart';
 import '../../components/constants/small_text.dart';
@@ -165,18 +166,18 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const SmallText(text: 'اسم الأسرة'),
+                      SmallText(text: S.of(context).familyName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
                       CustomTextFormField(
                         controller: _familyNameController,
                         validator: (value) => value == null || value.isEmpty
-                            ? 'يرجى إدخال اسم الأسرة'
+                            ? S.of(context).pleaseEnterFamilyName
                             : null,
                       ),
                       const SizedBox(height: 30),
-                      const SmallText(text: 'رب الأسرة'),
+                      SmallText(text: S.of(context).familyHead),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -192,7 +193,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                                 showSearchBox: true,
                                 searchFieldProps: TextFieldProps(
                                   decoration: InputDecoration(
-                                    hintText: "ابحث عن رب الأسرة...",
+                                    hintText: S.of(context).searchFamilyHead,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -214,12 +215,12 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                               onChanged: (value) =>
                                   familyCubit.changeSelectedFamilyHaed(value),
                               validator: (value) => value == null
-                                  ? 'يرجى اختيار رب الأسرة'
+                                  ? S.of(context).pleaseChooseFamilyHead
                                   : null,
                               dropdownDecoratorProps: DropDownDecoratorProps(
                                 dropdownSearchDecoration: InputDecoration(
-                                  labelText: "أختر رب الأسرة",
-                                  hintText: "أختر رب الأسرة",
+                                  labelText: S.of(context).chooseFamilyHead,
+                                  hintText: S.of(context).chooseFamilyHead,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -227,14 +228,14 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                               ),
                             );
                           } else {
-                            return const Text("فشل تحميل الأشخاص");
+                            return Text(S.of(context).failedToLoadPeople);
                           }
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
 
                       /// Family Category
-                      const SmallText(text: 'تصنيف الأسرة'),
+                      SmallText(text: S.of(context).familyCategory),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -247,9 +248,9 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                               itemLabel: (item) => item.name,
                               onChanged: (value) => familyCubit
                                   .changeSelectedFamilyCategory(value),
-                              text: 'اختيار تصنيف الأسرة',
+                              text: S.of(context).chooseFamilyCategory,
                               validator: (value) => value == null
-                                  ? 'يرجى اختيار تصنيف الأسرة'
+                                  ? S.of(context).pleaseChooseFamilyCategory
                                   : null,
                             );
                           } else if (state is FamilyCategoryLoading) {
@@ -257,27 +258,27 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                               child: CircularProgressIndicator(),
                             );
                           } else {
-                            return const Text("فشل تحميل التصنيفات");
+                            return Text(S.of(context).failedToLoadCategories);
                           }
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
 
                       /// Location
-                      const SmallText(text: 'الموقع'),
+                      SmallText(text: S.of(context).location),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
                       CustomTextFormField(
                         controller: _locationController,
                         validator: (value) => value == null || value.isEmpty
-                            ? 'يرجى إدخال الموقع'
+                            ? S.of(context).pleaseEnterLocation
                             : null,
                       ),
                       const SizedBox(height: 20),
 
                       /// Notes
-                      const SmallText(text: 'ملاحظات'),
+                      SmallText(text: S.of(context).notes),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -289,12 +290,12 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SmallButton(
-                            text: 'إلغاء',
+                            text: S.of(context).cancel,
                             onPressed: () => Navigator.pop(context),
                           ),
                           const SizedBox(width: 10),
                           SmallButton(
-                            text: widget.family == null ? 'إضافة' : 'تحديث',
+                            text: widget.family == null ? S.of(context).add : S.of(context).update,
                             onPressed: _submitForm,
                           ),
                         ],
