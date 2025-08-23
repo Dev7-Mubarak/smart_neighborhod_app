@@ -7,11 +7,14 @@ import 'package:smart_negborhood_app/core/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/services/cache_helper.dart';
 import 'components/constants/app_route.dart';
 import 'cubits/ResiddentialBlocks_cubit/cubit/block_cubit.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'generated/l10n.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   Bloc.observer = AppBlocObserver();
-  runApp(SmartNeighbourhood(appRouter: AppRouter( )));
+  runApp(SmartNeighbourhood(appRouter: AppRouter()));
 }
 
 class SmartNeighbourhood extends StatelessWidget {
@@ -24,6 +27,14 @@ class SmartNeighbourhood extends StatelessWidget {
     return BlocProvider<BlockCubit>(
       create: (_) => BlockCubit(api: DioConsumer(dio: Dio())),
       child: MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale: const Locale('ar'),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: AppColor.white,
