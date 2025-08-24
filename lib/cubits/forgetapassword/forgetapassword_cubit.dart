@@ -84,7 +84,7 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
     try {
       final response = await api.post(
         ApiLink.sendNewPassword,
-        data: {
+        data:{
           "email": email,
           "newPassword": newPassword,
           "confirmPassword":confirmPassword,
