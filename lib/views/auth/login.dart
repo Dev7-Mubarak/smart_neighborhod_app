@@ -153,10 +153,6 @@ class Login extends StatelessWidget {
                               email: emailContoller.text,
                               password: passwordContoller.text,
                             );
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   AppRoute.mainhome,
-                            // );
                           }
                         },
                         fontsize: 20,

@@ -141,7 +141,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const SizedBox(height: 20),
-                        const SmallText(text: 'أسم الفريق'),
+                        const SmallText(text: 'اسم الفريق'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
@@ -150,7 +150,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                           suffixIcon: null,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'أسم الفريق';
+                              return 'ادخل اسم الفريق';
                             }
                             return null;
                           },

@@ -24,6 +24,8 @@ class _CheckEmailState extends State<CheckEmail> {
   final TextEditingController thirdNumController = TextEditingController();
 
   final TextEditingController fourthNumController = TextEditingController();
+  final TextEditingController fifthNumController = TextEditingController();
+  final TextEditingController sixthNumController = TextEditingController();
 
   late ForgetapasswordCubit forgetapasswordCubit;
 
@@ -34,6 +36,8 @@ class _CheckEmailState extends State<CheckEmail> {
   final FocusNode thirdFocus = FocusNode();
 
   final FocusNode fourthFocus = FocusNode();
+  final FocusNode fifthFocus = FocusNode();
+  final FocusNode sixthFocus = FocusNode();
 
   @override
   void initState() {
@@ -71,7 +75,9 @@ class _CheckEmailState extends State<CheckEmail> {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pushNamed(context, AppRoute.createNewPassword);
+          Navigator.pushNamed(context, AppRoute.createNewPassword
+          ,arguments: BlocProvider.of<ForgetapasswordCubit>(context)
+          );
         } else if (state is SendConfirmationCodeFailure) {
           Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -113,12 +119,14 @@ class _CheckEmailState extends State<CheckEmail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const boldtext(
-                          boldSize: .4,
-                          fontcolor: AppColor.primaryColor,
-                          fontsize: 25,
-                          text: "التحقق من رمز الكود",
-                        ),
+                        const Text(
+                        "التحقق من رمز الكود",
+                        style: TextStyle(
+                        color: AppColor.primaryColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
                         const SizedBox(height: 15),
                         const Text(
                           "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
@@ -159,6 +167,16 @@ class _CheckEmailState extends State<CheckEmail> {
                             buildCodeCircle(
                               controller: fourthNumController,
                               currentFocus: fourthFocus,
+                              nextFocus: fifthFocus,
+                            ),
+                            buildCodeCircle(
+                              controller: fifthNumController,
+                              currentFocus: fifthFocus,
+                              nextFocus: sixthFocus,
+                            ),
+                            buildCodeCircle(
+                              controller: sixthNumController,
+                              currentFocus: sixthFocus,
                               nextFocus: null,
                             ),
                           ],
@@ -186,7 +204,7 @@ class _CheckEmailState extends State<CheckEmail> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         forgetapasswordCubit.sendConfirmationCode(
-                          "${firstNumController.text}${secondNumController.text}${thirdNumController.text}${fourthNumController.text}",
+                          "${firstNumController.text}${secondNumController.text}${thirdNumController.text}${fourthNumController.text}${fifthNumController.text}${sixthNumController.text}",
                         );
                       }
                     },

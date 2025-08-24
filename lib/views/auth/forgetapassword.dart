@@ -1,4 +1,3 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/components/custom_text_input_filed.dart';
@@ -7,7 +6,6 @@ import '../../components/boldText.dart';
 import '../../components/circular_logo.dart';
 import '../../components/constants/app_color.dart';
 import '../../components/constants/app_route.dart';
-import '../../components/default_text_form_filed.dart';
 import '../../components/defult_button.dart';
 import '../../cubits/forgetapassword/forgetapassword_cubit.dart';
 
@@ -59,7 +57,9 @@ class _ForgetapasswordState extends State<Forgetapassword> {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pushNamed(context, AppRoute.checkEmail);
+          Navigator.pushNamed(context, AppRoute.checkEmail,
+          arguments: BlocProvider.of<ForgetapasswordCubit>(context)
+                   );
         } else if (state is SendEmailFailure) {
           Navigator.of(context, rootNavigator: true).pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -103,11 +103,13 @@ class _ForgetapasswordState extends State<Forgetapassword> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const boldtext(
-                        boldSize: .4,
-                        fontcolor: AppColor.primaryColor,
-                        fontsize: 25,
-                        text: "نسيت كلمة المرور",
+                      const Text(
+                        "نسيت كلمة المرور",
+                        style: TextStyle(
+                        color: AppColor.primaryColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                       ),
                       const SizedBox(height: 15),
                       const Text(
@@ -140,11 +142,9 @@ class _ForgetapasswordState extends State<Forgetapassword> {
                           final emailRegex = RegExp(
                             r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
                           );
-
                           if (!emailRegex.hasMatch(value)) {
                             return 'الرجاء إدخال بريد إلكتروني صالح';
                           }
-
                           return null;
                         },
                         suffixIcon: null,

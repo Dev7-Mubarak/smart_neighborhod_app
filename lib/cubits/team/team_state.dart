@@ -16,7 +16,7 @@ class TeamLoaded extends TeamState {
 
 class ProjectsOfTeamLoaded extends TeamState {
     final List<Project> allProjects;
-  ProjectsOfTeamLoaded({required this.allProjects});
+  ProjectsOfTeamLoaded(this.allProjects);
 
 }
 

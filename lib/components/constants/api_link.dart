@@ -4,8 +4,7 @@ class ApiLink {
   static const String login = '$server/Auth/Login';
   static const String getAllBlockes = '$server/Blocks/GetAll';
   static const String getAllProjects = '$server/Projects/GetAll';
-  static const String getAllProjectCatgories =
-      '$server/ProjectCatgories/GetAll';
+  static const String getAllProjectCatgories = '$server/ProjectCatgories/GetAll';
   static const String deleteProject = '$server/Projects/Delete';
   static const String addProject = '$server/Projects/Add';
   static const String updateProject = '$server/Projects/Update';
@@ -52,12 +51,9 @@ class ApiLink {
   static const String updateConflict = '$server/ConflictCase/Update';
   static const String deleteConflict = '$server/ConflictCase/Delete';
   static const String getAllConfilctCaseTypes = '$server/ConfilctCaseType/GetAll';
-  
-
   static const String getConflictCasesByFamilyMember = '$server/ConflictCase/ByFamilyMember';
-  static const String sendEmail = '$server/ConflictCase/ByFamilyMember';
-  static const String sendConfirmationCode = '$server/ConflictCase/ByFamilyMember';
-  static const String sendNewPassword = '$server/ConflictCase/ByFamilyMember';
-  
-  
+
+  static const String sendEmail = '$server/Auth/Password-reset/send-code';
+  static const String sendConfirmationCode = '$server/Auth/Password-reset/verify-code';
+  static const String sendNewPassword = '$server/Auth/Password-reset/confirm';
 }

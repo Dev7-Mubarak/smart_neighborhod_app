@@ -29,7 +29,8 @@ class Project {
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
-    return Project(
+    return
+     Project(
       id: json["id"],
       name: json["name"] ?? "",
       description: json["description"] ?? "",

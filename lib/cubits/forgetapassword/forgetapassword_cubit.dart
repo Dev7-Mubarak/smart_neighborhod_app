@@ -17,18 +17,20 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
   bool FirstisPassword = true;
   IconData SecondprefixIcon = Icons.visibility;
   bool SecondisPassword = true;
+  late String email;
 
   Future<void> sendEmail(String emailAddress) async {
     emit(SendEmailLoading());
     try {
+      email = emailAddress;
       final response = await api.post(
         ApiLink.sendEmail,
-        data: {'emailAddress': emailAddress},
+        data: {'email': emailAddress},
       );
       if (response["isSuccess"]) {
         emit(
           SendEmailSuccess(
-            response["message"] ??
+            response["data"] ??
                 "تم إرسال الإيميل بنجاح, سيتم إرسال رمز التأكيد إلى بريدك الإلكتروني ",
           ),
         );
@@ -53,12 +55,12 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
     try {
       final response = await api.post(
         ApiLink.sendConfirmationCode,
-        data: {'ConfirmationCode': confirmationCode},
+        data: {'code': confirmationCode, "email": email},
       );
       if (response["isSuccess"]) {
         emit(
           SendConfirmationCodeSuccess(
-            response["message"] ?? "تم التأكد من البريد الإلكتروني  ",
+            response["data"] ?? "تم التأكد من البريد الإلكتروني  ",
           ),
         );
       } else {
@@ -77,17 +79,21 @@ class ForgetapasswordCubit extends Cubit<ForgetapasswordState> {
     }
   }
 
-  Future<void> sendNewPassword(String password) async {
+  Future<void> sendNewPassword(String newPassword,String confirmPassword) async {
     emit(SendNewPasswordLoading());
     try {
       final response = await api.post(
         ApiLink.sendNewPassword,
-        data: {'password': password},
+        data: {
+          "email": email,
+          "newPassword": newPassword,
+          "confirmPassword":confirmPassword,
+        },
       );
       if (response["isSuccess"]) {
         emit(
           SendNewPasswordSuccess(
-            response["message"] ?? "تم تعديل كلمة المرور بنجاح",
+            response["data"] ?? "تم تعديل كلمة المرور بنجاح",
           ),
         );
       } else {
