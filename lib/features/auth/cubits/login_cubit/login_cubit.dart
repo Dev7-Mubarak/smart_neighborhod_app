@@ -28,6 +28,8 @@ class LoginCubit extends Cubit<LoginState> {
       );
       userData = UserData.fromJson(response["data"]);
       CacheHelper().saveData(key: 'id', value: userData.id);
+      CacheHelper().saveData(key: 'token', value: userData.token);
+      CacheHelper().saveData(key: 'email', value: userData.email);
       emit(LoginSuccess(userData));
     } on Serverexception catch (e) {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
