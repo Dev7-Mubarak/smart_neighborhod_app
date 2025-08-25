@@ -20,6 +20,41 @@ class TeamCubit extends Cubit<TeamState> {
   DateTime? selectedJoiedDate;
   List<Team> _allTeams = [];
 
+  Future<void> addNewTeam(String name) async {
+    emit(WiateAddedUpdatedTeam());
+    try {
+      final response = await api.post(
+        ApiLink.addTeam,
+        data: {
+          'name': name,
+          'teamLeadId': selectedPersonId,
+          "inJoiedDate": selectedJoiedDate?.toIso8601String(),
+        },
+      );
+
+      if (response["isSuccess"]) {
+        emit(
+          TeamAddedSuccessfully(
+            message: response["message"] ?? "تمت الإضافة بنجاح",
+          ),
+        );
+        resetInputs();
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(TeamFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(TeamFailure(errorMessage: e.toString()));
+    }
+  }
+
   Future<void> getAllTeams({String? search}) async {
     emit(TeamLoading());
     try {
@@ -57,94 +92,8 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
-  void filterTeams(String query) {
-    if (query.isEmpty) {
-      emit(TeamLoaded(allTeams: _allTeams, filteredTeams: _allTeams));
-      return;
-    }
 
-    final filteredList = _allTeams
-        .where((team) => team.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-
-    emit(TeamLoaded(allTeams: _allTeams, filteredTeams: filteredList));
-  }
-
-  Future<void> setTeamForUpdate(Team team) async {
-    this.team = team;
-    TeamMember? teamLeader = team.teamMembers.firstWhere(
-      (member) => member.teamRoleId == 1,
-    );
-    selectedJoiedDate = teamLeader.dateOfJoin;
-    selectedPersonId = teamLeader.personId;
-  }
-
-  // void changeSelectedManager(int? id) {
-  //   selectedTeamLeadId = id;
-  //   emit(ChangeSelectedTeamLeadId());
-  // }
-  void changeSelectedManager(int? id) {
-    selectedPersonId = id;
-    emit(ChangeSelectedTeamLeadId());
-  }
-
-  void pickDate(BuildContext context) async {
-    final DateTime now = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedJoiedDate ?? now,
-      firstDate: DateTime(now.year - 5, now.month, now.day),
-      lastDate: DateTime(2100, 12, 31),
-    );
-
-    if (picked != null && picked != selectedJoiedDate) {
-      selectedJoiedDate = picked;
-    }
-    emit(ChangeSelectedJoiedDate());
-  }
-
-  Future<void> addNewTeam(String name) async {
-    emit(WiateAddedUpdatedTeam());
-    try {
-      final response = await api.post(
-        ApiLink.addTeam,
-        data: {
-          'name': name,
-          'teamLeadId': selectedPersonId,
-          "inJoiedDate": selectedJoiedDate?.toIso8601String(),
-        },
-      );
-
-      if (response["isSuccess"]) {
-        emit(
-          TeamAddedSuccessfully(
-            message: response["message"] ?? "تمت الإضافة بنجاح",
-          ),
-        );
-        resetInputs();
-      } else {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: response["statusCode"] ?? '400',
-            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
-    } on Serverexception catch (e) {
-      emit(TeamFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
-      emit(TeamFailure(errorMessage: e.toString()));
-    }
-  }
-
-  void resetInputs() {
-    team = null;
-    selectedPersonId = null;
-    selectedJoiedDate = null;
-  }
-
-  Future<void> updateTeams({required int id, String? name}) async {
+  Future<void> updateTeams({required int id,required String name}) async {
     emit(WiateAddedUpdatedTeam());
     try {
       final response = await api.update(
@@ -180,16 +129,15 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
-  Future<void> deleteTeam(int id) async {
+ Future<void> deleteTeam(int id) async {
     emit(TeamLoading());
     try {
       final response = await api.delete('${ApiLink.deleteTeam}/$id');
 
       if (response["isSuccess"]) {
-        emit(TeamDeletedSuccessfully(message: response["message"]));
-        await getAllTeams();
+        emit(TeamDeletedSuccessfully(message: response["data"]));
       } else {
-        Serverexception(
+       throw Serverexception(
           errModel: ErrorModel(
             statusCode: response["statusCode"]?.toString() ?? '400',
             errorMessage: response["message"],
@@ -204,6 +152,7 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
+ 
   Future<void> getProjectsByTeamId(int id) async {
     emit(TeamLoading());
     try {
@@ -219,11 +168,9 @@ class TeamCubit extends Cubit<TeamState> {
         );
       }
       List<dynamic> ProjectJson = response["data"];
-      List<Project> allProjects = ProjectJson.map(
-        (e) => Project.fromJson(e),
-      ).toList();
+      List<Project> _allProjects = ProjectJson.map((e) => Project.fromJson(e)).toList();
 
-      if (allProjects.isEmpty) {
+      if (_allProjects.isEmpty) {
         throw Serverexception(
           errModel: ErrorModel(
             statusCode: '400',
@@ -232,13 +179,67 @@ class TeamCubit extends Cubit<TeamState> {
           ),
         );
       }
-      emit(ProjectsOfTeamLoaded(allProjects: allProjects));
+      emit(ProjectsOfTeamLoaded( _allProjects));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(TeamFailure(errorMessage: e.toString()));
     }
   }
+
+  void filterTeams(String query) {
+    if (query.isEmpty) {
+      emit(TeamLoaded(allTeams: _allTeams, filteredTeams: _allTeams));
+      return;
+    }
+
+    final filteredList = _allTeams
+        .where((team) => team.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    emit(TeamLoaded(allTeams: _allTeams, filteredTeams: filteredList));
+  }
+
+  Future<void> setTeamForUpdate(Team team) async {
+    this.team = team;
+    TeamMember? teamLeader = team.teamMembers.firstWhere(
+      (member) => member.teamRoleId == 1,
+    );
+    selectedJoiedDate = teamLeader.dateOfJoin;
+    selectedPersonId = teamLeader.personId;
+  }
+
+  // void changeSelectedManager(int? id) {
+  //   selectedTeamLeadId = id;
+  //   emit(ChangeSelectedTeamLeadId());
+  // }
+
+  void changeSelectedManager(int? id) {
+    selectedPersonId = id;
+    emit(ChangeSelectedTeamLeadId());
+  }
+
+  void pickDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedJoiedDate ?? now,
+      firstDate: DateTime(now.year - 5, now.month, now.day),
+      lastDate: DateTime(2100, 12, 31),
+    );
+
+    if (picked != null && picked != selectedJoiedDate) {
+      selectedJoiedDate = picked;
+    }
+    emit(ChangeSelectedJoiedDate());
+  }
+
+  void resetInputs() {
+    team = null;
+    selectedPersonId = null;
+    selectedJoiedDate = null;
+  }
+
 
   Future<void> getTeamById(int id) async {
     emit(TeamLoading());
@@ -254,6 +255,7 @@ class TeamCubit extends Cubit<TeamState> {
           ),
         );
       }
+      ;
       emit(TeamByIdLoaded(team: Team.fromJson(response["data"])));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));
