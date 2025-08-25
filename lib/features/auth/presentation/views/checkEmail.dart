@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
-
 
 class CheckEmail extends StatefulWidget {
   CheckEmail({super.key});
@@ -51,6 +51,14 @@ class _CheckEmailState extends State<CheckEmail> {
     secondNumController.dispose();
     thirdNumController.dispose();
     fourthNumController.dispose();
+    fifthNumController.dispose();
+    sixthNumController.dispose();
+    firstFocus.dispose();
+    secondFocus.dispose();
+    thirdFocus.dispose();
+    fourthFocus.dispose();
+    fifthFocus.dispose();
+    sixthFocus.dispose();
     super.dispose();
   }
 
@@ -75,8 +83,10 @@ class _CheckEmailState extends State<CheckEmail> {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.pushNamed(context, AppRoute.createNewPassword
-          ,arguments: BlocProvider.of<ForgetapasswordCubit>(context)
+          Navigator.pushNamed(
+            context,
+            AppRoute.createNewPassword,
+            arguments: BlocProvider.of<ForgetapasswordCubit>(context),
           );
         } else if (state is SendConfirmationCodeFailure) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -120,13 +130,13 @@ class _CheckEmailState extends State<CheckEmail> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const Text(
-                        "التحقق من رمز الكود",
-                        style: TextStyle(
-                        color: AppColor.primaryColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      ),
+                          "التحقق من رمز الكود",
+                          style: TextStyle(
+                            color: AppColor.primaryColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(height: 15),
                         const Text(
                           "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
@@ -150,24 +160,9 @@ class _CheckEmailState extends State<CheckEmail> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             buildCodeCircle(
-                              controller: firstNumController,
-                              currentFocus: firstFocus,
-                              nextFocus: secondFocus,
-                            ),
-                            buildCodeCircle(
-                              controller: secondNumController,
-                              currentFocus: secondFocus,
-                              nextFocus: thirdFocus,
-                            ),
-                            buildCodeCircle(
-                              controller: thirdNumController,
-                              currentFocus: thirdFocus,
-                              nextFocus: fourthFocus,
-                            ),
-                            buildCodeCircle(
-                              controller: fourthNumController,
-                              currentFocus: fourthFocus,
-                              nextFocus: fifthFocus,
+                              controller: sixthNumController,
+                              currentFocus: sixthFocus,
+                              nextFocus: null,
                             ),
                             buildCodeCircle(
                               controller: fifthNumController,
@@ -175,22 +170,36 @@ class _CheckEmailState extends State<CheckEmail> {
                               nextFocus: sixthFocus,
                             ),
                             buildCodeCircle(
-                              controller: sixthNumController,
-                              currentFocus: sixthFocus,
-                              nextFocus: null,
+                              controller: fourthNumController,
+                              currentFocus: fourthFocus,
+                              nextFocus: fifthFocus,
+                            ),
+                            buildCodeCircle(
+                              controller: thirdNumController,
+                              currentFocus: thirdFocus,
+                              nextFocus: fourthFocus,
+                            ),
+                            buildCodeCircle(
+                              controller: secondNumController,
+                              currentFocus: secondFocus,
+                              nextFocus: thirdFocus,
+                            ),
+                            buildCodeCircle(
+                              controller: firstNumController,
+                              currentFocus: firstFocus,
+                              nextFocus: secondFocus,
                             ),
                           ],
                         ),
                         const SizedBox(height: 15),
-                        const Align(
+                        Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            "إعادة إرسال الكود في 00:32",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: ResendTimerWidget(
+                            onResend: () {
+                              forgetapasswordCubit.sendEmail(
+                                context.read<ForgetapasswordCubit>().email,
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -271,11 +280,6 @@ class buildCodeCircle extends StatelessWidget {
               FocusScope.of(currentFocus.context!).requestFocus(nextFocus);
             }
           },
-          // onSubmitted: (_) {
-          //   if (nextFocus != null) {
-          //     FocusScope.of(currentFocus.context!).requestFocus(nextFocus);
-          //   }
-          // },
           onEditingComplete: () {
             if (nextFocus != null) {
               FocusScope.of(currentFocus.context!).requestFocus(nextFocus);
@@ -284,5 +288,81 @@ class buildCodeCircle extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ResendTimerWidget extends StatefulWidget {
+  final VoidCallback onResend; // دالة لإعادة الإرسال عند الضغط على الزر
+
+  const ResendTimerWidget({super.key, required this.onResend});
+
+  @override
+  State<ResendTimerWidget> createState() => _ResendTimerWidgetState();
+}
+
+class _ResendTimerWidgetState extends State<ResendTimerWidget> {
+  Timer? _timer;
+  int _start = 60;
+  bool _isResendButtonActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    setState(() {
+      _isResendButtonActive = false;
+      _start = 60;
+    });
+
+    const oneSec = Duration(seconds: 1);
+    _timer?.cancel();
+    _timer = Timer.periodic(oneSec, (Timer timer) {
+      if (_start == 0) {
+        setState(() {
+          timer.cancel();
+          _isResendButtonActive = true;
+        });
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isResendButtonActive
+        ? TextButton(
+            onPressed: () {
+              widget.onResend(); // استدعاء دالة إعادة الإرسال
+              startTimer(); // إعادة تشغيل المؤقت
+            },
+            child: const Text(
+              "إعادة إرسال الكود",
+              style: TextStyle(
+                fontSize: 15,
+                color: AppColor.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        : Text(
+            "إعادة إرسال الكود في 00:${_start.toString().padLeft(2, '0')}",
+            style: const TextStyle(
+              fontSize: 15,
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          );
   }
 }
