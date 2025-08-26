@@ -34,6 +34,14 @@ class _HomeState extends State<Home> {
         },
       ),
       CategoryCard(
+        title: locale.conflictSection,
+        imagePath: AppImage.homehandshake,
+        backgroundColor: const Color(0xFF878CED),
+        onTap: () {
+          Navigator.pushNamed(context, AppRoute.allConflict);
+        },
+      ),
+        CategoryCard(
         title: locale.assistanceSection,
         imagePath: AppImage.homehelping,
         backgroundColor: const Color(0xFFE8618C),
@@ -42,17 +50,9 @@ class _HomeState extends State<Home> {
         },
       ),
       CategoryCard(
-        title: locale.conflictSection,
-        imagePath: AppImage.homehandshake,
-        backgroundColor: const Color(0xFF125D95),
-        onTap: () {
-          Navigator.pushNamed(context, AppRoute.allConflict);
-        },
-      ),
-      CategoryCard(
         title: locale.teamsSection,
         imagePath: AppImage.team,
-        backgroundColor: const Color(0xFFE8618C),
+        backgroundColor: const Color(0xFF237885),
         onTap: () {
           Navigator.pushNamed(context, AppRoute.allTeams);
         },
