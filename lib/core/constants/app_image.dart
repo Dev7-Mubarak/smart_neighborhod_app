@@ -30,6 +30,7 @@ class AppImage {
   static const String bread = '$rootImage/announcement/bread.png';
   static const String mic = '$rootImage/announcement/mic.png';
   static const String cheate = '$rootImage/announcement/cheate1.png';
+  static const String error = '$rootImage/error.png';
   
   
 }

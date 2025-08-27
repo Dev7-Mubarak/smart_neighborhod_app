@@ -5,6 +5,7 @@ import '../../../../core/common/enums/occupation_status.dart';
 
 class Person {
   final int id;
+ String? fullNameOneString;
   String firstName;
   String secondName;
   String thirdName;
@@ -32,6 +33,7 @@ class Person {
     required this.phoneNumber,
     this.email,
     this.image,
+    this.fullNameOneString,
     required this.dateOfBirth,
     required this.gender,
     required this.bloodType,
@@ -53,6 +55,7 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) {
     return Person(
       id: json['id'] as int,
+      fullNameOneString: json['fullName'] as String? ?? "",
       firstName: json['firstName'] as String? ?? "",
       secondName: json['secondName'] as String? ?? "",
       thirdName: json['thirdName'] as String? ?? "",

@@ -213,7 +213,7 @@ class ConflictCubit extends Cubit<ConflictState> {
       if (response["isSuccess"]) {
         emit(
           ConflictUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح",
+            message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
         resetInputs();

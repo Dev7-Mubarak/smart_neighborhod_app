@@ -192,7 +192,8 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
           );
         },
         errorBuilder: (context, error, stackTrace) {
-          return Container(
+          return
+           Container(
             color: Colors.grey[200],
             child: Center(
               child: Icon(

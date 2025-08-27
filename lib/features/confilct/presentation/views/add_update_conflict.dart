@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
@@ -85,7 +86,16 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
             barrierDismissible: false,
             builder: (context) => const PopScope(
               canPop: false,
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('لحظة من فضلك...'),
+                  ],
+                ),
+              ),
             ),
           );
         } else if (state is ConflictAddedSuccessfully ||
@@ -243,15 +253,20 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                               );
                             }
                             if (state is ConflictTypeFailure) {
-                              Center(
-                                child: Text(
-                                  state.errorMessage,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                              return OnFailureWidget(
+                                onRetry: () =>
+                                    conflictTypeCubit.getConflictTypeCubit(),
+                                errorMessage: state.errorMessage,
                               );
+                              // Center(
+                              //   child: Text(
+                              //     state.errorMessage,
+                              //     style: const TextStyle(
+                              //       color: Colors.red,
+                              //       fontSize: 18,
+                              //     ),
+                              //   ),
+                              // );
                             }
                             return Container();
                           },
@@ -331,7 +346,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                       (context, familyMember, isSelected) {
                                         return ListTile(
                                           title: Text(
-                                            familyMember.person.fullName,
+                                            familyMember
+                                                    .person
+                                                    .fullNameOneString ??
+                                                "الإسم غير متوفر",
                                           ),
                                           selected: isSelected,
                                         );
@@ -340,7 +358,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 ),
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
-                                    u?.person.fullName ?? '',
+                                    u?.person.fullNameOneString ?? '',
                                 onChanged: (FamilyMember2? data) {
                                   conflictCubit.changeSelectedFirstParty(
                                     data!.familyMemberId,
@@ -369,15 +387,21 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                               );
                             }
                             if (state is FamilyMemberFailure) {
-                              Center(
-                                child: Text(
-                                  state.errorMessage,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                              return OnFailureWidget(
+                                onRetry: () =>
+                                    conflictTypeCubit.getConflictTypeCubit(),
+                                errorMessage: state.errorMessage,
                               );
+
+                              //  return Center(
+                              //     child: Text(
+                              //       state.errorMessage,
+                              //       style: const TextStyle(
+                              //         color: Colors.red,
+                              //         fontSize: 18,
+                              //       ),
+                              //     ),
+                              //   );
                             }
                             return Container();
                           },
@@ -436,7 +460,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                       (context, familyMember, isSelected) {
                                         return ListTile(
                                           title: Text(
-                                            familyMember.person.fullName,
+                                            familyMember
+                                                    .person
+                                                    .fullNameOneString ??
+                                                "الإسم غير متوفر",
                                           ),
                                           selected: isSelected,
                                         );
@@ -445,7 +472,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 ),
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
-                                    u?.person.fullName ?? '',
+                                    u?.person.fullNameOneString ?? '',
                                 onChanged: (FamilyMember2? data) {
                                   conflictCubit.changeSelectedSecondParty(
                                     data!.familyMemberId,
@@ -471,6 +498,12 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                   }
                                   return null;
                                 },
+                              );
+                            } if (state is FamilyMemberFailure) {
+                              return OnFailureWidget(
+                                onRetry: () =>
+                                    conflictTypeCubit.getConflictTypeCubit(),
+                                errorMessage: state.errorMessage,
                               );
                             }
                             return Container();
