@@ -49,6 +49,8 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -116,3 +118,10 @@ flutter_intl:
   class_name: AppLocalizations
   arb_dir: lib/core/config/l10n
   output_dir: lib/core/config/generated
+
+flutter_native_splash:
+  color: "#636AE8"                
+  image: assets/images/logo.png
+  android: true
+  ios: true
+  web: false
