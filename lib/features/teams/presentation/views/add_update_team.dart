@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
@@ -97,10 +98,10 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
               'فريق',
@@ -164,7 +165,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }
+                            }else
                             if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
@@ -230,6 +231,10 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                 },
                                 enabled: widget.team == null ? true : false,
                               );
+                            }else if(state is PersonFailure){
+                             return OnFailureWidget(
+                              onRetry: () => personCubit.getPeople(),
+                               );
                             }
                             return Container();
                           },

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
@@ -167,13 +168,20 @@ class _AllTeamsState extends State<AllTeams> {
                       },
                     );
                   } else if (state is TeamLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is TeamFailure) {
-                    return Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 18),
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 16),
+                          Text('جاري تحميل الفرق...'),
+                        ],
                       ),
+                    );
+                  } else if (state is TeamFailure) {
+                    return
+                    OnFailureWidget(
+                      onRetry: () => _teamsCubit.getAllTeams(),
                     );
                   } else {
                     return const Center(

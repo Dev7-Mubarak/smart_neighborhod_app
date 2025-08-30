@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
@@ -158,7 +159,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }
+                            }else
                             if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
@@ -229,6 +230,10 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ? true
                                     : false,
                               );
+                            }else if(state is PersonFailure){
+                              return OnFailureWidget(
+                              onRetry: () => personCubit.getPeople(),
+                               );
                             }
                             return Container();
                           },
@@ -257,7 +262,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }
+                            }else
                             if (state is TeamRoleLoaded) {
                               if (state.allTeamRoles.isEmpty) {
                                 return const Center(
@@ -327,6 +332,10 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                   return null;
                                 },
                               );
+                            }else if(state is TeamRoleFailure){
+                              return OnFailureWidget(
+                              onRetry: () => teamRoleCubit.getAllTeamRoles(),
+                               );
                             }
                             return Container();
                           },
