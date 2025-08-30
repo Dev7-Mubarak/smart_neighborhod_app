@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "blockManager": MessageLookupByLibrary.simpleMessage("مدير المربع"),
     "bloodType": MessageLookupByLibrary.simpleMessage("فصيلة الدم"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "changeBlockName": MessageLookupByLibrary.simpleMessage("تغيير اسم المربع"),
     "changeManager": MessageLookupByLibrary.simpleMessage("تغيير المدير"),
     "changeManagerLogic": MessageLookupByLibrary.simpleMessage(
       "هنا يمكنك تنفيذ منطق تغيير المدير.",

@@ -10,6 +10,7 @@ import '../../../../core/common/widgets/smallButton.dart';
 import '../../cubits/cubit/block_cubit.dart';
 import '../../cubits/cubit/block_state.dart';
 import '../../data/models/Block.dart';
+import 'widgets/change_block_name_widget.dart';
 import 'widgets/residential_block_card_widget.dart';
 // Add this import at the top
 
@@ -66,7 +67,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         return ResidentialBlockCardWidget(
           block: residentialListSearch[index],
           onLongPressCallback: (ctx, block) {
-            _showOptions(ctx, block);
+            _showOptions(block);
           },
         );
       },
@@ -119,11 +120,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     );
   }
 
-  void _showOptions(BuildContext passContext, Block bloc) {
-    final locale = passContext.locale;
+  void _showOptions(Block bloc) {
+    final locale = context.locale;
 
     showModalBottomSheet(
-      context: passContext,
+      context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -133,10 +134,10 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
           children: [
             ListTile(
               leading: const Icon(Icons.edit, color: Colors.blue),
-              title: Text(locale.edit),
+              title: Text(locale.changeBlockName),
               onTap: () {
-                BlocProvider.of<BlockCubit>(passContext).setBlock(bloc);
-                Navigator.pushNamed(context, AppRoute.addUpdateBlock);
+                BlocProvider.of<BlockCubit>(context).setBlock(bloc);
+                context.showBottomSheet(ChangeBlockNameWidget());
               },
             ),
             ListTile(
@@ -145,7 +146,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               onTap: () {
                 Navigator.pop(context);
                 showDialog(
-                  context: passContext,
+                  context: context,
                   builder: (context) => AlertDialog(
                     title: Text(locale.changeManager),
                     content: Text(locale.changeManagerLogic),
@@ -165,7 +166,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               onTap: () async {
                 Navigator.pop(context);
                 await showDialog<bool>(
-                  context: passContext,
+                  context: context,
                   builder: (context) => AlertDialog(
                     title: Text(locale.confirmDelete),
                     content: Text(locale.confirmDeleteBlock),

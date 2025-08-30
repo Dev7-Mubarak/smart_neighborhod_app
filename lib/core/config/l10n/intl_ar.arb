@@ -366,8 +366,11 @@
   "@main": {},
   "blockManager": "مدير المربع",
   "@blockManager": {
-    "description": "Label for the manager of the block"
   },
   "residentialBlocks": "المربعات السكنية",
-  "@residentialBlocks": {}
+  "@residentialBlocks": {
+  },
+  "changeBlockName": "تغيير اسم المربع",
+  "@changeBlockName": {
+  }
 }

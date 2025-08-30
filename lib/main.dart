@@ -46,13 +46,3 @@ class SmartNeighbourhood extends StatelessWidget {
     );
   }
 }
-
-class test {
-  final List<int> number1 = [1, 2, 3];
-  List<int> number2 = [1, 2, 3];
-
-  test() {
-    number1.add(4);
-    number2 = number1;
-  }
-}
