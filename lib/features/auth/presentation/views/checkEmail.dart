@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
+import 'package:smart_negborhood_app/core/config/generated/l10n.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class CheckEmail extends StatefulWidget {
@@ -67,22 +69,10 @@ class _CheckEmailState extends State<CheckEmail> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendConfirmationCodeLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is SendConfirmationCodeSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
           Navigator.pushNamed(
             context,
             AppRoute.createNewPassword,
@@ -90,12 +80,7 @@ class _CheckEmailState extends State<CheckEmail> {
           );
         } else if (state is SendConfirmationCodeFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -115,8 +100,8 @@ class _CheckEmailState extends State<CheckEmail> {
                     alignment: Alignment.topLeft,
                     child: CircularLogo(),
                   ),
-                  const Text(
-                    "الحارة الذكية",
+                   Text(
+                    AppLocalizations.of(context).appTitle,
                     style: TextStyle(
                       color: AppColor.primaryColor,
                       fontSize: 45,
@@ -129,8 +114,8 @@ class _CheckEmailState extends State<CheckEmail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          "التحقق من رمز الكود",
+                         Text(
+                        "التحقق من رمز الكود",
                           style: TextStyle(
                             color: AppColor.primaryColor,
                             fontSize: 25,
@@ -146,15 +131,6 @@ class _CheckEmailState extends State<CheckEmail> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // const SizedBox(height: 10),
-                        // const Text(
-                        //   "Ahmed@Khaled.com",
-                        //   style: TextStyle(
-                        //     fontSize: 15,
-                        //     color: Colors.black,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                         const SizedBox(height: 40),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -254,7 +230,7 @@ class buildCodeCircle extends StatelessWidget {
         child: TextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'الرجاء إدخال قيمة';
+              return 'الرجاء إدخال رمز التأكيد';
             }
             if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
               return 'الرجاء إدخال أرقام فقط';
@@ -292,7 +268,7 @@ class buildCodeCircle extends StatelessWidget {
 }
 
 class ResendTimerWidget extends StatefulWidget {
-  final VoidCallback onResend; // دالة لإعادة الإرسال عند الضغط على الزر
+  final VoidCallback onResend;
 
   const ResendTimerWidget({super.key, required this.onResend});
 
@@ -344,8 +320,8 @@ class _ResendTimerWidgetState extends State<ResendTimerWidget> {
     return _isResendButtonActive
         ? TextButton(
             onPressed: () {
-              widget.onResend(); // استدعاء دالة إعادة الإرسال
-              startTimer(); // إعادة تشغيل المؤقت
+              widget.onResend();
+              startTimer(); 
             },
             child: const Text(
               "إعادة إرسال الكود",

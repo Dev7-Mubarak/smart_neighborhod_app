@@ -5,8 +5,9 @@ import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
-
 
 class CreateNewPassword extends StatefulWidget {
   CreateNewPassword({super.key});
@@ -45,31 +46,14 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendNewPasswordLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is SendNewPasswordSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
           Navigator.pushNamed(context, AppRoute.mainHome);
         } else if (state is SendNewPasswordFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -115,12 +99,6 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // const boldtext(
-                        //   boldSize: .4,
-                        //   fontcolor: AppColor.primaryColor,
-                        //   fontsize: 25,
-                        //   text: "انشأ كلمة مرور جديدة",
-                        // ),
                         const SizedBox(height: 15),
                         const Text(
                           "يجب أن تكون كلمة مرورك الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا. ",
@@ -149,29 +127,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                               hintText: 'قم بإدخال كلمة المرور',
                               controller: FirstpasswordContoller,
                               keyboardType: TextInputType.visiblePassword,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'الرجاء إدخال كلمة المرور';
-                                }
-                                if (value.length < 8) {
-                                  return 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل';
-                                }
-                                if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
-                                }
-                                if (!RegExp(
-                                  r'[!@#$%^&*(),.?":{}|<>]',
-                                ).hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
-                                }
-                                return null;
-                              },
+                              validator:AppValidator.validatePassword,
                               suffixIcon: Icons.key,
                               obscureText: forgetapasswordCubit.FirstisPassword,
                               prefixIcon: forgetapasswordCubit.FirstprefixIcon,
@@ -209,29 +165,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                               hintText: 'قم بإدخال كلمة المرور',
                               controller: SecondpasswordContoller,
                               keyboardType: TextInputType.visiblePassword,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'الرجاء إدخال كلمة المرور';
-                                }
-                                if (value.length < 8) {
-                                  return 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل';
-                                }
-                                if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
-                                }
-                                if (!RegExp(
-                                  r'[!@#$%^&*(),.?":{}|<>]',
-                                ).hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
-                                }
-                                return null;
-                              },
+                              validator: AppValidator.validatePassword,
                               suffixIcon: Icons.key,
                               obscureText:
                                   forgetapasswordCubit.SecondisPassword,

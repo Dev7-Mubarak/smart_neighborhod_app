@@ -28,7 +28,6 @@ class Login extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccess) {
             Navigator.pushNamed(context, AppRoute.mainHome);
-            //  print(state.userdata.id);
           } else if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

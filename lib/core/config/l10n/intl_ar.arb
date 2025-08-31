@@ -369,5 +369,120 @@
     "description": "Label for the manager of the block"
   },
   "residentialBlocks": "المربعات السكنية",
-  "@residentialBlocks": {}
+  "@residentialBlocks": {},
+
+  "verifyCode": "التحقق من رمز الكود",
+  "@verifyCode": {
+    "description": "The sub title of the CheckEmail page"
+  },
+
+
+
+  "verifyCode": "التحقق من رمز الكود",
+  "@verifyCode": {
+    "description": "The sub title of the CheckEmail page"
+  },
+  
+   "enterverifyCode": "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
+  "@enterverifyCode": {
+    "description": "The label of verifyCode in CheckEmail page"
+  },
+
+   "next": "التالي",
+  "@next": {
+    "description": "The next button"
+  },
+
+  "warningVerifycodeEmpty": "الرجاء إدخال رمز التأكيد'",
+  "@warningVerifycodeEmpty": {
+    "description": "The warning of not entering the Verify code"
+  },
+
+   "warningVerifycodeType": "الرجاء إدخال أرقام فقط",
+  "@warningVerifycode": {
+    "description": "The warning of entering  not number value for Verify code"
+  },
+
+   "resendVerifycode": "إعادة إرسال الكود",
+  "@resendVerifycode": {
+    "description": "Resend Verify code button"
+  },
+
+    "resendVerifycodeAt": "إعادة إرسال الكود في 00:",
+  "@resendVerifycodeAt": {
+    "description": "Resend Verify code Timer"
+  },
+
+  "createNewPasswordTitle": "انشأ كلمة مرور جديدة",
+  "@createNewPasswordTitle": {
+    "description": "Title for the create new password page"
+  },
+  "passwordDifferentHint": "يجب أن تكون كلمة مرورك الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا. ",
+  "@passwordDifferentHint": {
+    "description": "Hint for password creation"
+  },
+  "passwordLabel": ":كلمة المرور",
+  "@passwordLabel": {
+    "description": "Password label with colon"
+  },
+  "enterPasswordHint": "قم بإدخال كلمة المرور",
+  "@enterPasswordHint": {
+    "description": "Hint for entering password"
+  },
+  "passwordValidationHint": "يجب أن تحتوي على الأقل على 8 رموز ,وحرف كبير و حرف صغير و رمز و رقم",
+  "@passwordValidationHint": {
+    "description": "Password validation hint"
+  },
+  "retypePasswordLabel": ":أعد كتابة كلمة المرور",
+  "@retypePasswordLabel": {
+    "description": "Retype password label with colon"
+  },
+  "sendButton": "إرسال",
+  "@sendButton": {
+    "description": "Send button text"
+  },
+  "passwordsMismatch": "كلمة السر غير متطابقة مع الأخرى",
+  "@passwordsMismatch": {
+    "description": "Passwords mismatch error message"
+  },
+
+   "forgotPasswordTitle": "نسيت كلمة المرور",
+  "@forgotPasswordTitle": {
+    "description": "Title for the forgot password page"
+  },
+
+  "forgotPasswordHint": "لا تقلق! الرجاء إدخال الأيميل",
+  "@forgotPasswordHint": {
+    "description": "Hint for forgot password page"
+  },
+  "email": "الإيميل",
+  "@email": {
+    "description": "Email label"
+  },
+  "enterEmailHint": "قم بإدخال الأيميل",
+  "@enterEmailHint": {
+    "description": "Hint for entering email"
+  },
+  "nextButton": "التالي",
+  "@nextButton": {
+    "description": "Next button text"
+  },
+
+  "emailSentSuccess": "تم إرسال الإيميل بنجاح, سيتم إرسال رمز التأكيد إلى بريدك الإلكتروني ",
+  "@emailSentSuccess": {
+    "description": "Success message when email is sent"
+  },
+  "unknownError": "حدث خطأ غير معروف",
+  "@unknownError": {
+    "description": "General unknown error message"
+  },
+  "emailConfirmedSuccess": "تم التأكد من البريد الإلكتروني ",
+  "@emailConfirmedSuccess": {
+    "description": "Success message when email is confirmed"
+  },
+  "passwordChangedSuccess": "تم تعديل كلمة المرور بنجاح",
+  "@passwordChangedSuccess": {
+    "description": "Success message when password is changed"  
+  }
+
 }

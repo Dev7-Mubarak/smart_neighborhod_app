@@ -5,6 +5,8 @@ import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import '../../cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class Forgetapassword extends StatefulWidget {
@@ -35,38 +37,22 @@ class _ForgetapasswordState extends State<Forgetapassword> {
 
   @override
   Widget build(BuildContext context) {
-    return
-     BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
+    return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
-        if (state is SendEmailLoading){
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+        if (state is SendEmailLoading) {
+          context.showLoadingDialog();
         } else if (state is SendEmailSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
+          context.showSuccessSnackBar(state.message);
+          Navigator.pushNamed(
+            context,
+            AppRoute.checkEmail,
+            arguments: BlocProvider.of<ForgetapasswordCubit>(context),
           );
-          Navigator.pushNamed(context, AppRoute.checkEmail,
-          arguments: BlocProvider.of<ForgetapasswordCubit>(context)
-                   );
         } else if (state is SendEmailFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
-        } 
+          context.showErrorSnackBar(state.errorMessage);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -104,10 +90,10 @@ class _ForgetapasswordState extends State<Forgetapassword> {
                       const Text(
                         "نسيت كلمة المرور",
                         style: TextStyle(
-                        color: AppColor.primaryColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          color: AppColor.primaryColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 15),
                       const Text(
@@ -131,53 +117,25 @@ class _ForgetapasswordState extends State<Forgetapassword> {
                       CustomTextFormField(
                         hintText: 'قم بإدخال الأيميل',
                         controller: passwordContoller,
-                        keyboardType: TextInputType
-                            .emailAddress, 
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'قم بإدخال عنوان البريد الإلكتروني';
-                          }
-                          final emailRegex = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          );
-                          if (!emailRegex.hasMatch(value)) {
-                            return 'الرجاء إدخال بريد إلكتروني صالح';
-                          }
-                          return null;
-                        },
+                        keyboardType: TextInputType.emailAddress,
+                        validator: AppValidator.validateEmail,
                         suffixIcon: null,
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 50),
-                   DefaultButton(
-                     text: 'التالي',
-                     backgroundColor: AppColor.primaryColor,
-                     color: AppColor.white,
-                     onPressed: () {
-                       if (formKey.currentState!.validate()) {
-                         forgetapasswordCubit.sendEmail(passwordContoller.text);
-                       }
-                     },
-                     fontsize: 20,
-                   ),
-                // ConditionalBuilder(
-                //   condition: state is! SendEmailLoading,
-                //   fallback: (context) =>
-                //       const Center(child: CircularProgressIndicator()),
-                //   builder: (context) => DefaultButton(
-                //     text: 'التالي',
-                //     backgroundColor: AppColor.primaryColor,
-                //     color: AppColor.white,
-                //     onPressed: () {
-                //       if (formKey.currentState!.validate()) {
-                //         forgetapasswordCubit.sendEmail(passwordContoller.text);
-                //       }
-                //     },
-                //     fontsize: 20,
-                //   ),
-                // ),
+                DefaultButton(
+                  text: 'التالي',
+                  backgroundColor: AppColor.primaryColor,
+                  color: AppColor.white,
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      forgetapasswordCubit.sendEmail(passwordContoller.text);
+                    }
+                  },
+                  fontsize: 20,
+                ),
               ],
             ),
           ),
