@@ -1,151 +1,145 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/common/widgets/boldText.dart';
-import '../../../../core/common/widgets/circular_logo.dart';
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/app_route.dart';
-import '../../../../core/common/widgets/default_text_form_filed.dart';
-import '../../../../core/common/widgets/defult_button.dart';
+import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
+import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
+import 'package:smart_negborhood_app/core/constants/app_color.dart';
+import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import '../../cubits/forgetapassword/forgetapassword_cubit.dart';
 
-class forgetapassword extends StatelessWidget {
+class Forgetapassword extends StatefulWidget {
+  const Forgetapassword({super.key});
+
+  @override
+  State<Forgetapassword> createState() => _ForgetapasswordState();
+}
+
+class _ForgetapasswordState extends State<Forgetapassword> {
   final formKey = GlobalKey<FormState>();
+
   final passwordContoller = TextEditingController();
 
-  final isLoading = false;
-  forgetapassword({super.key});
+  late ForgetapasswordCubit forgetapasswordCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    forgetapasswordCubit = context.read<ForgetapasswordCubit>();
+  }
+
+  @override
+  void dispose() {
+    passwordContoller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ForgetapasswordCubit(),
-      child: BlocConsumer<ForgetapasswordCubit, ForgetapasswordState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColor.white,
-              elevation: 0, // إزالة الخط السفلي
-              bottomOpacity: 0,
-              iconTheme: IconThemeData(
-                color: Colors.black, // تغيير لون سهم الرجوع إلى الأسود
-              ),
-              // لإزالة السهم الإفتراضي التي تضعة فلاتر و إضافة سهم مخصص في الجهة اليمنى
-              // leading: Container(), // إزالة السهم الافتراضي من اليسار
-              // actions: [
-              //   IconButton(
-              //     icon:
-              //         Icon(Icons.arrow_back, color: Colors.black), // زر الرجوع
-              //     onPressed: () {
-              //       Navigator.pop(context); // الرجوع إلى الصفحة السابقة
-              //     },
-              //   ),
-              // ],
-            ),
-            body: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 40),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: CircularLogo(),
-                      ),
-                    ),
-                    const Text(
-                      "الحارة الذكية",
-                      style: TextStyle(
-                        color: AppColor.primaryColor,
-                        fontSize: 45,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const boldtext(
-                            boldSize: .4,
-                            fontcolor: AppColor.primaryColor,
-                            fontsize: 25,
-                            text: "نسيت كلمة المرور",
-                          ),
-                          const SizedBox(height: 15),
-                          const Text(
-                            "لا تقلق! الرجاء إدخال الأيميل",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          const Text(
-                            "الإيميل",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          DefaultTextFormFiled(
-                            hintText: 'قم بإدخال الأيميل',
-                            controller: passwordContoller,
-                            keyboardType: TextInputType
-                                .emailAddress, // تحديد نوع الإدخال كإيميل
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'قم بإدخال عنوان البريد الإلكتروني';
-                              }
-
-                              // التحقق من صحة البريد الإلكتروني باستخدام RegExp
-                              final emailRegex = RegExp(
-                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                              );
-
-                              if (!emailRegex.hasMatch(value)) {
-                                return 'الرجاء إدخال بريد إلكتروني صالح';
-                              }
-
-                              return null;
-                            },
-                            isPassword: false,
-                            suffixIcon: null,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    ConditionalBuilder(
-                      condition: state is! SendEmailLoading,
-                      fallback: (context) =>
-                          const Center(child: CircularProgressIndicator()),
-                      builder: (context) => DefaultButton(
-                        text: 'التالي',
-                        backgroundColor: AppColor.primaryColor,
-                        color: AppColor.white,
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            // إستدعاء فنكشن من الكيوبت تقوم بعمل ركوست إلى ال API ,و إرسال الإيميل معه
-                            Navigator.pushNamed(context, AppRoute.checkEmail);
-                          }
-                        },
-                        fontsize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+    return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
+      listener: (context, state) {
+        if (state is SendEmailLoading) {
+          context.showLoadingDialog();
+        } else if (state is SendEmailSuccess) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          Navigator.pushNamed(
+            context,
+            AppRoute.checkEmail,
+            arguments: BlocProvider.of<ForgetapasswordCubit>(context),
           );
-        },
+        } else if (state is SendEmailFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          bottomOpacity: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 40),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: CircularLogo(),
+                  ),
+                ),
+                const Text(
+                  "الحارة الذكية",
+                  style: TextStyle(
+                    color: AppColor.primaryColor,
+                    fontSize: 45,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        "نسيت كلمة المرور",
+                        style: TextStyle(
+                          color: AppColor.primaryColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "لا تقلق! الرجاء إدخال الأيميل",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      const Text(
+                        "الإيميل",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      CustomTextFormField(
+                        hintText: 'قم بإدخال الأيميل',
+                        controller: passwordContoller,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: AppValidator.validateEmail,
+                        suffixIcon: null,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 50),
+                DefaultButton(
+                  text: 'التالي',
+                  backgroundColor: AppColor.primaryColor,
+                  color: AppColor.white,
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      forgetapasswordCubit.sendEmail(passwordContoller.text);
+                    }
+                  },
+                  fontsize: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

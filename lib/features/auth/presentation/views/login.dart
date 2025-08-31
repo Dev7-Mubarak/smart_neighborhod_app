@@ -2,15 +2,14 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
+import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
+import 'package:smart_negborhood_app/core/constants/app_color.dart';
+import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_state.dart';
-
-import '../../../../core/common/widgets/circular_logo.dart';
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/app_route.dart';
-import '../../../../core/common/widgets/default_text_form_filed.dart';
-import '../../../../core/common/widgets/defult_button.dart';
-import '../../../../core/services/API/dio_consumer.dart';
 
 class Login extends StatelessWidget {
   final isPassword = true;
@@ -29,7 +28,6 @@ class Login extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccess) {
             Navigator.pushNamed(context, AppRoute.mainHome);
-            //  print(state.userdata.id);
           } else if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -77,7 +75,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          DefaultTextFormFiled(
+                          CustomTextFormField(
                             hintText: 'قم بإدخال اسم المستخدم',
                             controller: emailContoller,
                             keyboardType: TextInputType.emailAddress,
@@ -88,7 +86,6 @@ class Login extends StatelessWidget {
                               return null;
                             },
                             suffixIcon: Icons.person,
-                            isPassword: false,
                           ),
                           const SizedBox(height: 20),
                           const Text(
@@ -100,7 +97,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          DefaultTextFormFiled(
+                          CustomTextFormField(
                             hintText: 'قم بإدخال كلمة المرور',
                             controller: passwordContoller,
                             keyboardType: TextInputType.visiblePassword,
@@ -111,7 +108,7 @@ class Login extends StatelessWidget {
                               return null;
                             },
                             suffixIcon: Icons.key,
-                            isPassword: LoginCubit.get(context).isPassword,
+                            obscureText: LoginCubit.get(context).isPassword,
                             prefixIcon: LoginCubit.get(context).prefixIcon,
                             onPrefixIconPressed: () {
                               LoginCubit.get(context).changePasswordVisibilty();
@@ -152,10 +149,6 @@ class Login extends StatelessWidget {
                               email: emailContoller.text,
                               password: passwordContoller.text,
                             );
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   AppRoute.mainhome,
-                            // );
                           }
                         },
                         fontsize: 20,

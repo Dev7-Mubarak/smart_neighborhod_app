@@ -8,18 +8,19 @@ abstract class TeamState {}
 class TeamInitial extends TeamState {}
 
 class TeamLoaded extends TeamState {
-  final List<Team> allTeams;
+    final List<Team> allTeams;
   final List<Team> filteredTeams;
   TeamLoaded({required this.allTeams, required this.filteredTeams});
+
 }
 
 class ProjectsOfTeamLoaded extends TeamState {
-  final List<Project> allProjects;
-  ProjectsOfTeamLoaded({required this.allProjects});
+    final List<Project> allProjects;
+  ProjectsOfTeamLoaded(this.allProjects);
+
 }
 
 class TeamLoading extends TeamState {}
-
 class WiateAddedUpdatedTeam extends TeamState {}
 
 class TeamFailure extends TeamState {
@@ -45,8 +46,8 @@ class TeamDeletedSuccessfully extends TeamState {
   final String message;
   TeamDeletedSuccessfully({required this.message});
 }
-
 class TeamByIdLoaded extends TeamState {
   final Team team;
   TeamByIdLoaded({required this.team});
 }
+

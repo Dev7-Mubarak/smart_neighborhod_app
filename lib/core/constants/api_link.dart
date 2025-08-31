@@ -10,11 +10,13 @@ class ApiLink {
   static const String addProject = '$server/Projects/Add';
   static const String updateProject = '$server/Projects/Update';
   static const String getProjectTeams = '$server/Projects/GetProjectTeam';
-  static const String getProjectBlockFamilies = '$server/Projects/GetProjectBlocksWithBeneficiaryFamilies';
+  static const String getProjectBlockFamilies =
+      '$server/Projects/GetProjectBlocksWithBeneficiaryFamilies';
   static const String assignTeamToProject = '$server/Projects/assign-team';
   static const String assignFamilyToProject = '$server/Projects/assign-family';
   static const String removeTeamFromeProject = '$server/Projects/remove-team';
-  static const String removeFamilyFromeProject = '$server/Projects/remove-family';
+  static const String removeFamilyFromeProject =
+      '$server/Projects/remove-family';
   static const String getAllTeams = '$server/Teams/GetAll';
   static const String addTeam = '$server/Teams/Add';
   static const String updateTeam = '$server/Teams/Update';
@@ -51,8 +53,13 @@ class ApiLink {
   static const String addConflict = '$server/ConflictCase/Add';
   static const String updateConflict = '$server/ConflictCase/Update';
   static const String deleteConflict = '$server/ConflictCase/Delete';
-  static const String getAllConfilctCaseTypes = '$server/ConfilctCaseType/GetAll';
-  
-
-  static const String getConflictCasesByFamilyMember = '$server/ConflictCase/ByFamilyMember';
+  static const String getAllConfilctCaseTypes =
+      '$server/ConfilctCaseType/GetAll';
+  static const String getConflictCasesByFamilyMember =
+      '$server/ConflictCase/ByFamilyMember';
+      
+  static const String sendEmail = '$server/Auth/Password-reset/send-code';
+  static const String sendConfirmationCode =
+      '$server/Auth/Password-reset/verify-code';
+  static const String sendNewPassword = '$server/Auth/Password-reset/confirm';
 }
