@@ -13,9 +13,12 @@ class CustomTextFormField extends StatelessWidget {
   final IconData? suffixIcon;
   final IconData? prefixIcon;
   final Color bachgroundColor;
-  final int? maxLines; // تمت إضافته لدعم الأسطر المتعددة
-  final int? minLines; // تمت إضافته لدعم الأسطر المتعددة
+  final int? maxLines;
+  final int? minLines;
   final void Function(String)? onChanged;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final void Function()? onEditingComplete;
 
   const CustomTextFormField({
     super.key,
@@ -31,13 +34,19 @@ class CustomTextFormField extends StatelessWidget {
     this.bachgroundColor = Colors.white,
     this.prefixIcon,
     this.onChanged,
-    this.maxLines = 1, // الافتراضي هو 1 لإدخال سطر واحد
-    this.minLines, // لا يوجد افتراضي، يسمح بأن يكون فارغًا لإدخال سطر واحد
+    this.maxLines = 1,
+    this.minLines,
+    this.focusNode,
+    this.textInputAction,
+    this.onEditingComplete,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
+      textInputAction: textInputAction,
+      onEditingComplete: onEditingComplete,
       onChanged: onChanged,
       readOnly: readOnly,
       controller: controller,

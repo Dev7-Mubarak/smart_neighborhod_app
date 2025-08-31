@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "blockManager": MessageLookupByLibrary.simpleMessage("مدير المربع"),
     "bloodType": MessageLookupByLibrary.simpleMessage("فصيلة الدم"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "changeBlockName": MessageLookupByLibrary.simpleMessage("تغيير اسم المربع"),
     "changeManager": MessageLookupByLibrary.simpleMessage("تغيير المدير"),
     "changeManagerLogic": MessageLookupByLibrary.simpleMessage(
       "هنا يمكنك تنفيذ منطق تغيير المدير.",
@@ -53,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "اضغط للمزيد من التفاصيل",
     ),
     "close": MessageLookupByLibrary.simpleMessage("إغلاق"),
+    "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
     "confirmDelete": MessageLookupByLibrary.simpleMessage("تأكيد الحذف"),
     "confirmDeleteBlock": MessageLookupByLibrary.simpleMessage(
       "هل أنت متأكد أنك تريد حذف هذا المربع؟",
@@ -142,6 +144,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialBlocks": MessageLookupByLibrary.simpleMessage(
       "المربعات السكنية",
     ),
+    "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "searchFamilyHead": MessageLookupByLibrary.simpleMessage(
       "ابحث عن رب الأسرة...",
     ),

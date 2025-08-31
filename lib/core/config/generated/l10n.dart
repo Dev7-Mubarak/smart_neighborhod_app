@@ -774,17 +774,42 @@ class AppLocalizations {
     return Intl.message(
       'Search for a residential block...',
       name: 'searchResidentialBlock',
-      desc: 'Search for a residential block hint',
+      desc: '',
       args: [],
     );
   }
 
-  /// `مدير المربع`
+  /// `Block Manager`
   String get blockManager {
     return Intl.message(
-      'مدير المربع',
+      'Block Manager',
       name: 'blockManager',
-      desc: 'Label for the manager of the block',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Block Name`
+  String get changeBlockName {
+    return Intl.message(
+      'Change Block Name',
+      name: 'changeBlockName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message('Save', name: 'save', desc: 'Save button', args: []);
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: 'Confirm button',
       args: [],
     );
   }

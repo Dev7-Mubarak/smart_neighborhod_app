@@ -34,9 +34,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "birthDateRequired": MessageLookupByLibrary.simpleMessage(
       "Birth date is required",
     ),
-    "blockManager": MessageLookupByLibrary.simpleMessage("مدير المربع"),
+    "blockManager": MessageLookupByLibrary.simpleMessage("Block Manager"),
     "bloodType": MessageLookupByLibrary.simpleMessage("Blood Type"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "changeBlockName": MessageLookupByLibrary.simpleMessage(
+      "Change Block Name",
+    ),
     "changeManager": MessageLookupByLibrary.simpleMessage("Change Manager"),
     "changeManagerLogic": MessageLookupByLibrary.simpleMessage(
       "Here you can implement the logic to change the manager.",
@@ -57,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Click for more details",
     ),
     "close": MessageLookupByLibrary.simpleMessage("Close"),
+    "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
     "confirmDelete": MessageLookupByLibrary.simpleMessage("Confirm Delete"),
     "confirmDeleteBlock": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to delete this block?",
@@ -142,6 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialBlocks": MessageLookupByLibrary.simpleMessage(
       "Residential Blocks",
     ),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
     "searchFamilyHead": MessageLookupByLibrary.simpleMessage(
       "Search for family head...",
     ),
