@@ -14,7 +14,7 @@ class ConflictTypeCubit extends Cubit<ConflictTypeState> {
   Future<void> getConflictTypeCubit() async {
     emit(ConflictTypeLoading());
     try {
-      final response = await api.get(ApiLink.getAllConfilctCaseTypes);
+      final response = await api.get(ApiLink.getAllConflictCaseTypes);
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
