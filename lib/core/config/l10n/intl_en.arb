@@ -369,5 +369,13 @@
   },
   "changeBlockName": "Change Block Name",
   "@changeBlockName": {
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button"
   }
 }

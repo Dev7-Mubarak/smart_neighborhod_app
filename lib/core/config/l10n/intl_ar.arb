@@ -372,5 +372,14 @@
   },
   "changeBlockName": "تغيير اسم المربع",
   "@changeBlockName": {
+  },
+  "save": "حفظ",
+  "@save": {
+    "description": "Save button"
+  },
+  "confirm": "تأكيد",
+  "@confirm": {
+    "description": "Confirm button"
   }
+  
 }
