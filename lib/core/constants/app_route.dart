@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
@@ -63,7 +65,6 @@ class AppRouter {
             child: const MainHome(),
           ),
         );
-
       case AppRoute.allPeople:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -111,23 +112,35 @@ class AppRouter {
             child: ResiddentialBlocksDetail(blockId: blockId),
           ),
         );
-
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
-          builder: (_) => forgetapassword(),
+          builder: (_) => BlocProvider<ForgetapasswordCubit>(
+            create: (context) =>
+                ForgetapasswordCubit(api: DioConsumer(dio: Dio())),
+            child: Forgetapassword(),
+          ),
           fullscreenDialog: false,
         );
 
       case AppRoute.checkEmail:
+        final forgetapasswordCubit = settings.arguments as ForgetapasswordCubit;
         return MaterialPageRoute(
-          builder: (_) => checkEmail(),
+          builder: (_) => BlocProvider.value(
+            value: forgetapasswordCubit,
+            child: CheckEmail(),
+          ),
           fullscreenDialog: false,
         );
       case AppRoute.createNewPassword:
+        final forgetapasswordCubit = settings.arguments as ForgetapasswordCubit;
         return MaterialPageRoute(
-          builder: (_) => createNewPassword(),
+          builder: (_) => BlocProvider.value(
+            value: forgetapasswordCubit,
+            child: CreateNewPassword(),
+          ),
           fullscreenDialog: false,
         );
+
       case AppRoute.addUpdateBlock:
         return MaterialPageRoute(
           builder: (context) => BlocProvider<PersonCubit>(
@@ -342,7 +355,7 @@ class AppRoute {
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
   static const String residentialBlocks = '/ResidentialBlock';
   static const String forgetapassword = '/forgetapassword';
-  static const String checkEmail = '/checkEmail';
+  static const String checkEmail = '/CheckEmail';
   static const String createNewPassword = '/createNewPassword';
   static const String addUpdateBlock = '/AddUpdateBlock';
   static const String familyDetiles = '/FamilyDetiles';

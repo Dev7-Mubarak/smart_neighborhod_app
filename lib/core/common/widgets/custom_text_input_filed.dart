@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/app_size.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? hintText;
@@ -16,11 +16,13 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final void Function(String)? onChanged;
+  final void Function()? onPrefixIconPressed;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function()? onEditingComplete;
-
   const CustomTextFormField({
+        this.onPrefixIconPressed,
+
     super.key,
     this.hintText,
     this.controller,
@@ -69,7 +71,10 @@ class CustomTextFormField extends StatelessWidget {
         hintStyle: const TextStyle(color: Colors.black, fontSize: 14),
         prefixIcon: prefixIcon == null
             ? null
-            : Icon(prefixIcon, color: Colors.black),
+            :IconButton(
+                  icon: Icon(prefixIcon,color: Colors.black),
+                  onPressed: onPrefixIconPressed,
+                ) ,
         suffixIcon: suffixIcon == null
             ? null
             : Icon(suffixIcon, color: Colors.black),

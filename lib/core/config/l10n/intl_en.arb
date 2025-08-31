@@ -366,6 +366,116 @@
   "@blockManager": {
   },
   "@searchResidentialBlock": {
+    "description": "Search for a residential block hint"
+  },
+
+
+
+    "verifyCode": "Verify the code",
+  "@verifyCode": {
+    "description": "The sub title of the CheckEmail page"
+  },
+
+  "enterverifyCode": "Please enter the code we just sent to the email you entered",
+  "@enterverifyCode": {
+    "description": "The label of verifyCode in CheckEmail page"
+  },
+
+   "next": "Next",
+  "@next": {
+    "description": "The next button"
+  },
+
+ "warningVerifycodeEmpty": "Please enter the Verify code",
+  "@warningVerifycode": {
+    "description": "The warning of not entering the Verify code"
+  },
+
+  "warningVerifycodeType": "Please enter only numbers",
+  "@warningVerifycode": {
+    "description": "The warning of entering  not number value for Verify code"
+  },
+
+   "resendVerifycode": "Resend code",
+  "@resendVerifycode": {
+    "description": "Resend Verify code button"
+  },
+
+  "resendVerifycodeAt": "Resend code at 00",
+  "@resendVerifycodeAt": {
+    "description": "Resend Verify code Timer"
+  },
+
+
+  "createNewPasswordTitle": "Create a new password",
+  "@createNewPasswordTitle": {
+    "description": "Title for the create new password page"
+  },
+  "passwordDifferentHint": "Your new password must be different from the password previously used.",
+  "@passwordDifferentHint": {
+    "description": "Hint for password creation"
+  },
+  "passwordLabel": "Password:",
+  "@passwordLabel": {
+    "description": "Password label with colon"
+  },
+  "enterPasswordHint": "Enter password",
+  "@enterPasswordHint": {
+    "description": "Hint for entering password"
+  },
+  "passwordValidationHint": "Must contain at least 8 characters, an uppercase letter, a lowercase letter, a symbol, and a number",
+  "@passwordValidationHint": {
+    "description": "Password validation hint"
+  },
+  "retypePasswordLabel": "Re-enter password:",
+  "@retypePasswordLabel": {
+    "description": "Retype password label with colon"
+  },
+  "sendButton": "Submit",
+  "@sendButton": {
+    "description": "Send button text"
+  },
+  "passwordsMismatch": "Password does not match the other one",
+  "@passwordsMismatch": {
+    "description": "Passwords mismatch error message"
+  },
+
+  "forgotPasswordTitle": "Forgot Password",
+  "@forgotPasswordTitle": {
+    "description": "Title for the forgot password page"
+  },
+  "forgotPasswordHint": "Don't worry! Please enter your email",
+  "@forgotPasswordHint": {
+    "description": "Hint for forgot password page"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email label"
+  },
+  "enterEmailHint": "Enter your email",
+  "@enterEmailHint": {
+    "description": "Hint for entering email"
+  },
+  "nextButton": "Next",
+  "@nextButton": {
+    "description": "Next button text"
+  },
+
+  "emailSentSuccess": "Email sent successfully, a confirmation code will be sent to your email address.",
+  "@emailSentSuccess": {
+    "description": "Success message when email is sent"
+  },
+  "unknownError": "An unknown error occurred",
+  "@unknownError": {
+    "description": "General unknown error message"
+  },
+  "emailConfirmedSuccess": "Email has been confirmed",
+  "@emailConfirmedSuccess": {
+    "description": "Success message when email is confirmed"
+  },
+  "passwordChangedSuccess": "Password has been changed successfully",
+  "@passwordChangedSuccess": {
+    "description": "Success message when password is changed"
   },
   "changeBlockName": "Change Block Name",
   "@changeBlockName": {
@@ -378,4 +488,5 @@
   "@confirm": {
     "description": "Confirm button"
   }
+
 }

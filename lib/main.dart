@@ -41,7 +41,7 @@ class SmartNeighbourhood extends StatelessWidget {
           fontFamily: 'Tajawal-Regular',
         ),
         onGenerateRoute: appRouter.generateRoute,
-        initialRoute: AppRoute.mainHome,
+        initialRoute: AppRoute.onBoarding,
       ),
     );
   }
