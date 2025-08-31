@@ -476,6 +476,17 @@
   "passwordChangedSuccess": "Password has been changed successfully",
   "@passwordChangedSuccess": {
     "description": "Success message when password is changed"
+  },
+  "changeBlockName": "Change Block Name",
+  "@changeBlockName": {
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm button"
   }
 
 }

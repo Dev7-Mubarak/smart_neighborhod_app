@@ -16,12 +16,10 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final void Function(String)? onChanged;
-    final void Function()? onPrefixIconPressed;
+  final void Function()? onPrefixIconPressed;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function()? onEditingComplete;
-
-
   const CustomTextFormField({
         this.onPrefixIconPressed,
 
