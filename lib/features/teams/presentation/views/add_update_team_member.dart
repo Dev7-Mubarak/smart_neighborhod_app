@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_state.dart';
@@ -206,12 +207,8 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ),
                                   ),
                                 ),
-                                validator: (Person? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار إسم العضو ";
-                                  }
-                                  return null;
-                                },
+                                validator: (Person? item) =>
+                                    AppValidator.validateDropdown(item),
                                 enabled: widget.teamMember == null
                                     ? true
                                     : false,
@@ -228,12 +225,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => teamMemberCubit.pickDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'الرجاء قم بإدخال تاريخ إنضمام  العضو';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField
                         ),
                         const SizedBox(height: 20),
                         const SmallText(text: 'وظيفة العضو'),
@@ -307,12 +299,8 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ),
                                   ),
                                 ),
-                                validator: (TeamRole? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار دور العضو ";
-                                  }
-                                  return null;
-                                },
+                                 validator:(TeamRole? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();

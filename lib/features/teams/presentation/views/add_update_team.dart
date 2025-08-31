@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
@@ -135,12 +136,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                           controller: teamNameController,
                           keyboardType: TextInputType.name,
                           suffixIcon: null,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'أسم الفريق';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'إختر قائد الفريق '),
@@ -209,12 +205,8 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                     ),
                                   ),
                                 ),
-                                validator: (Person? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار قائد الفريق";
-                                  }
-                                  return null;
-                                },
+                                validator: (Person? item) =>
+                                    AppValidator.validateDropdown(item),
                                 enabled: widget.team == null ? true : false,
                               );
                             }
@@ -229,12 +221,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => teamCubit.pickDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'الرجاء قم بإدخال تاريخ إنضمام قائد الفريق';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField,
                         ),
                       ],
                     ),

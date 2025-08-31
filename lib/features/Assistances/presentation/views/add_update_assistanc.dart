@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
@@ -171,12 +172,13 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           controller: assistanceNameController,
                           keyboardType: TextInputType.name,
                           suffixIcon: null,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'أسم المشروع';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField,
+                          //  (value) {
+                          //   if (value == null || value.trim().isEmpty) {
+                          //     return 'أسم المشروع';
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'وصف المشروع'),
@@ -188,19 +190,18 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           suffixIcon: null,
                           maxLines: null,
                           minLines: 3,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'وصف المشروع';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField,
+                          //  (value) {
+                          //   if (value == null || value.trim().isEmpty) {
+                          //     return 'وصف المشروع';
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'تصنيف المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         BlocBuilder<ProjectCategoryCubit, ProjectCategoryState>(
-                          // buildWhen: (previous, current) =>
-                          //     current is ProjectCategoryLoaded,
                           builder: (context, state) {
                             if (state is ProjectCategoryLoading) {
                               return const Center(
@@ -224,12 +225,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   _selectedProjectCategory,
                                 );
                               }
-                              // _selectedProjectCategory = widget
-                              //         .assistancProject?.projectCategory ??
-                              //     state.projectCategories.firstWhere(
-                              //         (element) => element.name == "مساعدات",
-                              //         orElse: () => state
-                              //             .projectCategories.first); // fallback
                               return DropdownSearch<ProjectCategory>(
                                 popupProps: PopupProps.menu(
                                   showSearchBox: true,
@@ -258,10 +253,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 itemAsString: (ProjectCategory? u) =>
                                     u?.name ?? '',
                                 onChanged: null,
-                                //  (ProjectCategory? data) {
-                                //   assistanceCubit
-                                //       .changeSelectedProjectCategory(data);
-                                // },
                                 selectedItem: _selectedProjectCategory,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
@@ -276,12 +267,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                     ),
                                   ),
                                 ),
-                                validator: (ProjectCategory? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار تصنيف المشروع";
-                                  }
-                                  return null;
-                                },
+                                validator: (ProjectCategory? item) =>AppValidator.validateDropdown(item),
                                 enabled: false,
                               );
                             }
@@ -365,12 +351,8 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                     ),
                                   ),
                                 ),
-                                validator: (Person? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار مدير للمربع";
-                                  }
-                                  return null;
-                                },
+                                validator: (Person? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();
@@ -379,92 +361,22 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                         const SizedBox(height: 30),
                         const SmallText(text: 'تاريخ بداية التوزيع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        // Row(
-                        //   children: [
-                        //     GestureDetector(
-                        //       onTap: () async {
-                        //         await DateTimeHelper.selectDate(
-                        //             context, startDateController);
-                        //       },
-                        //       child: const Icon(
-                        //         Icons.calendar_month,
-                        //         color: AppColor.primaryColor,
-                        //         size: 30,
-                        //       ),
-                        //     ),
-                        //     const SizedBox(width: 10),
-                        //     Expanded(
-                        //       child: CustomTextFormField(
-                        //         controller: startDateController,
-                        //         keyboardType: TextInputType.none,
-                        //         suffixIcon: null,
-                        //         readOnly: true,
-                        //         onTap: () async {
-                        //           await DateTimeHelper.selectDate(
-                        //               context, startDateController);
-                        //         },
-                        //         validator: (value) {
-                        //           if (value == null || value.isEmpty) {
-                        //             return 'تاريخ  بداية التوزيع';
-                        //           }
-                        //           return null;
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // BlocBuilder<AssistancesCubit, AssistancesState>(
-                        //   buildWhen: (previous, current) =>
-                        //       current is ChangeSelectedStartDate,
-                        //   builder: (context, state) {
-                        //     startDateController.text =
-                        //         assistanceCubit.selectedStartDate != null
-                        //             ? DateFormat('yyyy-MM-dd').format(
-                        //                 assistanceCubit.selectedStartDate!)
-                        //             : '';
-
-                        //     return CustomTextFormField(
-                        //       controller: startDateController,
-                        //       suffixIcon: Icons.calendar_today,
-                        //       readOnly: true,
-                        //       onTap: () =>
-                        //           assistanceCubit.pickStartDate(context),
-                        //       validator: (value) {
-                        //         if (value == null || value.isEmpty) {
-                        //           return 'تاريخ بداية التوزيع';
-                        //         }
-                        //         return null;
-                        //       },
-                        //     );
-                        //   },
-                        // ),
                         CustomTextFormField(
                           controller: startDateController,
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => assistanceCubit.pickStartDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'تاريخ بداية التوزيع';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'تاريخ نهاية التوزيع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-
                         CustomTextFormField(
                           controller: endDateController,
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => assistanceCubit.pickEndDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'تاريخ نهايةالتوزيع';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: ' حالة المشروع'),
@@ -536,16 +448,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           controller: budgetController,
                           keyboardType: TextInputType.number,
                           suffixIcon: null,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'الميزانية مطلوبة';
-                            }
-                            // التحقق مما إذا كانت القيمة تحتوي على أرقام فقط
-                            if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
-                              return 'الرجاء إدخال أرقام فقط في حقل الميزانية';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validatebudget,
                         ),
                       ],
                     ),
