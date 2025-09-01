@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
@@ -98,14 +99,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
         if (state is WiateAddedUpdatedassistance) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is AssistancAddedSuccessfully ||
             state is AssistanceUpdatedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -113,34 +107,10 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
           final message = (state is AssistancAddedSuccessfully)
               ? state.message
               : (state as AssistanceUpdatedSuccessfully).message;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.green),
-          );
-          // }
-          //   else if (state is AssistancAddedSuccessfully) {
-          //   ScaffoldMessenger.of(context).showSnackBar(
-          //     SnackBar(
-          //       content: Text(state.message),
-          //       backgroundColor: Colors.green,
-          //     ),
-          //   );
-          //   Navigator.pop(context);
-          // } else if (state is AssistanceUpdatedSuccessfully) {
-          //   ScaffoldMessenger.of(context).showSnackBar(
-          //     SnackBar(
-          //       content: Text(state.message),
-          //       backgroundColor: Colors.green,
-          //     ),
-          //   );
-          //   Navigator.pop(context);
+          context.showSuccessSnackBar(message);
         } else if (state is AssistancesFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         } else if (state is ChangeSelectedStartDate) {
           startDateController.text = startDateController.text =
               assistanceCubit.selectedStartDate != null

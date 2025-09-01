@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_state.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
@@ -80,14 +81,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
     return BlocListener<ConflictCubit, ConflictState>(
       listener: (context, state) {
         if (state is WiateAddedUpdatedConflict) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is ConflictAddedSuccessfully ||
             state is ConflictUpdatedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -95,17 +89,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
           final message = (state is ConflictAddedSuccessfully)
               ? state.message
               : (state as ConflictUpdatedSuccessfully).message;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.green),
-          );
+          context.showSuccessSnackBar(message);
         } else if (state is ConflictFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         } else if (state is ChangeSelectedSessionDate) {
           conflictDateController.text = conflictCubit.sessionDate != null
               ? DateFormat('yyyy-MM-dd').format(conflictCubit.sessionDate!)

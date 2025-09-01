@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
@@ -63,14 +64,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
     return BlocListener<TeamCubit, TeamState>(
       listener: (context, state) {
         if (state is WiateAddedUpdatedTeam) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is TeamAddedSuccessfully ||
             state is TeamUpdatedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -78,17 +72,10 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
           final message = (state is TeamAddedSuccessfully)
               ? state.message
               : (state as TeamUpdatedSuccessfully).message;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.green),
-          );
+          context.showSuccessSnackBar(message);
         } else if (state is TeamFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         } else if (state is ChangeSelectedJoiedDate) {
           JoiedDateController.text = teamCubit.selectedJoiedDate != null
               ? DateFormat('yyyy-MM-dd').format(teamCubit.selectedJoiedDate!)
