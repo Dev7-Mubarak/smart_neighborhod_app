@@ -774,7 +774,7 @@ class AppLocalizations {
     return Intl.message(
       'Search for a residential block...',
       name: 'searchResidentialBlock',
-      desc: '',
+      desc: 'Search for a residential block hint',
       args: [],
     );
   }
@@ -785,6 +785,226 @@ class AppLocalizations {
       'Block Manager',
       name: 'blockManager',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify the code`
+  String get verifyCode {
+    return Intl.message(
+      'Verify the code',
+      name: 'verifyCode',
+      desc: 'The sub title of the CheckEmail page',
+      args: [],
+    );
+  }
+
+  /// `Please enter the code we just sent to the email you entered`
+  String get enterverifyCode {
+    return Intl.message(
+      'Please enter the code we just sent to the email you entered',
+      name: 'enterverifyCode',
+      desc: 'The label of verifyCode in CheckEmail page',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: 'The next button',
+      args: [],
+    );
+  }
+
+  /// `Please enter the Verify code`
+  String get warningVerifycodeEmpty {
+    return Intl.message(
+      'Please enter the Verify code',
+      name: 'warningVerifycodeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter only numbers`
+  String get warningVerifycodeType {
+    return Intl.message(
+      'Please enter only numbers',
+      name: 'warningVerifycodeType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend code`
+  String get resendVerifycode {
+    return Intl.message(
+      'Resend code',
+      name: 'resendVerifycode',
+      desc: 'Resend Verify code button',
+      args: [],
+    );
+  }
+
+  /// `Resend code at 00`
+  String get resendVerifycodeAt {
+    return Intl.message(
+      'Resend code at 00',
+      name: 'resendVerifycodeAt',
+      desc: 'Resend Verify code Timer',
+      args: [],
+    );
+  }
+
+  /// `Create a new password`
+  String get createNewPasswordTitle {
+    return Intl.message(
+      'Create a new password',
+      name: 'createNewPasswordTitle',
+      desc: 'Title for the create new password page',
+      args: [],
+    );
+  }
+
+  /// `Your new password must be different from the password previously used.`
+  String get passwordDifferentHint {
+    return Intl.message(
+      'Your new password must be different from the password previously used.',
+      name: 'passwordDifferentHint',
+      desc: 'Hint for password creation',
+      args: [],
+    );
+  }
+
+  /// `Enter password`
+  String get enterPasswordHint {
+    return Intl.message(
+      'Enter password',
+      name: 'enterPasswordHint',
+      desc: 'Hint for entering password',
+      args: [],
+    );
+  }
+
+  /// `Must contain at least 8 characters, an uppercase letter, a lowercase letter, a symbol, and a number`
+  String get passwordValidationHint {
+    return Intl.message(
+      'Must contain at least 8 characters, an uppercase letter, a lowercase letter, a symbol, and a number',
+      name: 'passwordValidationHint',
+      desc: 'Password validation hint',
+      args: [],
+    );
+  }
+
+  /// `Re-enter password:`
+  String get retypePasswordLabel {
+    return Intl.message(
+      'Re-enter password:',
+      name: 'retypePasswordLabel',
+      desc: 'Retype password label with colon',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get sendButton {
+    return Intl.message(
+      'Submit',
+      name: 'sendButton',
+      desc: 'Send button text',
+      args: [],
+    );
+  }
+
+  /// `Password does not match the other one`
+  String get passwordsMismatch {
+    return Intl.message(
+      'Password does not match the other one',
+      name: 'passwordsMismatch',
+      desc: 'Passwords mismatch error message',
+      args: [],
+    );
+  }
+
+  /// `Forgot Password`
+  String get forgotPasswordTitle {
+    return Intl.message(
+      'Forgot Password',
+      name: 'forgotPasswordTitle',
+      desc: 'Title for the forgot password page',
+      args: [],
+    );
+  }
+
+  /// `Don't worry! Please enter your email`
+  String get forgotPasswordHint {
+    return Intl.message(
+      'Don\'t worry! Please enter your email',
+      name: 'forgotPasswordHint',
+      desc: 'Hint for forgot password page',
+      args: [],
+    );
+  }
+
+  /// `Enter your email`
+  String get enterEmailHint {
+    return Intl.message(
+      'Enter your email',
+      name: 'enterEmailHint',
+      desc: 'Hint for entering email',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get nextButton {
+    return Intl.message(
+      'Next',
+      name: 'nextButton',
+      desc: 'Next button text',
+      args: [],
+    );
+  }
+
+  /// `Email sent successfully, a confirmation code will be sent to your email address.`
+  String get emailSentSuccess {
+    return Intl.message(
+      'Email sent successfully, a confirmation code will be sent to your email address.',
+      name: 'emailSentSuccess',
+      desc: 'Success message when email is sent',
+      args: [],
+    );
+  }
+
+  /// `An unknown error occurred`
+  String get unknownError {
+    return Intl.message(
+      'An unknown error occurred',
+      name: 'unknownError',
+      desc: 'General unknown error message',
+      args: [],
+    );
+  }
+
+  /// `Email has been confirmed`
+  String get emailConfirmedSuccess {
+    return Intl.message(
+      'Email has been confirmed',
+      name: 'emailConfirmedSuccess',
+      desc: 'Success message when email is confirmed',
+      args: [],
+    );
+  }
+
+  /// `Password has been changed successfully`
+  String get passwordChangedSuccess {
+    return Intl.message(
+      'Password has been changed successfully',
+      name: 'passwordChangedSuccess',
+      desc: 'Success message when password is changed',
       args: [],
     );
   }

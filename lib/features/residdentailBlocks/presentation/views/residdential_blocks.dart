@@ -12,7 +12,6 @@ import '../../cubits/cubit/block_state.dart';
 import '../../data/models/Block.dart';
 import 'widgets/change_block_name_widget.dart';
 import 'widgets/residential_block_card_widget.dart';
-// Add this import at the top
 
 class ResidentialBlock extends StatefulWidget {
   const ResidentialBlock({super.key});
@@ -22,9 +21,8 @@ class ResidentialBlock extends StatefulWidget {
 }
 
 class _ResidentialBlockState extends State<ResidentialBlock> {
-  List<Block> residentialListSearch = [];
   List<Block> residentialList = [];
-  late BlockCubit _blockCubit;
+  late final BlockCubit _blockCubit;
 
   @override
   void initState() {
@@ -32,19 +30,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     _blockCubit = context.read<BlockCubit>()..getBlocks();
   }
 
-  void updateSearchResults(List<Block> filteredList) {
-    setState(() {
-      residentialListSearch = filteredList;
-    });
-  }
-
   Widget buildBlocWidget() {
     return BlocBuilder<BlockCubit, BlockState>(
       builder: (context, state) {
         if (state is BlocksLoaded) {
-          residentialList = state.allBlocks;
-          residentialListSearch = residentialList;
-          return buildLoadedListWidgets();
+          return buildLoadedListWidgets(state.allBlocks);
         } else if (state is BlocksLoading) {
           return showLoadingIndicator();
         } else if (state is BlocksFailure) {
@@ -60,12 +50,12 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget buildLoadedListWidgets() {
+  Widget buildLoadedListWidgets(List<Block> blocks) {
     return ListView.builder(
-      itemCount: residentialListSearch.length,
+      itemCount: blocks.length,
       itemBuilder: (context, index) {
         return ResidentialBlockCardWidget(
-          block: residentialListSearch[index],
+          block: blocks[index],
           onLongPressCallback: (ctx, block) {
             _showOptions(block);
           },
@@ -136,8 +126,14 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               leading: const Icon(Icons.edit, color: Colors.blue),
               title: Text(locale.changeBlockName),
               onTap: () {
-                BlocProvider.of<BlockCubit>(context).setBlock(bloc);
-                context.showBottomSheet(ChangeBlockNameWidget());
+                Navigator.pop(context);
+                _blockCubit.setBlock(bloc);
+                context.showBottomSheet(
+                  BlocProvider.value(
+                    value: _blockCubit,
+                    child: ChangeBlockNameWidget(),
+                  ),
+                );
               },
             ),
             ListTile(

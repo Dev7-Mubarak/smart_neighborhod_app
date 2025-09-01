@@ -32,7 +32,10 @@ extension ContextExtension on BuildContext {
 
   void showSuccessSnackBar(String message) {
     _showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: AppColor.success),
+      SnackBar(
+        content: Text(message, style: TextStyle(color: AppColor.white)),
+        backgroundColor: AppColor.success,
+      ),
     );
   }
 
@@ -51,9 +54,6 @@ extension ContextExtension on BuildContext {
               _isLoading = false;
             }
           },
-          // onPopInvoked: (didPop) {
-          //   if (didPop) _isLoading = false;
-          // },
           child: Center(
             child: Container(
               padding: const EdgeInsets.all(10),

@@ -62,7 +62,7 @@ class ApiLink {
   static const String deletePerson = '$server/person';
   static const String updatePerson = '$server/person';
   static const String getAllPepole = '$server/person';
-  static const String getPersonById = '$server/person/GetById';
+  static const String getPersonById = '$server/person';
 
   // Conflict Cases
   static const String getAllConflict = '$server/conflictCase';

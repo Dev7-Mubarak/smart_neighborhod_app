@@ -19,15 +19,15 @@ class BlockCubit extends Cubit<BlockState> {
   Future<void> setBlock(Block block) async {
     this.block = block;
 
-    // convert this to service and repositry then called
-    final response = await api.get(
-      '${ApiLink.getPersonById}/${block.personId}',
-    );
+    // // convert this to service and repositry then called
+    // final response = await api.get(
+    //   '${ApiLink.getPersonById}/${block.personId}',
+    // );
 
-    if (response["data"] != null) {
-      selectedManager = Person.fromJson(response["data"]);
-    }
-    //
+    // if (response["data"] != null) {
+    //   selectedManager = Person.fromJson(response["data"]);
+    // }
+    // //
   }
 
   void changeSelectedManager(Person? selectedManager) {
@@ -99,27 +99,15 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-  Future<void> updateBlock({
-    required int id,
-    required String name,
-    required String userName,
-  }) async {
+  Future<void> updateBlock({required int id, required String name}) async {
     emit(BlocksLoading());
     try {
       final response = await api.update(
         '${ApiLink.updateBlocke}/$id',
-        data: {
-          'name': name,
-          'personId': selectedManager?.id,
-          'userName': userName,
-        },
+        data: {'name': name},
       );
       if (response["isSuccess"]) {
-        emit(
-          BlockUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح",
-          ),
-        );
+        emit(BlockUpdatedSuccessfully(message: response["message"]));
         await getBlocks();
       } else {
         final String errorMessage =

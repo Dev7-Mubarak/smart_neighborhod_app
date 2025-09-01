@@ -262,7 +262,6 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                               );
                             } else {
                               blockCubit.updateBlock(
-                                userName: usernameController.text,
                                 id: blockCubit.block!.id,
                                 name: blockNameController.text,
                               );
