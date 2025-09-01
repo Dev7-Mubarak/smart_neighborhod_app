@@ -5,8 +5,9 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_cubit.dart';
-import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
+import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
+import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
@@ -141,12 +142,8 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                                     ),
                                   ),
                                 ),
-                                validator: (Team? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار فريق ";
-                                  }
-                                  return null;
-                                },
+                                validator: (Team? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();

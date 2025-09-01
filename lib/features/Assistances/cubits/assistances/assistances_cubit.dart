@@ -10,7 +10,7 @@ import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
 import '../../../../core/common/enums/project_priority.dart';
 import '../../../../core/common/enums/project_status.dart';
-import '../../../Assistances/data/models/project.dart';
+import '../../data/models/project.dart';
 import 'assistances_state.dart';
 
 class AssistancesCubit extends Cubit<AssistancesState> {

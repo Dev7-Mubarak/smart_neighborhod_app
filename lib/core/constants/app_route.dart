@@ -44,7 +44,7 @@ import 'package:smart_negborhood_app/features/teams/presentation/views/add_updat
 import 'package:smart_negborhood_app/features/teams/presentation/views/all_teams.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/team_details.dart';
 import '../../features/residdentailBlocks/cubits/cubit/block_cubit.dart';
-import '../../features/annoucements/cubits/assistances/assistances_cubit.dart';
+import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
 import '../../features/home/cubits/mainHome_cubit/main_home_cubit.dart';
 

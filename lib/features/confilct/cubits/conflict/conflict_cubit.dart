@@ -98,10 +98,6 @@ class ConflictCubit extends Cubit<ConflictState> {
     // conflictPicture= conflict.imageUrl;
   }
 
-  // // void changeSelectedManager(int? id) {
-  // //   selectedTeamLeadId = id;
-  // //   emit(ChangeSelectedTeamLeadId());
-  // // }
   void uplodeConflictPicture(XFile image) {
     conflictPicture = image;
     emit(UplodeConflictPicture());
