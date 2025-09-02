@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
+import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
@@ -102,7 +103,14 @@ class AppRouter {
           ),
         );
       case AppRoute.login:
-        return MaterialPageRoute(builder: (_) => Login());
+        return
+        MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: ((BuildContext context) =>
+                LoginCubit(api: DioConsumer(dio: Dio()))),
+            child:  Login(),
+          ),
+        );
 
       case AppRoute.residentialBlockDetial:
         final blockId = settings.arguments as int;

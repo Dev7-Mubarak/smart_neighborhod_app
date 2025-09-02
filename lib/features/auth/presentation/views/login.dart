@@ -1,5 +1,3 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
@@ -7,40 +5,66 @@ import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
-import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_state.dart';
 
-class Login extends StatelessWidget {
-  final isPassword = true;
-  final formKey = GlobalKey<FormState>();
-  final emailContoller = TextEditingController();
-  final passwordContoller = TextEditingController();
-
-  final isLoading = false;
+class Login extends StatefulWidget {
   Login({super.key});
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final isPassword = true;
+
+  final formKey = GlobalKey<FormState>();
+
+  final emailContoller = TextEditingController();
+
+  final passwordContoller = TextEditingController();
+
+  late LoginCubit loginCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    loginCubit = context.read<LoginCubit>();
+  }
+
+  @override
+  void dispose() {
+    passwordContoller.dispose();
+    emailContoller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginCubit(api: DioConsumer(dio: Dio())),
-      child: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state is LoginSuccess) {
-            Navigator.pushNamed(context, AppRoute.mainHome);
-          } else if (state is LoginFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 5),
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginLoading) {
+          context.showLoadingDialog();
+        }else
+        if (state is LoginSuccess) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          Navigator.pushNamed(context, AppRoute.mainHome);
+        } else if (state is LoginFailure) {
+         Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        }
+      },
+      child:
+      Scaffold(
+         appBar: AppBar(
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          bottomOpacity: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
             body: Center(
               child: SingleChildScrollView(
                 child: Column(
@@ -126,17 +150,13 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    ConditionalBuilder(
-                      condition: state is! LoginLoading,
-                      fallback: (context) =>
-                          const Center(child: CircularProgressIndicator()),
-                      builder: (context) => DefaultButton(
+                     DefaultButton(
                         text: 'تسجيل الدخول',
                         backgroundColor: AppColor.primaryColor,
                         color: AppColor.white,
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).signIn(
+                            loginCubit.signIn(
                               email: emailContoller.text,
                               password: passwordContoller.text,
                             );
@@ -144,14 +164,10 @@ class Login extends StatelessWidget {
                         },
                         fontsize: 20,
                       ),
-                    ),
                   ],
                 ),
               ),
             ),
-          );
-        },
-      ),
-    );
-  }
-}
+          )
+    );}}
+
