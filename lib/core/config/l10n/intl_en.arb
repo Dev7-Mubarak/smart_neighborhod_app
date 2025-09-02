@@ -480,6 +480,19 @@
   "@confirm": {
     "description": "Confirm button"
   },
+   "changeManager": "Change Block Manager",
+  "failedToLoadPeople": "No managers available",
+  "searchFamilyHead": "Search for manager...",
+  "chooseFamilyHead": "Choose manager",
+  "pleaseChooseFamilyHead": "Please choose a manager for the block",
+  "username": "Username",
+  "pleaseEnterUsername": "Please enter username",
+  "password": "Password",
+  "passwordValidationHint": "Password must be at least 8 characters and contain an uppercase letter and a number",
+  "edit": "Edit",
+  "delete": "Delete",
+  "deleteNotAllowed": "Deletion is not allowed at this time",
+  "noResultsFound": "No results found"
 
     "addFamilyToAssistanceTitle": "Add Family to Assistance",
     "@addFamilyToAssistanceTitle": {

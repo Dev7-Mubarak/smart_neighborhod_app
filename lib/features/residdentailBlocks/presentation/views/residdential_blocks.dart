@@ -5,14 +5,14 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../cubits/cubit/block_cubit.dart';
 import '../../cubits/cubit/block_state.dart';
 import '../../data/models/Block.dart';
-import 'widgets/change_block_name_widget.dart';
-import 'widgets/residential_block_card_widget.dart';
-// Add this import at the top
+import '../widgets/change_block_name_widget.dart';
+import '../widgets/residential_block_card_widget.dart';
 
 class ResidentialBlock extends StatefulWidget {
   const ResidentialBlock({super.key});
@@ -22,9 +22,8 @@ class ResidentialBlock extends StatefulWidget {
 }
 
 class _ResidentialBlockState extends State<ResidentialBlock> {
-  List<Block> residentialListSearch = [];
   List<Block> residentialList = [];
-  late BlockCubit _blockCubit;
+  late final BlockCubit _blockCubit;
 
   @override
   void initState() {
@@ -32,21 +31,13 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     _blockCubit = context.read<BlockCubit>()..getBlocks();
   }
 
-  void updateSearchResults(List<Block> filteredList) {
-    setState(() {
-      residentialListSearch = filteredList;
-    });
-  }
-
   Widget buildBlocWidget() {
     return BlocBuilder<BlockCubit, BlockState>(
       builder: (context, state) {
         if (state is BlocksLoaded) {
-          residentialList = state.allBlocks;
-          residentialListSearch = residentialList;
-          return buildLoadedListWidgets();
+          return buildLoadedListWidgets(state.allBlocks);
         } else if (state is BlocksLoading) {
-          return showLoadingIndicator();
+          return const Center(child: CircularProgressIndicator());
         } else if (state is BlocksFailure) {
           return OnFailureWidget(onRetry: () => _blockCubit.getBlocks());
         } else {
@@ -56,16 +47,15 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     );
   }
 
-  Widget showLoadingIndicator() {
-    return const Center(child: CircularProgressIndicator());
-  }
-
-  Widget buildLoadedListWidgets() {
+  Widget buildLoadedListWidgets(List<Block> blocks) {
+    if (blocks.isEmpty) {
+      return Center(child: NoResultWidget());
+    }
     return ListView.builder(
-      itemCount: residentialListSearch.length,
+      itemCount: blocks.length,
       itemBuilder: (context, index) {
         return ResidentialBlockCardWidget(
-          block: residentialListSearch[index],
+          block: blocks[index],
           onLongPressCallback: (ctx, block) {
             _showOptions(block);
           },
@@ -120,79 +110,71 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     );
   }
 
-  void _showOptions(Block bloc) {
+  void _showOptions(Block block) {
     final locale = context.locale;
 
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    context.showBottomSheet(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.edit, color: Colors.blue),
+            title: Text(locale.changeBlockName),
+            onTap: () {
+              Navigator.pop(context);
+              _blockCubit.setBlock(block);
+              context.showBottomSheet(
+                BlocProvider.value(
+                  value: _blockCubit,
+                  child: ChangeBlockNameWidget(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person, color: Colors.green),
+            title: Text(locale.changeManager),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(
+                context,
+                AppRoute.changeBlockManager,
+                arguments: context.read<BlockCubit>()..setBlock(block),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.delete, color: Colors.red),
+            title: Text(locale.delete),
+            onTap: () async {
+              Navigator.pop(context);
+              await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(locale.confirmDelete),
+                  content: Text(locale.deleteNotAllowed),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(locale.cancel),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _blockCubit.deleteBlock(block.id);
+                      },
+                      child: Text(
+                        locale.delete,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit, color: Colors.blue),
-              title: Text(locale.changeBlockName),
-              onTap: () {
-                BlocProvider.of<BlockCubit>(context).setBlock(bloc);
-                context.showBottomSheet(ChangeBlockNameWidget());
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person, color: Colors.green),
-              title: Text(locale.changeManager),
-              onTap: () {
-                Navigator.pop(context);
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(locale.changeManager),
-                    content: Text(locale.changeManagerLogic),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(locale.close),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
-              title: Text(locale.delete),
-              onTap: () async {
-                Navigator.pop(context);
-                await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(locale.confirmDelete),
-                    content: Text(locale.confirmDeleteBlock),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(locale.cancel),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          _blockCubit.deleteBlock(bloc.id);
-                        },
-                        child: Text(
-                          locale.delete,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

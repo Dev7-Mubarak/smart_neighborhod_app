@@ -3,8 +3,9 @@ class AppImage {
   static const String logo = '$rootImage/logo.png';
   static const String onBoardingImage = '$rootImage/onBoarding/onboarding.png';
   static const String homeMicrovon = '$rootImage/home/megaphone.png';
-  
-    static const String team = '$rootImage/1751560586702.png';
+  static const String noResultsFound = '$rootImage/svg/no_result_icon.svg';
+
+  static const String team = '$rootImage/1751560586702.png';
 
   static const String homehandshake = '$rootImage/home/handshake.png';
   static const String homehonesty = '$rootImage/home/honesty.png';
@@ -17,19 +18,19 @@ class AppImage {
   static const String homecomplan = '$rootImage/home/complan.png';
   static const String homehelping = '$rootImage/home/helping.png';
   static const String residentailimage = '$rootImage/residentail/Image37.png';
-  static const String ReconciliationCouncil = '$rootImage/ReconciliationCouncil/Container33.png';
+  static const String ReconciliationCouncil =
+      '$rootImage/ReconciliationCouncil/Container33.png';
   static const String admin = '$rootImage/ReconciliationCouncil/Admin.jpg';
   static const String load = '$rootImage/loading.gif';
   static const String notes = '$rootImage/notes.png';
-  
+
   static const String handshake = '$rootImage/handshake.png';
-  static const String loadingimage = '$rootImage/residentail/Animationloading.gif';
+  static const String loadingimage =
+      '$rootImage/residentail/Animationloading.gif';
   static const String monashadatimage = '$rootImage/home/monashadat.png';
   static const String gas = '$rootImage/announcement/gas-cylinder.png';
   static const String basket = '$rootImage/announcement/basket.png';
   static const String bread = '$rootImage/announcement/bread.png';
   static const String mic = '$rootImage/announcement/mic.png';
   static const String cheate = '$rootImage/announcement/cheate1.png';
-  
-  
 }

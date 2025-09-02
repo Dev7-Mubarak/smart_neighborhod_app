@@ -15,6 +15,7 @@ class ApiLink {
   static const String updateBlocke = '$server/blocks';
   static const String deleteBlocke = '$server/blocks';
   static const String getBlockDetails = '$server/blocks/GetDetails';
+  static const String changeBlockManager = '$server/blocks';
 
   // Projects
   static const String getAllProjects = '$server/projects';
@@ -62,7 +63,7 @@ class ApiLink {
   static const String deletePerson = '$server/person';
   static const String updatePerson = '$server/person';
   static const String getAllPepole = '$server/person';
-  static const String getPersonById = '$server/person/GetById';
+  static const String getPersonById = '$server/person';
 
   // Conflict Cases
   static const String getAllConflict = '$server/conflictCase';
