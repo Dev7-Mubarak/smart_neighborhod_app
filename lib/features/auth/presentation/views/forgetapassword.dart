@@ -5,6 +5,7 @@ import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import '../../cubits/forgetapassword/forgetapassword_cubit.dart';
@@ -22,11 +23,15 @@ class _ForgetapasswordState extends State<Forgetapassword> {
   final passwordContoller = TextEditingController();
 
   late ForgetapasswordCubit forgetapasswordCubit;
+  final FocusNode emailFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     forgetapasswordCubit = context.read<ForgetapasswordCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      emailFocusNode.requestFocus();
+    });
   }
 
   @override
@@ -61,82 +66,89 @@ class _ForgetapasswordState extends State<Forgetapassword> {
           bottomOpacity: 0,
           iconTheme: IconThemeData(color: Colors.black),
         ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 40),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: CircularLogo(),
+        body: Padding(
+          padding: const EdgeInsets.all(
+             AppSize.paddingOfPage,
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Padding(
+                    padding: EdgeInsetsDirectional.only(start: 40),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: CircularLogo(),
+                    ),
                   ),
-                ),
-                const Text(
-                  "الحارة الذكية",
-                  style: TextStyle(
-                    color: AppColor.primaryColor,
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    context.locale.appTitle,
+                    style: TextStyle(
+                      color: AppColor.primaryColor,
+                      fontSize: 45,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                const SizedBox(height: 40),
-                Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        "نسيت كلمة المرور",
-                        style: TextStyle(
-                          color: AppColor.primaryColor,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
+                  const SizedBox(height: AppSize.spasingBetweenAppTitleAndForm),
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "نسيت كلمة المرور",
+                          style: TextStyle(
+                            color: AppColor.primaryColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 15),
-                      const Text(
-                        "لا تقلق! الرجاء إدخال الأيميل",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(height: 15),
+                        const Text(
+                          "لا تقلق! الرجاء إدخال الأيميل",
+                          style: TextStyle(
+                            fontSize: AppSize.textSizeOfLable,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 30),
-                      const Text(
-                        "الإيميل",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(height: 30),
+                        const Text(
+                          "الإيميل",
+                          style: TextStyle(
+                            fontSize: AppSize.textSizeOfLable,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      CustomTextFormField(
-                        hintText: 'قم بإدخال الأيميل',
-                        controller: passwordContoller,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: AppValidator.validateEmail,
-                        suffixIcon: null,
-                      ),
-                    ],
+                        const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
+                        CustomTextFormField(
+                          hintText: 'قم بإدخال الأيميل',
+                          controller: passwordContoller,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: AppValidator.validateEmail,
+                          suffixIcon: null,
+                          focusNode: emailFocusNode,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 50),
-                DefaultButton(
-                  text: 'التالي',
-                  backgroundColor: AppColor.primaryColor,
-                  color: AppColor.white,
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      forgetapasswordCubit.sendEmail(passwordContoller.text);
-                    }
-                  },
-                  fontsize: 20,
-                ),
-              ],
+                  const SizedBox(height: 50),
+                  DefaultButton(
+                    text: 'التالي',
+                    backgroundColor: AppColor.primaryColor,
+                    color: AppColor.white,
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        forgetapasswordCubit.sendEmail(passwordContoller.text);
+                      }
+                    },
+                    fontsize:  AppSize.fontSizeOfBigButton,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
