@@ -1081,10 +1081,10 @@
       "deleted_successfully": "تم الحذف بنجاح",
       "@deleted_successfully": {
         "description": "Success message for deleting a conflict"
-      }
+      },
 
 
-  ,  "@@comment": "صفحه AddUpdateTeamMember",
+    "@@comment": "صفحه AddUpdateTeamMember",
 
     "team_page_title": "فريق",
     "@team_page_title": {

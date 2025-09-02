@@ -6,8 +6,9 @@ class LoginIntial extends LoginState {}
 
 class LoginSuccess extends LoginState {
   final UserData userdata;
+    final String message;
 
-  LoginSuccess(this.userdata);
+  LoginSuccess({required this.userdata,required this.message});
 }
 
 class LoginLoading extends LoginState {}

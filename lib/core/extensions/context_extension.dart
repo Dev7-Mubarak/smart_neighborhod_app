@@ -23,7 +23,7 @@ extension ContextExtension on BuildContext {
   void showErrorSnackBar(String error) {
     _showSnackBar(
       SnackBar(
-        duration: const Duration(seconds: 1000),
+        duration: const Duration(seconds: 4),
         content: Text(error),
         backgroundColor: AppColor.danger,
       ),

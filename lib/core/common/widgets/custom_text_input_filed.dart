@@ -16,13 +16,15 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final void Function(String)? onChanged;
-  final void Function()? onPrefixIconPressed;
+  final void Function()? onsuffixIconPressed;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function()? onEditingComplete;
-  const CustomTextFormField({
-        this.onPrefixIconPressed,
+final void Function(String)? onSubmitted;
 
+  const CustomTextFormField({
+        this.onsuffixIconPressed,
+  this.onSubmitted,
     super.key,
     this.hintText,
     this.controller,
@@ -71,13 +73,10 @@ class CustomTextFormField extends StatelessWidget {
         hintStyle: const TextStyle(color: Colors.black, fontSize: 14),
         prefixIcon: prefixIcon == null
             ? null
-            :IconButton(
-                  icon: Icon(prefixIcon,color: Colors.black),
-                  onPressed: onPrefixIconPressed,
-                ) ,
+            :Icon(prefixIcon,color: Colors.black),   
         suffixIcon: suffixIcon == null
             ? null
-            : Icon(suffixIcon, color: Colors.black),
+            : IconButton(icon:Icon(suffixIcon,color: Colors.black),onPressed: onsuffixIconPressed),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
           borderSide: const BorderSide(color: Color(0xFFE4E4E4), width: 2),
@@ -98,9 +97,11 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
           borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
+        
         errorStyle: const TextStyle(color: Colors.red, fontSize: 12),
       ),
       style: const TextStyle(fontSize: 14),
+      onFieldSubmitted:onSubmitted,
     );
   }
 }

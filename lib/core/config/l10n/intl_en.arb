@@ -492,7 +492,7 @@
   "edit": "Edit",
   "delete": "Delete",
   "deleteNotAllowed": "Deletion is not allowed at this time",
-  "noResultsFound": "No results found"
+  "noResultsFound": "No results found",
 
     "addFamilyToAssistanceTitle": "Add Family to Assistance",
     "@addFamilyToAssistanceTitle": {
