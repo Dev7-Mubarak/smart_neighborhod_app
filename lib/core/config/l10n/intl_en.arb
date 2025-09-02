@@ -20,11 +20,7 @@
   "@password": {
     "description": "Password label"
   },
-  
-  "passwordLabel": "Password:",
-  "@passwordLabel": {
-    "description": "Password label with colon"
-  },
+
   
   "enterUsername": "Enter username",
   "@enterUsername": {
@@ -285,11 +281,7 @@
   "@clickForMoreDetails": {
     "description": "Click for more details text"
   },
-  
-  "email": "Email",
-  "@email": {
-    "description": "Email label"
-  },
+ 
   
   "familyType": "Family Type",
   "@familyType": {
@@ -387,12 +379,12 @@
   },
 
  "warningVerifycodeEmpty": "Please enter the Verify code",
-  "@warningVerifycode": {
+  "@warningVerifycodeEmpty": {
     "description": "The warning of not entering the Verify code"
   },
 
   "warningVerifycodeType": "Please enter only numbers",
-  "@warningVerifycode": {
+  "@warningVerifycodeType": {
     "description": "The warning of entering  not number value for Verify code"
   },
 
@@ -488,7 +480,7 @@
   "@confirm": {
     "description": "Confirm button"
   },
-    "changeManager": "Change Block Manager",
+   "changeManager": "Change Block Manager",
   "failedToLoadPeople": "No managers available",
   "searchFamilyHead": "Search for manager...",
   "chooseFamilyHead": "Choose manager",
@@ -501,4 +493,794 @@
   "delete": "Delete",
   "deleteNotAllowed": "Deletion is not allowed at this time",
   "noResultsFound": "No results found"
+
+    "addFamilyToAssistanceTitle": "Add Family to Assistance",
+    "@addFamilyToAssistanceTitle": {
+      "description": "Title for the AddFamilyToAssistance page"
+    },
+    
+    "selectFamily": "Select Family",
+    "@selectFamily": {
+      "description": "Label for selecting a family"
+    },
+    
+    "searchFamilyHint": "Search for a family...",
+    "@searchFamilyHint": {
+      "description": "Hint text for searching family"
+    },
+    
+    "noFamiliesFound": "No families found",
+    "@noFamiliesFound": {
+      "description": "Message when no families are found"
+    },
+    
+    "createNewFamilyHint": "If you want to create a new family, go to the residential blocks section here",
+    "@createNewFamilyHint": {
+      "description": "Hint text guiding to create a new family"
+    },
+    
+    "createNewFamilyButton": "Create New Family",
+    "@createNewFamilyButton": {
+      "description": "Button text to create new family"
+    },
+
+    "addTeamToAssistanceTitle": "Add Team to Assistance Distribution",
+  "@addTeamToAssistanceTitle": {
+    "description": "Title of the Add Team to Assistance Distribution page"
+  },
+  
+  "selectTeam": "Select Team",
+  "@selectTeam": {
+    "description": "Label for selecting a team"
+  },
+  
+  "searchTeamHint": "Search for a team...",
+  "@searchTeamHint": {
+    "description": "Hint text for searching for a team"
+  },
+  
+  "noTeamsFound": "No teams found",
+  "@noTeamsFound": {
+    "description": "Message displayed when no teams are found"
+  },
+  
+  "createNewTeamHint": "If you want to create a new team, go to the teams section here",
+  "@createNewTeamHint": {
+    "description": "Hint text guiding to create a new team"
+  },
+  
+  "teamAssignedSuccessfully": "Team assigned successfully",
+  "@teamAssignedSuccessfully": {
+    "description": "Success message when team is assigned successfully"
+  },
+  
+  "teamAssignmentFailed": "Team assignment failed",
+  "@teamAssignmentFailed": {
+    "description": "Error message when team assignment fails"
+  },
+
+    "addAssistanceProjectTitle": "Add New Assistance Distribution Project",
+    "@addAssistanceProjectTitle": {
+      "description": "Title for adding new assistance distribution project"
+    },
+    
+    "editAssistanceProjectTitle": "Edit Assistance Distribution Project",
+    "@editAssistanceProjectTitle": {
+      "description": "Title for editing assistance distribution project"
+    },
+    
+    "projectName": "Project Name",
+    "@projectName": {
+      "description": "Project name label"
+    },
+    
+    "projectDescription": "Project Description",
+    "@projectDescription": {
+      "description": "Project description label"
+    },
+    
+    "projectCategory": "Project Category",
+    "@projectCategory": {
+      "description": "Project category label"
+    },
+    
+    "searchCategoryHint": "Search for category...",
+    "@searchCategoryHint": {
+      "description": "Hint text for searching category"
+    },
+    
+    "chooseCategory": "Choose Category",
+    "@chooseCategory": {
+      "description": "Choose category label"
+    },
+    
+    "noCategoriesAvailable": "No categories available",
+    "@noCategoriesAvailable": {
+      "description": "Message when no categories are available"
+    },
+    
+    "managerName": "Manager Name",
+    "@managerName": {
+      "description": "Manager name label"
+    },
+    
+    "searchManagerHint": "Search for manager...",
+    "@searchManagerHint": {
+      "description": "Hint text for searching manager"
+    },
+    
+    "chooseManager": "Choose Manager",
+    "@chooseManager": {
+      "description": "Choose manager label"
+    },
+    
+    "noManagersAvailable": "No managers available",
+    "@noManagersAvailable": {
+      "description": "Message when no managers are available"
+    },
+    
+    "distributionStartDate": "Distribution Start Date",
+    "@distributionStartDate": {
+      "description": "Distribution start date label"
+    },
+    
+    "distributionEndDate": "Distribution End Date",
+    "@distributionEndDate": {
+      "description": "Distribution end date label"
+    },
+    
+    "projectStatus": "Project Status",
+    "@projectStatus": {
+      "description": "Project status label"
+    },
+    
+    "chooseProjectStatus": "Choose Project Status",
+    "@chooseProjectStatus": {
+      "description": "Choose project status label"
+    },
+    
+    "projectPriority": "Project Priority",
+    "@projectPriority": {
+      "description": "Project priority label"
+    },
+    
+    "chooseProjectPriority": "Choose Project Priority",
+    "@chooseProjectPriority": {
+      "description": "Choose project priority label"
+    },
+    
+    "budget": "Budget",
+    "@budget": {
+      "description": "Budget label"
+    },
+    
+    "assistanceAddedSuccessfully": "Assistance added successfully",
+    "@assistanceAddedSuccessfully": {
+      "description": "Success message when assistance is added"
+    },
+    
+    "assistanceUpdatedSuccessfully": "Assistance updated successfully",
+    "@assistanceUpdatedSuccessfully": {
+      "description": "Success message when assistance is updated"
+    },
+      
+      "assistanceProjectsTitle": "Assistance Distribution Projects",
+      "@assistanceProjectsTitle": {
+        "description": "Title for assistance distribution projects page"
+      },
+      
+      "searchAssistanceProjectHint": "Search for assistance project",
+      "@searchAssistanceProjectHint": {
+        "description": "Hint text for searching assistance projects"
+      },
+      
+      "noDataAvailable": "No data available for display currently",
+      "@noDataAvailable": {
+        "description": "Message when no data is available for display"
+      },
+      
+      "tableColumnPriority": "Priority",
+      "@tableColumnPriority": {
+        "description": "Table column title for priority"
+      },
+      
+      "tableColumnProjectName": "Project Name",
+      "@tableColumnProjectName": {
+        "description": "Table column title for project name"
+      },
+      
+      "tableColumnNumber": "Number",
+      "@tableColumnNumber": {
+        "description": "Table column title for number/ID"
+      },
+      
+      "deleteAssistanceConfirmation": "Are you sure you want to delete this assistance project?",
+      "@deleteAssistanceConfirmation": {
+        "description": "Confirmation message for deleting assistance project"
+      },
+        "assistanceDetailsTitle": "Assistance Details",
+        "@assistanceDetailsTitle": {
+          "description": "Title for assistance details page"
+        },
+        
+        "distributionTeams": "Distribution Teams",
+        "@distributionTeams": {
+          "description": "Label for distribution teams section"
+        },
+        
+        "noTeamsAvailable": "No teams available to display currently",
+        "@noTeamsAvailable": {
+          "description": "Message when no teams are available to display"
+        },
+        
+        "teamName": "Team Name",
+        "@teamName": {
+          "description": "Label for team name"
+        },
+        
+        "addTeam": "Add Team",
+        "@addTeam": {
+          "description": "Button text to add team"
+        },
+        
+        "residentialBlocksAndFamilies": "Residential Blocks and Distributed Families",
+        "@residentialBlocksAndFamilies": {
+          "description": "Label for residential blocks and families section"
+        },
+        
+        "noFamiliesAvailable": "No families available to display currently",
+        "@noFamiliesAvailable": {
+          "description": "Message when no families are available to display"
+        },
+        
+        "residentialBlockName": "Residential Block Name",
+        "@residentialBlockName": {
+          "description": "Label for residential block name"
+        },
+        
+        "addFamily": "Add Family",
+        "@addFamily": {
+          "description": "Button text to add family"
+        },
+        
+        "teamRole": "Role",
+        "@teamRole": {
+          "description": "Table column for team role"
+        },
+        
+        "joinDate": "Join Date",
+        "@joinDate": {
+          "description": "Table column for join date"
+        },
+        
+        "memberName": "Member Name",
+        "@memberName": {
+          "description": "Table column for member name"
+        },
+        
+        "number": "Number",
+        "@number": {
+          "description": "Table column for number/ID"
+        },
+        
+        "familyHeadName": "Family Head Name",
+        "@familyHeadName": {
+          "description": "Table column for family head name"
+        },
+        
+        "deleteTeamConfirmation": "Are you sure you want to delete this team?",
+        "@deleteTeamConfirmation": {
+          "description": "Confirmation message for deleting team"
+        },
+        
+        "deleteFamilyConfirmation": "Are you sure you want to delete this family?",
+        "@deleteFamilyConfirmation": {
+          "description": "Confirmation message for deleting family"
+        },
+        
+        "description": "Description",
+        "@description": {
+          "description": "Label for description"
+        },
+        
+        "projectManager": "Project Manager",
+        "@projectManager": {
+          "description": "Label for project manager"
+        },
+       
+        
+        
+        "priority": "Priority",
+        "@priority": {
+          "description": "Label for priority"
+        },
+          "noAssistanceProjects": "No assistance projects",
+          "@noAssistanceProjects": {
+            "description": "Message when there are no assistance projects"
+          },
+          
+          "noDataReceived": "No data received",
+          "@noDataReceived": {
+            "description": "Message when no data is received from server"
+          },
+          
+          "unknownErrorOccurred": "Unknown error occurred",
+          "@unknownErrorOccurred": {
+            "description": "Generic unknown error message"
+          },
+          
+          "teamDeletedSuccessfully": "Team deleted successfully",
+          "@teamDeletedSuccessfully": {
+            "description": "Success message when team is deleted successfully"
+          },
+          
+          "familyDeletedSuccessfully": "Family deleted successfully",
+          "@familyDeletedSuccessfully": {
+            "description": "Success message when family is deleted successfully"
+          },
+          
+          "noTeamsAvailableMessage": "No teams available",
+          "@noTeamsAvailableMessage": {
+            "description": "Message when no teams are available"
+          },
+          
+          "noFamiliesAvailableMessage": "No families available",
+          "@noFamiliesAvailableMessage": {
+            "description": "Message when no families are available"
+          },
+          
+          "waitingForTeamAssignment": "Assigning team...",
+          "@waitingForTeamAssignment": {
+            "description": "Loading message for team assignment"
+          },
+          
+          "waitingForFamilyAssignment": "Assigning family...",
+          "@waitingForFamilyAssignment": {
+            "description": "Loading message for family assignment"
+          },
+          
+          "waitingForAssistanceUpdate": "Updating assistance...",
+          "@waitingForAssistanceUpdate": {
+            "description": "Loading message for assistance update"
+          },
+          
+          "familyAssignedSuccessfully": "Family assigned successfully",
+          "@familyAssignedSuccessfully": {
+            "description": "Success message when family is assigned successfully"
+          },
+          
+          "assistanceDeletedSuccessfully": "Assistance deleted successfully",
+          "@assistanceDeletedSuccessfully": {
+            "description": "Success message when assistance is deleted successfully"
+          },
+        
+      
+"@@comment": "صفحه AddUpdateConflict",
+
+            "addConflictTitle": "Add Conflict",
+            "@addConflictTitle": {
+              "description": "Title for adding a new conflict"
+            },
+            
+            "editConflictTitle": "Edit Conflict",
+            "@editConflictTitle": {
+              "description": "Title for editing a conflict"
+            },
+            
+            "conflictTitleLabel": "Conflict Title",
+            "@conflictTitleLabel": {
+              "description": "Label for conflict title input field"
+            },
+            
+            "conflictTypeLabel": "Conflict Type",
+            "@conflictTypeLabel": {
+              "description": "Label for conflict type selection"
+            },
+            
+            "searchConflictTypeHint": "Search for conflict type...",
+            "@searchConflictTypeHint": {
+              "description": "Hint text for searching conflict types"
+            },
+            
+            "chooseConflictTypeLabel": "Choose Conflict Type",
+            "@chooseConflictTypeLabel": {
+              "description": "Label for choosing conflict type"
+            },
+            
+            "noConflictTypesAvailable": "No types available",
+            "@noConflictTypesAvailable": {
+              "description": "Message when no conflict types are available"
+            },
+            
+            "notesLabel": "Notes",
+            "@notesLabel": {
+              "description": "Label for notes input field"
+            },
+            
+            "conflictDateLabel": "Conflict Date",
+            "@conflictDateLabel": {
+              "description": "Label for conflict date input field"
+            },
+            
+            "firstPartyLabel": "First Party",
+            "@firstPartyLabel": {
+              "description": "Label for first party selection"
+            },
+            
+            "searchFirstPartyHint": "Search for first party...",
+            "@searchFirstPartyHint": {
+              "description": "Hint text for searching first party"
+            },
+            
+            "chooseFirstPartyLabel": "Choose First Party",
+            "@chooseFirstPartyLabel": {
+              "description": "Label for choosing first party"
+            },
+            
+            "noFamilyMembersAvailable": "No family members available",
+            "@noFamilyMembersAvailable": {
+              "description": "Message when no family members are available"
+            },
+            
+            "secondPartyLabel": "Second Party",
+            "@secondPartyLabel": {
+              "description": "Label for second party selection"
+            },
+            
+            "searchSecondPartyHint": "Search for second party...",
+            "@searchSecondPartyHint": {
+              "description": "Hint text for searching second party"
+            },
+            
+            "chooseSecondPartyLabel": "Choose Second Party",
+            "@chooseSecondPartyLabel": {
+              "description": "Label for choosing second party"
+            },
+            
+            "conflictResolvedLabel": "Conflict Resolved",
+            "@conflictResolvedLabel": {
+              "description": "Label for conflict resolved checkbox"
+            },
+            
+            "conflictAddedSuccessfully": "Conflict added successfully",
+            "@conflictAddedSuccessfully": {
+              "description": "Success message when conflict is added"
+            },
+            
+            "conflictUpdatedSuccessfully": "Conflict updated successfully",
+            "@conflictUpdatedSuccessfully": {
+              "description": "Success message when conflict is updated"
+            },
+            
+            "pleaseChooseConflictType": "Please choose conflict type",
+            "@pleaseChooseConflictType": {
+              "description": "Validation message for conflict type selection"
+            }
+            , 
+   "@@comment": "صفحه AllConflict",
+
+              "conflictManagementTitle": "Conflict Management",
+              "@conflictManagementTitle": {
+                "description": "Title for conflict management page"
+              },
+              
+              "noConflictsAvailable": "No conflicts available to display currently",
+              "@noConflictsAvailable": {
+                "description": "Message when no conflicts are available to display"
+              },
+              
+              "firstPartyLabelWithColon": "First Party:",
+              "@firstPartyLabelWithColon": {
+                "description": "Label for first party with colon"
+              },
+              
+              "secondPartyLabelWithColon": "Second Party:",
+              "@secondPartyLabelWithColon": {
+                "description": "Label for second party with colon"
+              },
+              
+              "sessionDateLabel": "Session Date:",
+              "@sessionDateLabel": {
+                "description": "Label for session date with colon"
+              },
+              
+              "searchConflictHint": "Search for team name",
+              "@searchConflictHint": {
+                "description": "Hint text for searching conflicts"
+              },
+              
+              "addButtonConflictList": "Add",
+              "@addButtonConflictList": {
+                "description": "Add button text in conflict list page"
+              },
+              
+              "editOption": "Edit",
+              "@editOption": {
+                "description": "Edit option in context menu"
+              },
+              
+              "deleteOption": "Delete",
+              "@deleteOption": {
+                "description": "Delete option in context menu"
+              },
+              
+              "deleteConflictConfirmation": "Are you sure you want to delete this document",
+              "@deleteConflictConfirmation": {
+                "description": "Confirmation message for deleting conflict document"
+              },
+              
+              "noDataAvailableConflict": "No data available for display currently",
+              "@noDataAvailableConflict": {
+                "description": "Message when no data is available for display in conflicts page"
+              },
+
+
+    "@@comment": "صفحه ConflictDetiles",
+   
+      "conflictDetailsTitle": "Conflict Details",
+      "@conflictDetailsTitle": {
+        "description": "Title for conflict details page"
+      },
+      
+      "firstPartyWithColon": "First Party:",
+      "@firstPartyWithColon": {
+        "description": "Label for first party with colon"
+      },
+      
+      "secondPartyWithColon": "Second Party:",
+      "@secondPartyWithColon": {
+        "description": "Label for second party with colon"
+      },
+      
+      "treatySupervisor": "Treaty Supervisor:",
+      "@treatySupervisor": {
+        "description": "Label for treaty supervisor with colon"
+      },
+      
+      "sessionDateWithColon": "Session Date:",
+      "@sessionDateWithColon": {
+        "description": "Label for session date with colon"
+      },
+      
+      "conflictResolvedStatus": "Conflict Resolved",
+      "@conflictResolvedStatus": {
+        "description": "Status message when conflict is resolved"
+      },
+      
+      "conflictNotResolvedStatus": "Conflict Not Resolved",
+      "@conflictNotResolvedStatus": {
+        "description": "Status message when conflict is not resolved"
+      },
+      
+      "notesWithColon": "Notes:",
+      "@notesWithColon": {
+        "description": "Label for notes with colon"
+      }
+    
+     ,"@@comment": "صفحه ConflictCubit",
+     "no_data_received": "No data received",
+     "@no_data_received": {
+       "description": "Error message when no data is received from the server"
+     },
+     "no_teams_found": "No teams found",
+     "@no_teams_found": {
+       "description": "Error message when no teams are found"
+     },
+     "added_successfully": "Added successfully",
+     "@added_successfully": {
+       "description": "Success message for a new conflict"
+     },
+     "unknown_error_add": "An unknown error occurred",
+     "@unknown_error_add": {
+       "description": "Generic unknown error message for adding a conflict"
+     },
+     "updated_successfully": "Updated successfully",
+     "@updated_successfully": {
+       "description": "Success message for updating a conflict"
+     },
+     "unknown_error_update": "An unknown error occurred while updating the project",
+     "@unknown_error_update": {
+       "description": "Generic unknown error message for updating a conflict"
+     },
+     "deleted_successfully": "Deleted successfully",
+     "@deleted_successfully": {
+       "description": "Success message for deleting a conflict"
+     }
+   
+     ,  "@@comment": "صفحه AddUpdateTeamMember",
+      "team_page_title": "Team",
+      "@team_page_title": {
+        "description": "The title for the team page or screen."
+      },
+      "add_new_member": "Add New Member",
+      "@add_new_member": {
+        "description": "The title for adding a new team member."
+      },
+      "update_member": "Update Member",
+      "@update_member": {
+        "description": "The title for updating an existing team member."
+      },
+      "member_name": "Member Name",
+      "@member_name": {
+        "description": "Label for the team member's name."
+      },
+      "search_for_a_leader": "Search for a leader...",
+      "@search_for_a_leader": {
+        "description": "Hint text for searching for a leader in a dropdown."
+      },
+      "no_available_people": "No available people",
+      "@no_available_people": {
+        "description": "Message shown when there are no people available to select."
+      },
+      "select_member": "Select Member",
+      "@select_member": {
+        "description": "Label for selecting a team member."
+      },
+      "join_date": "Join Date",
+      "@join_date": {
+        "description": "Label for the date a member joined the team."
+      },
+      "member_role": "Member Role",
+      "@member_role": {
+        "description": "Label for the role of a team member."
+      },
+      "search_for_a_role": "Search for a role...",
+      "@search_for_a_role": {
+        "description": "Hint text for searching for a role in a dropdown."
+      },
+      "no_available_roles": "No available roles",
+      "@no_available_roles": {
+        "description": "Message shown when no roles are available to select."
+      },
+      "select_role": "Select Role",
+      "@select_role": {
+        "description": "Label for selecting a team role."
+      },
+      
+
+  "@@comment": "صفحه AddUpdateTeam",
+    "add_new_team": "Add New Team",
+    "@add_new_team": {
+      "description": "The title for adding a new team."
+    },
+    "update_team": "Update Team",
+    "@update_team": {
+      "description": "The title for updating an existing team."
+    },
+    "team_name": "Team Name",
+    "@team_name": {
+      "description": "Label for the team's name."
+    },
+    "select_team_leader": "Select Team Leader",
+    "@select_team_leader": {
+      "description": "Label for selecting the team leader."
+    },
+    "select_leader_hint": "Select Leader",
+    "@select_leader_hint": {
+      "description": "Hint text for the team leader dropdown."
+    },
+  
+
+    "@@comment": "صفحه AllTeams",
+      "teams": "Teams",
+      "@teams": {
+        "description": "The title for the teams page."
+      },
+      "no_teams_to_display": "No teams to display currently.",
+      "@no_teams_to_display": {
+        "description": "Message shown when there are no teams to display."
+      },
+      "team_name_label": "Team Name:",
+      "@team_name_label": {
+        "description": "Label for the team's name in a list item."
+      },
+      "search_team_hint": "Search for a team name",
+      "@search_team_hint": {
+        "description": "Hint text for the search bar to find a team by name."
+      },
+      "confirm_delete": "Confirm Deletion",
+      "@confirm_delete": {
+        "description": "Title for the delete confirmation dialog."
+      },
+      "confirm_delete_team_message": "Are you sure you want to delete this team?",
+      "@confirm_delete_team_message": {
+        "description": "Message for the team deletion confirmation dialog."
+      },
+      "confirm_delete_member_message": "Are you sure you want to delete this member?",
+      "@confirm_delete_member_message": {
+        "description": "Message for the team member deletion confirmation dialog."
+      },
+      "no_data_to_display": "No data to display currently.",
+      "@no_data_to_display": {
+        "description": "Message shown when there is no data to display."
+      },
+      "number_column": "No.",
+      "@number_column": {
+        "description": "Column title for a numbered list."
+      },
+    
+ 
+ "@@comment": "صفحه TeamDetails",
+  "team_details": "Team Details",
+  "@team_details": {
+    "description": "The title for the team details page."
+  },
+  "no_leader": "No Leader",
+  "@no_leader": {
+    "description": "Text shown when there is no team leader."
+  },
+  "team_leader_name": "Team Leader Name: {teamLeaderName}",
+  "@team_leader_name": {
+    "description": "Label for the team leader's name.",
+    "placeholders": {
+      "teamLeaderName": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "number_of_team_members": "Number of Team Members: {count}",
+  "@number_of_team_members": {
+    "description": "Label for the number of team members.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "team_members": ": Team Members",
+  "@team_members": {
+    "description": "Title for the team members section."
+  },
+  "projects_of_team": ": Projects the team works on",
+  "@projects_of_team": {
+    "description": "Title for the projects of the team section."
+  },
+  "project_status": "Status",
+  "@project_status": {
+    "description": "Column title for the project's status."
+  },
+  "project_category": "Project Category",
+  "@project_category": {
+    "description": "Column title for the project's category."
+  },
+  "project_name": "Project Name",
+  "@project_name": {
+    "description": "Column title for the project's name."
+  },
+
+
+  "@@comment": "صفحه TeamCubit",
+    "unknown_error_occurred": "An unknown error occurred",
+    "@unknown_error_occurred": {
+      "description": "General unknown error message."
+    },
+    "no_teams": "No teams available",
+    "@no_teams": {
+      "description": "Error message when there are no teams."
+    },
+    "unknown_error_updating_project": "An unknown error occurred while updating the project",
+    "@unknown_error_updating_project": {
+      "description": "Unknown error message specifically for project updates."
+    },
+    "no_projects_for_this_team": "No projects for this team",
+    "@no_projects_for_this_team": {
+      "description": "Message shown when a team has no associated projects."
+    },
+  
+
+    "@@comment": "صفحه TeamMemberCubit",
+      "unknown_error_updating_team_member": "An unknown error occurred while updating the team member",
+      "@unknown_error_updating_team_member": {
+        "description": "Unknown error message specifically for team member updates."
+      },
+
+
+  "@@comment": "صفحه TeamRoleCubit",
+    "no_teams_roles": "No teams roles",
+    "@no_teams_roles": {
+      "description": "Error message when there are no team roles."
+    }
+    
 }

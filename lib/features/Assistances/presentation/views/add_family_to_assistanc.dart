@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_cubit.dart';
-import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
+import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
+import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
-import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
@@ -39,31 +39,14 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
         if (state is WiateAssignFamilyToAssistance) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is FamilyAssignedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
         } else if (state is AssistancesFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -171,12 +154,8 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                                     ),
                                   ),
                                 ),
-                                validator: (Family? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار أسرة ";
-                                  }
-                                  return null;
-                                },
+                                 validator: (Family? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();

@@ -8,6 +8,7 @@ import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_state.dart';
 
@@ -67,7 +68,7 @@ class Login extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const Text(
-                            ":إسم المستخدم",
+                            ":البريد الإكتروني للمستخدم ",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -76,15 +77,10 @@ class Login extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           CustomTextFormField(
-                            hintText: 'قم بإدخال اسم المستخدم',
+                            hintText: 'قم بإدخال البريد الإلكتروني ',
                             controller: emailContoller,
                             keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'الرجاء إدخال إسم المستخدم';
-                              }
-                              return null;
-                            },
+                            validator: AppValidator.validateEmail,
                             suffixIcon: Icons.person,
                           ),
                           const SizedBox(height: 20),
@@ -101,12 +97,7 @@ class Login extends StatelessWidget {
                             hintText: 'قم بإدخال كلمة المرور',
                             controller: passwordContoller,
                             keyboardType: TextInputType.visiblePassword,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'الرجاء إدخال كلمة المرور';
-                              }
-                              return null;
-                            },
+                            validator:AppValidator.validateEmptyField,
                             suffixIcon: Icons.key,
                             obscureText: LoginCubit.get(context).isPassword,
                             prefixIcon: LoginCubit.get(context).prefixIcon,

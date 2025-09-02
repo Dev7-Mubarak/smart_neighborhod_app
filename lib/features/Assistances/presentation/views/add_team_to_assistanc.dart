@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_cubit.dart';
-import 'package:smart_negborhood_app/features/annoucements/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
+import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
+import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
@@ -36,32 +38,15 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
     return BlocListener<AssistancesCubit, AssistancesState>(
       listener: (context, state) {
         if (state is WiateAssignTeamToAssistance) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is TeamAssignedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
           Navigator.pop(context);
         } else if (state is AssistancesFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -157,12 +142,8 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                                     ),
                                   ),
                                 ),
-                                validator: (Team? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار فريق ";
-                                  }
-                                  return null;
-                                },
+                                validator: (Team? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();

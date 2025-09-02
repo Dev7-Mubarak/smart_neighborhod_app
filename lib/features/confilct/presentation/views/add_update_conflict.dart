@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_state.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
@@ -80,14 +82,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
     return BlocListener<ConflictCubit, ConflictState>(
       listener: (context, state) {
         if (state is WiateAddedUpdatedConflict) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is ConflictAddedSuccessfully ||
             state is ConflictUpdatedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -95,17 +90,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
           final message = (state is ConflictAddedSuccessfully)
               ? state.message
               : (state as ConflictUpdatedSuccessfully).message;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.green),
-          );
+          context.showSuccessSnackBar(message);
         } else if (state is ConflictFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         } else if (state is ChangeSelectedSessionDate) {
           conflictDateController.text = conflictCubit.sessionDate != null
               ? DateFormat('yyyy-MM-dd').format(conflictCubit.sessionDate!)
@@ -156,12 +144,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           controller: conflictTitleController,
                           keyboardType: TextInputType.name,
                           suffixIcon: null,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return ' يجب إضافة عنوان الإتفاقية';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'نوع الخلاف'),
@@ -266,12 +249,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           suffixIcon: null,
                           maxLines: null,
                           minLines: 3,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'يجب إضافة ملاحظات';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'تاريخ الإتفاقية'),
@@ -281,12 +259,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => conflictCubit.pickDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'يجب إختيار تاريج الإتفاقية';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'الطرف الأول'),
@@ -360,12 +333,8 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     ),
                                   ),
                                 ),
-                                validator: (FamilyMember2? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار الطرف الأول";
-                                  }
-                                  return null;
-                                },
+                                  validator: (FamilyMember2? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             if (state is FamilyMemberFailure) {
@@ -465,12 +434,8 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     ),
                                   ),
                                 ),
-                                validator: (FamilyMember2? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار الطرف الثاني";
-                                  }
-                                  return null;
-                                },
+                                 validator: (FamilyMember2? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();
