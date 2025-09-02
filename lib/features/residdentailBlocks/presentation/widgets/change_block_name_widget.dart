@@ -5,8 +5,8 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_state.dart';
 
-import '../../../../../core/common/widgets/custom_text_input_filed.dart';
-import '../../../../../core/utils/validataion.dart';
+import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../../../core/utils/validataion.dart';
 
 class ChangeBlockNameWidget extends StatefulWidget {
   const ChangeBlockNameWidget({super.key});
@@ -49,16 +49,16 @@ class _ChangeBlockNameWidgetState extends State<ChangeBlockNameWidget> {
     final locale = context.locale;
     return BlocListener<BlockCubit, BlockState>(
       listener: (context, state) {
-        if (state is BlocksLoading) {
+        if (state is WaitingForUpdateOrAddBlock) {
           context.showLoadingDialog();
-        } else {
-          Navigator.of(context, rootNavigator: true).maybePop();
         }
         if (state is BlockUpdatedSuccessfully) {
           context.showSuccessSnackBar(state.message);
+          Navigator.of(context, rootNavigator: true).pop();
           Navigator.pop(context);
         } else if (state is BlocksFailure) {
           context.showErrorSnackBar(state.errorMessage);
+          Navigator.of(context, rootNavigator: true).pop();
         }
       },
       child: Form(

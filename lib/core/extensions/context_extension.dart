@@ -106,6 +106,9 @@ extension ContextExtension on BuildContext {
   void showBottomSheet(Widget widget) {
     showModalBottomSheet(
       context: this,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       isScrollControlled: true,
       builder: (context) => Padding(
         padding: EdgeInsets.only(

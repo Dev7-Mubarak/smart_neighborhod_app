@@ -40,7 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "changeBlockName": MessageLookupByLibrary.simpleMessage(
       "Change Block Name",
     ),
-    "changeManager": MessageLookupByLibrary.simpleMessage("Change Manager"),
+    "changeManager": MessageLookupByLibrary.simpleMessage(
+      "Change Block Manager",
+    ),
     "changeManagerLogic": MessageLookupByLibrary.simpleMessage(
       "Here you can implement the logic to change the manager.",
     ),
@@ -50,9 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseFamilyCategory": MessageLookupByLibrary.simpleMessage(
       "Choose Family Category",
     ),
-    "chooseFamilyHead": MessageLookupByLibrary.simpleMessage(
-      "Choose Family Head",
-    ),
+    "chooseFamilyHead": MessageLookupByLibrary.simpleMessage("Choose manager"),
     "chooseIdentityType": MessageLookupByLibrary.simpleMessage(
       "Choose Identity Type",
     ),
@@ -67,17 +67,34 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "conflictSection": MessageLookupByLibrary.simpleMessage("Conflict Section"),
     "contactNumber": MessageLookupByLibrary.simpleMessage("Contact Number"),
+    "createNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Create a new password",
+    ),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteNotAllowed": MessageLookupByLibrary.simpleMessage(
+      "Deletion is not allowed at this time",
+    ),
     "edit": MessageLookupByLibrary.simpleMessage("Edit"),
     "editPersonData": MessageLookupByLibrary.simpleMessage("Edit Person Data"),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "emailConfirmedSuccess": MessageLookupByLibrary.simpleMessage(
+      "Email has been confirmed",
+    ),
+    "emailSentSuccess": MessageLookupByLibrary.simpleMessage(
+      "Email sent successfully, a confirmation code will be sent to your email address.",
+    ),
+    "enterEmailHint": MessageLookupByLibrary.simpleMessage("Enter your email"),
     "enterPassword": MessageLookupByLibrary.simpleMessage("Enter password"),
+    "enterPasswordHint": MessageLookupByLibrary.simpleMessage("Enter password"),
     "enterUsername": MessageLookupByLibrary.simpleMessage("Enter username"),
+    "enterverifyCode": MessageLookupByLibrary.simpleMessage(
+      "Please enter the code we just sent to the email you entered",
+    ),
     "failedToLoadCategories": MessageLookupByLibrary.simpleMessage(
       "Failed to load categories",
     ),
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
-      "Failed to load people",
+      "No managers available",
     ),
     "familyCategory": MessageLookupByLibrary.simpleMessage("Family Category"),
     "familyHead": MessageLookupByLibrary.simpleMessage("Family Head"),
@@ -89,6 +106,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "First name is required",
     ),
     "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot password?"),
+    "forgotPasswordHint": MessageLookupByLibrary.simpleMessage(
+      "Don\'t worry! Please enter your email",
+    ),
+    "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Forgot Password",
+    ),
     "fourthName": MessageLookupByLibrary.simpleMessage("Fourth Name"),
     "fourthNameRequired": MessageLookupByLibrary.simpleMessage(
       "Fourth name is required",
@@ -111,10 +134,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "main": MessageLookupByLibrary.simpleMessage("Home"),
     "male": MessageLookupByLibrary.simpleMessage("Male"),
     "maritalStatus": MessageLookupByLibrary.simpleMessage("Marital Status"),
+    "next": MessageLookupByLibrary.simpleMessage("Next"),
+    "nextButton": MessageLookupByLibrary.simpleMessage("Next"),
+    "noResultsFound": MessageLookupByLibrary.simpleMessage("No results found"),
     "notSpecified": MessageLookupByLibrary.simpleMessage("Not specified"),
     "notes": MessageLookupByLibrary.simpleMessage("Notes"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordChangedSuccess": MessageLookupByLibrary.simpleMessage(
+      "Password has been changed successfully",
+    ),
+    "passwordDifferentHint": MessageLookupByLibrary.simpleMessage(
+      "Your new password must be different from the password previously used.",
+    ),
     "passwordLabel": MessageLookupByLibrary.simpleMessage("Password:"),
+    "passwordValidationHint": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 8 characters and contain an uppercase letter and a number",
+    ),
+    "passwordsMismatch": MessageLookupByLibrary.simpleMessage(
+      "Password does not match the other one",
+    ),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
     "pleaseChooseBloodType": MessageLookupByLibrary.simpleMessage(
       "Please choose blood type",
@@ -123,7 +161,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please choose family category",
     ),
     "pleaseChooseFamilyHead": MessageLookupByLibrary.simpleMessage(
-      "Please choose family head",
+      "Please choose a manager for the block",
     ),
     "pleaseChooseIdentityType": MessageLookupByLibrary.simpleMessage(
       "Please choose identity type",
@@ -140,15 +178,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterUsername": MessageLookupByLibrary.simpleMessage(
       "Please enter username",
     ),
+    "resendVerifycode": MessageLookupByLibrary.simpleMessage("Resend code"),
+    "resendVerifycodeAt": MessageLookupByLibrary.simpleMessage(
+      "Resend code at 00",
+    ),
     "residentialBlock": MessageLookupByLibrary.simpleMessage(
       "Residential Block",
     ),
     "residentialBlocks": MessageLookupByLibrary.simpleMessage(
       "Residential Blocks",
     ),
+    "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Re-enter password:",
+    ),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "searchFamilyHead": MessageLookupByLibrary.simpleMessage(
-      "Search for family head...",
+      "Search for manager...",
     ),
     "searchResidentialBlock": MessageLookupByLibrary.simpleMessage(
       "Search for a residential block...",
@@ -157,13 +202,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "secondNameRequired": MessageLookupByLibrary.simpleMessage(
       "Second name is required",
     ),
+    "sendButton": MessageLookupByLibrary.simpleMessage("Submit"),
     "teamsSection": MessageLookupByLibrary.simpleMessage("Teams Section"),
     "thirdName": MessageLookupByLibrary.simpleMessage("Third Name"),
     "thirdNameRequired": MessageLookupByLibrary.simpleMessage(
       "Third name is required",
     ),
+    "unknownError": MessageLookupByLibrary.simpleMessage(
+      "An unknown error occurred",
+    ),
     "update": MessageLookupByLibrary.simpleMessage("Update"),
     "username": MessageLookupByLibrary.simpleMessage("Username"),
     "usernameLabel": MessageLookupByLibrary.simpleMessage("Username:"),
+    "verifyCode": MessageLookupByLibrary.simpleMessage("Verify the code"),
+    "warningVerifycodeEmpty": MessageLookupByLibrary.simpleMessage(
+      "Please enter the Verify code",
+    ),
+    "warningVerifycodeType": MessageLookupByLibrary.simpleMessage(
+      "Please enter only numbers",
+    ),
   };
 }

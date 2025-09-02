@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 
-import '../../../../../core/constants/app_color.dart';
-import '../../../../../core/constants/app_image.dart';
-import '../../../../../core/constants/app_route.dart';
-import '../../../cubits/cubit/block_cubit.dart';
-import '../../../data/models/Block.dart';
+import '../../../../core/constants/app_color.dart';
+import '../../../../core/constants/app_image.dart';
+import '../../../../core/constants/app_route.dart';
+import '../../cubits/cubit/block_cubit.dart';
+import '../../data/models/Block.dart';
 
 class ResidentialBlockCardWidget extends StatelessWidget {
   final Block block;

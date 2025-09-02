@@ -194,40 +194,40 @@ class AppLocalizations {
     );
   }
 
-  /// `Search for family head...`
+  /// `Search for manager...`
   String get searchFamilyHead {
     return Intl.message(
-      'Search for family head...',
+      'Search for manager...',
       name: 'searchFamilyHead',
       desc: 'Search for family head hint',
       args: [],
     );
   }
 
-  /// `Choose Family Head`
+  /// `Choose manager`
   String get chooseFamilyHead {
     return Intl.message(
-      'Choose Family Head',
+      'Choose manager',
       name: 'chooseFamilyHead',
       desc: 'Choose family head label',
       args: [],
     );
   }
 
-  /// `Please choose family head`
+  /// `Please choose a manager for the block`
   String get pleaseChooseFamilyHead {
     return Intl.message(
-      'Please choose family head',
+      'Please choose a manager for the block',
       name: 'pleaseChooseFamilyHead',
       desc: 'Please choose family head validation',
       args: [],
     );
   }
 
-  /// `Failed to load people`
+  /// `No managers available`
   String get failedToLoadPeople {
     return Intl.message(
-      'Failed to load people',
+      'No managers available',
       name: 'failedToLoadPeople',
       desc: 'Failed to load people error',
       args: [],
@@ -329,10 +329,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Change Manager`
+  /// `Change Block Manager`
   String get changeManager {
     return Intl.message(
-      'Change Manager',
+      'Change Block Manager',
       name: 'changeManager',
       desc: 'Change manager label',
       args: [],
@@ -889,10 +889,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Must contain at least 8 characters, an uppercase letter, a lowercase letter, a symbol, and a number`
+  /// `Password must be at least 8 characters and contain an uppercase letter and a number`
   String get passwordValidationHint {
     return Intl.message(
-      'Must contain at least 8 characters, an uppercase letter, a lowercase letter, a symbol, and a number',
+      'Password must be at least 8 characters and contain an uppercase letter and a number',
       name: 'passwordValidationHint',
       desc: 'Password validation hint',
       args: [],
@@ -1030,6 +1030,26 @@ class AppLocalizations {
       'Confirm',
       name: 'confirm',
       desc: 'Confirm button',
+      args: [],
+    );
+  }
+
+  /// `Deletion is not allowed at this time`
+  String get deleteNotAllowed {
+    return Intl.message(
+      'Deletion is not allowed at this time',
+      name: 'deleteNotAllowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No results found`
+  String get noResultsFound {
+    return Intl.message(
+      'No results found',
+      name: 'noResultsFound',
+      desc: '',
       args: [],
     );
   }

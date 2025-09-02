@@ -15,6 +15,7 @@ class ApiLink {
   static const String updateBlocke = '$server/blocks';
   static const String deleteBlocke = '$server/blocks';
   static const String getBlockDetails = '$server/blocks/GetDetails';
+  static const String changeBlockManager = '$server/blocks';
 
   // Projects
   static const String getAllProjects = '$server/projects';
