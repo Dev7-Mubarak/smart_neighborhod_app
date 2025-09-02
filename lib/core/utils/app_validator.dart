@@ -51,13 +51,12 @@ class AppValidator {
     return null;
   }
 
-  static String? validatebudget(String? value)
-   {
+  static String? validatebudget(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'الرجاء قم بملء الحقل';
+      return 'الميزانية مطلوبة';
     }
     if (!RegExp(r'^[0-9]+$').hasMatch(value.trim())) {
-      return 'الرجاء إدخال أرقام فقطة';
+      return 'الرجاء إدخال أرقام فقط في حقل الميزانية';
     }
     return null;
   }
