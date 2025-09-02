@@ -5,7 +5,8 @@ import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
-import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_state.dart';
@@ -91,30 +92,51 @@ class _LoginState extends State<Login> {
                       fontSize: 45,
                       fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 40),
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text(
-                            ":البريد الإكتروني للمستخدم ",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          CustomTextFormField(
-                            hintText: 'قم بإدخال البريد الإلكتروني ',
-                            controller: emailContoller,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: AppValidator.validateEmail,
-                            suffixIcon: Icons.person,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppSize.spasingBetweenAppTitleAndForm),
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "البريد الإكتروني للمستخدم :",
+                          style: TextStyle(
+                            fontSize: AppSize.textSizeOfLable,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
+                        CustomTextFormField(
+                          hintText: 'قم بإدخال البريد الإلكتروني ',
+                          controller: emailContoller,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: AppValidator.validateEmail,
+                          prefixIcon: Icons.person,
+                          focusNode: emailFocusNode,
+                          onSubmitted: (value) {
+                            // FocusScope.of(context).nextFocus();
+                            FocusScope.of(
+                              context,
+                            ).requestFocus(passwordFocusNode);
+                          },
+                        ),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const Text(
+                          "كلمة المرور :",
+                          style: TextStyle(
+                            fontSize: AppSize.textSizeOfLable,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<LoginCubit, LoginState>(
                           buildWhen: (previous, current) =>
                               current is ChangePasswordVisibility,
@@ -128,7 +150,9 @@ class _LoginState extends State<Login> {
                               obscureText: LoginCubit.get(context).isPassword,
                               suffixIcon: LoginCubit.get(context).prefixIcon,
                               onsuffixIconPressed: () {
-                                LoginCubit.get(context).changePasswordVisibilty();
+                                LoginCubit.get(
+                                  context,
+                                ).changePasswordVisibilty();
                               },
                               focusNode: passwordFocusNode,
                             );
@@ -150,38 +174,8 @@ class _LoginState extends State<Login> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          CustomTextFormField(
-                            hintText: 'قم بإدخال كلمة المرور',
-                            controller: passwordContoller,
-                            keyboardType: TextInputType.visiblePassword,
-                            validator:AppValidator.validateEmptyField,
-                            suffixIcon: Icons.key,
-                            obscureText: LoginCubit.get(context).isPassword,
-                            prefixIcon: LoginCubit.get(context).prefixIcon,
-                            onPrefixIconPressed: () {
-                              LoginCubit.get(context).changePasswordVisibilty();
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoute.forgetapassword,
-                              );
-                            },
-                            child: const Text(
-                              "هل نسيت كلمة السر؟",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColor.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 30),
