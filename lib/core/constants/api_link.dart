@@ -14,7 +14,7 @@ class ApiLink {
   static const String addBlocke = '$server/blocks';
   static const String updateBlocke = '$server/blocks';
   static const String deleteBlocke = '$server/blocks';
-  static const String getBlockDetails = '$server/blocks/GetDetails';
+  static const String getBlockDetails = '$server/blocks/details';
   static const String changeBlockManager = '$server/blocks';
 
   // Projects
@@ -45,18 +45,19 @@ class ApiLink {
   static const String getAllTeamRoles = '$server/projects/teams/roles';
 
   // Families
-  static const String getAllFamilyCategories = '$server/familyCategories';
+  static const String getAllFamilyCategories = '$server/family-categories';
   static const String getAllMemberFamilyRoles =
       '$server/memberFamilyRoles/getAllMemberTypes';
   static const String getAllFamilyTypes = '$server/familyTypes';
-  static const String addFamily = '$server/family';
-  static const String deleteFamily = '$server/family';
-  static const String getAllFamily = '$server/family';
-  static const String updateFamily = '$server/family';
-  static const String addFamilyMember = '$server/family/AddMember';
-  static const String addExistingPersonToFamily = '$server/familyMembers';
-  static const String getFamilyMembers = '$server/familyMembers';
-  static const String getFamilyDetailes = '$server/family/GetDetailes';
+  static const String addFamily = '$server/families';
+  static const String deleteFamily = '$server/families';
+  static const String getAllFamily = '$server/families';
+  static const String updateFamily = '$server/families';
+  static const String addFamilyMember = '$server/families/AddMember';
+  static const String addExistingPersonToFamily =
+      '$server/families/AddExistingPerson';
+  static const String getFamilyMembers = '$server/families/Members';
+  static const String getFamilyDetailes = '$server/families/details';
 
   // Persons
   static const String addNewPerson = '$server/person';
