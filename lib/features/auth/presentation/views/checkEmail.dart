@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/TextFieldOTP.dart';
 import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/common/widgets/resend_timer.dart';
-import 'package:smart_negborhood_app/core/config/generated/l10n.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class CheckEmail extends StatefulWidget {

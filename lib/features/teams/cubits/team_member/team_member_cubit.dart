@@ -18,41 +18,6 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   DateTime? selectedJoiedDate;
   int? teamId;
 
-  // Future<void> getAllTeams() async {
-  //   emit(TeamLoading());
-  //   try {
-  //     final response = await api.get(ApiLink.getAllTeams);
-  //     if (response["data"] == null) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: '400',
-  //           errorMessage: "No data received",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-  //     List<dynamic> teamsJson = response["data"];
-  //     List<Team> teamsObjects = teamsJson.map((e) => Team.fromJson(e)).toList();
-  //     // List<Project> assistances = projectsObjects
-  //     //     .where((e) => e.projectCategory.name == "مساعدات")
-  //     //     .toList();
-  //     if (teamsObjects.isEmpty) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: '400',
-  //           errorMessage: "لا توجد فرق ",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-  //     emit(TeamLoaded(teamsObjects));
-  //   } on Serverexception catch (e) {
-  //     emit(TeamFailure(errorMessage: e.errModel.errorMessage));
-  //   } catch (e) {
-  //     emit(TeamFailure(errorMessage: e.toString()));
-  //   }
-  // }
-
   Future<void> setTeamId(int teamId) async {
     this.teamId = teamId;
   }

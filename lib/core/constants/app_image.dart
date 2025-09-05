@@ -22,9 +22,9 @@ class AppImage {
       '$rootImage/ReconciliationCouncil/Container33.png';
   static const String admin = '$rootImage/ReconciliationCouncil/Admin.jpg';
   static const String load = '$rootImage/loading.gif';
-  static const String notes = '$rootImage/notes.png';
+  static const String notes = '$rootImage/svg/notes.svg';
 
-  static const String handshake = '$rootImage/handshake.png';
+  static const String handshake = '$rootImage/svg/handshake.png';
   static const String loadingimage =
       '$rootImage/residentail/Animationloading.gif';
   static const String monashadatimage = '$rootImage/home/monashadat.png';
