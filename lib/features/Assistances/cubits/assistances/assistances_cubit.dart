@@ -37,7 +37,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(AssistancesLoading());
     try {
       final response = await api.get(
-        '${ApiLink.getAllProjects}?ProjectCategoryId=4',
+        '${ApiLink.getAllProjects}?projectCategoryId=4',
       );
       if (response["data"] == null) {
         throw Serverexception(
@@ -50,10 +50,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       }
       List<dynamic> projectsJson = response["data"];
       _allProjects = projectsJson.map((e) => Project.fromJson(e)).toList();
-      // List<Project> assistances = projectsObjects
-      //     .where((e) => e.projectCategory.name == "مساعدات")
-      //     .toList();
-
       if (_allProjects == []) {
         throw Serverexception(
           errModel: ErrorModel(
@@ -113,12 +109,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     selectedProjectPriority = project.projectPriority;
     selectedProjectCategory = project.projectCategory;
     selectedManagerId = project.manager.id;
-    // final response = await api.get(
-    //   '${ApiLink.getPersonById}/${project.manager.id}',
-    // );
-    // if (response["data"] != null) {
-    //   selectedManager = Person.fromJson(response["data"]);
-    // }
   }
 
   Future<void> setAssistanceForDetiles(Project project) async {
@@ -133,7 +123,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(AssistancesLoading());
     try {
       final response = await api.delete(
-        '${ApiLink.removeTeamFromeProject}/${project!.id}?teamId=$teamId',
+        ApiLink.removeTeamFromeProject(projectId: project!.id, teamId: teamId),
       );
 
       if (response["isSuccess"]) {
@@ -158,7 +148,10 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(AssistancesLoading());
     try {
       final response = await api.delete(
-        '${ApiLink.removeFamilyFromeProject}/${project!.id}?famileId=$familyId',
+        ApiLink.removeFamilyFromeProject(
+          projectId: project!.id,
+          familyId: familyId,
+        ),
       );
 
       if (response["isSuccess"]) {
@@ -215,7 +208,9 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   Future<void> getProjectBlockFamilies({required int id}) async {
     emit(BlockFamiliesLoading());
     try {
-      final response = await api.get('${ApiLink.getProjectBlockFamilies}/$id');
+      final response = await api.get(
+        ApiLink.getProjectBlockFamilies(projectId: id),
+      );
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
@@ -229,16 +224,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       _allBlockFamilies = BlockFamiliesJson.map(
         (e) => ProjectBlockFamilies.fromJson(e),
       ).toList();
-
-      // if (_allBlockFamilies == []) {
-      //   throw Serverexception(
-      //     errModel: ErrorModel(
-      //       statusCode: '400',
-      //       errorMessage: "لا توجد أسر ",
-      //       isSuccess: response["isSuccess"] ?? false,
-      //     ),
-      //   );
-      // }
       emit(BlockFamiliesLoaded(BlockFamilies: _allBlockFamilies));
     } on Serverexception catch (e) {
       emit(BlockFamiliesFailure(errorMessage: e.errModel.errorMessage));
@@ -250,8 +235,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   void changeSelectedManager(int? id) {
     selectedManagerId = id;
 
-    // يمكنك هنا إطلاق حالة جديدة إذا كنت بحاجة إلى تحديث واجهة المستخدم
-    // emit(PersonIdSelectedState(id));
     emit(ChangeSelectedManager());
   }
 
@@ -321,7 +304,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         data: {
           'name': name,
           'description': description,
-          // 'managerId': selectedManager?.id,
           'managerId': selectedManagerId,
           "projectCatgoryId": selectedProjectCategory?.id,
           "startDate": selectedStartDate?.toIso8601String(),
@@ -363,7 +345,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(WiateAssignTeamToAssistance());
     try {
       final response = await api.post(
-        '${ApiLink.assignTeamToProject}/${project!.id}?teamId=$selectedTeam',
+        ApiLink.assignTeamToProject(projectId: project!.id,teamId: selectedTeam!)
       );
 
       if (response["isSuccess"]) {
@@ -392,7 +374,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(WiateAssignFamilyToAssistance());
     try {
       final response = await api.post(
-        '${ApiLink.assignFamilyToProject}/${project!.id}?familyId=$selectedfamily',
+        ApiLink.assignFamilyToProject(projectId:project!.id,familyId:selectedfamily!),
       );
 
       if (response["isSuccess"]) {
@@ -419,7 +401,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
 
   void resetInputs() {
     project = null;
-    // selectedManager = null;
     selectedManagerId = null;
     selectedStartDate = null;
     selectedEndDate = null;

@@ -142,16 +142,24 @@ class ConflictCubit extends Cubit<ConflictState> {
     emit(WiateAddedUpdatedConflict());
     try {
       final response = await api.post(
-        '${ApiLink.addConflict}?ConflictTypeId=$selectedConflictTypeId&ManagerId=10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf&FirstPartyId=$selectedfirstPartId&SecondPartyId=$selectedSecondPartId&Notes=$notes&SessionDate=$sessionDate&Title=$title&IsResolved=${isResolved ?? false}',
+        ApiLink.addConflict,
         data: {
-          'Image': conflictPicture != null
+          "conflictTypeId": selectedConflictTypeId,
+          "managerId": "10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf",
+          "firstPartyId": selectedfirstPartId,
+          "secondPartyId": selectedSecondPartId,
+          "notes": notes,
+          "image": conflictPicture != null
               ? await MultipartFile.fromFile(
                   conflictPicture!.path,
                   filename: conflictPicture!.name,
                 )
               : null,
+          "sessionDate": sessionDate,
+          "title": title,
+          "isResolved": isResolved ?? false,
         },
-        isFromData: true,
+        // isFromData: true,
       );
       if (response["isSuccess"]) {
         emit(
@@ -159,7 +167,6 @@ class ConflictCubit extends Cubit<ConflictState> {
             message: response["message"] ?? "تمت الإضافة بنجاح",
           ),
         );
-        // getAllConflicts();
         resetInputs();
       } else {
         throw Serverexception(
@@ -195,16 +202,24 @@ class ConflictCubit extends Cubit<ConflictState> {
     emit(WiateAddedUpdatedConflict());
     try {
       final response = await api.update(
-        '${ApiLink.updateConflict}/$id?Title=$title&ConflictTypeId=$selectedConflictTypeId&ManagerId=10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf&FirstPartyId=$selectedfirstPartId&SecondPartyId=$selectedSecondPartId&Notes=$notes&SessionDate=$sessionDate&IsResolved=$isResolved',
-        data: {
-          'Image': conflictPicture != null
+        '${ApiLink.updateConflict}/$id',
+        data:{
+          "title": title,
+          "conflictTypeId": selectedConflictTypeId,
+          "managerId": "10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf",
+          "firstPartyId": selectedfirstPartId,
+          "secondPartyId": selectedSecondPartId,
+          "notes":notes,
+          "image": conflictPicture != null
               ? await MultipartFile.fromFile(
                   conflictPicture!.path,
                   filename: conflictPicture!.name,
                 )
               : null,
+          "sessionDate": sessionDate,
+          "isResolved": isResolved,
         },
-        isFromData: true,
+        // isFromData: true,
       );
       if (response["isSuccess"]) {
         emit(
@@ -255,57 +270,4 @@ class ConflictCubit extends Cubit<ConflictState> {
     }
   }
 
-  // Future<void> getProjectsByTeamId(int id) async {
-  //   emit(TeamLoading());
-  //   try {
-  //     final response = await api.get('${ApiLink.getProjectsByTeamId}/$id');
-  //     if (response["data"] == null) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: '400',
-  //           errorMessage: "No data received",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-  //     List<dynamic> ProjectJson = response["data"];
-  //     List<Project> _allProjects = ProjectJson.map((e) => Project.fromJson(e)).toList();
-  //     if (_allProjects.isEmpty) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: '400',
-  //           errorMessage: "لا توجد مشاريع لهذا الفريق ",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-  //     emit(ProjectsOfTeamLoaded(allProjects: _allProjects));
-  //   } on Serverexception catch (e) {
-  //     emit(TeamFailure(errorMessage: e.errModel.errorMessage));
-  //   } catch (e) {
-  //     emit(TeamFailure(errorMessage: e.toString()));
-  //   }
-  // }
-
-  // Future<void> getTeamById(int id) async {
-  //   emit(TeamLoading());
-  //   try {
-  //     final response = await api.get('${ApiLink.getTeamById}/$id');
-  //     if (response["data"] == null) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: '400',
-  //           errorMessage: "No data received",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-  //     ;
-  //     emit(TeamByIdLoaded(team: Team.fromJson(response["data"])));
-  //   } on Serverexception catch (e) {
-  //     emit(TeamFailure(errorMessage: e.errModel.errorMessage));
-  //   } catch (e) {
-  //     emit(TeamFailure(errorMessage: e.toString()));
-  //   }
-  // }
 }

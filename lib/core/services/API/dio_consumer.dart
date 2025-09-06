@@ -19,7 +19,7 @@ class DioConsumer {
     dio.options.baseUrl = ApiLink.server;
     dio.options.headers = {
       'Content-Type': 'application/json',
-      // 'Authorization': 'Bearer YOUR_TOKEN', // ربما لا تحتاج هذا لطلب تسجيل الدخول
+      'Authorization': 'Bearer YOUR_TOKEN', 
     };
 
     dio.options.receiveDataWhenStatusError = true;
@@ -55,6 +55,7 @@ class DioConsumer {
       handleDioExceptions(error);
     }
   }
+
 
   Future get(String path, {Map<String, dynamic>? queryparameters}) async {
     try {
