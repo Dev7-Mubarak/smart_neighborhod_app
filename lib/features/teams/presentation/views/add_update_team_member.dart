@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_state.dart';
@@ -68,14 +70,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
     return BlocListener<TeamMemberCubit, TeamMemberState>(
       listener: (context, state) {
         if (state is WiateAddedUpdatedTeamMember) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          context.showLoadingDialog();
         } else if (state is TeamMemberAddedSuccessfully ||
             state is TeamMemberUpdatedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -83,17 +78,10 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
           final message = (state is TeamMemberAddedSuccessfully)
               ? state.message
               : (state as TeamMemberUpdatedSuccessfully).message;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message), backgroundColor: Colors.green),
-          );
+          context.showSuccessSnackBar(message);
         } else if (state is TeamMemberFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         } else if (state is ChangeSelectedMemberJoiedDate) {
           JoiedDateController.text = teamMemberCubit.selectedJoiedDate != null
               ? DateFormat(
@@ -219,12 +207,8 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ),
                                   ),
                                 ),
-                                validator: (Person? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار إسم العضو ";
-                                  }
-                                  return null;
-                                },
+                                validator: (Person? item) =>
+                                    AppValidator.validateDropdown(item),
                                 enabled: widget.teamMember == null
                                     ? true
                                     : false,
@@ -241,12 +225,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => teamMemberCubit.pickDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'الرجاء قم بإدخال تاريخ إنضمام  العضو';
-                            }
-                            return null;
-                          },
+                          validator: AppValidator.validateEmptyField
                         ),
                         const SizedBox(height: 20),
                         const SmallText(text: 'وظيفة العضو'),
@@ -320,12 +299,8 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ),
                                   ),
                                 ),
-                                validator: (TeamRole? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار دور العضو ";
-                                  }
-                                  return null;
-                                },
+                                 validator:(TeamRole? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             return Container();

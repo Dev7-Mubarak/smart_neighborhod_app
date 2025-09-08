@@ -156,7 +156,7 @@ class TeamCubit extends Cubit<TeamState> {
   Future<void> getProjectsByTeamId(int id) async {
     emit(TeamLoading());
     try {
-      final response = await api.get('${ApiLink.getProjectsByTeamId}/$id');
+      final response = await api.get(ApiLink.getProjectsByTeamId(teamId: id));
 
       if (response["data"] == null) {
         throw Serverexception(
@@ -209,11 +209,6 @@ class TeamCubit extends Cubit<TeamState> {
     selectedPersonId = teamLeader.personId;
   }
 
-  // void changeSelectedManager(int? id) {
-  //   selectedTeamLeadId = id;
-  //   emit(ChangeSelectedTeamLeadId());
-  // }
-
   void changeSelectedManager(int? id) {
     selectedPersonId = id;
     emit(ChangeSelectedTeamLeadId());
@@ -239,8 +234,6 @@ class TeamCubit extends Cubit<TeamState> {
     selectedPersonId = null;
     selectedJoiedDate = null;
   }
-
-
   Future<void> getTeamById(int id) async {
     emit(TeamLoading());
     try {

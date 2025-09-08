@@ -133,17 +133,6 @@ class _AllConflictState extends State<AllConflict> {
                                         ),
                                       ),
                                     ),
-                                    // Container(
-                                    //   width: 170,
-                                    //   height: 100,
-                                    //   decoration: BoxDecoration(
-                                    //     borderRadius: BorderRadius.circular(15),
-                                    //     image: DecorationImage(
-                                    //       image: AssetImage(AppImage.ReconciliationCouncil),
-                                    //       fit: BoxFit.fill,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     SizedBox(height: 10),
                                     Expanded(
                                       child: SmallText(

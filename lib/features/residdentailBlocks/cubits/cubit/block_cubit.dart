@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_state.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
-import 'package:smart_negborhood_app/features/people/data/models/Person.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
@@ -14,25 +13,48 @@ class BlockCubit extends Cubit<BlockState> {
 
   DioConsumer api;
   Block? block;
-  Person? selectedManager;
+  int? selectedManager;
 
   Future<void> setBlock(Block block) async {
     this.block = block;
-
-    // convert this to service and repositry then called
-    final response = await api.get(
-      '${ApiLink.getPersonById}/${block.personId}',
-    );
-
-    if (response["data"] != null) {
-      selectedManager = Person.fromJson(response["data"]);
-    }
-    //
+    this.selectedManager = block.personId;
   }
 
-  void changeSelectedManager(Person? selectedManager) {
-    this.selectedManager = selectedManager;
+  void changeSelectedBlockManager(int? selectedBlockManager) {
+    this.selectedManager = selectedBlockManager;
     emit(ChangeSelectedManager());
+  }
+
+  void changeBlockManager({
+    required int id,
+    required int personId,
+    required String email,
+    required String password,
+  }) async {
+    emit(WaitingForUpdateOrAddBlock());
+    try {
+      final response = await api.update(
+        '${ApiLink.changeBlockManager}/$id/manager',
+        data: {"email": email, "password": password, "personId": personId},
+      );
+
+      if (response["isSuccess"]) {
+        emit(BlockUpdatedSuccessfully(message: response["message"]));
+        await getBlocks();
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: response["statusCode"] ?? '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(BlocksFailure(errorMessage: e.toString()));
+    }
   }
 
   Future<void> getBlocks() async {
@@ -71,7 +93,7 @@ class BlockCubit extends Cubit<BlockState> {
         ApiLink.addBlocke,
         data: {
           'name': name,
-          'personId': selectedManager?.id,
+          'personId': selectedManager,
           'userName': userName,
           'password': password,
         },
@@ -99,27 +121,15 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-  Future<void> updateBlock({
-    required int id,
-    required String name,
-    required String userName,
-  }) async {
-    emit(BlocksLoading());
+  Future<void> updateBlock({required int id, required String name}) async {
+    emit(WaitingForUpdateOrAddBlock());
     try {
       final response = await api.update(
         '${ApiLink.updateBlocke}/$id',
-        data: {
-          'name': name,
-          'personId': selectedManager?.id,
-          'userName': userName,
-        },
+        data: {'name': name},
       );
       if (response["isSuccess"]) {
-        emit(
-          BlockUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح",
-          ),
-        );
+        emit(BlockUpdatedSuccessfully(message: response["message"]));
         await getBlocks();
       } else {
         final String errorMessage =

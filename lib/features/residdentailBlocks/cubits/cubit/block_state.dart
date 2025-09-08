@@ -42,4 +42,6 @@ class BlockUpdatedSuccessfully extends BlockState {
   BlockUpdatedSuccessfully({required this.message});
 }
 
+class WaitingForUpdateOrAddBlock extends BlockState {}
+
 class ChangeSelectedManager extends BlockState {}

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
+import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:smart_negborhood_app/features/families/cubits/family_member/fami
 import 'package:smart_negborhood_app/features/families/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_role/team_role_cubit.dart';
@@ -37,7 +39,7 @@ import 'package:smart_negborhood_app/features/families/presentation/views/family
 import 'package:smart_negborhood_app/features/onBoarding/presentation/views/onboarding.dart';
 import 'package:smart_negborhood_app/features/people/presentation/views/add_update_person.dart';
 import 'package:smart_negborhood_app/features/people/presentation/views/all_pepole.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/add_update_block.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/add_block_view.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/residential_block_detial.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/add_update_team.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/add_update_team_member.dart';
@@ -102,7 +104,14 @@ class AppRouter {
           ),
         );
       case AppRoute.login:
-        return MaterialPageRoute(builder: (_) => Login());
+        return
+        MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: ((BuildContext context) =>
+                LoginCubit(api: DioConsumer(dio: Dio()))),
+            child:  Login(),
+          ),
+        );
 
       case AppRoute.residentialBlockDetial:
         final blockId = settings.arguments as int;
@@ -215,6 +224,22 @@ class AppRouter {
               ),
             ],
             child: AddUpdateAssistanc(assistancProject: assistancCubit.project),
+          ),
+        );
+      case AppRoute.changeBlockManager:
+        final blockCubit = settings.arguments as BlockCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(
+                value: blockCubit,
+                child: ChangeBlockManagerView(),
+              ),
+            ],
+            child: ChangeBlockManagerView(),
           ),
         );
       case AppRoute.assistanceDetiles:
@@ -354,6 +379,7 @@ class AppRoute {
   static const String mainHome = '/mainhome';
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
   static const String residentialBlocks = '/ResidentialBlock';
+  static const String changeBlockManager = '/ChangeBlockManager';
   static const String forgetapassword = '/forgetapassword';
   static const String checkEmail = '/CheckEmail';
   static const String createNewPassword = '/createNewPassword';

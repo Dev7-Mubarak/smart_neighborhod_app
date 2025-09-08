@@ -5,8 +5,10 @@ import 'package:smart_negborhood_app/core/common/widgets/custom_text_input_filed
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
-
 
 class CreateNewPassword extends StatefulWidget {
   CreateNewPassword({super.key});
@@ -24,19 +26,26 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
 
   final FirstpasswordContoller = TextEditingController();
 
-  final isLoading = false;
+
   late ForgetapasswordCubit forgetapasswordCubit;
+  final FocusNode firstFocus = FocusNode();
+  final FocusNode secondFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
     forgetapasswordCubit = context.read<ForgetapasswordCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      firstFocus.requestFocus();
+    });
   }
 
   @override
   void dispose() {
     SecondpasswordContoller.dispose();
     FirstpasswordContoller.dispose();
+    firstFocus.dispose();
+    secondFocus.dispose();
     super.dispose();
   }
 
@@ -45,31 +54,15 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendNewPasswordLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+
+          context.showLoadingDialog();
         } else if (state is SendNewPasswordSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
           Navigator.pushNamed(context, AppRoute.mainHome);
         } else if (state is SendNewPasswordFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -80,32 +73,33 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
           iconTheme: IconThemeData(color: Colors.black),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(left: 40),
+                    padding: EdgeInsetsDirectional.only(start: 40),
                     child: Align(
-                      alignment: Alignment.topLeft,
+                      alignment: AlignmentDirectional.topStart,
                       child: CircularLogo(),
                     ),
                   ),
-                  const Text(
-                    "الحارة الذكية",
+                  Text(
+                    context.locale.appTitle,
                     style: TextStyle(
                       color: AppColor.primaryColor,
                       fontSize: 45,
                       fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: AppSize.spasingBetweenAppTitleAndForm),
                   Form(
                     key: formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           "انشأ كلمة مرور جديدة",
@@ -115,32 +109,28 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // const boldtext(
-                        //   boldSize: .4,
-                        //   fontcolor: AppColor.primaryColor,
-                        //   fontsize: 25,
-                        //   text: "انشأ كلمة مرور جديدة",
-                        // ),
                         const SizedBox(height: 15),
                         const Text(
                           "يجب أن تكون كلمة مرورك الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا. ",
                           style: TextStyle(
-                            fontSize: 15,
+
+                            fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
-                          textAlign: TextAlign.end,
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
                         const Text(
-                          ":كلمة المرور",
+                          "كلمه المرور:",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<ForgetapasswordCubit, ForgetapasswordState>(
                           buildWhen: (previous, current) =>
                               current is ChangeFirstPasswordVisibility,
@@ -149,58 +139,45 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                               hintText: 'قم بإدخال كلمة المرور',
                               controller: FirstpasswordContoller,
                               keyboardType: TextInputType.visiblePassword,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'الرجاء إدخال كلمة المرور';
-                                }
-                                if (value.length < 8) {
-                                  return 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل';
-                                }
-                                if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
-                                }
-                                if (!RegExp(
-                                  r'[!@#$%^&*(),.?":{}|<>]',
-                                ).hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
-                                }
-                                return null;
-                              },
-                              suffixIcon: Icons.key,
+                              validator: AppValidator.validatePassword,
+                              prefixIcon: Icons.key,
                               obscureText: forgetapasswordCubit.FirstisPassword,
-                              prefixIcon: forgetapasswordCubit.FirstprefixIcon,
-                              onPrefixIconPressed: () {
+                              suffixIcon: forgetapasswordCubit.FirstprefixIcon,
+                              onsuffixIconPressed: () {
                                 forgetapasswordCubit
                                     .changeFirstPasswordVisibilty();
+                              },
+
+                              focusNode: firstFocus,
+                              onSubmitted: (value) {
+                                FocusScope.of(
+                                  context,
+                                ).requestFocus(secondFocus);
                               },
                             );
                           },
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 5),
                         const Text(
                           "يجب أن تحتوي على الأقل على 8 رموز ,وحرف كبير و حرف صغير و رمز و رقم",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 10,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         const Text(
-                          ":أعد كتابة كلمة المرور",
+                          "أعد كتابة كلمة المرور:",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<ForgetapasswordCubit, ForgetapasswordState>(
                           buildWhen: (previous, current) =>
                               current is ChangeSecondPasswordVisibility,
@@ -209,45 +186,23 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                               hintText: 'قم بإدخال كلمة المرور',
                               controller: SecondpasswordContoller,
                               keyboardType: TextInputType.visiblePassword,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'الرجاء إدخال كلمة المرور';
-                                }
-                                if (value.length < 8) {
-                                  return 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل';
-                                }
-                                if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[a-z]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل';
-                                }
-                                if (!RegExp(r'[0-9]').hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
-                                }
-                                if (!RegExp(
-                                  r'[!@#$%^&*(),.?":{}|<>]',
-                                ).hasMatch(value)) {
-                                  return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل';
-                                }
-                                return null;
-                              },
-                              suffixIcon: Icons.key,
+                              validator: AppValidator.validatePassword,
+                             prefixIcon : Icons.key,
                               obscureText:
                                   forgetapasswordCubit.SecondisPassword,
-                              prefixIcon: forgetapasswordCubit.SecondprefixIcon,
-                              onPrefixIconPressed: () {
+                             suffixIcon : forgetapasswordCubit.SecondprefixIcon,
+                              onsuffixIconPressed: () {
                                 forgetapasswordCubit
                                     .changeSecondPasswordVisibilty();
                               },
+                              focusNode: secondFocus,
                             );
                           },
                         ),
-                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
                   DefaultButton(
                     text: 'إرسال',
                     backgroundColor: AppColor.primaryColor,
@@ -271,7 +226,8 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         }
                       }
                     },
-                    fontsize: 20,
+
+                    fontsize: AppSize.fontSizeOfBigButton,
                   ),
                 ],
               ),

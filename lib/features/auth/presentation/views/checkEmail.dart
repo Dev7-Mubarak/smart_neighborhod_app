@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/core/common/widgets/TextFieldOTP.dart';
 import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
+import 'package:smart_negborhood_app/core/common/widgets/resend_timer.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class CheckEmail extends StatefulWidget {
@@ -30,19 +34,13 @@ class _CheckEmailState extends State<CheckEmail> {
   late ForgetapasswordCubit forgetapasswordCubit;
 
   final FocusNode firstFocus = FocusNode();
-
-  final FocusNode secondFocus = FocusNode();
-
-  final FocusNode thirdFocus = FocusNode();
-
-  final FocusNode fourthFocus = FocusNode();
-  final FocusNode fifthFocus = FocusNode();
-  final FocusNode sixthFocus = FocusNode();
-
   @override
   void initState() {
     super.initState();
     forgetapasswordCubit = context.read<ForgetapasswordCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      firstFocus.requestFocus();
+    });
   }
 
   @override
@@ -54,11 +52,6 @@ class _CheckEmailState extends State<CheckEmail> {
     fifthNumController.dispose();
     sixthNumController.dispose();
     firstFocus.dispose();
-    secondFocus.dispose();
-    thirdFocus.dispose();
-    fourthFocus.dispose();
-    fifthFocus.dispose();
-    sixthFocus.dispose();
     super.dispose();
   }
 
@@ -67,22 +60,11 @@ class _CheckEmailState extends State<CheckEmail> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendConfirmationCodeLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => const PopScope(
-              canPop: false,
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+
+          context.showLoadingDialog();
         } else if (state is SendConfirmationCodeSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
           Navigator.pushNamed(
             context,
             AppRoute.createNewPassword,
@@ -90,12 +72,7 @@ class _CheckEmailState extends State<CheckEmail> {
           );
         } else if (state is SendConfirmationCodeFailure) {
           Navigator.of(context, rootNavigator: true).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -105,31 +82,37 @@ class _CheckEmailState extends State<CheckEmail> {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.all(
+           AppSize.paddingOfPage,
+          ),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: CircularLogo(),
+                  const Padding(
+                    padding: EdgeInsetsDirectional.only(start: 40),
+                    child: Align(
+                      alignment: AlignmentDirectional.topStart,
+                      child: CircularLogo(),
+                    ),
                   ),
-                  const Text(
-                    "الحارة الذكية",
+                  Text(
+                    context.locale.appTitle,
                     style: TextStyle(
                       color: AppColor.primaryColor,
                       fontSize: 45,
                       fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: AppSize.spasingBetweenAppTitleAndForm),
                   Form(
                     key: formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "التحقق من رمز الكود",
                           style: TextStyle(
                             color: AppColor.primaryColor,
@@ -141,53 +124,45 @@ class _CheckEmailState extends State<CheckEmail> {
                         const Text(
                           "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // const SizedBox(height: 10),
-                        // const Text(
-                        //   "Ahmed@Khaled.com",
-                        //   style: TextStyle(
-                        //     fontSize: 15,
-                        //     color: Colors.black,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                         const SizedBox(height: 40),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            buildCodeCircle(
-                              controller: sixthNumController,
-                              currentFocus: sixthFocus,
-                              nextFocus: null,
-                            ),
-                            buildCodeCircle(
-                              controller: fifthNumController,
-                              currentFocus: fifthFocus,
-                              nextFocus: sixthFocus,
-                            ),
-                            buildCodeCircle(
-                              controller: fourthNumController,
-                              currentFocus: fourthFocus,
-                              nextFocus: fifthFocus,
-                            ),
-                            buildCodeCircle(
-                              controller: thirdNumController,
-                              currentFocus: thirdFocus,
-                              nextFocus: fourthFocus,
-                            ),
-                            buildCodeCircle(
-                              controller: secondNumController,
-                              currentFocus: secondFocus,
-                              nextFocus: thirdFocus,
-                            ),
-                            buildCodeCircle(
+                            TextFieldOTPWidget(
+                              Focusnode: firstFocus,
+                              first: true,
+                              last: false,
                               controller: firstNumController,
-                              currentFocus: firstFocus,
-                              nextFocus: secondFocus,
+                            ),
+                            TextFieldOTPWidget(
+                              controller: secondNumController,
+                              first: false,
+                              last: false,
+                            ),
+                            TextFieldOTPWidget(
+                              controller: thirdNumController,
+                              first: false,
+                              last: false,
+                            ),
+                            TextFieldOTPWidget(
+                              controller: fourthNumController,
+                              first: false,
+                              last: false,
+                            ),
+                            TextFieldOTPWidget(
+                              controller: fifthNumController,
+                              first: false,
+                              last: false,
+                            ),
+                            TextFieldOTPWidget(
+                              controller: sixthNumController,
+                              first: false,
+                              last: true,
                             ),
                           ],
                         ),
@@ -217,74 +192,12 @@ class _CheckEmailState extends State<CheckEmail> {
                         );
                       }
                     },
-                    fontsize: 20,
+                    fontsize: AppSize.fontSizeOfBigButton,
                   ),
                 ],
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class buildCodeCircle extends StatelessWidget {
-  const buildCodeCircle({
-    super.key,
-    required this.controller,
-    required this.currentFocus,
-    required this.nextFocus,
-  });
-
-  final TextEditingController controller;
-  final FocusNode currentFocus;
-  final FocusNode? nextFocus;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.black, width: 2),
-      ),
-      child: Center(
-        child: TextFormField(
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'الرجاء إدخال قيمة';
-            }
-            if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-              return 'الرجاء إدخال أرقام فقط';
-            }
-            return null;
-          },
-          controller: controller,
-          focusNode: currentFocus,
-          textAlign: TextAlign.center,
-          maxLength: 1,
-          keyboardType: TextInputType.number,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColor.primaryColor,
-          ),
-          decoration: const InputDecoration(
-            counterText: "",
-            border: InputBorder.none,
-          ),
-          onChanged: (value) {
-            if (value.isNotEmpty && nextFocus != null) {
-              FocusScope.of(currentFocus.context!).requestFocus(nextFocus);
-            }
-          },
-          onEditingComplete: () {
-            if (nextFocus != null) {
-              FocusScope.of(currentFocus.context!).requestFocus(nextFocus);
-            }
-          },
         ),
       ),
     );

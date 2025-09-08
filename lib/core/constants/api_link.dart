@@ -1,65 +1,103 @@
 class ApiLink {
-  // static const String server = 'https://localhost:7159/api';
+  // Base
   static const String server = 'https://smartneighboorhood.runasp.net/api';
-  static const String login = '$server/Auth/Login';
-  static const String getAllBlockes = '$server/Blocks/GetAll';
-  static const String getAllProjects = '$server/Projects/GetAll';
-  static const String getAllProjectCatgories =
-      '$server/ProjectCatgories/GetAll';
-  static const String deleteProject = '$server/Projects/Delete';
-  static const String addProject = '$server/Projects/Add';
-  static const String updateProject = '$server/Projects/Update';
-  static const String getProjectTeams = '$server/Projects/GetProjectTeam';
-  static const String getProjectBlockFamilies =
-      '$server/Projects/GetProjectBlocksWithBeneficiaryFamilies';
-  static const String assignTeamToProject = '$server/Projects/assign-team';
-  static const String assignFamilyToProject = '$server/Projects/assign-family';
-  static const String removeTeamFromeProject = '$server/Projects/remove-team';
-  static const String removeFamilyFromeProject =
-      '$server/Projects/remove-family';
-  static const String getAllTeams = '$server/Teams/GetAll';
-  static const String addTeam = '$server/Teams/Add';
-  static const String updateTeam = '$server/Teams/Update';
-  static const String deleteTeam = '$server/Teams/Delete';
-  static const String getTeamById = '$server/Teams/GetById';
-  static const String getProjectsByTeamId = '$server/Teams/by-team';
-  static const String addTeamMember = '$server/TeamMembers/Add';
-  static const String updateTeamMember = '$server/TeamMembers/Update';
-  static const String deleteTeamMember = '$server/TeamMembers/Delete';
-  static const String getAllTeamRoles = '$server/TeamRole/GetAll';
 
-  static const String getAllFamilyCategories = '$server/FamilyCatgory/GetAll';
-  static const String getAllMemberFamilyRoles =
-      '$server/MemberFamilyRole/getAllMemberTypes';
-  static const String getAllFamilyTypes = '$server/FamilyTypes/GetAll';
-  static const String addBlocke = '$server/Blocks/Add';
-  static const String updateBlocke = '$server/Blocks/Update';
-  static const String deleteBlocke = '$server/Blocks/Delete';
-  static const String addFamily = '$server/Family/Add';
-  static const String deleteFamily = '$server/Family/Delete';
-  static const String getAllFamily = '$server/Family/GetAll';
-  static const String updateFamily = '$server/Family/Update';
-  static const String addFamilyMember = '$server/Family/AddMember';
-  static const String addExistingPersonToFamily = '$server/FamilyMembers/Add';
-  static const String getFamilyMembers = '$server/FamilyMembers/GetAll';
-  static const String getFamilyDetailes = '$server/Family/GetDetailes';
-  static const String getBlockDetails = '$server/Blocks/GetDetails';
-  static const String addNewPerson = '$server/Person/Add';
-  static const String deletePerson = '$server/Person/Delete';
-  static const String updatePerson = '$server/Person/Update';
-  static const String getAllPepole = '$server/Person/GetAll';
-  static const String getPersonById = '$server/Person/GetById';
-  static const String getAllConflict = '$server/ConflictCase/GetAll';
-  static const String addConflict = '$server/ConflictCase/Add';
-  static const String updateConflict = '$server/ConflictCase/Update';
-  static const String deleteConflict = '$server/ConflictCase/Delete';
-  static const String getAllConfilctCaseTypes =
-      '$server/ConfilctCaseType/GetAll';
-  static const String getConflictCasesByFamilyMember =
-      '$server/ConflictCase/ByFamilyMember';
-      
-  static const String sendEmail = '$server/Auth/Password-reset/send-code';
+  // Auth
+  static const String login = '$server/auth/login';
+  static const String sendEmail = '$server/auth/reset-password/send-code';
   static const String sendConfirmationCode =
-      '$server/Auth/Password-reset/verify-code';
-  static const String sendNewPassword = '$server/Auth/Password-reset/confirm';
+      '$server/auth/reset-password/verify-code';
+  static const String sendNewPassword = '$server/auth/reset-password/confirm';
+
+  // Blocks
+  static const String getAllBlockes = '$server/blocks';
+  static const String addBlocke = '$server/blocks';
+  static const String updateBlocke = '$server/blocks';
+  static const String deleteBlocke = '$server/blocks';
+  static const String getBlockDetails = '$server/blocks/details';
+  static const String changeBlockManager = '$server/blocks';
+
+  // Projects
+  static const String getAllProjects = '$server/projects';
+  static const String getAllProjectCatgories = '$server/project-categories';
+  static const String addProject = '$server/projects';
+  static const String updateProject = '$server/projects';
+  static const String deleteProject = '$server/projects';
+  static const String getProjectTeams = '$server/projects';
+  static String getProjectBlockFamilies({required int projectId}) {
+    return '$server/projects/$projectId/blocks-with-families';
+  }
+
+  static String assignTeamToProject({
+    required int projectId,
+    required int teamId,
+  }) {
+    return '$server/projects/$projectId/teams/$teamId';
+  }
+
+  static String assignFamilyToProject({
+    required int projectId,
+    required int familyId,
+  }) {
+    return '$server/projects/$projectId/families/$familyId';
+  }
+
+  static String removeTeamFromeProject({
+    required int projectId,
+    required int teamId,
+  }) {
+    return '$server/projects/$projectId/teams/$teamId';
+  }
+
+  static String removeFamilyFromeProject({
+    required int projectId,
+    required int familyId,
+  }) {
+    return '$server/projects/$projectId/families/$familyId';
+  }
+
+  // Teams
+  static const String getAllTeams = '$server/teams';
+  static const String addTeam = '$server/teams';
+  static const String updateTeam = '$server/teams';
+  static const String deleteTeam = '$server/teams';
+  static const String getTeamById = '$server/teams';
+  static String getProjectsByTeamId({required int teamId}) {
+    return '$server/teams/$teamId/projects';
+  }
+
+  static const String addTeamMember = '$server/team-members';
+  static const String updateTeamMember = '$server/team-members';
+  static const String deleteTeamMember = '$server/team-members';
+  static const String getAllTeamRoles = '$server/team-roles';
+
+  // Families
+  static const String getAllFamilyCategories = '$server/family-categories';
+  static const String getAllMemberFamilyRoles =
+      '$server/member-family-roles';
+  // static const String getAllFamilyTypes = '$server/familyTypes';
+  static const String addFamily = '$server/families';
+  static const String deleteFamily = '$server/families';
+  static const String getAllFamily = '$server/families';
+  static const String updateFamily = '$server/families';
+  static const String addFamilyMember = '$server/family-members';
+  static const String addExistingPersonToFamily =
+      '$server/families/AddExistingPerson';
+  static const String getFamilyMembers = '$server/family-members';
+  static const String getFamilyDetailes = '$server/families/details';
+
+  // Persons
+  static const String addNewPerson = '$server/person';
+  static const String deletePerson = '$server/person';
+  static const String updatePerson = '$server/person';
+  static const String getAllPepole = '$server/person';
+  static const String getPersonById = '$server/person';
+
+  // Conflict Cases
+  static const String getAllConflict = '$server/conflict-cases';
+  static const String addConflict = '$server/conflict-cases';
+  static const String updateConflict = '$server/conflictCase';
+  static const String deleteConflict = '$server/conflict-cases';
+  static const String getAllConflictCaseTypes = '$server/conflict-case-type';
+  static const String getConflictCasesByFamilyMember = '$server/conflict-cases';
 }
