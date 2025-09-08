@@ -144,7 +144,7 @@ class _AllTeamsState extends State<AllTeams> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: SmallButton(
-                                text: '+',
+                                text: 'إضافة عضو',
                                 onPressed: () {
                                   _teamsMemberCubit.setTeamId(team.id);
                                   Navigator.pushNamed(
@@ -197,7 +197,7 @@ class _AllTeamsState extends State<AllTeams> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SmallButton(
-            text: 'أضافة',
+            text: 'إضافة فريق',
             onPressed: () {
               Navigator.pushNamed(
                 context,

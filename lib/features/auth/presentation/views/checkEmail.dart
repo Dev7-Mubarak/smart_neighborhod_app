@@ -34,8 +34,6 @@ class _CheckEmailState extends State<CheckEmail> {
   late ForgetapasswordCubit forgetapasswordCubit;
 
   final FocusNode firstFocus = FocusNode();
-
-
   @override
   void initState() {
     super.initState();
@@ -62,6 +60,7 @@ class _CheckEmailState extends State<CheckEmail> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendConfirmationCodeLoading) {
+
           context.showLoadingDialog();
         } else if (state is SendConfirmationCodeSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -202,5 +201,81 @@ class _CheckEmailState extends State<CheckEmail> {
         ),
       ),
     );
+  }
+}
+
+class ResendTimerWidget extends StatefulWidget {
+  final VoidCallback onResend; // دالة لإعادة الإرسال عند الضغط على الزر
+
+  const ResendTimerWidget({super.key, required this.onResend});
+
+  @override
+  State<ResendTimerWidget> createState() => _ResendTimerWidgetState();
+}
+
+class _ResendTimerWidgetState extends State<ResendTimerWidget> {
+  Timer? _timer;
+  int _start = 60;
+  bool _isResendButtonActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    setState(() {
+      _isResendButtonActive = false;
+      _start = 60;
+    });
+
+    const oneSec = Duration(seconds: 1);
+    _timer?.cancel();
+    _timer = Timer.periodic(oneSec, (Timer timer) {
+      if (_start == 0) {
+        setState(() {
+          timer.cancel();
+          _isResendButtonActive = true;
+        });
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isResendButtonActive
+        ? TextButton(
+            onPressed: () {
+              widget.onResend(); // استدعاء دالة إعادة الإرسال
+              startTimer(); // إعادة تشغيل المؤقت
+            },
+            child: const Text(
+              "إعادة إرسال الكود",
+              style: TextStyle(
+                fontSize: 15,
+                color: AppColor.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        : Text(
+            "إعادة إرسال الكود في 00:${_start.toString().padLeft(2, '0')}",
+            style: const TextStyle(
+              fontSize: 15,
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
+          );
   }
 }

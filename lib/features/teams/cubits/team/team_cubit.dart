@@ -152,6 +152,7 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
+ 
   Future<void> getProjectsByTeamId(int id) async {
     emit(TeamLoading());
     try {
@@ -233,7 +234,6 @@ class TeamCubit extends Cubit<TeamState> {
     selectedPersonId = null;
     selectedJoiedDate = null;
   }
-
   Future<void> getTeamById(int id) async {
     emit(TeamLoading());
     try {

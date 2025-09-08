@@ -26,6 +26,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
 
   final FirstpasswordContoller = TextEditingController();
 
+
   late ForgetapasswordCubit forgetapasswordCubit;
   final FocusNode firstFocus = FocusNode();
   final FocusNode secondFocus = FocusNode();
@@ -53,6 +54,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendNewPasswordLoading) {
+
           context.showLoadingDialog();
         } else if (state is SendNewPasswordSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -111,6 +113,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         const Text(
                           "يجب أن تكون كلمة مرورك الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا. ",
                           style: TextStyle(
+
                             fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -144,6 +147,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                                 forgetapasswordCubit
                                     .changeFirstPasswordVisibilty();
                               },
+
                               focusNode: firstFocus,
                               onSubmitted: (value) {
                                 FocusScope.of(
@@ -222,6 +226,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                         }
                       }
                     },
+
                     fontsize: AppSize.fontSizeOfBigButton,
                   ),
                 ],
