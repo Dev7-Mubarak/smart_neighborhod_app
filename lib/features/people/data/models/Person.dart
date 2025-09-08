@@ -5,6 +5,8 @@ import '../../../../core/common/enums/occupation_status.dart';
 
 class Person {
   final int id;
+   String? fullNameOneString;
+
   String firstName;
   String secondName;
   String thirdName;
@@ -12,6 +14,7 @@ class Person {
   DateTime dateOfBirth;
   String phoneNumber;
   String? email;
+  
   String? image;
   String gender;
   bool isCall;
@@ -30,6 +33,8 @@ class Person {
     required this.thirdName,
     required this.lastName,
     required this.phoneNumber,
+        this.fullNameOneString,
+
     this.email,
     this.image,
     required this.dateOfBirth,
@@ -59,6 +64,7 @@ class Person {
       lastName: json['lastName'] as String? ?? "",
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
       phoneNumber: json['phoneNumber'] as String,
+      fullNameOneString: json['fullName'] as String? ?? "",
       email: json['email'],
       image: json['image'],
       gender: json['gender'] as String,

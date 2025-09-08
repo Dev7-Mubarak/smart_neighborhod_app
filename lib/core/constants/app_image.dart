@@ -18,6 +18,7 @@ class AppImage {
   static const String homecomplan = '$rootImage/home/complan.png';
   static const String homehelping = '$rootImage/home/helping.png';
   static const String residentailimage = '$rootImage/residentail/Image37.png';
+  static const String error = '$rootImage/error.png';
   static const String ReconciliationCouncil =
       '$rootImage/ReconciliationCouncil/Container33.png';
   static const String admin = '$rootImage/ReconciliationCouncil/Admin.jpg';
