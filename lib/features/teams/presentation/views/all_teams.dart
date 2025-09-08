@@ -167,13 +167,19 @@ class _AllTeamsState extends State<AllTeams> {
                       },
                     );
                   } else if (state is TeamLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 16),
+                          Text('جاري تحميل الفرق...'),
+                        ],
+                    ));
                   } else if (state is TeamFailure) {
-                    return Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 18),
-                      ),
+                    return
+                    OnFailureWidget(
+                      onRetry: () => _teamsCubit.getAllTeams(),
                     );
                   } else {
                     return const Center(

@@ -226,14 +226,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                               );
                             }
                             if (state is ConflictTypeFailure) {
-                              Center(
-                                child: Text(
-                                  state.errorMessage,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                              return OnFailureWidget(
+                                onRetry: () =>
+                                    conflictTypeCubit.getConflictTypeCubit(),
+                                errorMessage: state.errorMessage,
                               );
                             }
                             return Container();
@@ -304,7 +300,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                       (context, familyMember, isSelected) {
                                         return ListTile(
                                           title: Text(
-                                            familyMember.person.fullName,
+                                            familyMember
+                                                    .person
+                                                    .fullNameOneString ??
+                                                "الإسم غير متوفر",
                                           ),
                                           selected: isSelected,
                                         );
@@ -313,7 +312,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 ),
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
-                                    u?.person.fullName ?? '',
+                                    u?.person.fullNameOneString ?? '',
                                 onChanged: (FamilyMember2? data) {
                                   conflictCubit.changeSelectedFirstParty(
                                     data!.familyMemberId,
@@ -338,14 +337,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                               );
                             }
                             if (state is FamilyMemberFailure) {
-                              Center(
-                                child: Text(
-                                  state.errorMessage,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                              return OnFailureWidget(
+                                onRetry: () =>
+                                    conflictTypeCubit.getConflictTypeCubit(),
+                                errorMessage: state.errorMessage,
                               );
                             }
                             return Container();
@@ -405,7 +400,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                       (context, familyMember, isSelected) {
                                         return ListTile(
                                           title: Text(
-                                            familyMember.person.fullName,
+                                             familyMember
+                                                    .person
+                                                    .fullNameOneString ??
+                                                "الإسم غير متوفر",
                                           ),
                                           selected: isSelected,
                                         );
@@ -414,7 +412,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 ),
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
-                                    u?.person.fullName ?? '',
+                                    u?.person.fullNameOneString ?? '',
                                 onChanged: (FamilyMember2? data) {
                                   conflictCubit.changeSelectedSecondParty(
                                     data!.familyMemberId,
@@ -436,6 +434,12 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 ),
                                  validator: (FamilyMember2? item) =>
                                     AppValidator.validateDropdown(item),
+                              );
+                             } if (state is FamilyMemberFailure) {
+                              return OnFailureWidget(
+                                onRetry: () =>
+                                    conflictTypeCubit.getConflictTypeCubit(),
+                                errorMessage: state.errorMessage,
                               );
                             }
                             return Container();

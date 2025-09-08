@@ -85,10 +85,10 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
               'فريق',
@@ -147,7 +147,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }
+                            }else
                             if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
@@ -209,7 +209,10 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                     AppValidator.validateDropdown(item),
                                 enabled: widget.team == null ? true : false,
                               );
-                            }
+                            }else if(state is PersonFailure){
+                             return OnFailureWidget(
+                              onRetry: () => personCubit.getPeople(),
+                               );}
                             return Container();
                           },
                         ),

@@ -146,7 +146,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }
+                            }else
                             if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
@@ -213,6 +213,10 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ? true
                                     : false,
                               );
+                            }else if(state is PersonFailure){
+                              return OnFailureWidget(
+                              onRetry: () => personCubit.getPeople(),
+                               );
                             }
                             return Container();
                           },
@@ -236,7 +240,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }
+                            }else
                             if (state is TeamRoleLoaded) {
                               if (state.allTeamRoles.isEmpty) {
                                 return const Center(
@@ -302,6 +306,10 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                  validator:(TeamRole? item) =>
                                     AppValidator.validateDropdown(item),
                               );
+                            }else if(state is TeamRoleFailure){
+                              return OnFailureWidget(
+                              onRetry: () => teamRoleCubit.getAllTeamRoles(),
+                               );
                             }
                             return Container();
                           },
