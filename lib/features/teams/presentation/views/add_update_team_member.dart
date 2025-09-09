@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
@@ -108,7 +109,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -146,8 +147,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }else
-                            if (state is PersonLoaded) {
+                            } else if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
                                   child: Text('لا يوجد أشخاص متاحين'),
@@ -213,12 +213,13 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ? true
                                     : false,
                               );
-                            }else if(state is PersonFailure){
+                            } else if (state is PersonFailure) {
                               return OnFailureWidget(
-                              onRetry: () => personCubit.getPeople(),
-                               );
+                                onRetry: () => personCubit.getPeople(),
+                              );
+                            } else {
+                              return Center(child: Text("حدث خطأ غير معروف"));
                             }
-                            return Container();
                           },
                         ),
                         const SizedBox(height: 30),
@@ -229,7 +230,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => teamMemberCubit.pickDate(context),
-                          validator: AppValidator.validateEmptyField
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 20),
                         const SmallText(text: 'وظيفة العضو'),
@@ -240,8 +241,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }else
-                            if (state is TeamRoleLoaded) {
+                            } else if (state is TeamRoleLoaded) {
                               if (state.allTeamRoles.isEmpty) {
                                 return const Center(
                                   child: Text('لا يوجد أدوار متاحه '),
@@ -303,15 +303,16 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                     ),
                                   ),
                                 ),
-                                 validator:(TeamRole? item) =>
+                                validator: (TeamRole? item) =>
                                     AppValidator.validateDropdown(item),
                               );
-                            }else if(state is TeamRoleFailure){
+                            } else if (state is TeamRoleFailure) {
                               return OnFailureWidget(
-                              onRetry: () => teamRoleCubit.getAllTeamRoles(),
-                               );
+                                onRetry: () => teamRoleCubit.getAllTeamRoles(),
+                              );
+                             } else {
+                              return Center(child: Text("حدث خطأ غير معروف"));
                             }
-                            return Container();
                           },
                         ),
                       ],
@@ -321,17 +322,13 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BlocBuilder<TeamMemberCubit, TeamMemberState>(
-                        builder: (context, state) {
-                          return SmallButton(
+                           SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).pop();
                               teamMemberCubit.resetInputs();
                             },
-                          );
-                        },
-                      ),
+                          ),
                       const SizedBox(width: 10),
                       SmallButton(
                         text: widget.teamMember == null ? 'إضافة' : 'تعديل',

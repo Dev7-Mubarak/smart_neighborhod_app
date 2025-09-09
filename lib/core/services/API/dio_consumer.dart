@@ -56,15 +56,36 @@ class DioConsumer {
     }
   }
 
-
-  Future get(String path, {Map<String, dynamic>? queryparameters}) async {
+Future<Map<String, dynamic>> get(
+    String path, {
+    Map<String, dynamic>? queryparameters,
+    bool treat404AsEmptyList = false,
+  }) async {
     try {
       final response = await dio.get(path, queryParameters: queryparameters);
       return response.data;
     } on DioException catch (error) {
+      if (treat404AsEmptyList && error.response?.statusCode == 404) {
+        return {
+          'isSuccess': true,
+          'statusCode': 'OK', 
+          'message': 'No data found, but handled successfully.',
+          'data': [], 
+          'errors': null
+        };
+      }
       handleDioExceptions(error);
+      throw Exception("Unhandled Dio Exception");
     }
   }
+  // Future get(String path, {Map<String, dynamic>? queryparameters}) async {
+  //   try {
+  //     final response = await dio.get(path, queryParameters: queryparameters);
+  //     return response.data;
+  //   } on DioException catch (error) {
+  //     handleDioExceptions(error);
+  //   }
+  // }
 
   Future update(
     String path, {

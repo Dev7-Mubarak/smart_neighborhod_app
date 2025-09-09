@@ -37,28 +37,11 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(AssistancesLoading());
     try {
       final response = await api.get(
-        '${ApiLink.getAllProjects}?projectCategoryId=4',
+        '${ApiLink.getAllProjects}?projectCategoryId=4',treat404AsEmptyList: true,
       );
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
       List<dynamic> projectsJson = response["data"];
       _allProjects = projectsJson.map((e) => Project.fromJson(e)).toList();
-      if (_allProjects == []) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "لا توجد مشاريع مساعدات",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
+      
       if (search != null && search.isNotEmpty) {
         filterProjects(search);
       } else {
@@ -175,28 +158,9 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   Future<void> getProjectTeams({required int id}) async {
     emit(ProjectTeamsLoading());
     try {
-      final response = await api.get('${ApiLink.getProjectTeams}/$id');
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
+      final response = await api.get('${ApiLink.getProjectTeams}/$id',treat404AsEmptyList: true);
       List<dynamic> teamsJson = response["data"];
       _allTeams = teamsJson.map((e) => Team.fromJson(e)).toList();
-
-      // if (_allTeams.isEmpty) {
-      //   throw Serverexception(
-      //     errModel: ErrorModel(
-      //       statusCode: '400',
-      //       errorMessage: "لا توجد فرق ",
-      //       isSuccess: response["isSuccess"] ?? false,
-      //     ),
-      //   );
-      // }
       emit(TeamsLoaded(teams: _allTeams));
     } on Serverexception catch (e) {
       emit(ProjectTeamsFailure(errorMessage: e.errModel.errorMessage));
@@ -211,15 +175,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       final response = await api.get(
         ApiLink.getProjectBlockFamilies(projectId: id),
       );
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
       List<dynamic> BlockFamiliesJson = response["data"];
       _allBlockFamilies = BlockFamiliesJson.map(
         (e) => ProjectBlockFamilies.fromJson(e),

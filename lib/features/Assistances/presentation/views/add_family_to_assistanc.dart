@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
@@ -69,7 +70,7 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(AppSize.defaultPadding),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -96,14 +97,8 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                               );
                             }
                             if (state is FamilyFailure) {
-                              return Center(
-                                child: Text(
-                                  state.errorMessage,
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                              return OnFailureWidget(
+                                onRetry: _familyCubit.getFamiliesByBlockId,
                               );
                             }
                             if (state is FamilyLoaded) {
@@ -156,11 +151,11 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                                     ),
                                   ),
                                 ),
-                                 validator: (Family? item) =>
+                                validator: (Family? item) =>
                                     AppValidator.validateDropdown(item),
                               );
                             }
-                            return Container();
+                            return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
                         const SizedBox(height: 30),

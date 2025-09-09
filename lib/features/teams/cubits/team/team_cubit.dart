@@ -58,28 +58,11 @@ class TeamCubit extends Cubit<TeamState> {
   Future<void> getAllTeams({String? search}) async {
     emit(TeamLoading());
     try {
-      final response = await api.get(ApiLink.getAllTeams);
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
+      final response = await api.get(ApiLink.getAllTeams,treat404AsEmptyList: true);
+      
       List<dynamic> teamsJson = response["data"];
       _allTeams = teamsJson.map((e) => Team.fromJson(e)).toList();
 
-      if (_allTeams.isEmpty) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "لا توجد فرق ",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
       if (search != null && search.isNotEmpty) {
         filterTeams(search);
       } else {
@@ -156,29 +139,11 @@ class TeamCubit extends Cubit<TeamState> {
   Future<void> getProjectsByTeamId(int id) async {
     emit(TeamLoading());
     try {
-      final response = await api.get(ApiLink.getProjectsByTeamId(teamId: id));
+      final response = await api.get(ApiLink.getProjectsByTeamId(teamId: id),treat404AsEmptyList: true);
 
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
       List<dynamic> ProjectJson = response["data"];
       List<Project> _allProjects = ProjectJson.map((e) => Project.fromJson(e)).toList();
 
-      if (_allProjects.isEmpty) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "لا توجد مشاريع لهذا الفريق ",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
       emit(ProjectsOfTeamLoaded( _allProjects));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));

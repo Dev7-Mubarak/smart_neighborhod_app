@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
@@ -45,25 +47,35 @@ class _AllAssistancesState extends State<AllAssistances> {
       builder: (context, state) {
         if (state is AssistancesLoaded) {
           _projectsListSearch = state.filteredProjects;
+          if (_projectsListSearch.isEmpty) {
+           return NoResultWidget();
+            // return const Center(child: Text("لا توجد لعرضها حاليًا."));
+          }
           return buildLoadedListWidgets();
         } else if (state is AssistancesLoading) {
           return showLoadingIndicator();
         } else if (state is AssistancesFailure) {
-          return Center(
-            child: Text(
-              state.errorMessage,
-              style: const TextStyle(color: Colors.red, fontSize: 18),
-            ),
+          return OnFailureWidget(
+            onRetry: () => _assistancesCubit.getAssistances(),
           );
         } else {
-          return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
+          return Center(child: Text("حدث خطأ غير معروف"));
         }
       },
     );
   }
 
   Widget showLoadingIndicator() {
-    return const Center(child: CircularProgressIndicator());
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 16),
+          Text('جاري تحميل المساعدات...'),
+        ],
+      ),
+    );
   }
 
   Widget buildLoadedListWidgets() {
@@ -115,27 +127,30 @@ class _AllAssistancesState extends State<AllAssistances> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const Center(
-            child: Text(
-              'مشاريع توزيع المساعدات',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+      body: Padding(
+        padding: const EdgeInsets.all(AppSize.paddingOfPage),
+        child: Column(
+          children: [
+            const Center(
+              child: Text(
+                'مشاريع توزيع المساعدات',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          _buildToBar(context),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: buildBlocWidget(),
+            const SizedBox(height: 20),
+            _buildToBar(context),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: buildBlocWidget(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),
     );

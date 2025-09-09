@@ -34,7 +34,7 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(AppSize.paddingOfPage),
         child: SingleChildScrollView(
           child: Column(
             children: [

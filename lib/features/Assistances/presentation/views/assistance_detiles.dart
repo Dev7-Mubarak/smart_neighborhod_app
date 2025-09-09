@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/ProjectBlockFamilies.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
@@ -53,35 +56,39 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Center(
-              child: Text(
-                widget.project.name,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
+      body: Padding(
+        padding: const EdgeInsets.all(AppSize.paddingOfPage),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  widget.project.name,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 15),
-            ProjectDetilesCard(projectDetiles: widget.project),
-            const SizedBox(height: 15),
-            Center(
-              child: Text(
-                "فرق التوزيع",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
+              const SizedBox(height: 15),
+              ProjectDetilesCard(projectDetiles: widget.project),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Divider(),
+              ),
+              Center(
+                child: Text(
+                  "فرق التوزيع",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: BlocBuilder<AssistancesCubit, AssistancesState>(
+              BlocBuilder<AssistancesCubit, AssistancesState>(
                 buildWhen: (previous, current) {
                   return current is TeamsLoaded ||
                       current is ProjectTeamsLoading ||
@@ -91,9 +98,10 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   if (state is TeamsLoaded) {
                     _teamsList = state.teams;
                     if (_teamsList.isEmpty) {
-                      return const Center(
-                        child: Text("لا توجد فرق لعرضها حاليًا."),
-                      );
+                      return NoResultWidget();
+                      // return const Center(
+                      //   child: Text("لا توجد فرق لعرضها حاليًا."),
+                      // );
                     }
                     return ListView.separated(
                       shrinkWrap: true,
@@ -152,54 +160,59 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   } else if (state is ProjectTeamsLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is ProjectTeamsFailure) {
-                    return Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 18),
+                    return OnFailureWidget(
+                      onRetry: () => _assistancesCubit.getProjectTeams(
+                        id: widget.project.id,
                       ),
                     );
+                    //  Center(
+                    //   child: Text(
+                    //     state.errorMessage,
+                    //     style: const TextStyle(color: Colors.red, fontSize: 18),
+                    //   ),
+                    // );
                   } else {
-                    return const Center(
-                      child: Text("لا توجد بيانات للعرض حاليًا."),
-                    );
+                    return Center(child: Text("حدث خطأ غير معروف"));
                   }
                 },
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: SmallButton(
-                  text: 'إضافة فريق',
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoute.addTeamsToAssistance,
-                      arguments: BlocProvider.of<AssistancesCubit>(context),
-                    ).then((_) {
-                      _assistancesCubit.getProjectTeams(id: widget.project.id);
-                    });
-                  },
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: SmallButton(
+                    text: 'إضافة فريق',
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoute.addTeamsToAssistance,
+                        arguments: BlocProvider.of<AssistancesCubit>(context),
+                      ).then((_) {
+                        _assistancesCubit.getProjectTeams(
+                          id: widget.project.id,
+                        );
+                      });
+                    },
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            Padding(padding: const EdgeInsets.all(8.0), child: const Divider()),
-            Center(
-              child: Text(
-                "المربعات السكنية و الأسر التي تم التوزيع لها",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
-                textAlign: TextAlign.center,
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Divider(),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: BlocBuilder<AssistancesCubit, AssistancesState>(
+              Center(
+                child: Text(
+                  "المربعات السكنية و الأسر التي تم التوزيع لها",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              BlocBuilder<AssistancesCubit, AssistancesState>(
                 buildWhen: (previous, current) {
                   return current is BlockFamiliesLoaded ||
                       current is BlockFamiliesFailure ||
@@ -209,9 +222,10 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   if (state is BlockFamiliesLoaded) {
                     _blockFamiliesList = state.BlockFamilies;
                     if (_blockFamiliesList.isEmpty) {
-                      return const Center(
-                        child: Text("لا توجد أسر لعرضها حاليًا."),
-                      );
+                      return NoResultWidget();
+                      // return const Center(
+                      //   child: Text("لا توجد أسر لعرضها حاليًا."),
+                      // );
                     }
                     return ListView.separated(
                       shrinkWrap: true,
@@ -295,21 +309,27 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   } else if (state is BlockFamiliesLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is BlockFamiliesFailure) {
-                    return Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 18),
+                    return OnFailureWidget(
+                      onRetry: () => _assistancesCubit.getProjectBlockFamilies(
+                        id: widget.project.id,
                       ),
                     );
+                    // return Center(
+                    //   child: Text(
+                    //     state.errorMessage,
+                    //     style: const TextStyle(color: Colors.red, fontSize: 18),
+                    //   ),
+                    // );
                   } else {
-                    return const Center(
-                      child: Text("لا توجد بيانات للعرض حاليًا."),
-                    );
+                    return Center(child: Text("حدث خطأ غير معروف"));
+                    // return const Center(
+                    //   child: Text("لا توجد بيانات للعرض حاليًا."),
+                    // );
                   }
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),
