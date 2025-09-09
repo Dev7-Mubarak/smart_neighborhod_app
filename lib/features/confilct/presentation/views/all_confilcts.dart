@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_image.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
@@ -62,7 +64,7 @@ class _AllConflictState extends State<AllConflict> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(AppSize.paddingOfPage),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -74,9 +76,7 @@ class _AllConflictState extends State<AllConflict> {
                   if (state is ConflictLoaded) {
                     _conflictListDisplay = state.filteredConflicts;
                     if (_conflictListDisplay.isEmpty) {
-                      return const Center(
-                        child: Text("لا توجد خلافات لعرضها حاليًا."),
-                      );
+                      return NoResultWidget();
                     }
                     return GridView.count(
                       physics: const NeverScrollableScrollPhysics(),
@@ -169,18 +169,22 @@ class _AllConflictState extends State<AllConflict> {
                           .toList(),
                     );
                   } else if (state is ConflictLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is ConflictFailure) {
                     return Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: const TextStyle(color: Colors.red, fontSize: 18),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 16),
+                          Text('جاري تحميل الخلافات...'),
+                        ],
                       ),
                     );
-                  } else {
-                    return const Center(
-                      child: Text("لا توجد بيانات للعرض حاليًا."),
+                  } else if (state is ConflictFailure) {
+                    return OnFailureWidget(
+                      onRetry: () => _conflictCubit.getAllConflicts(),
                     );
+                  }else {
+                    return Center(child: Text("حدث خطأ غير معروف"),);
                   }
                 },
               ),

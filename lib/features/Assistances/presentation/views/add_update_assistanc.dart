@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
@@ -68,10 +69,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
     startDateController = TextEditingController(
       text: startdate != null ? DateFormat('yyyy-MM-dd').format(startdate) : '',
     );
-    // final startdate = assistanceCubit.selectedStartDate ??
-    //     DateTime(2000, 1, 1);
-    // startDateController =
-    //     TextEditingController(text: DateFormat('yyyy-MM-dd').format(startdate));
     final endtdate =
         assistanceCubit.selectedEndDate ?? widget.assistancProject?.endDate;
     endDateController = TextEditingController(
@@ -148,7 +145,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -271,7 +268,12 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 enabled: false,
                               );
                             }
-                            return Container();
+                            if (state is ProjectCategoryFailure) {
+                              return OnFailureWidget(
+                                onRetry: projectCategory.getProjectCategories,
+                              );
+                            }
+                            return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
                         const SizedBox(height: 30),
@@ -296,11 +298,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   (person) => person.id == _selectedPerson,
                                 );
                               }
-                              // if (_selectedPerson == null &&
-                              //     state.people.isNotEmpty) {
-                              //   _selectedPerson = state.people.first;
-                              // }
-
                               return DropdownSearch<Person>(
                                 popupProps: PopupProps.menu(
                                   showSearchBox: true,
@@ -355,7 +352,12 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                     AppValidator.validateDropdown(item),
                               );
                             }
-                            return Container();
+                            if (state is PersonFailure) {
+                              return OnFailureWidget(
+                                onRetry: personCubit.getPeople,
+                              );
+                            }
+                            return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
                         const SizedBox(height: 30),

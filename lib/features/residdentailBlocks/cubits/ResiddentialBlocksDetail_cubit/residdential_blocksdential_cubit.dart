@@ -20,10 +20,10 @@ class ResiddentialBlockDetailCubit extends Cubit<ResiddentialBlockDetailState> {
   Future<void> get_AllBlockFamilys(int IdBlock) async {
     emit(get_AllBlockFamilys_Loading());
     try {
-      final List<dynamic> response = await api
+      final  response = await api
           .get(ApiLink.getAllBlockes)
           .timeout(const Duration(seconds: 15)); // إضافة مهلة لمدة 15 ثانية
-      List<Family> AllBlockFamilys = response
+      List<Family> AllBlockFamilys = response["data"]
           .map((family) => Family.fromJson(family))
           .toList();
       emit(get_AllBlockFamilys_Success(AllBlockFamilys: AllBlockFamilys));

@@ -25,27 +25,10 @@ class ConflictCubit extends Cubit<ConflictState> {
   Future<void> getAllConflicts({String? search}) async {
     emit(ConflictLoading());
     try {
-      final response = await api.get(ApiLink.getAllConflict);
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
+      final response = await api.get(ApiLink.getAllConflict,treat404AsEmptyList: true);
       List<dynamic> conflictsJson = response["data"];
       _allconflicts = conflictsJson.map((e) => Conflict.fromJson(e)).toList();
-      if (_allconflicts.isEmpty) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "لا توجد فرق ",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
+    
       if (search != null && search.isNotEmpty) {
         // filterTeams(search);
       } else {

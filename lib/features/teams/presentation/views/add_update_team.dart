@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
@@ -42,7 +43,6 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
     DateTime? joineddate;
     if (widget.team != null) {
       _selectedPerson = teamCubit.selectedPersonId;
-
       joineddate = teamCubit.selectedJoiedDate;
     }
     teamNameController = TextEditingController(text: widget.team?.name ?? '');
@@ -101,7 +101,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -147,8 +147,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
-                            }else
-                            if (state is PersonLoaded) {
+                            } else if (state is PersonLoaded) {
                               if (state.people.isEmpty) {
                                 return const Center(
                                   child: Text('لا يوجد أشخاص متاحين'),
@@ -209,11 +208,13 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                     AppValidator.validateDropdown(item),
                                 enabled: widget.team == null ? true : false,
                               );
-                            }else if(state is PersonFailure){
-                             return OnFailureWidget(
-                              onRetry: () => personCubit.getPeople(),
-                               );}
-                            return Container();
+                            } else if (state is PersonFailure) {
+                              return OnFailureWidget(
+                                onRetry: () => personCubit.getPeople(),
+                              );
+                            } else {
+                              return Center(child: Text("حدث خطأ غير معروف"));
+                            }
                           },
                         ),
                         const SizedBox(height: 30),
@@ -233,17 +234,13 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BlocBuilder<TeamCubit, TeamState>(
-                        builder: (context, state) {
-                          return SmallButton(
+                           SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).pop();
                               teamCubit.resetInputs();
                             },
-                          );
-                        },
-                      ),
+                          ),
                       const SizedBox(width: 10),
                       SmallButton(
                         text: widget.team == null ? 'إضافة' : 'تعديل',

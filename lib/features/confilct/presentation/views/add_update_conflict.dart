@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
@@ -120,7 +121,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -144,7 +145,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           controller: conflictTitleController,
                           keyboardType: TextInputType.name,
                           suffixIcon: null,
-                          validator: AppValidator.validateEmptyField
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'نوع الخلاف'),
@@ -232,7 +233,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 errorMessage: state.errorMessage,
                               );
                             }
-                            return Container();
+                            return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
                         const SizedBox(height: 30),
@@ -245,7 +246,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           suffixIcon: null,
                           maxLines: null,
                           minLines: 3,
-                          validator: AppValidator.validateEmptyField
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'تاريخ الإتفاقية'),
@@ -255,7 +256,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           suffixIcon: Icons.calendar_today,
                           readOnly: true,
                           onTap: () => conflictCubit.pickDate(context),
-                          validator: AppValidator.validateEmptyField
+                          validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: 30),
                         const SmallText(text: 'الطرف الأول'),
@@ -332,7 +333,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     ),
                                   ),
                                 ),
-                                  validator: (FamilyMember2? item) =>
+                                validator: (FamilyMember2? item) =>
                                     AppValidator.validateDropdown(item),
                               );
                             }
@@ -343,7 +344,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 errorMessage: state.errorMessage,
                               );
                             }
-                            return Container();
+                            return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
                         const SizedBox(height: 30),
@@ -400,7 +401,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                       (context, familyMember, isSelected) {
                                         return ListTile(
                                           title: Text(
-                                             familyMember
+                                            familyMember
                                                     .person
                                                     .fullNameOneString ??
                                                 "الإسم غير متوفر",
@@ -432,17 +433,18 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     ),
                                   ),
                                 ),
-                                 validator: (FamilyMember2? item) =>
+                                validator: (FamilyMember2? item) =>
                                     AppValidator.validateDropdown(item),
                               );
-                             } if (state is FamilyMemberFailure) {
+                            }
+                            if (state is FamilyMemberFailure) {
                               return OnFailureWidget(
                                 onRetry: () =>
                                     conflictTypeCubit.getConflictTypeCubit(),
                                 errorMessage: state.errorMessage,
                               );
                             }
-                            return Container();
+                            return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
                         const SizedBox(height: 30),

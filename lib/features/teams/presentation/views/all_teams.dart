@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
@@ -61,21 +63,19 @@ class _AllTeamsState extends State<AllTeams> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          _buildToBar(context),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSize.paddingOfPage),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            _buildToBar(context),
+            Expanded(
               child: BlocBuilder<TeamCubit, TeamState>(
                 builder: (context, state) {
                   if (state is TeamLoaded) {
                     _teamsListDisplay = state.filteredTeams;
                     if (_teamsListDisplay.isEmpty) {
-                      return const Center(
-                        child: Text("لا توجد فرق لعرضها حاليًا."),
-                      );
+                      return NoResultWidget();
                     }
                     return ListView.separated(
                       itemCount: _teamsListDisplay.length,
@@ -175,22 +175,20 @@ class _AllTeamsState extends State<AllTeams> {
                           SizedBox(height: 16),
                           Text('جاري تحميل الفرق...'),
                         ],
-                    ));
+                      ),
+                    );
                   } else if (state is TeamFailure) {
-                    return
-                    OnFailureWidget(
+                    return OnFailureWidget(
                       onRetry: () => _teamsCubit.getAllTeams(),
                     );
                   } else {
-                    return const Center(
-                      child: Text("لا توجد بيانات للعرض حاليًا."),
-                    );
+                    return Center(child: Text("حدث خطأ غير معروف"));
                   }
                 },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),
     );

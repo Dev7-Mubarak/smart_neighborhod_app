@@ -15,29 +15,12 @@ class TeamRoleCubit extends Cubit<TeamRoleState> {
   Future<void> getAllTeamRoles() async {
     emit(TeamRoleLoading());
     try {
-      final response = await api.get(ApiLink.getAllTeamRoles);
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
+      final response = await api.get(ApiLink.getAllTeamRoles,treat404AsEmptyList: true);
+     
       List<dynamic> teamsRoleJson = response["data"];
       List<TeamRole> teamRolesObjects = teamsRoleJson
           .map((e) => TeamRole.fromJson(e))
           .toList();
-      if (teamRolesObjects.isEmpty) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "لا توجد فرق ",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
       emit(TeamRoleLoaded(teamRolesObjects));
     } on Serverexception catch (e) {
       emit(TeamRoleFailure(errorMessage: e.errModel.errorMessage));
