@@ -163,7 +163,7 @@ class _AllAssistancesState extends State<AllAssistances> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           SmallButton(
-            text: 'أضافة',
+            text: 'إضافة',
             onPressed: () {
               Navigator.pushNamed(
                 context,
@@ -183,14 +183,14 @@ class _AllAssistancesState extends State<AllAssistances> {
               controller: _searchingController,
               hintText: 'ابحث عن مشروع مساعدات',
               bachgroundColor: AppColor.gray2,
-              prefixIcon: IconButton(
+             suffixIcon : IconButton(
                 onPressed: () {
                   _searchingController.clear();
                   _assistancesCubit.filterProjects('');
                 },
                 icon: const Icon(Icons.close),
               ),
-              suffixIcon: Icons.search,
+             prefixIcon : Icons.search,
               onChanged: (value) {
                 _delay?.cancel();
                 _delay = Timer(const Duration(milliseconds: 400), () {

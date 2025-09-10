@@ -29,7 +29,6 @@ class AddUpdateConflict extends StatefulWidget {
   @override
   State<AddUpdateConflict> createState() => AddUpdateConflictState();
 }
-
 class AddUpdateConflictState extends State<AddUpdateConflict> {
   late final TextEditingController conflictTitleController;
   late final TextEditingController conflictNoteController;
@@ -103,10 +102,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
               conflictCubit.conflict == null
@@ -126,7 +125,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(25),
@@ -135,7 +134,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 20),
                         const SmallText(text: 'عنوان الإتفاقية'),
@@ -254,6 +253,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                         CustomTextFormField(
                           controller: conflictDateController,
                           suffixIcon: Icons.calendar_today,
+                          onsuffixIconPressed: () => conflictCubit.pickDate(context),
                           readOnly: true,
                           onTap: () => conflictCubit.pickDate(context),
                           validator: AppValidator.validateEmptyField,
@@ -453,7 +453,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                               current is ChangeIsResolved,
                           builder: (context, state) {
                             return Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 const SmallText(text: 'تم إنهاء الخلاف'),
                                 Checkbox(
@@ -479,7 +479,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                       SmallButton(
                         text: 'إلغاء',
                         onPressed: () {
-                          conflictCubit.resetInputs();
+                          // conflictCubit.resetInputs();
                           Navigator.of(context).pop();
                         },
                       ),

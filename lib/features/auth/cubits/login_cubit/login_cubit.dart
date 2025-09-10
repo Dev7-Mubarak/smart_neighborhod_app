@@ -20,8 +20,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   signIn({required String email, required String password}) async {
     emit(LoginLoading());
-
-
     try {
       final response = await api.post(
         ApiLink.login,
@@ -31,7 +29,7 @@ class LoginCubit extends Cubit<LoginState> {
       CacheHelper().saveData(key: 'id', value: userData.id);
       CacheHelper().saveData(key: 'token', value: userData.token);
       CacheHelper().saveData(key: 'email', value: userData.email);
-      emit(LoginSuccess(userdata: userData, message: ''));
+      emit(LoginSuccess(userdata: userData, message: response['message']));
     } on Serverexception catch (e) {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
     }

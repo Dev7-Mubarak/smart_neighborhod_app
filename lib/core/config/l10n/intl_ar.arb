@@ -480,6 +480,7 @@
   "@confirm": {
     "description": "Confirm button"
   },
+
   "changeManager": "تغيير مدير المربع السكني",
   "failedToLoadPeople": "لا يوجد مديرين متاحين",
   "searchFamilyHead": "ابحث عن مدير...",
@@ -492,7 +493,7 @@
   "edit": "تعديل",
   "delete": "حذف",
   "deleteNotAllowed": "لا يسمح بالحذف حاليا",
-  "noResultsFound": "لم يتم العثور على أي نتائج"
+  "noResultsFound": "لم يتم العثور على أي نتائج",
 
   "addFamilyToAssistanceTitle": "إضافة أسرة لتوزيع المساعدات لها",
   "@addFamilyToAssistanceTitle": {

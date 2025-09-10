@@ -153,14 +153,14 @@ class _AllPeopleState extends State<AllPeople> {
             child: SearchableTextFormField(
               controller: _searchingController,
               hintText: 'بحث',
-              prefixIcon: IconButton(
+              suffixIcon: IconButton(
                 onPressed: () {
                   _searchingController.clear();
                   _personCubit.getPeople();
                 },
                 icon: const Icon(Icons.close),
               ),
-              suffixIcon: Icons.search,
+             prefixIcon : Icons.search,
               bachgroundColor: AppColor.gray2,
               onChanged: (value) {
                 _delay?.cancel();

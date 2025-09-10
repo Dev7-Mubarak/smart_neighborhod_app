@@ -96,7 +96,7 @@ class ApiLink {
   // Conflict Cases
   static const String getAllConflict = '$server/conflict-cases';
   static const String addConflict = '$server/conflict-cases';
-  static const String updateConflict = '$server/conflictCase';
+  static const String updateConflict = '$server/conflict-cases';
   static const String deleteConflict = '$server/conflict-cases';
   static const String getAllConflictCaseTypes = '$server/conflict-case-type';
   static const String getConflictCasesByFamilyMember = '$server/conflict-cases';

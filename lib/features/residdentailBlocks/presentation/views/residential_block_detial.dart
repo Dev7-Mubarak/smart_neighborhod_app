@@ -161,11 +161,11 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                               child: SearchableTextFormField(
                                 controller: _searchController,
                                 hintText: 'بحث باسم رب الأسرة',
-                                prefixIcon: IconButton(
+                               suffixIcon : IconButton(
                                   onPressed: _onClearSearch,
                                   icon: const Icon(Icons.close),
                                 ),
-                                suffixIcon: Icons.search,
+                               prefixIcon : Icons.search,
                                 bachgroundColor: AppColor.gray2,
                                 onChanged: _onSearchChanged,
                               ),

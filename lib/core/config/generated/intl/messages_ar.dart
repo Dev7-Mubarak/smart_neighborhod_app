@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmDeleteBlock": MessageLookupByLibrary.simpleMessage(
       "هل أنت متأكد أنك تريد حذف هذا المربع؟",
     ),
-    "conflictSection": MessageLookupByLibrary.simpleMessage("قسم الإتفاقات"),
+    "conflictSection": MessageLookupByLibrary.simpleMessage("قسم إدارة الخلافات"),
     "contactNumber": MessageLookupByLibrary.simpleMessage("رقم التواصل"),
     "createNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
       "انشأ كلمة مرور جديدة",

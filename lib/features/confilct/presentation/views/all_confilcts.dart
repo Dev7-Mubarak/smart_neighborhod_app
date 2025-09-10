@@ -70,7 +70,7 @@ class _AllConflictState extends State<AllConflict> {
             children: [
               const SizedBox(height: 20),
               _buildToBar(context),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               BlocBuilder<ConflictCubit, ConflictState>(
                 builder: (context, state) {
                   if (state is ConflictLoaded) {
@@ -183,8 +183,8 @@ class _AllConflictState extends State<AllConflict> {
                     return OnFailureWidget(
                       onRetry: () => _conflictCubit.getAllConflicts(),
                     );
-                  }else {
-                    return Center(child: Text("حدث خطأ غير معروف"),);
+                  } else {
+                    return Center(child: Text("حدث خطأ غير معروف"));
                   }
                 },
               ),
@@ -197,49 +197,47 @@ class _AllConflictState extends State<AllConflict> {
   }
 
   Widget _buildToBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SmallButton(
-            text: 'أضافة',
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoute.addUpdateConflict,
-                arguments: BlocProvider.of<ConflictCubit>(context),
-              ).then((_) {
-                _conflictCubit.getAllConflicts(
-                  search: _searchingController.text.trim(),
-                );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SmallButton(
+          text: 'إضافة',
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              AppRoute.addUpdateConflict,
+              arguments: BlocProvider.of<ConflictCubit>(context),
+            ).then((_) {
+              _conflictCubit.getAllConflicts(
+                search: _searchingController.text.trim(),
+              );
+              _conflictCubit.resetInputs();
+            });
+          },
+        ),
+        const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+        Expanded(
+          child: SearchableTextFormField(
+            controller: _searchingController,
+            hintText: 'ابحث عن اسم الفريق',
+            bachgroundColor: AppColor.gray2,
+            prefixIcon: Icons.search,
+            suffixIcon: IconButton(
+              onPressed: () {
+                _searchingController.clear();
+                _conflictCubit.filterTeams('');
+              },
+              icon: const Icon(Icons.close),
+            ),
+            onChanged: (String query) {
+              _delay?.cancel();
+              _delay = Timer(const Duration(milliseconds: 300), () {
+                _conflictCubit.filterTeams(query.trim());
               });
             },
           ),
-          const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-          Expanded(
-            child: SearchableTextFormField(
-              controller: _searchingController,
-              hintText: 'ابحث عن اسم الفريق',
-              bachgroundColor: AppColor.gray2,
-              prefixIcon: IconButton(
-                onPressed: () {
-                  _searchingController.clear();
-                  _conflictCubit.filterTeams('');
-                },
-                icon: const Icon(Icons.close),
-              ),
-              suffixIcon: Icons.search,
-              onChanged: (String query) {
-                _delay?.cancel();
-                _delay = Timer(const Duration(milliseconds: 300), () {
-                  _conflictCubit.filterTeams(query.trim());
-                });
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -267,6 +265,7 @@ class _AllConflictState extends State<AllConflict> {
                   _conflictCubit.getAllConflicts(
                     search: _searchingController.text.trim(),
                   );
+                  _conflictCubit.resetInputs();
                 });
               },
             ),

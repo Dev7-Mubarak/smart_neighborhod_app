@@ -17,8 +17,13 @@ class DioConsumer {
         };
 
     dio.options.baseUrl = ApiLink.server;
+    // dio.options.connectTimeout = const Duration(seconds: 10);
+
+    // dio.options.receiveTimeout = const Duration(seconds: 20);
+
+    // dio.options.sendTimeout = const Duration(seconds: 20);
     dio.options.headers = {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
       'Authorization': 'Bearer YOUR_TOKEN', 
     };
 
