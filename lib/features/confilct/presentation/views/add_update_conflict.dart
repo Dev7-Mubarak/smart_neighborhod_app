@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
@@ -29,6 +29,7 @@ class AddUpdateConflict extends StatefulWidget {
   @override
   State<AddUpdateConflict> createState() => AddUpdateConflictState();
 }
+
 class AddUpdateConflictState extends State<AddUpdateConflict> {
   late final TextEditingController conflictTitleController;
   late final TextEditingController conflictNoteController;
@@ -101,10 +102,13 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
         }
       },
       child: Scaffold(
+                // extendBodyBehindAppBar: true,
         appBar: AppBar(
           // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
+            scrolledUnderElevation: 0, // لا يوجد ظل عند التمرير
+
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
@@ -120,7 +124,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(AppSize.paddingOfPage),
+          padding: EdgeInsets.all(AppSize.paddingOfPage),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -136,9 +140,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                         
                         const SmallText(text: 'عنوان الإتفاقية'),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
                           controller: conflictTitleController,
@@ -146,9 +152,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           suffixIcon: null,
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'نوع الخلاف'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'نوع الخلاف'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<ConflictTypeCubit, ConflictTypeState>(
                           builder: (context, state) {
                             if (state is ConflictTypeLoading) {
@@ -172,29 +180,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                           _selectedConflictType,
                                     );
                               }
-                              return DropdownSearch<ConflictType>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن  نوع الخلاف...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder:
-                                      (context, conflictType, isSelected) {
-                                        return ListTile(
-                                          title: Text(conflictType.name),
-                                          selected: isSelected,
-                                        );
-                                      },
-                                  fit: FlexFit.loose,
-                                ),
+                              return CustomDropdownSearchWidget<ConflictType>(
                                 items: state.conflictTypes,
                                 itemAsString: (ConflictType? u) =>
                                     u?.name ?? '',
@@ -204,25 +190,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                   );
                                 },
                                 selectedItem: initialSelectedConflictType,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر  نوع الخلاف",
-                                    hintText: "اختر نوع الخلاف",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
-                                validator: (ConflictType? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار نوع الخلاف";
-                                  }
-                                  return null;
-                                },
+                                labelText: "اختر نوع الخلاف",
+                                hintText: "اختر نوع الخلاف",
+                                searchHintText: "ابحث عن نوع الخلاف...",
+                                validator: (ConflictType? item) =>
+                                    AppValidator.validateDropdown(item),
                               );
                             }
                             if (state is ConflictTypeFailure) {
@@ -235,9 +207,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                             return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'الملاحظات'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'الملاحظات'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
                           controller: conflictNoteController,
@@ -247,20 +221,25 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           minLines: 3,
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'تاريخ الإتفاقية'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'تاريخ الإتفاقية'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           controller: conflictDateController,
                           suffixIcon: Icons.calendar_today,
-                          onsuffixIconPressed: () => conflictCubit.pickDate(context),
+                          onsuffixIconPressed: () =>
+                              conflictCubit.pickDate(context),
                           readOnly: true,
                           onTap: () => conflictCubit.pickDate(context),
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'الطرف الأول'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'الطرف الأول'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<FamilyMemberCubit, FamilyMemberState>(
                           builder: (context, state) {
                             if (state is FamilyMemberLoading) {
@@ -283,34 +262,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                           _selectedFirstPart,
                                     );
                               }
-                              return DropdownSearch<FamilyMember2>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن الطرف الأول...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder:
-                                      (context, familyMember, isSelected) {
-                                        return ListTile(
-                                          title: Text(
-                                            familyMember
-                                                    .person
-                                                    .fullNameOneString ??
-                                                "الإسم غير متوفر",
-                                          ),
-                                          selected: isSelected,
-                                        );
-                                      },
-                                  fit: FlexFit.loose,
-                                ),
+                              return CustomDropdownSearchWidget<FamilyMember2>(
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
                                     u?.person.fullNameOneString ?? '',
@@ -319,22 +271,12 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     data!.familyMemberId,
                                   );
                                 },
-                                selectedItem: initialSelectedPerson,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر الطرف الأول",
-                                    hintText: "اختر الطرف الأول",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر الطرف الأول",
+                                hintText: "اختر الطرف الأول",
+                                searchHintText: "ابحث عن الطرف الأول...",
                                 validator: (FamilyMember2? item) =>
                                     AppValidator.validateDropdown(item),
+                                selectedItem: initialSelectedPerson,
                               );
                             }
                             if (state is FamilyMemberFailure) {
@@ -347,9 +289,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                             return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'الطرف الثاني'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'الطرف الثاني'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<FamilyMemberCubit, FamilyMemberState>(
                           builder: (context, state) {
                             if (state is FamilyMemberLoading) {
@@ -383,34 +327,9 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                           _selectedSecondPart,
                                     );
                               }
-                              return DropdownSearch<FamilyMember2>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن الطرف الثاني...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder:
-                                      (context, familyMember, isSelected) {
-                                        return ListTile(
-                                          title: Text(
-                                            familyMember
-                                                    .person
-                                                    .fullNameOneString ??
-                                                "الإسم غير متوفر",
-                                          ),
-                                          selected: isSelected,
-                                        );
-                                      },
-                                  fit: FlexFit.loose,
-                                ),
+                              return
+
+                               CustomDropdownSearchWidget<FamilyMember2>(
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
                                     u?.person.fullNameOneString ?? '',
@@ -419,23 +338,14 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     data!.familyMemberId,
                                   );
                                 },
-                                selectedItem: initialSelectedPerson2,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر الطرف الثاني",
-                                    hintText: "اختر الطرف الثاني",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر الطرف الثاني",
+                                hintText: "اختر الطرف الثاني",
+                                searchHintText: "ابحث عن الطرف الثاني...",
                                 validator: (FamilyMember2? item) =>
                                     AppValidator.validateDropdown(item),
+                                selectedItem: initialSelectedPerson2,
                               );
+                           
                             }
                             if (state is FamilyMemberFailure) {
                               return OnFailureWidget(
@@ -447,7 +357,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                             return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         BlocBuilder<ConflictCubit, ConflictState>(
                           buildWhen: (previous, current) =>
                               current is ChangeIsResolved,
@@ -467,7 +377,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                             );
                           },
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
                         _buildImagePicker(context, conflictCubit),
                       ],
                     ),
