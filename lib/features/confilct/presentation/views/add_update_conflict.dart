@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
+
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
@@ -124,7 +125,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(AppSize.paddingOfPage),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -328,7 +329,6 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     );
                               }
                               return
-
                                CustomDropdownSearchWidget<FamilyMember2>(
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
@@ -345,7 +345,6 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                     AppValidator.validateDropdown(item),
                                 selectedItem: initialSelectedPerson2,
                               );
-                           
                             }
                             if (state is FamilyMemberFailure) {
                               return OnFailureWidget(
