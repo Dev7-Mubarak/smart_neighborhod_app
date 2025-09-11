@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
 
 class SmallText extends StatelessWidget {
   final String text;
@@ -26,7 +27,7 @@ class SmallText extends StatelessWidget {
       maxLines: maxLines,
       overflow: overflow,
       style: TextStyle(
-        fontSize: 14,
+        fontSize: AppSize.textSizeOfLable,
         color: color,
         fontWeight: fontWeight ?? FontWeight.bold,
       ),

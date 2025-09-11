@@ -38,11 +38,11 @@ class TopBarWithSearch extends StatelessWidget {
           Expanded(
             child: SearchableTextFormField(
               hintText: 'بحث',
-              prefixIcon: IconButton(
+              suffixIcon: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.close),
               ),
-              suffixIcon: Icons.search,
+             prefixIcon : Icons.search,
               bachgroundColor: AppColor.gray2,
               onChanged: (value) {},
             ),

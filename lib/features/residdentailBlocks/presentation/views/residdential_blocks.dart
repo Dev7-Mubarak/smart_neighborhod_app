@@ -90,11 +90,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                 child: SearchableTextFormField(
                   hintText: locale.searchResidentialBlock,
                   bachgroundColor: AppColor.gray2,
-                  prefixIcon: IconButton(
+                  suffixIcon: IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.close),
                   ),
-                  suffixIcon: Icons.search,
+                  prefixIcon : Icons.search,
                 ),
               ),
             ],

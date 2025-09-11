@@ -220,14 +220,14 @@ class _AllTeamsState extends State<AllTeams> {
               controller: _searchingController,
               hintText: 'ابحث عن اسم الفريق',
               bachgroundColor: AppColor.gray2,
-              prefixIcon: IconButton(
+              suffixIcon: IconButton(
                 onPressed: () {
                   _searchingController.clear();
                   _teamsCubit.filterTeams('');
                 },
                 icon: const Icon(Icons.close),
               ),
-              suffixIcon: Icons.search,
+             prefixIcon : Icons.search,
               onChanged: (String query) {
                 _delay?.cancel();
                 _delay = Timer(const Duration(milliseconds: 300), () {

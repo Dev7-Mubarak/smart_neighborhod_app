@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
 import '../../../../core/constants/api_link.dart';
@@ -124,11 +125,13 @@ class ConflictCubit extends Cubit<ConflictState> {
   Future<void> addConflict(String notes, String title) async {
     emit(WiateAddedUpdatedConflict());
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final idmanger = prefs.getString('id');
       final response = await api.post(
         ApiLink.addConflict,
         data: {
           "conflictTypeId": selectedConflictTypeId,
-          "managerId": "10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf",
+          "managerId": idmanger,
           "firstPartyId": selectedfirstPartId,
           "secondPartyId": selectedSecondPartId,
           "notes": notes,
@@ -142,7 +145,7 @@ class ConflictCubit extends Cubit<ConflictState> {
           "title": title,
           "isResolved": isResolved ?? false,
         },
-        // isFromData: true,
+        isFromData: true,
       );
       if (response["isSuccess"]) {
         emit(
@@ -150,7 +153,6 @@ class ConflictCubit extends Cubit<ConflictState> {
             message: response["message"] ?? "تمت الإضافة بنجاح",
           ),
         );
-        resetInputs();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -184,15 +186,17 @@ class ConflictCubit extends Cubit<ConflictState> {
   }) async {
     emit(WiateAddedUpdatedConflict());
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final idmanger = prefs.getString('id');
       final response = await api.update(
         '${ApiLink.updateConflict}/$id',
-        data:{
+        data: {
           "title": title,
           "conflictTypeId": selectedConflictTypeId,
-          "managerId": "10b8ca7f-bf24-4609-9cfb-ee1dbc23f5bf",
+          "managerId": idmanger,
           "firstPartyId": selectedfirstPartId,
           "secondPartyId": selectedSecondPartId,
-          "notes":notes,
+          "notes": notes,
           "image": conflictPicture != null
               ? await MultipartFile.fromFile(
                   conflictPicture!.path,
@@ -202,7 +206,7 @@ class ConflictCubit extends Cubit<ConflictState> {
           "sessionDate": sessionDate,
           "isResolved": isResolved,
         },
-        // isFromData: true,
+        isFromData: true,
       );
       if (response["isSuccess"]) {
         emit(
@@ -210,8 +214,6 @@ class ConflictCubit extends Cubit<ConflictState> {
             message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
-        resetInputs();
-        // getAllConflicts();
       } else {
         final String errorMessage =
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث المشروع";
@@ -252,5 +254,4 @@ class ConflictCubit extends Cubit<ConflictState> {
       emit(ConflictFailure(errorMessage: e.toString()));
     }
   }
-
 }

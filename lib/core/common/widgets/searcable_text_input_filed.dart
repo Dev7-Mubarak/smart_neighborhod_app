@@ -11,8 +11,8 @@ class SearchableTextFormField extends StatelessWidget {
   final bool obscureText;
   final void Function()? onTap;
   final bool readOnly;
-  final IconData? suffixIcon;
-  final IconButton? prefixIcon;
+  final IconButton? suffixIcon;
+  final IconData? prefixIcon;
   final Color bachgroundColor;
   final void Function(String)? onChanged;
   final bool isBordred;
@@ -58,16 +58,16 @@ class SearchableTextFormField extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: const TextStyle(color: Colors.black, fontSize: 14),
-        prefixIcon: prefixIcon == null
-            ? null
-            : IconButton(
-                icon: prefixIcon!.icon,
-                onPressed: prefixIcon!.onPressed,
-                color: Colors.black,
-              ),
         suffixIcon: suffixIcon == null
             ? null
-            : Icon(suffixIcon, color: Colors.black),
+            : IconButton(
+                icon: suffixIcon!.icon,
+                onPressed: suffixIcon!.onPressed,
+                color: Colors.black,
+              ),
+        prefixIcon : prefixIcon == null
+            ? null
+            : Icon(prefixIcon, color: Colors.black),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSize.defaultBorderRadious),
           borderSide: const BorderSide(color: Color(0xFFE4E4E4), width: 2),
