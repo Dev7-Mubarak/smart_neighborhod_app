@@ -2,11 +2,13 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
+import 'package:smart_negborhood_app/features/confilct/data/models/conflict_type.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
@@ -85,13 +87,13 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
       },
       child: Scaffold(
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
-          backgroundColor: AppColor.white,
           elevation: 0,
+          scrolledUnderElevation: 0,
+          backgroundColor: AppColor.white,
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
-              'فريق',
+              widget.team == null ? 'إضافة فريق جديد' : 'تعديل فريق ',
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -106,19 +108,8 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Text(
-                      widget.team == null ? 'إضافة فريق جديد' : 'تعديل فريق ',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -126,11 +117,13 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                        // const SizedBox(height: 20),
                         const SmallText(text: 'أسم الفريق'),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
                           controller: teamNameController,
@@ -138,9 +131,11 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                           suffixIcon: null,
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'إختر قائد الفريق '),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'إختر قائد الفريق '),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<PersonCubit, PersonState>(
                           builder: (context, state) {
                             if (state is PersonLoading) {
@@ -159,54 +154,19 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                   (person) => person.id == _selectedPerson,
                                 );
                               }
-                              return DropdownSearch<Person>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن قائد...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, person, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        person.fullName,
-                                        // textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
+                              return
+                               CustomDropdownSearchWidget<Person>(
                                 items: state.people,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
                                   teamCubit.changeSelectedManager(data?.id);
                                 },
                                 selectedItem: initialSelectedPerson,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر قائد",
-                                    hintText: "اختر قائد",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر قائد",
+                                hintText: "اختر قائد",
+                                searchHintText: "ابحث عن قائد...",
                                 validator: (Person? item) =>
                                     AppValidator.validateDropdown(item),
-                                enabled: widget.team == null ? true : false,
                               );
                             } else if (state is PersonFailure) {
                               return OnFailureWidget(
@@ -217,9 +177,11 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                             }
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'تاريخ انضمامه'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'تاريخ انضمامه'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           controller: JoiedDateController,
                           suffixIcon: Icons.calendar_today,
@@ -234,13 +196,12 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                           SmallButton(
-                            text: 'إلغاء',
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).pop();
-                              teamCubit.resetInputs();
-                            },
-                          ),
+                      SmallButton(
+                        text: 'إلغاء',
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                        },
+                      ),
                       const SizedBox(width: 10),
                       SmallButton(
                         text: widget.team == null ? 'إضافة' : 'تعديل',

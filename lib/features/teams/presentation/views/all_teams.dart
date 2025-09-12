@@ -7,9 +7,11 @@ import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart'
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
+import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_state.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
 import '../../../../core/constants/app_size.dart';
@@ -48,196 +50,237 @@ class _AllTeamsState extends State<AllTeams> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        centerTitle: true,
-        title: const Text(
-          'الفرق',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<TeamCubit, TeamState>(
+          listener: (context, state) {
+            if (state is TeamDeletedSuccessfully) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showSuccessSnackBar(state.message);
+            } else if (state is DeleteTeamFailure) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showErrorSnackBar(state.errorMessage);
+            } else if (state is WiatedeleteTeam) {
+              context.showLoadingDialog();
+            }
+          },
+        ),
+        BlocListener<TeamMemberCubit, TeamMemberState>(
+          listener: (context, state) {
+            if (state is TeamMemberDeletedSuccessfully) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showSuccessSnackBar("تم حذف العضو بنجاح ");
+            } else if (state is DeleteTeamMemberFailure) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showErrorSnackBar(state.errorMessage);
+            } else if (state is WiatedeleteTeamMember) {
+              context.showLoadingDialog();
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          backgroundColor: AppColor.white,
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true,
+          title: const Text(
+            'الفرق',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSize.paddingOfPage),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            _buildToBar(context),
-            Expanded(
-              child: BlocBuilder<TeamCubit, TeamState>(
-                builder: (context, state) {
-                  if (state is TeamLoaded) {
-                    _teamsListDisplay = state.filteredTeams;
-                    if (_teamsListDisplay.isEmpty) {
-                      return NoResultWidget();
-                    }
-                    return ListView.separated(
-                      itemCount: _teamsListDisplay.length,
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemBuilder: (context, index) {
-                        var team = _teamsListDisplay[index];
-                        var teamMembers = team.teamMembers;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onLongPress: () {
-                                _showTeamOptions(context, team);
-                              },
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoute.teamDetails,
-                                  arguments: team,
-                                ).then((_) {
-                                  _teamsCubit.getAllTeams(
-                                    search: _searchingController.text.trim(),
-                                  );
-                                });
-                              },
-                              child: Text(
-                                "إسم الفريق: ${team.name}",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
-                                ),
-                                // textAlign: TextAlign.right,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            CustomTableWidget(
-                              columnTitles: [
-                                'وظيفته',
-                                'تاريخ انضمامه ',
-                                'اسم العضو ',
-                                'رقم',
-                              ],
-                              columnFlexes: [2, 2, 3, 1],
-                              rowData: teamMembers.asMap().entries.map((entry) {
-                                int index = entry.key;
-                                var teamMember = entry.value;
-                                return [
-                                  teamMember.teamRoleName,
-                                  DateFormat(
-                                    'yyyy-MM-dd',
-                                  ).format(teamMember.dateOfJoin!),
-                                  (teamMember.personName),
-                                  '${index + 1}',
-                                ];
-                              }).toList(),
-                              originalObjects: teamMembers,
-                              onRowLongPress: (rowIndex, rowObject) {
-                                _showTeamMemberOptions(
-                                  context,
-                                  rowObject as TeamMember,
-                                );
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: SmallButton(
-                                text: 'إضافة عضو',
-                                onPressed: () {
-                                  _teamsMemberCubit.setTeamId(team.id);
+        body: Padding(
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                _buildToBar(context),
+                const SizedBox(height: 20),
+                BlocBuilder<TeamCubit, TeamState>(
+                  buildWhen: (previousState, currentState) {
+                    return currentState is TeamLoading ||
+                        currentState is TeamLoaded ||
+                        currentState is TeamFailure;
+                  },
+                  builder: (context, state) {
+                    if (state is TeamLoaded) {
+                      _teamsListDisplay = state.filteredTeams;
+                      if (_teamsListDisplay.isEmpty) {
+                        return NoResultWidget();
+                      }
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _teamsListDisplay.length,
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemBuilder: (context, index) {
+                          var team = _teamsListDisplay[index];
+                          var teamMembers = team.teamMembers;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onLongPress: () {
+                                  _showTeamOptions(context, team);
+                                },
+                                onTap: () {
                                   Navigator.pushNamed(
                                     context,
-                                    AppRoute.addUpdateTeamMember,
-                                    arguments: BlocProvider.of<TeamMemberCubit>(
-                                      context,
-                                    ),
+                                    AppRoute.teamDetails,
+                                    arguments: team,
                                   ).then((_) {
                                     _teamsCubit.getAllTeams(
                                       search: _searchingController.text.trim(),
                                     );
                                   });
                                 },
+                                child: Text(
+                                  "إسم الفريق: ${team.name}",
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                  // textAlign: TextAlign.right,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 10),
+                              SizedBox(height: 10),
+                              CustomTableWidget(
+                                columnTitles: [
+                                  'رقم',
+                                  'اسم العضو ',
+                                  'تاريخ انضمامه ',
+                                  'وظيفته',
+                                ],
+                                columnFlexes: [1, 3, 2, 2],
+                                rowData: teamMembers.asMap().entries.map((
+                                  entry,
+                                ) {
+                                  int index = entry.key;
+                                  var teamMember = entry.value;
+                                  return [
+                                    '${index + 1}',
+                                    (teamMember.personName),
+
+                                    DateFormat(
+                                      'yyyy-MM-dd',
+                                    ).format(teamMember.dateOfJoin!),
+                                    teamMember.teamRoleName,
+                                  ];
+                                }).toList(),
+                                originalObjects: teamMembers,
+                                onRowLongPress: (rowIndex, rowObject) {
+                                  _showTeamMemberOptions(
+                                    context,
+                                    rowObject as TeamMember,
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: SmallButton(
+                                  text: 'إضافة عضو',
+                                  onPressed: () {
+                                    _teamsMemberCubit.setTeamId(team.id);
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoute.addUpdateTeamMember,
+                                      arguments:
+                                          BlocProvider.of<TeamMemberCubit>(
+                                            context,
+                                          ),
+                                    ).then((_) {
+                                      _teamsCubit.getAllTeams(
+                                        search: _searchingController.text
+                                            .trim(),
+                                      );
+                                      _teamsMemberCubit.resetInputs();
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                            ],
+                          );
+                        },
+                      );
+                    } else if (state is TeamLoading) {
+                      return const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 16),
+                            Text('جاري تحميل الفرق...'),
                           ],
-                        );
-                      },
-                    );
-                  } else if (state is TeamLoading) {
-                    return const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 16),
-                          Text('جاري تحميل الفرق...'),
-                        ],
-                      ),
-                    );
-                  } else if (state is TeamFailure) {
-                    return OnFailureWidget(
-                      onRetry: () => _teamsCubit.getAllTeams(),
-                    );
-                  } else {
-                    return Center(child: Text("حدث خطأ غير معروف"));
-                  }
-                },
-              ),
+                        ),
+                      );
+                    } else if (state is TeamFailure) {
+                      return OnFailureWidget(
+                        onRetry: () => _teamsCubit.getAllTeams(),
+                      );
+                    } else {
+                      return Center(child: Text("حدث خطأ غير معروف"));
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 
   Widget _buildToBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SmallButton(
-            text: 'إضافة فريق',
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoute.addUpdateTeam,
-                arguments: BlocProvider.of<TeamCubit>(context),
-              ).then((_) {
-                _teamsCubit.getAllTeams(
-                  search: _searchingController.text.trim(),
-                );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SmallButton(
+          text: 'إضافة فريق',
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              AppRoute.addUpdateTeam,
+              arguments: BlocProvider.of<TeamCubit>(context),
+            ).then((_) {
+              _teamsCubit.getAllTeams(search: _searchingController.text.trim());
+              _teamsCubit.resetInputs();
+            });
+          },
+        ),
+        const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+        Expanded(
+          child: SearchableTextFormField(
+            controller: _searchingController,
+            hintText: 'ابحث عن اسم الفريق',
+            bachgroundColor: AppColor.gray2,
+            suffixIcon: IconButton(
+              onPressed: () {
+                _searchingController.clear();
+                _teamsCubit.filterTeams('');
+              },
+              icon: const Icon(Icons.close),
+            ),
+            prefixIcon: Icons.search,
+            onChanged: (String query) {
+              _delay?.cancel();
+              _delay = Timer(const Duration(milliseconds: 300), () {
+                _teamsCubit.filterTeams(query.trim());
               });
             },
           ),
-          const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-          Expanded(
-            child: SearchableTextFormField(
-              controller: _searchingController,
-              hintText: 'ابحث عن اسم الفريق',
-              bachgroundColor: AppColor.gray2,
-              suffixIcon: IconButton(
-                onPressed: () {
-                  _searchingController.clear();
-                  _teamsCubit.filterTeams('');
-                },
-                icon: const Icon(Icons.close),
-              ),
-             prefixIcon : Icons.search,
-              onChanged: (String query) {
-                _delay?.cancel();
-                _delay = Timer(const Duration(milliseconds: 300), () {
-                  _teamsCubit.filterTeams(query.trim());
-                });
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -265,6 +308,7 @@ class _AllTeamsState extends State<AllTeams> {
                   _teamsCubit.getAllTeams(
                     search: _searchingController.text.trim(),
                   );
+                  _teamsCubit.resetInputs();
                 });
               },
             ),
@@ -306,7 +350,10 @@ class _AllTeamsState extends State<AllTeams> {
     );
   }
 
-  void _showTeamMemberOptions(BuildContext passContext, TeamMember teamMember) {
+  void _showTeamMemberOptions(
+    BuildContext passContext,
+    TeamMember teamMember,
+  ) async {
     showModalBottomSheet(
       context: passContext,
       shape: const RoundedRectangleBorder(
@@ -330,6 +377,7 @@ class _AllTeamsState extends State<AllTeams> {
                   _teamsCubit.getAllTeams(
                     search: _searchingController.text.trim(),
                   );
+                  _teamsMemberCubit.resetInputs();
                 });
               },
             ),
@@ -349,9 +397,9 @@ class _AllTeamsState extends State<AllTeams> {
                         child: const Text('إلغاء'),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.of(context).pop();
-                          _teamsMemberCubit.deleteTeamMember(
+                          await _teamsMemberCubit.deleteTeamMember(
                             teamMember.teamMemberId,
                           );
                           _teamsCubit.getAllTeams();
