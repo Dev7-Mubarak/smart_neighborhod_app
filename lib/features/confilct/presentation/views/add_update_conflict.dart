@@ -103,13 +103,10 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
         }
       },
       child: Scaffold(
-                // extendBodyBehindAppBar: true,
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-            scrolledUnderElevation: 0, // لا يوجد ظل عند التمرير
-
+          scrolledUnderElevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
@@ -141,7 +138,6 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         
                         const SmallText(text: 'عنوان الإتفاقية'),
                         const SizedBox(
                           height: AppSize.spasingBetweenInputsAndLabale,
@@ -328,8 +324,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                           _selectedSecondPart,
                                     );
                               }
-                              return
-                               CustomDropdownSearchWidget<FamilyMember2>(
+                              return CustomDropdownSearchWidget<FamilyMember2>(
                                 items: state.familyMembers,
                                 itemAsString: (FamilyMember2? u) =>
                                     u?.person.fullNameOneString ?? '',

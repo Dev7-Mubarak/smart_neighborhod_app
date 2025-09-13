@@ -18,6 +18,10 @@ class TeamMemberFailure extends TeamMemberState {
   final String errorMessage;
   TeamMemberFailure({required this.errorMessage});
 }
+class DeleteTeamMemberFailure extends TeamMemberState {
+  final String errorMessage;
+  DeleteTeamMemberFailure({required this.errorMessage});
+}
 
 class TeamMemberAddedSuccessfully extends TeamMemberState {
   final String message;
@@ -27,6 +31,7 @@ class TeamMemberAddedSuccessfully extends TeamMemberState {
 class ChangeSelectedMemberJoiedDate extends TeamMemberState {}
 
 class WiateAddedUpdatedTeamMember extends TeamMemberState {}
+class WiatedeleteTeamMember extends TeamMemberState {}
 
 class ChangeSelectedPersonId extends TeamMemberState {}
 

@@ -22,6 +22,7 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
+         scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         title: const Text(

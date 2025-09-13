@@ -15,6 +15,11 @@ class ConflictLoaded extends ConflictState {
 class ConflictLoading extends ConflictState {}
 
 class WiateAddedUpdatedConflict extends ConflictState {}
+class WiateDeleteConflict extends ConflictState {}
+class DeleteConflictFailure extends ConflictState {
+  final String errorMessage;
+  DeleteConflictFailure({required this.errorMessage});
+}
 
 class ConflictFailure extends ConflictState {
   final String errorMessage;

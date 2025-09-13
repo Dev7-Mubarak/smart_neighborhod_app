@@ -10,6 +10,7 @@ import 'package:smart_negborhood_app/core/constants/app_image.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/small_text.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_state.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
@@ -49,10 +50,25 @@ class _AllConflictState extends State<AllConflict> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final crossAxisCount = screenWidth > 600 ? 3 : 2;
-    return Scaffold(
+    return
+    BlocListener<ConflictCubit, ConflictState>(
+          listener: (context, state) {
+            if (state is ConfllictDeletedSuccessfully) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showSuccessSnackBar(state.message);
+            } else if (state is DeleteConflictFailure) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showErrorSnackBar(state.errorMessage);
+            } else if (state is WiateDeleteConflict) {
+              context.showLoadingDialog();
+            }
+          },
+        child:         
+     Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColor.white,
         elevation: 0,
+         scrolledUnderElevation: 0,
+        backgroundColor: AppColor.white,
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         title: const Text(
@@ -73,6 +89,11 @@ class _AllConflictState extends State<AllConflict> {
               _buildToBar(context),
               const SizedBox(height: 20),
               BlocBuilder<ConflictCubit, ConflictState>(
+                  buildWhen: (previousState, currentState) {
+                    return currentState is ConflictLoading ||
+                        currentState is ConflictLoaded ||
+                        currentState is ConflictFailure;
+                  },
                 builder: (context, state) {
                   if (state is ConflictLoaded) {
                     _conflictListDisplay = state.filteredConflicts;
@@ -182,98 +203,6 @@ class _AllConflictState extends State<AllConflict> {
                         );
                       }).toList(),
                     );
-
-                    // return GridView.count(
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   shrinkWrap: true,
-                    //   crossAxisCount: crossAxisCount,
-                    //   crossAxisSpacing: 16,
-                    //   mainAxisSpacing: 16,
-                    //   children: _conflictListDisplay
-                    //       .map(
-                    //         (e) => InkWell(
-                    //           onTap: () {
-                    //             Navigator.pushNamed(
-                    //               context,
-                    //               AppRoute.conflictDetiles,
-                    //               arguments: e,
-                    //             ).then((_) {
-                    //               _conflictCubit.getAllConflicts(
-                    //                 search: _searchingController.text.trim(),
-                    //               );
-                    //             });
-                    //           },
-                    //           onLongPress: () {
-                    //             _showOptions(context, e);
-                    //           },
-                    //           child: Container(
-                    //             padding: const EdgeInsets.all(10),
-                    //             decoration: BoxDecoration(
-                    //               color: Color(0x80636AE8),
-                    //               borderRadius: BorderRadius.circular(15),
-                    //             ),
-                    //             child: Column(
-                    //               mainAxisAlignment: MainAxisAlignment.start,
-                    //               crossAxisAlignment: CrossAxisAlignment.center,
-                    //               children: [
-                    //                 Expanded(
-                    //                   flex: 3,
-                    //                   child: Container(
-                    //                     decoration: BoxDecoration(
-                    //                       borderRadius: BorderRadius.circular(
-                    //                         15,
-                    //                       ),
-                    //                     ),
-                    //                     child: FadeInImage.assetNetwork(
-                    //                       placeholder: AppImage.load,
-                    //                       image: e.imageUrl,
-                    //                       fit: BoxFit.contain,
-                    //                       imageErrorBuilder:
-                    //                           (context, error, stackTrace) {
-                    //                             return Image.asset(
-                    //                               AppImage.admin,
-                    //                               fit: BoxFit.fill,
-                    //                             );
-                    //                           },
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //                 SizedBox(height: 10),
-                    //                 Expanded(
-                    //                   child: SmallText(
-                    //                     text: e.title,
-                    //                     textAlign: TextAlign.center,
-                    //                   ),
-                    //                 ),
-                    //                 Expanded(
-                    //                   child: SmallText(
-                    //                     text:
-                    //                         'الطرف الأول: ${e.firstPartyName}',
-                    //                     textAlign: TextAlign.center,
-                    //                   ),
-                    //                 ),
-                    //                 Expanded(
-                    //                   child: SmallText(
-                    //                     text:
-                    //                         'الطرف الثاني: ${e.secondPartyName}',
-                    //                     textAlign: TextAlign.center,
-                    //                   ),
-                    //                 ),
-                    //                 Expanded(
-                    //                   child: SmallText(
-                    //                     text:
-                    //                         ' تاريخ الجلسة: ${DateFormat('yyyy-MM-dd').format(e.sessionDate!)}',
-                    //                     textAlign: TextAlign.center,
-                    //                   ),
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       )
-                    //       .toList(),
-                    // );
-                  
                   } else if (state is ConflictLoading) {
                     return Center(
                       child: Column(
@@ -299,15 +228,16 @@ class _AllConflictState extends State<AllConflict> {
         ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),
-    );
-  }
+    )
+  );
+}
 
   Widget _buildToBar(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SmallButton(
-          text: 'إضافة',
+          text: 'إضافة إتفاقية',
           onPressed: () {
             Navigator.pushNamed(
               context,

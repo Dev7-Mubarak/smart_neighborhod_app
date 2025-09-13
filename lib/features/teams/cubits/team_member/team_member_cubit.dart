@@ -10,7 +10,6 @@ import 'team_member_state.dart';
 class TeamMemberCubit extends Cubit<TeamMemberState> {
   TeamMemberCubit({required this.api}) : super(TeamInitial());
   static TeamMemberCubit get(context) => BlocProvider.of(context);
-
   DioConsumer api;
   TeamMember? teamMember;
   int? selectedPersonId;
@@ -74,7 +73,6 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
             message: response["data"] ?? "تمت الإضافة بنجاح",
           ),
         );
-        resetInputs();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -116,8 +114,6 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
             message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
-        resetInputs();
-        // await getAllTeams();
       } else {
         final String errorMessage =
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث عضو الفريق";
@@ -137,7 +133,7 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   }
 
   Future<void> deleteTeamMember(int id) async {
-    emit(TeamMemberLoading());
+    emit(WiatedeleteTeamMember());
     try {
       final response = await api.delete('${ApiLink.deleteTeamMember}/$id');
 
@@ -153,9 +149,9 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(TeamMemberFailure(errorMessage: e.errModel.errorMessage));
+      emit(DeleteTeamMemberFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(TeamMemberFailure(errorMessage: e.toString()));
+      emit(DeleteTeamMemberFailure(errorMessage: e.toString()));
     }
   }
 }

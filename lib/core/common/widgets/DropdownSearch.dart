@@ -13,6 +13,7 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
     required this.hintText,
     required this.searchHintText,
     this.validator,
+    this.enabled=true
   });
 
   final List<T> items;
@@ -23,6 +24,7 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
   final String hintText;
   final String searchHintText;
   final String? Function(T?)? validator;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
       onChanged: onChanged,
       selectedItem: selectedItem,
       validator: validator,
+       enabled: enabled,
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
           labelText: labelText,
