@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
@@ -93,13 +94,13 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
+          scrolledUnderElevation: 0,
+          backgroundColor: AppColor.white,
+          iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
-              'فريق',
+              widget.teamMember == null ? 'إضافة عضو جديد' : 'تعديل عضو ',
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -114,21 +115,8 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Text(
-                      widget.teamMember == null
-                          ? 'إضافة عضو جديد'
-                          : 'تعديل عضو ',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -136,11 +124,12 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
                         const SmallText(text: 'اسم العضو '),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<PersonCubit, PersonState>(
                           builder: (context, state) {
                             if (state is PersonLoading) {
@@ -160,32 +149,10 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                   (person) => person.id == _selectedPerson,
                                 );
                               }
-                              return DropdownSearch<Person>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن قائد...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, person, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        person.fullName,
-                                        // textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
+                              return CustomDropdownSearchWidget<Person>(
+                                 enabled: widget.teamMember == null
+                                    ? true
+                                    : false,
                                 items: state.people,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
@@ -194,24 +161,11 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                   );
                                 },
                                 selectedItem: initialSelectedPerson,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر عضو",
-                                    hintText: "اختر عضو",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر عضو",
+                                hintText: "اختر عضو",
+                                searchHintText: "ابحث عن عضو...",
                                 validator: (Person? item) =>
-                                    AppValidator.validateDropdown(item),
-                                enabled: widget.teamMember == null
-                                    ? true
-                                    : false,
+                                    AppValidator.validateDropdown(item)
                               );
                             } else if (state is PersonFailure) {
                               return OnFailureWidget(
@@ -222,9 +176,11 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                             }
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'تاريخ انضمامه'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'تاريخ انضمامه'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           controller: JoiedDateController,
                           suffixIcon: Icons.calendar_today,
@@ -232,9 +188,11 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                           onTap: () => teamMemberCubit.pickDate(context),
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 20),
-                        const SmallText(text: 'وظيفة العضو'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'وظيفة العضو'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<TeamRoleCubit, TeamRoleState>(
                           builder: (context, state) {
                             if (state is TeamRoleLoading) {
@@ -256,61 +214,28 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                           teamRole.id == _selectedTeamRole,
                                     );
                               }
-                              return DropdownSearch<TeamRole>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن وظيفة...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, teamrole, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        teamrole.name,
-                                        // textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
+                              return
+                              CustomDropdownSearchWidget<TeamRole>(
                                 items: state.allTeamRoles,
-                                itemAsString: (TeamRole? u) => u?.name ?? '',
+                                itemAsString:  (TeamRole? u) => u?.name ?? '',
                                 onChanged: (TeamRole? data) {
                                   teamMemberCubit.changeSelectedTeamRole(
                                     data!.id,
                                   );
                                 },
                                 selectedItem: initialSelectedRole,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر دور",
-                                    hintText: "اختر دور",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر دور",
+                                hintText: "اختر دور",
+                                searchHintText: "ابحث عن وظيفة...",
                                 validator: (TeamRole? item) =>
                                     AppValidator.validateDropdown(item),
                               );
+                              
                             } else if (state is TeamRoleFailure) {
                               return OnFailureWidget(
                                 onRetry: () => teamRoleCubit.getAllTeamRoles(),
                               );
-                             } else {
+                            } else {
                               return Center(child: Text("حدث خطأ غير معروف"));
                             }
                           },
@@ -322,13 +247,12 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                           SmallButton(
-                            text: 'إلغاء',
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).pop();
-                              teamMemberCubit.resetInputs();
-                            },
-                          ),
+                      SmallButton(
+                        text: 'إلغاء',
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                        },
+                      ),
                       const SizedBox(width: 10),
                       SmallButton(
                         text: widget.teamMember == null ? 'إضافة' : 'تعديل',
@@ -340,7 +264,6 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                               teamMemberCubit.updateTeamMember(
                                 id: widget.teamMember!.teamMemberId,
                               );
-                              // Navigator.pop(context);
                             }
                           }
                         },

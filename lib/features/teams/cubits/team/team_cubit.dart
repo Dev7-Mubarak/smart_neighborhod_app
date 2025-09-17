@@ -31,14 +31,12 @@ class TeamCubit extends Cubit<TeamState> {
           "inJoiedDate": selectedJoiedDate?.toIso8601String(),
         },
       );
-
       if (response["isSuccess"]) {
         emit(
           TeamAddedSuccessfully(
             message: response["message"] ?? "تمت الإضافة بنجاح",
           ),
         );
-        resetInputs();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -58,8 +56,11 @@ class TeamCubit extends Cubit<TeamState> {
   Future<void> getAllTeams({String? search}) async {
     emit(TeamLoading());
     try {
-      final response = await api.get(ApiLink.getAllTeams,treat404AsEmptyList: true);
-      
+      final response = await api.get(
+        ApiLink.getAllTeams,
+        treat404AsEmptyList: true,
+      );
+
       List<dynamic> teamsJson = response["data"];
       _allTeams = teamsJson.map((e) => Team.fromJson(e)).toList();
 
@@ -75,8 +76,7 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
-
-  Future<void> updateTeams({required int id,required String name}) async {
+  Future<void> updateTeams({required int id, required String name}) async {
     emit(WiateAddedUpdatedTeam());
     try {
       final response = await api.update(
@@ -93,7 +93,6 @@ class TeamCubit extends Cubit<TeamState> {
             message: response["message"] ?? "تم التحديث بنجاح",
           ),
         );
-        resetInputs();
       } else {
         final String errorMessage =
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث المشروع";
@@ -112,15 +111,16 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
- Future<void> deleteTeam(int id) async {
-    emit(TeamLoading());
+  Future<void> deleteTeam(int id) async {
+    emit(WiatedeleteTeam());
     try {
       final response = await api.delete('${ApiLink.deleteTeam}/$id');
 
       if (response["isSuccess"]) {
         emit(TeamDeletedSuccessfully(message: response["data"]));
+        await getAllTeams();
       } else {
-       throw Serverexception(
+        throw Serverexception(
           errModel: ErrorModel(
             statusCode: response["statusCode"]?.toString() ?? '400',
             errorMessage: response["message"],
@@ -129,22 +129,26 @@ class TeamCubit extends Cubit<TeamState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(TeamFailure(errorMessage: e.errModel.errorMessage));
+      emit(DeleteTeamFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(TeamFailure(errorMessage: e.toString()));
+      emit(DeleteTeamFailure(errorMessage: e.toString()));
     }
   }
 
- 
   Future<void> getProjectsByTeamId(int id) async {
     emit(TeamLoading());
     try {
-      final response = await api.get(ApiLink.getProjectsByTeamId(teamId: id),treat404AsEmptyList: true);
+      final response = await api.get(
+        ApiLink.getProjectsByTeamId(teamId: id),
+        treat404AsEmptyList: true,
+      );
 
       List<dynamic> ProjectJson = response["data"];
-      List<Project> _allProjects = ProjectJson.map((e) => Project.fromJson(e)).toList();
+      List<Project> _allProjects = ProjectJson.map(
+        (e) => Project.fromJson(e),
+      ).toList();
 
-      emit(ProjectsOfTeamLoaded( _allProjects));
+      emit(ProjectsOfTeamLoaded(_allProjects));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
@@ -199,6 +203,7 @@ class TeamCubit extends Cubit<TeamState> {
     selectedPersonId = null;
     selectedJoiedDate = null;
   }
+
   Future<void> getTeamById(int id) async {
     emit(TeamLoading());
     try {

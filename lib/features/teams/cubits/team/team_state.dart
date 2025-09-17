@@ -22,10 +22,15 @@ class ProjectsOfTeamLoaded extends TeamState {
 
 class TeamLoading extends TeamState {}
 class WiateAddedUpdatedTeam extends TeamState {}
+class WiatedeleteTeam extends TeamState {}
 
 class TeamFailure extends TeamState {
   final String errorMessage;
   TeamFailure({required this.errorMessage});
+}
+class DeleteTeamFailure extends TeamState {
+  final String errorMessage;
+  DeleteTeamFailure({required this.errorMessage});
 }
 
 class TeamAddedSuccessfully extends TeamState {

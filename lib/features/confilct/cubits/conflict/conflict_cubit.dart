@@ -233,11 +233,11 @@ class ConflictCubit extends Cubit<ConflictState> {
   }
 
   Future<void> deleteConflict(int id) async {
-    emit(ConflictLoading());
+    emit(WiateDeleteConflict());
     try {
       final response = await api.delete('${ApiLink.deleteConflict}/$id');
       if (response["isSuccess"]) {
-        emit(ConfllictDeletedSuccessfully(message: response["message"]));
+        emit(ConfllictDeletedSuccessfully(message: response["data"]));
         await getAllConflicts();
       } else {
         Serverexception(
@@ -249,9 +249,9 @@ class ConflictCubit extends Cubit<ConflictState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(ConflictFailure(errorMessage: e.errModel.errorMessage));
+      emit(DeleteConflictFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(ConflictFailure(errorMessage: e.toString()));
+      emit(DeleteConflictFailure(errorMessage: e.toString()));
     }
   }
 }

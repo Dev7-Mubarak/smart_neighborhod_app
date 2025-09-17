@@ -65,7 +65,7 @@ class CustomTableWidget extends StatelessWidget {
                       flex: columnFlexes[cellIndex].toInt(),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: cellIndex == columnTitles.length - 1
+                          color: cellIndex ==0
                               ? AppColor.primaryColor
                               : Colors.white,
                           border: const Border(
@@ -80,7 +80,7 @@ class CustomTableWidget extends StatelessWidget {
                           cellData.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: cellIndex == columnTitles.length - 1
+                            color: cellIndex == 0
                                 ? Colors.white
                                 : Colors.black,
                             fontWeight: FontWeight.bold,
@@ -98,74 +98,7 @@ class CustomTableWidget extends StatelessWidget {
       ],
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Column(
-  //     children: [
-  //       // رأس الجدول
-  //       Container(
-  //         decoration: const BoxDecoration(color: AppColor.primaryColor,
-  //           border: Border(
-  //             top: BorderSide(color: Colors.black, width: 1.0),
-  //             left: BorderSide(color: Colors.black, width: 1.0),
-  //             right: BorderSide(color: Colors.black, width: 1.0),
-  //             bottom: BorderSide(color: Colors.black, width: 1.0),
-  //           ),),
-  //         child: IntrinsicHeight(
-  //           child: Row(
-  //             children: columnTitles.asMap().entries.map((entry) {
-  //               int colIndex = entry.key;
-  //               String title = entry.value;
-  //               return Expanded(
-  //                 flex: columnFlexes[colIndex].toInt(),
-  //                 child: _buildHeaderCell(title),
-  //               );
-  //             }).toList(),
-  //           ),
-  //         ),
-  //       ),
-  //       // الصفوف الديناميكية
-  //       ListView.builder(
-  //         shrinkWrap: true,
-  //         physics: const NeverScrollableScrollPhysics(),
-  //         itemCount: rowData.length,
-  //         itemBuilder: (context, index) {
-  //           List<dynamic> row = rowData[index];
-  //           return InkWell(
-  //             onLongPress: onRowLongPress != null
-  //                 ? () => onRowLongPress!(index, originalObjects![index])
-  //                 : null,
-  //             onTap: onPress != null
-  //                 ? () => onPress!(index, originalObjects![index])
-  //                 : null,
-  //             child: Container(
-  //               decoration: const BoxDecoration(
-  //                 color: Colors.white,
-  //                 border: Border(
-  //                   bottom: BorderSide(color: Colors.black, width: 1.0),
-  //                 ),
-  //               ),
-  //               padding: const EdgeInsets.symmetric(vertical: 8.0),
-  //               child: IntrinsicHeight(
-  //                 child: Row(
-  //                   children: row.asMap().entries.map((cellEntry) {
-  //                     int cellIndex = cellEntry.key;
-  //                     dynamic cellData = cellEntry.value;
-  //                     return Expanded(
-  //                       flex: columnFlexes[cellIndex].toInt(),
-  //                       child: _buildCell(cellData.toString()),
-  //                     );
-  //                   }).toList(),
-  //                 ),
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ],
-  //   );
-  // }
-
+  
   Widget _buildHeaderCell(String text) {
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -180,19 +113,4 @@ class CustomTableWidget extends StatelessWidget {
       ),
     );
   }
-
-  // Widget _buildCell(String text) {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(3),
-  //     child: Text(
-  //       text,
-  //       textAlign: TextAlign.center,
-  //       style: const TextStyle(
-  //         color: Colors.black,
-  //         fontWeight: FontWeight.bold,
-  //         fontSize: 12
-  //       ),
-  //     ),
-  //   );
-  // }
 }
