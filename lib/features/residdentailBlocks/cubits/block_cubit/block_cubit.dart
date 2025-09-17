@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_state.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_state.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';

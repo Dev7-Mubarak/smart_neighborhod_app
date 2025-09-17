@@ -8,8 +8,8 @@ import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_fi
 import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
-import '../../cubits/cubit/block_cubit.dart';
-import '../../cubits/cubit/block_state.dart';
+import '../../cubits/block_cubit/block_cubit.dart';
+import '../../cubits/block_cubit/block_state.dart';
 import '../../data/models/Block.dart';
 import '../widgets/change_block_name_widget.dart';
 import '../widgets/residential_block_card_widget.dart';
@@ -94,7 +94,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                     onPressed: () {},
                     icon: const Icon(Icons.close),
                   ),
-                  prefixIcon : Icons.search,
+                  prefixIcon: Icons.search,
                 ),
               ),
             ],

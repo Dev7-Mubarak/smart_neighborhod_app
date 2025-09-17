@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_cubit.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_state.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
@@ -30,8 +31,8 @@ class AddUpdateFamily extends StatefulWidget {
 class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   final _formKey = GlobalKey<FormState>();
 
-  FamilyCategory? selectedFamilyCategory;
-  Person? selectedFamilyHead;
+  int? selectedFamilyCategory;
+  int? selectedFamilyHead;
 
   final TextEditingController _familyNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
@@ -61,16 +62,8 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
       _familyNameController.text = widget.family!.name;
       _locationController.text = widget.family!.location;
       _notesController.text = widget.family!.familyNotes;
-
-      selectedFamilyCategory = familyCategoryCubit.familyCategories.firstWhere(
-        (category) => category.id == widget.family!.familyCatgoryId,
-        orElse: () => familyCategoryCubit.familyCategories.first,
-      );
-
-      selectedFamilyHead = personCubit.people.firstWhere(
-        (person) => person.id == widget.family!.familyHeadId,
-        orElse: () => personCubit.people.first,
-      );
+      selectedFamilyCategory = widget.family!.familyCatgoryId;
+      selectedFamilyHead = widget.family!.familyHeadId;
     }
     setState(() {});
   }
@@ -89,9 +82,9 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
       name: _familyNameController.text,
       location: _locationController.text,
       familyNotes: _notesController.text,
-      familyCatgoryId: selectedFamilyCategory?.id ?? 0,
+      familyCatgoryId: selectedFamilyCategory ?? 0,
       blockId: widget.blockId,
-      familyHeadId: selectedFamilyHead?.id ?? 0,
+      familyHeadId: selectedFamilyHead ?? 0,
     );
   }
 
@@ -111,22 +104,18 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
       listeners: [
         BlocListener<FamilyCubit, FamilyState>(
           listener: (context, state) {
+            if (state is WaitingForUpdateOrAddFamily) {
+              context.showLoadingDialog();
+            }
             if (state is FamilyAddedSuccessfully ||
                 state is FamilyUpdatedSuccessfully) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text((state as dynamic).message),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showSuccessSnackBar((state as dynamic).message);
               Navigator.pop(context);
-            } else if (state is FamilyFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.errorMessage),
-                  backgroundColor: Colors.red,
-                ),
-              );
+            }
+            if (state is FamilyFailure) {
+              Navigator.of(context, rootNavigator: true).pop();
+              context.showErrorSnackBar(state.errorMessage);
             }
           },
         ),
@@ -187,6 +176,12 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                               child: CircularProgressIndicator(),
                             );
                           } else if (state is PersonLoaded) {
+                            Person? initialSelectedPerson;
+                            if (selectedFamilyHead != null) {
+                              initialSelectedPerson = state.people.firstWhere(
+                                (person) => person.id == selectedFamilyHead,
+                              );
+                            }
                             return DropdownSearch<Person>(
                               popupProps: PopupProps.menu(
                                 showSearchBox: true,
@@ -209,10 +204,10 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                                     ),
                               ),
                               items: state.people,
-                              selectedItem: selectedFamilyHead,
+                              selectedItem: initialSelectedPerson,
                               itemAsString: (p) => p.fullName,
-                              onChanged: (value) =>
-                                  familyCubit.changeSelectedFamilyHaed(value),
+                              onChanged: (value) => familyCubit
+                                  .changeSelectedFamilyHead(value?.id),
                               validator: (value) => value == null
                                   ? 'يرجى اختيار رب الأسرة'
                                   : null,
@@ -241,12 +236,20 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                       BlocBuilder<FamilyCategoryCubit, FamilyCategoryState>(
                         builder: (context, state) {
                           if (state is FamilyCategoryLoaded) {
+                            FamilyCategory? initialSelectedCategory;
+                            if (selectedFamilyCategory != null) {
+                              initialSelectedCategory = state.familyCategories
+                                  .firstWhere(
+                                    (category) =>
+                                        category.id == selectedFamilyCategory,
+                                  );
+                            }
                             return CustomDropdown<FamilyCategory>(
                               items: state.familyCategories,
-                              selectedValue: selectedFamilyCategory,
+                              selectedValue: initialSelectedCategory,
                               itemLabel: (item) => item.name,
                               onChanged: (value) => familyCubit
-                                  .changeSelectedFamilyCategory(value),
+                                  .changeSelectedFamilyCategory(value?.id),
                               text: 'اختيار تصنيف الأسرة',
                               validator: (value) => value == null
                                   ? 'يرجى اختيار تصنيف الأسرة'

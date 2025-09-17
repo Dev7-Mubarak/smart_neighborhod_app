@@ -20,20 +20,57 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ar';
 
+  static String m0(count) => "عدد أعضاء الفريق: ${count}";
+
+  static String m1(teamLeaderName) => "إسم قائد الفريق: ${teamLeaderName}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "add": MessageLookupByLibrary.simpleMessage("إضافة"),
+    "addAssistanceProjectTitle": MessageLookupByLibrary.simpleMessage(
+      "إضافة مشروع توزيع مساعدات جديد",
+    ),
+    "addConflictTitle": MessageLookupByLibrary.simpleMessage("إضافة إتفاقية"),
+    "addFamily": MessageLookupByLibrary.simpleMessage("إضافة أسرة"),
+    "addFamilyToAssistanceTitle": MessageLookupByLibrary.simpleMessage(
+      "إضافة أسرة لتوزيع المساعدات لها",
+    ),
     "addNewMember": MessageLookupByLibrary.simpleMessage("إضافة فرد جديد"),
     "addNewPerson": MessageLookupByLibrary.simpleMessage("إضافة شخص جديد"),
+    "addTeam": MessageLookupByLibrary.simpleMessage("إضافة فريق"),
+    "addTeamToAssistanceTitle": MessageLookupByLibrary.simpleMessage(
+      "إضافة فريق لتوزيع المساعدات",
+    ),
+    "add_new_member": MessageLookupByLibrary.simpleMessage("إضافة عضو جديد"),
+    "add_new_team": MessageLookupByLibrary.simpleMessage("إضافة فريق جديد"),
+    "added_successfully": MessageLookupByLibrary.simpleMessage(
+      "تمت الإضافة بنجاح",
+    ),
     "allPeople": MessageLookupByLibrary.simpleMessage("جميع الأفراد"),
     "appTitle": MessageLookupByLibrary.simpleMessage("الحارة الذكية"),
+    "assistanceAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم إضافة المساعدة بنجاح",
+    ),
+    "assistanceDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف المساعدة بنجاح",
+    ),
+    "assistanceDetailsTitle": MessageLookupByLibrary.simpleMessage(
+      "تفاصيل المساعدة",
+    ),
+    "assistanceProjectsTitle": MessageLookupByLibrary.simpleMessage(
+      "مشاريع توزيع المساعدات",
+    ),
     "assistanceSection": MessageLookupByLibrary.simpleMessage("قسم المساعدات"),
+    "assistanceUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تعديل المساعدة بنجاح",
+    ),
     "birthDate": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
     "birthDateRequired": MessageLookupByLibrary.simpleMessage(
       "تاريخ الميلاد مطلوب",
     ),
     "blockManager": MessageLookupByLibrary.simpleMessage("مدير المربع"),
     "bloodType": MessageLookupByLibrary.simpleMessage("فصيلة الدم"),
+    "budget": MessageLookupByLibrary.simpleMessage("الميزانية"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "changeBlockName": MessageLookupByLibrary.simpleMessage("تغيير اسم المربع"),
     "changeManager": MessageLookupByLibrary.simpleMessage(
@@ -45,12 +82,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseBloodType": MessageLookupByLibrary.simpleMessage(
       "اختبار فصيلة الدم",
     ),
+    "chooseCategory": MessageLookupByLibrary.simpleMessage("اختر تصنيف"),
+    "chooseConflictTypeLabel": MessageLookupByLibrary.simpleMessage(
+      "اختر نوع الخلاف",
+    ),
     "chooseFamilyCategory": MessageLookupByLibrary.simpleMessage(
       "اختيار تصنيف الأسرة",
     ),
     "chooseFamilyHead": MessageLookupByLibrary.simpleMessage("اختر المدير"),
+    "chooseFirstPartyLabel": MessageLookupByLibrary.simpleMessage(
+      "اختر الطرف الأول",
+    ),
     "chooseIdentityType": MessageLookupByLibrary.simpleMessage(
       "اختيار نوع الهوية",
+    ),
+    "chooseManager": MessageLookupByLibrary.simpleMessage("اختر المدير"),
+    "chooseProjectPriority": MessageLookupByLibrary.simpleMessage(
+      "اختيار أولوية المشروع",
+    ),
+    "chooseProjectStatus": MessageLookupByLibrary.simpleMessage(
+      "اختيار حالة المشروع",
+    ),
+    "chooseSecondPartyLabel": MessageLookupByLibrary.simpleMessage(
+      "اختر الطرف الثاني",
     ),
     "clickForMoreDetails": MessageLookupByLibrary.simpleMessage(
       "اضغط للمزيد من التفاصيل",
@@ -61,16 +115,87 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmDeleteBlock": MessageLookupByLibrary.simpleMessage(
       "هل أنت متأكد أنك تريد حذف هذا المربع؟",
     ),
-    "conflictSection": MessageLookupByLibrary.simpleMessage("قسم إدارة الخلافات"),
+    "confirm_delete": MessageLookupByLibrary.simpleMessage("تأكيد الحذف"),
+    "confirm_delete_member_message": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذا العضو",
+    ),
+    "confirm_delete_team_message": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذا الفريق؟",
+    ),
+    "conflictAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت إضافة الإتفاقية بنجاح",
+    ),
+    "conflictDateLabel": MessageLookupByLibrary.simpleMessage(
+      "تاريخ الإتفاقية",
+    ),
+    "conflictDetailsTitle": MessageLookupByLibrary.simpleMessage(
+      "تفاصيل الخلاف",
+    ),
+    "conflictManagementTitle": MessageLookupByLibrary.simpleMessage(
+      "إدارة الخلافات",
+    ),
+    "conflictNotResolvedStatus": MessageLookupByLibrary.simpleMessage(
+      "لم يتم إنهاء الخلاف",
+    ),
+    "conflictResolvedLabel": MessageLookupByLibrary.simpleMessage(
+      "تم إنهاء الخلاف",
+    ),
+    "conflictResolvedStatus": MessageLookupByLibrary.simpleMessage(
+      "تم إنهاء الخلاف",
+    ),
+    "conflictSection": MessageLookupByLibrary.simpleMessage("قسم الإتفاقات"),
+    "conflictTitleLabel": MessageLookupByLibrary.simpleMessage(
+      "عنوان الإتفاقية",
+    ),
+    "conflictTypeLabel": MessageLookupByLibrary.simpleMessage("نوع الخلاف"),
+    "conflictUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تعديل الإتفاقية بنجاح",
+    ),
     "contactNumber": MessageLookupByLibrary.simpleMessage("رقم التواصل"),
+    "createNewFamilyButton": MessageLookupByLibrary.simpleMessage(
+      "إنشاء أسرة جديد",
+    ),
+    "createNewFamilyHint": MessageLookupByLibrary.simpleMessage(
+      "إذا كنت تريد إنشاء أسرة جديدة إنتقل الى قسم المربعات السكنية من هنا",
+    ),
     "createNewPasswordTitle": MessageLookupByLibrary.simpleMessage(
       "انشأ كلمة مرور جديدة",
     ),
+    "createNewTeamHint": MessageLookupByLibrary.simpleMessage(
+      "إذا كنت تريد إنشاء فريق جديد انتقل إلى قسم الفرق من هنا",
+    ),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteAssistanceConfirmation": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟",
+    ),
+    "deleteConflictConfirmation": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذه الوثيقة",
+    ),
+    "deleteFamilyConfirmation": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذه الأسرة",
+    ),
     "deleteNotAllowed": MessageLookupByLibrary.simpleMessage(
       "لا يسمح بالحذف حاليا",
     ),
+    "deleteTeamConfirmation": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد أنك تريد حذف هذا الفريق؟",
+    ),
+    "deleted_successfully": MessageLookupByLibrary.simpleMessage(
+      "تم الحذف بنجاح",
+    ),
+    "description": MessageLookupByLibrary.simpleMessage("وصف"),
+    "distributionEndDate": MessageLookupByLibrary.simpleMessage(
+      "تاريخ نهاية التوزيع",
+    ),
+    "distributionStartDate": MessageLookupByLibrary.simpleMessage(
+      "تاريخ بداية التوزيع",
+    ),
+    "distributionTeams": MessageLookupByLibrary.simpleMessage("فرق التوزيع"),
     "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
+    "editAssistanceProjectTitle": MessageLookupByLibrary.simpleMessage(
+      "تعديل مشروع توزيع المساعدات",
+    ),
+    "editConflictTitle": MessageLookupByLibrary.simpleMessage("تعديل إتفاقية"),
     "editPersonData": MessageLookupByLibrary.simpleMessage(
       "تعديل بيانات الشخص",
     ),
@@ -100,14 +225,28 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
       "لا يوجد مديرين متاحين",
     ),
+    "familyAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تعيين الأسرة بنجاح",
+    ),
     "familyCategory": MessageLookupByLibrary.simpleMessage("تصنيف الأسرة"),
+    "familyDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف الأسرة بنجاح",
+    ),
     "familyHead": MessageLookupByLibrary.simpleMessage("رب الأسرة"),
+    "familyHeadName": MessageLookupByLibrary.simpleMessage("إسم رب الأسرة"),
     "familyName": MessageLookupByLibrary.simpleMessage("اسم الأسرة"),
     "familyType": MessageLookupByLibrary.simpleMessage("نوع الأسرة"),
     "female": MessageLookupByLibrary.simpleMessage("أنثى"),
     "firstName": MessageLookupByLibrary.simpleMessage("الاسم الاول"),
     "firstNameRequired": MessageLookupByLibrary.simpleMessage(
       "الاسم الاول مطلوب",
+    ),
+    "firstPartyLabel": MessageLookupByLibrary.simpleMessage("الطرف الأول"),
+    "firstPartyLabelWithColon": MessageLookupByLibrary.simpleMessage(
+      "الطرف الأول:",
+    ),
+    "firstPartyWithColon": MessageLookupByLibrary.simpleMessage(
+      "الطرف الأول :",
     ),
     "forgotPassword": MessageLookupByLibrary.simpleMessage(
       "هل نسيت كلمة السر؟",
@@ -133,18 +272,91 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "identityType": MessageLookupByLibrary.simpleMessage("نوع الهوية"),
     "job": MessageLookupByLibrary.simpleMessage("المهنة"),
+    "joinDate": MessageLookupByLibrary.simpleMessage("تاريخ انضمامه"),
+    "join_date": MessageLookupByLibrary.simpleMessage("تاريخ انضمامه"),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "main": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "male": MessageLookupByLibrary.simpleMessage("ذكر"),
+    "managerName": MessageLookupByLibrary.simpleMessage("اسم المدير"),
     "maritalStatus": MessageLookupByLibrary.simpleMessage("الحالة الاجتماعية"),
+    "memberName": MessageLookupByLibrary.simpleMessage("اسم العضو"),
+    "member_name": MessageLookupByLibrary.simpleMessage("اسم العضو"),
+    "member_role": MessageLookupByLibrary.simpleMessage("وظيفة العضو"),
     "next": MessageLookupByLibrary.simpleMessage("التالي"),
-    "nextButton": MessageLookupByLibrary.simpleMessage("التالي"),
+    "noAssistanceProjects": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مشاريع مساعدات",
+    ),
+    "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد تصنيفات متاحة",
+    ),
+    "noConflictTypesAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد أنواع",
+    ),
+    "noConflictsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد خلافات لعرضها حاليًا",
+    ),
+    "noDataAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد بيانات للعرض حاليًا",
+    ),
+    "noDataAvailableConflict": MessageLookupByLibrary.simpleMessage(
+      "لا توجد بيانات للعرض حاليًا",
+    ),
+    "noDataReceived": MessageLookupByLibrary.simpleMessage(
+      "لم يتم استلام أي بيانات",
+    ),
+    "noFamiliesAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد أسر لعرضها حاليًا",
+    ),
+    "noFamiliesAvailableMessage": MessageLookupByLibrary.simpleMessage(
+      "لا توجد أسر",
+    ),
+    "noFamiliesFound": MessageLookupByLibrary.simpleMessage("لا يوجد أسر"),
+    "noFamilyMembersAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد أفراد متاحين",
+    ),
+    "noManagersAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد مديرين متاحين",
+    ),
     "noResultsFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على أي نتائج",
     ),
+    "noTeamsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد فرق لعرضها حاليًا",
+    ),
+    "noTeamsAvailableMessage": MessageLookupByLibrary.simpleMessage(
+      "لا توجد فرق",
+    ),
+    "noTeamsFound": MessageLookupByLibrary.simpleMessage("لا يوجد فرق"),
+    "no_available_people": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد أشخاص متاحين",
+    ),
+    "no_available_roles": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد أدوار متاحه",
+    ),
+    "no_data_received": MessageLookupByLibrary.simpleMessage(
+      "لا توجد بيانات مستلمة",
+    ),
+    "no_data_to_display": MessageLookupByLibrary.simpleMessage(
+      "لا توجد بيانات للعرض حاليًا.",
+    ),
+    "no_leader": MessageLookupByLibrary.simpleMessage("لا يوجد قائد"),
+    "no_projects_for_this_team": MessageLookupByLibrary.simpleMessage(
+      "لا توجد مشاريع لهذا الفريق",
+    ),
+    "no_teams": MessageLookupByLibrary.simpleMessage("لا توجد فرق"),
+    "no_teams_found": MessageLookupByLibrary.simpleMessage("لا توجد فرق"),
+    "no_teams_roles": MessageLookupByLibrary.simpleMessage("لا توجد فرق"),
+    "no_teams_to_display": MessageLookupByLibrary.simpleMessage(
+      "لا توجد فرق لعرضها حاليًا.",
+    ),
     "notSpecified": MessageLookupByLibrary.simpleMessage("غير محدد"),
     "notes": MessageLookupByLibrary.simpleMessage("ملاحظات"),
+    "notesLabel": MessageLookupByLibrary.simpleMessage("الملاحظات"),
+    "notesWithColon": MessageLookupByLibrary.simpleMessage("ملاحظات :"),
+    "number": MessageLookupByLibrary.simpleMessage("رقم"),
+    "number_column": MessageLookupByLibrary.simpleMessage("رقم"),
+    "number_of_team_members": m0,
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "passwordChangedSuccess": MessageLookupByLibrary.simpleMessage(
       "تم تعديل كلمة المرور بنجاح",
@@ -162,6 +374,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الجوال"),
     "pleaseChooseBloodType": MessageLookupByLibrary.simpleMessage(
       "يرجى اختيار فصيلة الدم",
+    ),
+    "pleaseChooseConflictType": MessageLookupByLibrary.simpleMessage(
+      "الرجاء اختيار نوع الخلاف",
     ),
     "pleaseChooseFamilyCategory": MessageLookupByLibrary.simpleMessage(
       "يرجى اختيار تصنيف الأسرة",
@@ -184,6 +399,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterUsername": MessageLookupByLibrary.simpleMessage(
       "الرجاء إدخال اسم المستخدم",
     ),
+    "priority": MessageLookupByLibrary.simpleMessage("الأولوية"),
+    "projectCategory": MessageLookupByLibrary.simpleMessage("تصنيف المشروع"),
+    "projectDescription": MessageLookupByLibrary.simpleMessage("وصف المشروع"),
+    "projectManager": MessageLookupByLibrary.simpleMessage("مدير المشروع"),
+    "projectName": MessageLookupByLibrary.simpleMessage("أسم المشروع"),
+    "projectPriority": MessageLookupByLibrary.simpleMessage("أولوية المشروع"),
+    "projectStatus": MessageLookupByLibrary.simpleMessage("حالة المشروع"),
+    "project_category": MessageLookupByLibrary.simpleMessage("تصنيف المشروع"),
+    "project_name": MessageLookupByLibrary.simpleMessage("اسم المشروع"),
+    "project_status": MessageLookupByLibrary.simpleMessage("حالته"),
+    "projects_of_team": MessageLookupByLibrary.simpleMessage(
+      ": المشاريع الذي يعمل فيها الفريق",
+    ),
     "resendVerifycode": MessageLookupByLibrary.simpleMessage(
       "إعادة إرسال الكود",
     ),
@@ -191,32 +419,147 @@ class MessageLookup extends MessageLookupByLibrary {
       "إعادة إرسال الكود في 00:",
     ),
     "residentialBlock": MessageLookupByLibrary.simpleMessage("المربع السكني"),
+    "residentialBlockName": MessageLookupByLibrary.simpleMessage(
+      "إسم المربع السكني",
+    ),
     "residentialBlocks": MessageLookupByLibrary.simpleMessage(
       "المربعات السكنية",
+    ),
+    "residentialBlocksAndFamilies": MessageLookupByLibrary.simpleMessage(
+      "المربعات السكنية و الأسر التي تم التوزيع لها",
     ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       ":أعد كتابة كلمة المرور",
     ),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "searchAssistanceProjectHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن مشروع مساعدات",
+    ),
+    "searchCategoryHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن تصنيف...",
+    ),
+    "searchConflictHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن اسم الفريق",
+    ),
+    "searchConflictTypeHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن نوع الخلاف...",
+    ),
     "searchFamilyHead": MessageLookupByLibrary.simpleMessage("ابحث عن مدير..."),
+    "searchFamilyHint": MessageLookupByLibrary.simpleMessage("ابحث عن أسرة..."),
+    "searchFirstPartyHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن الطرف الأول...",
+    ),
+    "searchManagerHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن مدير...",
+    ),
     "searchResidentialBlock": MessageLookupByLibrary.simpleMessage(
       "ابحث عن المربع السكني...",
+    ),
+    "searchSecondPartyHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن الطرف الثاني...",
+    ),
+    "searchTeamHint": MessageLookupByLibrary.simpleMessage("ابحث عن فريق..."),
+    "search_for_a_leader": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن قائد...",
+    ),
+    "search_for_a_role": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن وظيفة...",
+    ),
+    "search_team_hint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن اسم الفريق",
     ),
     "secondName": MessageLookupByLibrary.simpleMessage("الاسم الثاني"),
     "secondNameRequired": MessageLookupByLibrary.simpleMessage(
       "الاسم الثاني مطلوب",
     ),
+    "secondPartyLabel": MessageLookupByLibrary.simpleMessage("الطرف الثاني"),
+    "secondPartyLabelWithColon": MessageLookupByLibrary.simpleMessage(
+      "الطرف الثاني:",
+    ),
+    "secondPartyWithColon": MessageLookupByLibrary.simpleMessage(
+      "الطرف الثاني :",
+    ),
+    "selectFamily": MessageLookupByLibrary.simpleMessage("إختر أسرة"),
+    "selectTeam": MessageLookupByLibrary.simpleMessage("اختر فريق"),
+    "select_leader_hint": MessageLookupByLibrary.simpleMessage("اختر قائد"),
+    "select_member": MessageLookupByLibrary.simpleMessage("اختر عضو"),
+    "select_role": MessageLookupByLibrary.simpleMessage("اختر دور"),
+    "select_team_leader": MessageLookupByLibrary.simpleMessage(
+      "إختر قائد الفريق",
+    ),
     "sendButton": MessageLookupByLibrary.simpleMessage("إرسال"),
+    "sessionDateLabel": MessageLookupByLibrary.simpleMessage("تاريخ الجلسة:"),
+    "sessionDateWithColon": MessageLookupByLibrary.simpleMessage(
+      "تاريخ الجلسة :",
+    ),
+    "tableColumnNumber": MessageLookupByLibrary.simpleMessage("رقم"),
+    "tableColumnPriority": MessageLookupByLibrary.simpleMessage("الأولوية"),
+    "tableColumnProjectName": MessageLookupByLibrary.simpleMessage(
+      "إسم المشروع",
+    ),
+    "teamAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تعيين الفريق بنجاح",
+    ),
+    "teamAssignmentFailed": MessageLookupByLibrary.simpleMessage(
+      "فشل تعيين الفريق",
+    ),
+    "teamDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف الفريق بنجاح",
+    ),
+    "teamName": MessageLookupByLibrary.simpleMessage("إسم الفريق"),
+    "teamRole": MessageLookupByLibrary.simpleMessage("وظيفته"),
+    "team_details": MessageLookupByLibrary.simpleMessage("تفاصيل الفريق"),
+    "team_leader_name": m1,
+    "team_members": MessageLookupByLibrary.simpleMessage(": أعضاء الفريق"),
+    "team_name": MessageLookupByLibrary.simpleMessage("أسم الفريق"),
+    "team_name_label": MessageLookupByLibrary.simpleMessage("إسم الفريق:"),
+    "team_page_title": MessageLookupByLibrary.simpleMessage("فريق"),
+    "teams": MessageLookupByLibrary.simpleMessage("الفرق"),
     "teamsSection": MessageLookupByLibrary.simpleMessage("قسم الفرق"),
     "thirdName": MessageLookupByLibrary.simpleMessage("الاسم الثالث"),
     "thirdNameRequired": MessageLookupByLibrary.simpleMessage(
       "الاسم الثالث مطلوب",
     ),
+    "treatySupervisor": MessageLookupByLibrary.simpleMessage(
+      "المشرف على المعاهدة:",
+    ),
     "unknownError": MessageLookupByLibrary.simpleMessage("حدث خطأ غير معروف"),
+    "unknownErrorOccurred": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير معروف",
+    ),
+    "unknown_error_add": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير معروف",
+    ),
+    "unknown_error_occurred": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير معروف",
+    ),
+    "unknown_error_update": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير معروف أثناء تحديث المشروع",
+    ),
+    "unknown_error_updating_project": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير معروف أثناء تحديث المشروع",
+    ),
+    "unknown_error_updating_team_member": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ غير معروف أثناء تحديث عضو الفريق",
+    ),
     "update": MessageLookupByLibrary.simpleMessage("تحديث"),
+    "update_member": MessageLookupByLibrary.simpleMessage("تعديل عضو"),
+    "update_team": MessageLookupByLibrary.simpleMessage("تعديل فريق"),
+    "updated_successfully": MessageLookupByLibrary.simpleMessage(
+      "تم التحديث بنجاح",
+    ),
     "username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
     "usernameLabel": MessageLookupByLibrary.simpleMessage(":إسم المستخدم"),
     "verifyCode": MessageLookupByLibrary.simpleMessage("التحقق من رمز الكود"),
+    "waitingForAssistanceUpdate": MessageLookupByLibrary.simpleMessage(
+      "جاري تحديث المساعدة...",
+    ),
+    "waitingForFamilyAssignment": MessageLookupByLibrary.simpleMessage(
+      "جاري تعيين الأسرة...",
+    ),
+    "waitingForTeamAssignment": MessageLookupByLibrary.simpleMessage(
+      "جاري تعيين الفريق...",
+    ),
     "warningVerifycodeEmpty": MessageLookupByLibrary.simpleMessage(
       "الرجاء إدخال رمز التأكيد\'",
     ),

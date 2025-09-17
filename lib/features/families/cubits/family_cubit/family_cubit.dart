@@ -6,9 +6,7 @@ import '../../../../core/services/errors/exception.dart';
 import 'dart:async';
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/errormodel.dart';
-import '../../../people/data/models/Person.dart';
 import '../../data/models/family.dart';
-import '../../data/models/family_category.dart';
 import '../../data/models/family_detiles_model.dart';
 
 class FamilyCubit extends Cubit<FamilyState> {
@@ -19,36 +17,36 @@ class FamilyCubit extends Cubit<FamilyState> {
 
   List<Family> allFamilies = [];
   final int blockId;
-  Person? selectedFamilyHead;
-  FamilyCategory? selectedCategory;
+  int? selectedFamilyHeadId;
+  int? selectedCategoryId;
   Family? family;
 
-  void setFamily(Family family) {
+  void setFamily(Family? family) {
     this.family = family;
   }
 
-  void changeSelectedFamilyCategory(FamilyCategory? selectedCategory) {
-    this.selectedCategory = selectedCategory;
+  void changeSelectedFamilyCategory(int? selectedCategoryId) {
+    this.selectedCategoryId = selectedCategoryId;
     emit(ChangeFamilyCategory());
   }
 
-  void changeSelectedFamilyHaed(Person? selectedFamilyHead) {
-    this.selectedFamilyHead = selectedFamilyHead;
+  void changeSelectedFamilyHead(int? selectedFamilyHeadId) {
+    this.selectedFamilyHeadId = selectedFamilyHeadId;
     emit(ChangeFamilyHead());
   }
 
   Future<void> addNewFamily(Family family) async {
-    emit(FamilyInitial());
+    emit(WaitingForUpdateOrAddFamily());
     try {
       final response = await api.post(
         ApiLink.addFamily,
         data: {
           "name": family.name,
-          "familyCatgoryId": selectedCategory!.id,
+          "familyCatgoryId": this.selectedCategoryId,
           "location": family.location,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
-          "familyHeadId": family.familyHeadId,
+          "familyHeadId": this.selectedFamilyHeadId,
         },
       );
 
@@ -71,17 +69,17 @@ class FamilyCubit extends Cubit<FamilyState> {
   }
 
   Future<void> updateFamily(Family family) async {
-    emit(FamilyLoading());
+    emit(WaitingForUpdateOrAddFamily());
     try {
       final response = await api.update(
         '${ApiLink.updateFamily}/${family.id}',
         data: {
           "name": family.name,
-          "familyCatgoryId": family.familyCatgoryId,
+          "familyCatgoryId": this.selectedCategoryId,
           "location": family.location,
           "familyNotes": family.familyNotes,
           "blockId": family.blockId,
-          "familyHeadId": family.familyHeadId,
+          "familyHeadId": this.selectedFamilyHeadId,
         },
       );
 

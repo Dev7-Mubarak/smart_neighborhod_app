@@ -7,8 +7,8 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_state.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_state.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
@@ -147,6 +147,8 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                                 var familyCubit = BlocProvider.of<FamilyCubit>(
                                   context,
                                 );
+                                familyCubit.setFamily(null);
+
                                 Navigator.pushNamed(
                                   context,
                                   AppRoute.addUpdateFamily,
@@ -161,11 +163,11 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                               child: SearchableTextFormField(
                                 controller: _searchController,
                                 hintText: 'بحث باسم رب الأسرة',
-                               suffixIcon : IconButton(
+                                suffixIcon: IconButton(
                                   onPressed: _onClearSearch,
                                   icon: const Icon(Icons.close),
                                 ),
-                               prefixIcon : Icons.search,
+                                prefixIcon: Icons.search,
                                 bachgroundColor: AppColor.gray2,
                                 onChanged: _onSearchChanged,
                               ),

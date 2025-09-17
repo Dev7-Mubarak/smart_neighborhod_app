@@ -6,7 +6,7 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/core/services/cache_helper.dart';
 import 'core/config/app_Bloc_observer.dart';
-import 'features/residdentailBlocks/cubits/cubit/block_cubit.dart';
+import 'features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/config/generated/l10n.dart';
 
@@ -41,7 +41,7 @@ class SmartNeighbourhood extends StatelessWidget {
           fontFamily: 'Tajawal-Regular',
         ),
         onGenerateRoute: appRouter.generateRoute,
-        initialRoute: AppRoute.login,
+        initialRoute: AppRoute.mainHome,
       ),
     );
   }

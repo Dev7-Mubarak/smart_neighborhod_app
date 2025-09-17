@@ -23,6 +23,18 @@ class Family {
     this.familyHeadPhoneNumber,
   });
 
+  Family.initial()
+    : id = 0,
+      name = '',
+      location = '',
+      familyCatgoryId = 0,
+      familyNotes = '',
+      blockId = 0,
+      familyHeadId = 0,
+      familyCategoryName = null,
+      familyHeadName = null,
+      familyHeadPhoneNumber = null;
+
   Family.fromJson(Map<String, dynamic> json) {
     id = json["id"] ?? 0;
     name = json["name"] ?? "test";

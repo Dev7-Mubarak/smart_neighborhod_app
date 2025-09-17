@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/cubit/block_state.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_state.dart';
 
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
 import '../../../../core/utils/validataion.dart';

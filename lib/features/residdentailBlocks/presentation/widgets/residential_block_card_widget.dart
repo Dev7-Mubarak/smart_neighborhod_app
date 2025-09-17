@@ -5,7 +5,7 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_image.dart';
 import '../../../../core/constants/app_route.dart';
-import '../../cubits/cubit/block_cubit.dart';
+import '../../cubits/block_cubit/block_cubit.dart';
 import '../../data/models/Block.dart';
 
 class ResidentialBlockCardWidget extends StatelessWidget {

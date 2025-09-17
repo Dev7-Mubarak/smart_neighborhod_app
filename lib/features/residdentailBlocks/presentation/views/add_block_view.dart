@@ -9,8 +9,8 @@ import 'package:dropdown_search/dropdown_search.dart';
 
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
-import '../../cubits/cubit/block_cubit.dart';
-import '../../cubits/cubit/block_state.dart';
+import '../../cubits/block_cubit/block_cubit.dart';
+import '../../cubits/block_cubit/block_state.dart';
 import '../../../people/data/models/Person.dart';
 
 class AddUpdateBlock extends StatefulWidget {

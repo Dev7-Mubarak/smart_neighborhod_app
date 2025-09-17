@@ -60,3 +60,5 @@ class ConflictCasesLoaded extends FamilyState {
 }
 
 class ConflictCasesLoading extends FamilyState {}
+
+class WaitingForUpdateOrAddFamily extends FamilyState {}
