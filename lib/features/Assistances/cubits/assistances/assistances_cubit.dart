@@ -37,11 +37,12 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(AssistancesLoading());
     try {
       final response = await api.get(
-        '${ApiLink.getAllProjects}?projectCategoryId=4',treat404AsEmptyList: true,
+        '${ApiLink.getAllProjects}?projectCategoryId=4',
+        treat404AsEmptyList: true,
       );
       List<dynamic> projectsJson = response["data"];
       _allProjects = projectsJson.map((e) => Project.fromJson(e)).toList();
-      
+
       if (search != null && search.isNotEmpty) {
         filterProjects(search);
       } else {
@@ -75,7 +76,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
           (project) => project.name.toLowerCase().contains(query.toLowerCase()),
         )
         .toList();
-
     emit(
       AssistancesLoaded(
         allProjects: _allProjects,
@@ -103,14 +103,14 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }
 
   Future<void> deleteTeamFromeProject(int teamId) async {
-    emit(AssistancesLoading());
+    emit(WiateDeleteTeam());
     try {
       final response = await api.delete(
         ApiLink.removeTeamFromeProject(projectId: project!.id, teamId: teamId),
       );
-
       if (response["isSuccess"]) {
-        emit(TeamDeletedSuccessfully(message: response["message"]));
+        emit(TeamDeletedSuccessfully(message: response["data"]));
+        await getProjectTeams(id: project!.id);
       } else {
         Serverexception(
           errModel: ErrorModel(
@@ -121,14 +121,14 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+      emit(DeleteTeamFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(AssistancesFailure(errorMessage: e.toString()));
+      emit(DeleteTeamFailure(errorMessage: e.toString()));
     }
   }
 
   Future<void> deleteFamilyFromeProject(int familyId) async {
-    emit(AssistancesLoading());
+    emit(WiateDeleteFamily());
     try {
       final response = await api.delete(
         ApiLink.removeFamilyFromeProject(
@@ -138,7 +138,9 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       );
 
       if (response["isSuccess"]) {
-        emit(FamilyDeletedSuccessfully(message: response["message"]));
+        emit(FamilyDeletedSuccessfully(message: response["data"]));
+        await getProjectBlockFamilies(id: project!.id);
+        ;
       } else {
         Serverexception(
           errModel: ErrorModel(
@@ -149,16 +151,19 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+      emit(DeleteFamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(AssistancesFailure(errorMessage: e.toString()));
+      emit(DeleteFamilyFailure(errorMessage: e.toString()));
     }
   }
 
   Future<void> getProjectTeams({required int id}) async {
     emit(ProjectTeamsLoading());
     try {
-      final response = await api.get('${ApiLink.getProjectTeams}/$id',treat404AsEmptyList: true);
+      final response = await api.get(
+        '${ApiLink.getProjectTeams}/$id',
+        treat404AsEmptyList: true,
+      );
       List<dynamic> teamsJson = response["data"];
       _allTeams = teamsJson.map((e) => Team.fromJson(e)).toList();
       emit(TeamsLoaded(teams: _allTeams));
@@ -278,8 +283,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
             message: response["message"] ?? "تمت الإضافة بنجاح",
           ),
         );
-        resetInputs();
-        await getAssistances();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -300,7 +303,10 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(WiateAssignTeamToAssistance());
     try {
       final response = await api.post(
-        ApiLink.assignTeamToProject(projectId: project!.id,teamId: selectedTeam!)
+        ApiLink.assignTeamToProject(
+          projectId: project!.id,
+          teamId: selectedTeam!,
+        ),
       );
 
       if (response["isSuccess"]) {
@@ -309,6 +315,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
             message: response["data"] ?? "تم إضافة الفريق بنجاح",
           ),
         );
+        await getProjectTeams(id: project!.id);
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -329,7 +336,10 @@ class AssistancesCubit extends Cubit<AssistancesState> {
     emit(WiateAssignFamilyToAssistance());
     try {
       final response = await api.post(
-        ApiLink.assignFamilyToProject(projectId:project!.id,familyId:selectedfamily!),
+        ApiLink.assignFamilyToProject(
+          projectId: project!.id,
+          familyId: selectedfamily!,
+        ),
       );
 
       if (response["isSuccess"]) {
@@ -338,6 +348,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
             message: response["data"] ?? "تم إضافة الأسرة بنجاح",
           ),
         );
+        await getProjectBlockFamilies(id: project!.id);
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -377,7 +388,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         data: {
           'name': name,
           'description': description,
-          // 'managerId': selectedManager?.id,
           'managerId': selectedManagerId,
           "projectCatgoryId": selectedProjectCategory?.id,
           "startDate": selectedStartDate?.toIso8601String(),
@@ -396,8 +406,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
             message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
-        resetInputs();
-        await getAssistances();
       } else {
         final String errorMessage =
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث المشروع";
@@ -417,12 +425,12 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }
 
   Future<void> deleteAssistance(int id) async {
-    emit(AssistancesLoading());
+    emit(WiatedeleteAssistance());
     try {
       final response = await api.delete('${ApiLink.deleteProject}/$id');
 
       if (response["isSuccess"]) {
-        emit(AssistancDeletedSuccessfully(message: response["message"]));
+        emit(AssistancDeletedSuccessfully(message: response["data"]));
         await getAssistances();
       } else {
         Serverexception(
@@ -434,9 +442,9 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(AssistancesFailure(errorMessage: e.errModel.errorMessage));
+      emit(DeleteAssistancesFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(AssistancesFailure(errorMessage: e.toString()));
+      emit(DeleteAssistancesFailure(errorMessage: e.toString()));
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
@@ -14,6 +15,7 @@ import 'package:smart_negborhood_app/features/families/cubits/family_cubit/famil
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
+import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
@@ -57,15 +59,15 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
           // automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
+          scrolledUnderElevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              'إضافة أسرة  لتوزيع المساعدات لها',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+          centerTitle: true,
+          title: Text(
+            'إضافة أسرة  لتوزيع المساعدات لها',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),
@@ -75,8 +77,9 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -84,11 +87,12 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
                         const SmallText(text: 'إختر اسرة'),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<FamilyCubit, FamilyState>(
                           builder: (context, state) {
                             if (state is FamilyLoading) {
@@ -103,34 +107,11 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                             }
                             if (state is FamilyLoaded) {
                               if (state.families.isEmpty) {
-                                return const Center(child: Text('لا يوجد أسر'));
+                                return const Center(
+                                  child: Text('لا يوجد أُسر'),
+                                );
                               }
-                              return DropdownSearch<Family>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن أسرة...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, family, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        family.name,
-                                        // textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
+                              return CustomDropdownSearchWidget<Family>(
                                 items: state.families,
                                 itemAsString: (Family? u) => u?.name ?? '',
                                 onChanged: (Family? data) {
@@ -138,19 +119,9 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                                     data!.id,
                                   );
                                 },
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر أسرة",
-                                    hintText: "اختر أسرة",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر أسرة",
+                                hintText: "اختر أسرة",
+                                searchHintText: "ابحث عن أسرة...",
                                 validator: (Family? item) =>
                                     AppValidator.validateDropdown(item),
                               );

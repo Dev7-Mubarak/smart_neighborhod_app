@@ -91,16 +91,15 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
           scrolledUnderElevation: 0,
           backgroundColor: AppColor.white,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              widget.team == null ? 'إضافة فريق جديد' : 'تعديل فريق ',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+                            centerTitle: true,
+          title: Text(
+            widget.team == null ? 'إضافة فريق جديد' : 'تعديل فريق ',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
-          ),
+         ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(AppSize.paddingOfPage),

@@ -98,14 +98,13 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
           scrolledUnderElevation: 0,
           backgroundColor: AppColor.white,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              widget.teamMember == null ? 'إضافة عضو جديد' : 'تعديل عضو ',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+          centerTitle: true,
+          title: Text(
+            widget.teamMember == null ? 'إضافة عضو جديد' : 'تعديل عضو ',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),
@@ -150,7 +149,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                 );
                               }
                               return CustomDropdownSearchWidget<Person>(
-                                 enabled: widget.teamMember == null
+                                enabled: widget.teamMember == null
                                     ? true
                                     : false,
                                 items: state.people,
@@ -165,7 +164,7 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                 hintText: "اختر عضو",
                                 searchHintText: "ابحث عن عضو...",
                                 validator: (Person? item) =>
-                                    AppValidator.validateDropdown(item)
+                                    AppValidator.validateDropdown(item),
                               );
                             } else if (state is PersonFailure) {
                               return OnFailureWidget(
@@ -214,10 +213,9 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                           teamRole.id == _selectedTeamRole,
                                     );
                               }
-                              return
-                              CustomDropdownSearchWidget<TeamRole>(
+                              return CustomDropdownSearchWidget<TeamRole>(
                                 items: state.allTeamRoles,
-                                itemAsString:  (TeamRole? u) => u?.name ?? '',
+                                itemAsString: (TeamRole? u) => u?.name ?? '',
                                 onChanged: (TeamRole? data) {
                                   teamMemberCubit.changeSelectedTeamRole(
                                     data!.id,
@@ -230,7 +228,6 @@ class AddUpdateTeamMemberState extends State<AddUpdateTeamMember> {
                                 validator: (TeamRole? item) =>
                                     AppValidator.validateDropdown(item),
                               );
-                              
                             } else if (state is TeamRoleFailure) {
                               return OnFailureWidget(
                                 onRetry: () => teamRoleCubit.getAllTeamRoles(),

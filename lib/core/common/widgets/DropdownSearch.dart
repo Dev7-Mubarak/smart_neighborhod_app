@@ -18,7 +18,7 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
 
   final List<T> items;
   final String Function(T?) itemAsString;
-  final void Function(T?) onChanged;
+  final void Function(T?)? onChanged;
   final T? selectedItem;
   final String labelText;
   final String hintText;

@@ -50,14 +50,13 @@ class TeamDetailsState extends State<TeamDetails> {
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
-        title: Center(
-          child: Text(
-            'تفاصيل الفريق',
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
+        centerTitle: true,
+        title: Text(
+          'تفاصيل الفريق',
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
           ),
         ),
       ),
@@ -65,7 +64,7 @@ class TeamDetailsState extends State<TeamDetails> {
         padding: const EdgeInsets.all(AppSize.paddingOfPage),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.all(25),
@@ -74,57 +73,57 @@ class TeamDetailsState extends State<TeamDetails> {
                   color: AppColor.gray,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          child: SmallText(
-                            text: "إسم الفريق: ${widget.team.name}",
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                        SizedBox(width: 10),
                         Image.asset(
                           AppImage.teamgroupName,
                           width: 40,
                           height: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: SmallText(
+                            text: "إسم الفريق: ${widget.team.name}",
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ],
                     ),
                     SizedBox(height: 5),
                     Row(
                       children: [
-                        Expanded(
-                          child: SmallText(
-                            text: "إسم قائد الفريق: $teamLeaderName",
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                        SizedBox(width: 10),
                         const Icon(
                           Icons.person,
                           color: AppColor.primaryColor,
                           size: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: SmallText(
+                            text: "إسم قائد الفريق: $teamLeaderName",
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
+                        Image.asset(
+                          AppImage.teamgroupNumBer,
+                          width: 40,
+                          height: 40,
+                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text:
                                 "عدد أعضاء الفريق: "
                                 '${widget.team.teamMembers.length}',
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Image.asset(
-                          AppImage.teamgroupNumBer,
-                          width: 40,
-                          height: 40,
                         ),
                       ],
                     ),
@@ -133,7 +132,7 @@ class TeamDetailsState extends State<TeamDetails> {
               ),
               SizedBox(height: AppSize.spasingBetweenInputBloc),
               Text(
-                ': أعضاء الفريق',
+                'أعضاء الفريق:',
                 style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -142,26 +141,25 @@ class TeamDetailsState extends State<TeamDetails> {
               ),
               SizedBox(height: 10),
               CustomTableWidget(
-                columnTitles: ['وظيفته', 'تاريخ انضمامه ', 'اسم العضو ', 'رقم'],
-                columnFlexes: [2, 2, 3, 1],
+                columnTitles: ['رقم', 'اسم العضو ', 'تاريخ انضمامه ', 'وظيفته'],
+                columnFlexes: [1, 3, 2, 2],
                 rowData: widget.team.teamMembers.asMap().entries.map((entry) {
                   int index = entry.key;
                   var teamMember = entry.value;
                   return [
-                    teamMember.teamRoleName,
-                    DateFormat('yyyy-MM-dd').format(teamMember.dateOfJoin!),
-                    (teamMember.personName),
                     '${index + 1}',
+                    (teamMember.personName),
+                    DateFormat('yyyy-MM-dd').format(teamMember.dateOfJoin!),
+                    teamMember.teamRoleName,
                   ];
                 }).toList(),
                 originalObjects: widget.team.teamMembers,
                 onRowLongPress: (rowIndex, rowObject) {},
               ),
               SizedBox(height: AppSize.spasingBetweenInputBloc),
-
               Divider(),
               Text(
-                ': المشاريع الذي يعمل فيها الفريق',
+                'المشاريع الذي يعمل فيها الفريق:',
                 style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -184,26 +182,26 @@ class TeamDetailsState extends State<TeamDetails> {
                     }
                     return CustomTableWidget(
                       columnTitles: [
-                        'حالته',
-                        'تصنيف المشروع',
-                        'اسم المشروع',
                         'رقم',
+                        'اسم المشروع',
+                        'تصنيف المشروع',
+                        'حالته',
                       ],
                       columnFlexes: [2, 2, 3, 1],
                       rowData: state.allProjects.asMap().entries.map((entry) {
                         int index = entry.key;
                         var project = entry.value;
                         return [
-                          project.projectStatus.displayName,
-                          project.projectCategory.name,
-                          project.name,
                           '${index + 1}',
+                          project.name,
+                          project.projectCategory.name,
+                          project.projectStatus.displayName,
                         ];
                       }).toList(),
                       originalObjects: null,
                       onRowLongPress: (rowIndex, rowObject) {},
                     );
-                  }else if (state is TeamLoading) {
+                  } else if (state is TeamLoading) {
                     return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -214,7 +212,7 @@ class TeamDetailsState extends State<TeamDetails> {
                         ],
                       ),
                     );
-                  }else {
+                  } else {
                     return Center(child: Text("حدث خطأ غير معروف"));
                   }
                 },
