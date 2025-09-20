@@ -59,7 +59,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
         } else if (state is SendNewPasswordSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
-          Navigator.pushNamed(context, AppRoute.mainHome);
+          Navigator.pushNamed(context, AppRoute.login);
         } else if (state is SendNewPasswordFailure) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showErrorSnackBar(state.errorMessage);

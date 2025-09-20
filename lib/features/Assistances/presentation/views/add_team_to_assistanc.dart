@@ -1,6 +1,6 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
@@ -42,7 +42,6 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
           context.showLoadingDialog();
         } else if (state is TeamAssignedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
-          Navigator.of(context).pop();
           context.showSuccessSnackBar(state.message);
           Navigator.pop(context);
         } else if (state is AssistancesFailure) {
@@ -52,18 +51,17 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              'إضافة فريق  لتوزيع المساعدات',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+          scrolledUnderElevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true,
+          title: Text(
+            'إضافة فريق  لتوزيع المساعدات',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),
@@ -73,8 +71,9 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                                    const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -82,11 +81,10 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
                         const SmallText(text: 'إختر فريق'),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
                         BlocBuilder<TeamCubit, TeamState>(
                           builder: (context, state) {
                             if (state is TeamLoading) {
@@ -98,51 +96,16 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                               if (state.allTeams.isEmpty) {
                                 return const Center(child: Text('لا يوجد فرق'));
                               }
-                              return DropdownSearch<Team>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن فريق...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, team, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        team.name,
-                                        // textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
+                              return
+                              CustomDropdownSearchWidget<Team>(
                                 items: state.allTeams,
-                                itemAsString: (Team? u) => u?.name ?? '',
+                                itemAsString:(Team? u) => u?.name ?? '',
                                 onChanged: (Team? data) {
                                   _assistanceCubit.changeSelectedTeam(data!.id);
                                 },
-                                // selectedItem: ,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر فريق",
-                                    hintText: "اختر فريق",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
+                                labelText: "اختر فريق",
+                                hintText: "اختر فريق",
+                                searchHintText: "ابحث عن فريق...",
                                 validator: (Team? item) =>
                                     AppValidator.validateDropdown(item),
                               );

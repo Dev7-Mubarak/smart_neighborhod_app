@@ -34,10 +34,24 @@ class AssistancesLoading extends AssistancesState {}
 class ProjectTeamsLoading extends AssistancesState {}
 
 class BlockFamiliesLoading extends AssistancesState {}
+class WiatedeleteAssistance extends AssistancesState {}
 
 class AssistancesFailure extends AssistancesState {
   final String errorMessage;
   AssistancesFailure({required this.errorMessage});
+}
+
+class DeleteFamilyFailure extends AssistancesState {
+  final String errorMessage;
+  DeleteFamilyFailure({required this.errorMessage});
+}
+class DeleteAssistancesFailure extends AssistancesState {
+  final String errorMessage;
+  DeleteAssistancesFailure({required this.errorMessage});
+}
+class DeleteTeamFailure extends AssistancesState {
+  final String errorMessage;
+  DeleteTeamFailure({required this.errorMessage});
 }
 
 class ProjectTeamsFailure extends AssistancesState {
@@ -87,6 +101,8 @@ class ChangeSelectedStartDate extends AssistancesState {}
 class WiateAssignFamilyToAssistance extends AssistancesState {}
 
 class WiateAssignTeamToAssistance extends AssistancesState {}
+class WiateDeleteFamily extends AssistancesState {}
+class WiateDeleteTeam extends AssistancesState {}
 
 class ChangeSelectedEndDate extends AssistancesState {}
 

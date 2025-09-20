@@ -108,16 +108,13 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
           elevation: 0,
           scrolledUnderElevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              conflictCubit.conflict == null
-                  ? 'إضافة إتفاقية'
-                  : 'تعديل إتفاقية',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+          centerTitle: true,
+          title: Text(
+            conflictCubit.conflict == null ? 'إضافة إتفاقية' : 'تعديل إتفاقية',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),

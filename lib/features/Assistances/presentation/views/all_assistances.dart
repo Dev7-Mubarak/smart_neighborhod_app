@@ -7,6 +7,7 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
@@ -44,12 +45,16 @@ class _AllAssistancesState extends State<AllAssistances> {
 
   Widget buildBlocWidget() {
     return BlocBuilder<AssistancesCubit, AssistancesState>(
+       buildWhen: (previousState, currentState) {
+                    return currentState is AssistancesLoaded ||
+                        currentState is AssistancesLoading ||
+                        currentState is AssistancesFailure;
+                  },
       builder: (context, state) {
         if (state is AssistancesLoaded) {
           _projectsListSearch = state.filteredProjects;
           if (_projectsListSearch.isEmpty) {
-           return NoResultWidget();
-            // return const Center(child: Text("لا توجد لعرضها حاليًا."));
+            return NoResultWidget();
           }
           return buildLoadedListWidgets();
         } else if (state is AssistancesLoading) {
@@ -80,15 +85,15 @@ class _AllAssistancesState extends State<AllAssistances> {
 
   Widget buildLoadedListWidgets() {
     return CustomTableWidget(
-      columnTitles: ['الأولوية', 'إسم المشروع', 'رقم'],
-      columnFlexes: [2, 3, 1],
+      columnTitles: ['رقم', 'إسم المشروع', 'الأولوية'],
+      columnFlexes: [1, 3, 2],
       rowData: _projectsListSearch.asMap().entries.map((entry) {
         int index = entry.key;
         var project = entry.value;
         return [
-          project.projectPriority.displayName,
-          project.name,
           '${index + 1}',
+          project.name,
+          project.projectPriority.displayName,
         ];
       }).toList(),
       originalObjects: _projectsListSearch,
@@ -105,6 +110,7 @@ class _AllAssistancesState extends State<AllAssistances> {
           _assistancesCubit.getAssistances(
             search: _searchingController.text.trim(),
           );
+          _assistancesCubit.resetInputs();
         });
       },
     );
@@ -112,95 +118,94 @@ class _AllAssistancesState extends State<AllAssistances> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        centerTitle: true,
-        title: const Text(
-          ' المساعدات',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+    return BlocListener<AssistancesCubit, AssistancesState>(
+      listener: (context, state) {
+        if (state is AssistancDeletedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+        } else if (state is DeleteAssistancesFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is WiatedeleteAssistance) {
+          context.showLoadingDialog();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true,
+          title: Text(
+            'مشاريع توزيع المساعدات',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSize.paddingOfPage),
-        child: Column(
-          children: [
-            const Center(
-              child: Text(
-                'مشاريع توزيع المساعدات',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
-              ),
+        body: Padding(
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                _buildToBar(context),
+                const SizedBox(height: 20),
+                buildBlocWidget(),
+              ],
             ),
-            const SizedBox(height: 20),
-            _buildToBar(context),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: buildBlocWidget(),
-              ),
-            ),
-          ],
+          ),
         ),
+        bottomNavigationBar: const CustomNavigationBar(),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 
   Widget _buildToBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SmallButton(
-            text: 'إضافة',
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoute.addUpdateAssistanc,
-                arguments: BlocProvider.of<AssistancesCubit>(context),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SmallButton(
+          text: 'إضافة',
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              AppRoute.addUpdateAssistanc,
+              arguments: BlocProvider.of<AssistancesCubit>(context),
+            ).then((_) {
+              _assistancesCubit.resetInputs();
+              _assistancesCubit.getAssistances(
+                search: _searchingController.text.trim(),
               );
-              // .then((_) {
-              //     _assistancesCubit.filterProjects(
-              //        _searchingController.text.trim(),
-              //     );
-              //   });
+            });
+          },
+        ),
+        const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+        Expanded(
+          child: SearchableTextFormField(
+            controller: _searchingController,
+            hintText: 'ابحث عن مشروع مساعدات',
+            bachgroundColor: AppColor.gray2,
+            suffixIcon: IconButton(
+              onPressed: () {
+                _searchingController.clear();
+                _assistancesCubit.filterProjects('');
+              },
+              icon: const Icon(Icons.close),
+            ),
+            prefixIcon: Icons.search,
+            onChanged: (value) {
+              _delay?.cancel();
+              _delay = Timer(const Duration(milliseconds: 400), () {
+                _assistancesCubit.filterProjects(value.trim());
+              });
             },
           ),
-          const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-          Expanded(
-            child: SearchableTextFormField(
-              controller: _searchingController,
-              hintText: 'ابحث عن مشروع مساعدات',
-              bachgroundColor: AppColor.gray2,
-             suffixIcon : IconButton(
-                onPressed: () {
-                  _searchingController.clear();
-                  _assistancesCubit.filterProjects('');
-                },
-                icon: const Icon(Icons.close),
-              ),
-             prefixIcon : Icons.search,
-              onChanged: (value) {
-                _delay?.cancel();
-                _delay = Timer(const Duration(milliseconds: 400), () {
-                  _assistancesCubit.filterProjects(value.trim());
-                });
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -224,12 +229,12 @@ class _AllAssistancesState extends State<AllAssistances> {
                   AppRoute.addUpdateAssistanc,
                   arguments: BlocProvider.of<AssistancesCubit>(passContext)
                     ..setAssistanceForUpdate(project),
-                );
-                // .then((_) {
-                //   _assistancesCubit.getAssistances(
-                //     search: _searchingController.text.trim(),
-                //   );
-                // });
+                ).then((_) {
+                  _assistancesCubit.resetInputs();
+                  _assistancesCubit.getAssistances(
+                    search: _searchingController.text.trim(),
+                  );
+                });
               },
             ),
             ListTile(

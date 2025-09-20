@@ -6,6 +6,7 @@ import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart'
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/ProjectBlockFamilies.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
@@ -41,10 +42,29 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+    BlocListener<AssistancesCubit, AssistancesState>(
+      listener: (context, state) {
+        if (state is FamilyDeletedSuccessfully || state is TeamDeletedSuccessfully) {
+          Navigator.of(context).pop();
+          context.showSuccessSnackBar((state is FamilyDeletedSuccessfully)
+              ? state.message
+              : (state as TeamDeletedSuccessfully).message);
+        } else if (state is DeleteFamilyFailure || state is DeleteTeamFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar((state is DeleteFamilyFailure)
+              ? state.errorMessage
+              : (state as DeleteTeamFailure).errorMessage);
+        } else if (state is WiateDeleteTeam || state is WiateDeleteFamily) {
+          context.showLoadingDialog();
+        }
+      },
+      child:
+    Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         title: const Text(
@@ -88,6 +108,7 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   ),
                 ),
               ),
+              const SizedBox(height: 15),
               BlocBuilder<AssistancesCubit, AssistancesState>(
                 buildWhen: (previous, current) {
                   return current is TeamsLoaded ||
@@ -99,9 +120,6 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                     _teamsList = state.teams;
                     if (_teamsList.isEmpty) {
                       return NoResultWidget();
-                      // return const Center(
-                      //   child: Text("لا توجد فرق لعرضها حاليًا."),
-                      // );
                     }
                     return ListView.separated(
                       shrinkWrap: true,
@@ -112,7 +130,7 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         var team = _teamsList[index];
                         var teamMembers = team.teamMembers;
                         return Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
                               onLongPress: () {
@@ -124,30 +142,29 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                                  fontSize: 20,
                                 ),
-                                // textAlign: TextAlign.right,
                               ),
                             ),
                             SizedBox(height: 10),
                             CustomTableWidget(
                               columnTitles: [
-                                'وظيفته',
-                                'تاريخ انضمامه ',
-                                'اسم العضو ',
                                 'رقم',
+                                'اسم العضو ',
+                                'تاريخ انضمامه ',
+                                'وظيفته',
                               ],
-                              columnFlexes: [2, 2, 3, 1],
+                              columnFlexes: [1, 3, 2, 2],
                               rowData: teamMembers.asMap().entries.map((entry) {
                                 int index = entry.key;
                                 var teamMember = entry.value;
                                 return [
-                                  teamMember.teamRoleName,
+                                  '${index + 1}',
+                                  (teamMember.personName),
                                   DateFormat(
                                     'yyyy-MM-dd',
                                   ).format(teamMember.dateOfJoin!),
-                                  (teamMember.personName),
-                                  '${index + 1}',
+                                  teamMember.teamRoleName,
                                 ];
                               }).toList(),
                               originalObjects: teamMembers,
@@ -165,12 +182,6 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         id: widget.project.id,
                       ),
                     );
-                    //  Center(
-                    //   child: Text(
-                    //     state.errorMessage,
-                    //     style: const TextStyle(color: Colors.red, fontSize: 18),
-                    //   ),
-                    // );
                   } else {
                     return Center(child: Text("حدث خطأ غير معروف"));
                   }
@@ -187,11 +198,12 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         context,
                         AppRoute.addTeamsToAssistance,
                         arguments: BlocProvider.of<AssistancesCubit>(context),
-                      ).then((_) {
-                        _assistancesCubit.getProjectTeams(
-                          id: widget.project.id,
-                        );
-                      });
+                      // ).then((_) {
+                      //   _assistancesCubit.getProjectTeams(
+                      //     id: widget.project.id,
+                      //   );
+                      // }
+                      );
                     },
                   ),
                 ),
@@ -207,11 +219,12 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 22,
+                    fontSize: 20,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
+                            const SizedBox(height: 15),
               BlocBuilder<AssistancesCubit, AssistancesState>(
                 buildWhen: (previous, current) {
                   return current is BlockFamiliesLoaded ||
@@ -223,9 +236,6 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                     _blockFamiliesList = state.BlockFamilies;
                     if (_blockFamiliesList.isEmpty) {
                       return NoResultWidget();
-                      // return const Center(
-                      //   child: Text("لا توجد أسر لعرضها حاليًا."),
-                      // );
                     }
                     return ListView.separated(
                       shrinkWrap: true,
@@ -236,7 +246,7 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         var block = _blockFamiliesList[index];
                         var families = block.families;
                         return Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
                               child: Text(
@@ -244,18 +254,18 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                                  fontSize: 20,
                                 ),
-                                // textAlign: TextAlign.right,
                               ),
                             ),
                             SizedBox(height: 10),
+                            families.isNotEmpty?
                             CustomTableWidget(
                               columnTitles: [
-                                'رقم الهوية',
-                                'إسم رب الأسرة',
-                                'اسم الأسرة ',
                                 'رقم',
+                                'اسم الأسرة ',
+                                'إسم رب الأسرة',
+                                'رقم الهوية',
                               ],
                               onRowLongPress: (rowIndex, rowObject) {
                                 _showFamilyOptions(
@@ -263,20 +273,22 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                   rowObject as Family,
                                 );
                               },
-                              columnFlexes: [2, 2, 3, 1],
+                              columnFlexes: [1, 3, 2, 2],
                               rowData: families.asMap().entries.map((entry) {
                                 int index = entry.key;
                                 var family = entry.value;
                                 return [
-                                  family.familyHeadPhoneNumber,
-                                  family.familyHeadName,
-                                  family.name,
                                   '${index + 1}',
+                                  family.name,
+                                  family.familyHeadName,
+                                  family.familyHeadPhoneNumber,
                                 ];
                               }).toList(),
                               originalObjects: families,
-                            ),
-                            SizedBox(height: 10),
+                            ): Center(child: Text("لا يوجد أُسر تم التوزيع لها في هذا المربع"))
+
+                            
+                            ,SizedBox(height: 10),
                             Padding(
                               padding: const EdgeInsets.all(15),
                               child: Align(
@@ -293,11 +305,12 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                           )..setBlockIdForAddFamily(
                                             block.blockId,
                                           ),
-                                    ).then((_) {
-                                      _assistancesCubit.getProjectBlockFamilies(
-                                        id: widget.project.id,
-                                      );
-                                    });
+                                    // ).then((_) {
+                                    //   _assistancesCubit.getProjectBlockFamilies(
+                                    //     id: widget.project.id,
+                                    //   );
+                                    // }
+                                    );
                                   },
                                 ),
                               ),
@@ -314,17 +327,8 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         id: widget.project.id,
                       ),
                     );
-                    // return Center(
-                    //   child: Text(
-                    //     state.errorMessage,
-                    //     style: const TextStyle(color: Colors.red, fontSize: 18),
-                    //   ),
-                    // );
                   } else {
                     return Center(child: Text("حدث خطأ غير معروف"));
-                    // return const Center(
-                    //   child: Text("لا توجد بيانات للعرض حاليًا."),
-                    // );
                   }
                 },
               ),
@@ -333,7 +337,8 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
         ),
       ),
       bottomNavigationBar: const CustomNavigationBar(),
-    );
+    )
+ );
   }
 
   void _showTeamOptions(BuildContext passContext, Team team) {
@@ -367,9 +372,9 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         onPressed: () {
                           Navigator.of(context).pop();
                           _assistancesCubit.deleteTeamFromeProject(team.id);
-                          _assistancesCubit.getProjectTeams(
-                            id: widget.project.id,
-                          );
+                          // _assistancesCubit.getProjectTeams(
+                          //   id: widget.project.id,
+                          // );
                         },
                         child: const Text(
                           'حذف',
@@ -416,9 +421,9 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                         onPressed: () {
                           Navigator.of(context).pop();
                           _assistancesCubit.deleteFamilyFromeProject(family.id);
-                          _assistancesCubit.getProjectBlockFamilies(
-                            id: widget.project.id,
-                          );
+                          // _assistancesCubit.getProjectBlockFamilies(
+                          //   id: widget.project.id,
+                          // );
                         },
                         child: const Text(
                           'حذف',

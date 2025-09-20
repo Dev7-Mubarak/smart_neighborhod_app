@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
@@ -9,6 +10,7 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
+import 'package:smart_negborhood_app/features/confilct/data/models/conflict_type.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_state.dart';
@@ -127,20 +129,19 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           backgroundColor: AppColor.white,
           elevation: 0,
-          // iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              assistanceCubit.project == null
-                  ? 'إضافة مشروع توزيع مساعدات جديد'
-                  : 'تعديل مشروع توزيع المساعدات',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+          scrolledUnderElevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true,
+          title: Text(
+            assistanceCubit.project == null
+                ? 'إضافة مشروع توزيع مساعدات '
+                : 'تعديل مشروع توزيع المساعدات',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),
@@ -150,8 +151,9 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -159,27 +161,24 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
                         const SmallText(text: 'أسم المشروع'),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
                           controller: assistanceNameController,
                           keyboardType: TextInputType.name,
                           suffixIcon: null,
                           validator: AppValidator.validateEmptyField,
-                          //  (value) {
-                          //   if (value == null || value.trim().isEmpty) {
-                          //     return 'أسم المشروع';
-                          //   }
-                          //   return null;
-                          // },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'وصف المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'وصف المشروع'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
                           controller: assistanceDescribtionController,
@@ -188,16 +187,12 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           maxLines: null,
                           minLines: 3,
                           validator: AppValidator.validateEmptyField,
-                          //  (value) {
-                          //   if (value == null || value.trim().isEmpty) {
-                          //     return 'وصف المشروع';
-                          //   }
-                          //   return null;
-                          // },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'تصنيف المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'تصنيف المشروع'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<ProjectCategoryCubit, ProjectCategoryState>(
                           builder: (context, state) {
                             if (state is ProjectCategoryLoading) {
@@ -217,55 +212,23 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   );
                               if (assistanceCubit.selectedProjectCategory ==
                                       null &&
-                                  _selectedProjectCategory != null) {
+                                  _selectedProjectCategory != null){
                                 assistanceCubit.changeSelectedProjectCategory(
                                   _selectedProjectCategory,
                                 );
                               }
-                              return DropdownSearch<ProjectCategory>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن تصنيف...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder:
-                                      (context, projectCategory, isSelected) {
-                                        return ListTile(
-                                          title: Text(projectCategory.name),
-                                          selected: isSelected,
-                                        );
-                                      },
-                                  fit: FlexFit.loose,
-                                ),
+                              return CustomDropdownSearchWidget<ProjectCategory>(
                                 items: state.projectCategories,
                                 itemAsString: (ProjectCategory? u) =>
                                     u?.name ?? '',
                                 onChanged: null,
                                 selectedItem: _selectedProjectCategory,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر تصنيف",
-                                    hintText: "اختر تصنيف",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
-                                validator: (ProjectCategory? item) =>AppValidator.validateDropdown(item),
-                                enabled: false,
+                                labelText: "اختر تصنيف",
+                                hintText: "اختر تصنيف",
+                                searchHintText: "ابحث عن تصنيف...",
+                                validator: (ProjectCategory? item) =>
+                                    AppValidator.validateDropdown(item),
+                                   enabled: false, 
                               );
                             }
                             if (state is ProjectCategoryFailure) {
@@ -276,9 +239,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                             return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'اسم المدير'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'اسم المدير'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<PersonCubit, PersonState>(
                           builder: (context, state) {
                             if (state is PersonLoading) {
@@ -298,57 +263,19 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   (person) => person.id == _selectedPerson,
                                 );
                               }
-                              return DropdownSearch<Person>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن مدير...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    // textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, person, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        person.fullName,
-                                        // textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
+                              return CustomDropdownSearchWidget<Person>(
                                 items: state.people,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
-                                // onChanged: (Person? data) {
-                                //   assistanceCubit.changeSelectedManager(data);
-                                // },
                                 onChanged: (Person? data) {
                                   assistanceCubit.changeSelectedManager(
                                     data!.id,
                                   );
                                 },
                                 selectedItem: initialSelectedPerson,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر المدير",
-                                    hintText: "اختر مدير",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                  ),
-                                ),
-                                validator: (Person? item) =>
+                                labelText: "اختر مدير",
+                                hintText: "اختر مدير",
+                                searchHintText: "ابحث عن مدير...",
+                                validator:(Person? item) =>
                                     AppValidator.validateDropdown(item),
                               );
                             }
@@ -360,9 +287,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                             return Center(child: Text("حدث خطأ غير معروف"));
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'تاريخ بداية التوزيع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'تاريخ بداية التوزيع'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           controller: startDateController,
                           suffixIcon: Icons.calendar_today,
@@ -370,9 +299,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           onTap: () => assistanceCubit.pickStartDate(context),
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: 'تاريخ نهاية التوزيع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'تاريخ نهاية التوزيع'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           controller: endDateController,
                           suffixIcon: Icons.calendar_today,
@@ -380,9 +311,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           onTap: () => assistanceCubit.pickEndDate(context),
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: ' حالة المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: ' حالة المشروع'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<AssistancesCubit, AssistancesState>(
                           buildWhen: (previous, current) =>
                               current is ChangeSelectedProjectStatus,
@@ -411,9 +344,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                             );
                           },
                         ),
-                        const SizedBox(height: 30),
-                        const SmallText(text: ' أولوية المشروع'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: ' أولوية المشروع'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<AssistancesCubit, AssistancesState>(
                           buildWhen: (previous, current) =>
                               current is ChangeSelectedProjectPriority,
@@ -442,9 +377,11 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                             );
                           },
                         ),
-                        const SizedBox(height: 20),
-                        const SmallText(text: 'الميزانية'),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        const SmallText(text: 'الميزانية'),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         CustomTextFormField(
                           bachgroundColor: AppColor.white,
                           controller: budgetController,
@@ -464,7 +401,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           return SmallButton(
                             text: 'إلغاء',
                             onPressed: () {
-                              assistanceCubit.resetInputs();
                               Navigator.of(context).pop();
                             },
                           );
