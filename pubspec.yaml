@@ -43,7 +43,6 @@ dependencies:
   dio: ^5.8.0+1
   flutter_intl: ^0.0.1
   intl: ^0.20.2
-  fluttertoast: ^8.2.12
   collection: ^1.18.0
   flutter_localization: ^0.3.3
   flutter_svg: ^2.2.0
@@ -127,7 +126,7 @@ flutter_intl:
   output_dir: lib/core/config/generated
 
 flutter_native_splash:
-  color: "#636AE8"                
+  color: "#FFFFFF"                
   image: assets/images/logo.png
   android: true
   ios: true
