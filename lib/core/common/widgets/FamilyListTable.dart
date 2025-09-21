@@ -77,7 +77,6 @@ class FamilyListTable extends StatelessWidget {
                   icon: const Icon(Icons.delete),
                   label: const Text('حذف الأسرة'),
                   onPressed: () {
-                    Navigator.pop(context);
                     _showDeleteConfirmationDialog(
                       context,
                       selectedFamily,
@@ -112,18 +111,13 @@ class FamilyListTable extends StatelessWidget {
               child: const Text('إلغاء'),
             ),
             TextButton(
-              onPressed: () {
-                familyCubit.deleteFamily(family.id);
-                Navigator.of(context).pop();
+              onPressed: () async {
+                await familyCubit.deleteFamily(family.id);
                 BlocProvider.of<BlockCubit>(
                   context,
                 ).getBlockDetailes(family.blockId);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('تم حذف الأسرة بنجاح'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('حذف'),
             ),
