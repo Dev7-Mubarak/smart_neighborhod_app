@@ -29,7 +29,13 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   void initState() {
     super.initState();
     final familyCubit = context.read<FamilyCubit>();
-    familyCubit.getFamilyDetilesById(widget.familyId);
+    
+    // Only fetch family details if not already loaded for this family ID
+    final currentState = familyCubit.state;
+    if (currentState is! FamilyDetilesLoaded || 
+        currentState.familyDetiles.id != widget.familyId) {
+      familyCubit.getFamilyDetilesById(widget.familyId);
+    }
   }
 
   @override
