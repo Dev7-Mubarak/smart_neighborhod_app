@@ -227,26 +227,6 @@ class FamilyCubit extends Cubit<FamilyState> {
     }
   }
 
-  Future<void> getConflictCasesByFamilyMember(int familyMemberId) async {
-    emit(ConflictCasesLoading());
-    try {
-      final response = await api.get(
-        '${ApiLink.getConflictCasesByFamilyMember}/$familyMemberId',
-      );
-
-      List<dynamic> conflictCasesJson = response["data"];
-      List<ConflictCase> conflictCases = conflictCasesJson
-          .map((e) => ConflictCase.fromJson(e))
-          .toList();
-
-      emit(ConflictCasesLoaded(conflictCases: conflictCases));
-    } on Serverexception catch (e) {
-      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
-      emit(FamilyFailure(errorMessage: e.toString()));
-    }
-  }
-
   Future<void> deleteFamilyMember(int familyId, int familyMemberId) async {
     emit(WaitingForUpdateOrAddFamily());
     try {

@@ -10,6 +10,7 @@ import 'package:smart_negborhood_app/features/families/cubits/family_cubit/famil
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
@@ -28,8 +29,13 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   @override
   void initState() {
     super.initState();
+    _getFamilyDetiles();
+  }
+
+  void _getFamilyDetiles() async {
     final familyCubit = context.read<FamilyCubit>();
-    familyCubit.getFamilyDetilesById(widget.familyId);
+    await familyCubit.getFamilyDetilesById(widget.familyId);
+    debugPrint('Family details loaded for family ID: ${widget.familyId}');
   }
 
   @override
@@ -335,13 +341,15 @@ class MemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final familyMemberCubit = context.read<FamilyMemberCubit>();
+    familyMemberCubit.setFamilyMember(familyMember);
     final familyCubit = context.read<FamilyCubit>();
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           context,
           AppRoute.familyMemberDetails,
-          arguments: familyCubit..setFamilyMember(familyMember),
+          arguments: familyMemberCubit,
         );
       },
       onLongPress: () {

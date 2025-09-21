@@ -162,19 +162,24 @@ class AppRouter {
       case AppRoute.familyDetiles:
         final familyCubit = settings.arguments as FamilyCubit;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: familyCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => FamilyMemberCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
             child: FamilyDetiles(familyId: familyCubit.family!.id),
           ),
           fullscreenDialog: false,
         );
       case AppRoute.familyMemberDetails:
-        final familyCubit = settings.arguments as FamilyCubit;
+        final familyMemberCubit = settings.arguments as FamilyMemberCubit;
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-            value: familyCubit,
+            value: familyMemberCubit,
             child: FamilyMemberDetailsPage(
-              familyMember: familyCubit.familyMember!,
+              familyMember: familyMemberCubit.familyMember!,
             ),
           ),
           fullscreenDialog: false,

@@ -11,6 +11,8 @@ import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../cubits/family_member/family_member_cubit.dart';
+import '../../cubits/family_member/family_member_state.dart';
 
 class FamilyMemberDetailsPage extends StatefulWidget {
   final FamilyMember familyMember;
@@ -26,8 +28,8 @@ class _FamilyMemberDetailsPageState extends State<FamilyMemberDetailsPage> {
   @override
   void initState() {
     super.initState();
-    final familyCubit = context.read<FamilyCubit>();
-    familyCubit.getConflictCasesByFamilyMember(
+    final familyMemberCubit = context.read<FamilyMemberCubit>();
+    familyMemberCubit.getConflictCasesByFamilyMember(
       widget.familyMember.familyMemberId,
     );
   }
@@ -224,7 +226,7 @@ class _DetailRow extends StatelessWidget {
 class _ConflictCasesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FamilyCubit, FamilyState>(
+    return BlocBuilder<FamilyMemberCubit, FamilyMemberState>(
       builder: (context, state) {
         if (state is ConflictCasesLoading) {
           return const Center(
