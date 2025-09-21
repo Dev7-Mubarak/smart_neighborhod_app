@@ -152,7 +152,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SmallText(text: 'اسم الأسرة'),
                       const SizedBox(
@@ -292,13 +292,13 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SmallButton(
-                            text: 'إلغاء',
-                            onPressed: () => Navigator.pop(context),
+                            text: widget.family == null ? 'إضافة' : 'تحديث',
+                            onPressed: _submitForm,
                           ),
                           const SizedBox(width: 10),
                           SmallButton(
-                            text: widget.family == null ? 'إضافة' : 'تحديث',
-                            onPressed: _submitForm,
+                            text: 'إلغاء',
+                            onPressed: () => Navigator.pop(context),
                           ),
                         ],
                       ),

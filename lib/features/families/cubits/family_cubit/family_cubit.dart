@@ -228,13 +228,12 @@ class FamilyCubit extends Cubit<FamilyState> {
   }
 
   Future<void> deleteFamily(int id) async {
-    emit(FamilyLoading());
+    emit(WaitingForUpdateOrAddFamily());
     try {
       final response = await api.delete('${ApiLink.deleteFamily}/$id');
 
       if (response["isSuccess"]) {
         emit(FamilyDeletedSuccessfully(message: "تم حذف الأسرة بنجاح"));
-        // await getFamilyDetilesById();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
