@@ -33,6 +33,11 @@ class FamilyDeletedSuccessfully extends FamilyState {
   FamilyDeletedSuccessfully({required this.message});
 }
 
+class FamilyMemberDeletedSuccessfully extends FamilyState {
+  final String message;
+  FamilyMemberDeletedSuccessfully({required this.message});
+}
+
 class FamilyAddedSuccessfully extends FamilyState {
   final String message;
   FamilyAddedSuccessfully({required this.message});

@@ -246,4 +246,31 @@ class FamilyCubit extends Cubit<FamilyState> {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
   }
+
+  Future<void> deleteFamilyMember(int familyId, int familyMemberId) async {
+    emit(WaitingForUpdateOrAddFamily());
+    try {
+      final response = await api.delete(
+        '${ApiLink.getFamilyMembers}/$familyMemberId',
+        queryparameters: {"familyId": familyId},
+      );
+      if (response["isSuccess"]) {
+        emit(
+          FamilyMemberDeletedSuccessfully(message: "تم حذف فرد الأسرة بنجاح"),
+        );
+      } else {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: '400',
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(FamilyFailure(errorMessage: e.toString()));
+    }
+  }
 }

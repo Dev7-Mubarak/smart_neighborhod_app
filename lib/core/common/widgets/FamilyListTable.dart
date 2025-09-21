@@ -19,16 +19,16 @@ class FamilyListTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTableWidget(
-      columnTitles: const ['رقم التواصل', 'التصنيف', 'رب الأسرة', 'رقم'],
-      columnFlexes: const [4, 2, 3, 1],
+      columnTitles: const ['رقم', 'رب الأسرة', 'التصنيف', 'رقم التواصل'],
+      columnFlexes: const [1, 2, 3, 4],
       rowData: families.asMap().entries.map((entry) {
         int index = entry.key;
         var family = entry.value;
         return [
-          family.familyHeadPhoneNumber,
-          family.familyCategoryName,
-          family.familyHeadName,
           '${index + 1}',
+          family.familyHeadName,
+          family.familyCategoryName,
+          family.familyHeadPhoneNumber,
         ];
       }).toList(),
       onRowTap: (index) {

@@ -65,7 +65,7 @@ class CustomTableWidget extends StatelessWidget {
                       flex: columnFlexes[cellIndex].toInt(),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: cellIndex ==0
+                          color: cellIndex == 0
                               ? AppColor.primaryColor
                               : Colors.white,
                           border: const Border(
@@ -80,9 +80,7 @@ class CustomTableWidget extends StatelessWidget {
                           cellData.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: cellIndex == 0
-                                ? Colors.white
-                                : Colors.black,
+                            color: cellIndex == 0 ? Colors.white : Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -98,7 +96,7 @@ class CustomTableWidget extends StatelessWidget {
       ],
     );
   }
-  
+
   Widget _buildHeaderCell(String text) {
     return Padding(
       padding: const EdgeInsets.all(5),

@@ -4,6 +4,7 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/family_assistances_list_table.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
@@ -28,17 +29,28 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   void initState() {
     super.initState();
     final familyCubit = context.read<FamilyCubit>();
-    if (familyCubit.state is! FamilyDetilesLoaded) {
-      familyCubit.getFamilyDetilesById(widget.familyId);
-    }
+    familyCubit.getFamilyDetilesById(widget.familyId);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<FamilyCubit, FamilyState>(
       listener: (context, state) {
+        if (state is WaitingForUpdateOrAddFamily) {
+          context.showLoadingDialog();
+        }
+        if (state is FamilyMemberDeletedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          // Refresh family details after deletion
+          context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+        } else if (state is FamilyFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        }
         if (state is FamilyMemberAddedSuccessfully) {
           context.read<FamilyCubit>().getFamilyDetilesById(widget.familyId);
+          Navigator.of(context, rootNavigator: true).pop();
         }
       },
       child: Scaffold(
@@ -323,12 +335,66 @@ class MemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final familyCubit = context.read<FamilyCubit>();
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           context,
           AppRoute.familyMemberDetails,
-          arguments: context.read<FamilyCubit>()..setFamilyMember(familyMember),
+          arguments: familyCubit..setFamilyMember(familyMember),
+        );
+      },
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'خيارات فرد الأسرة',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.delete),
+                  label: const Text('حذف فرد الأسرة'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _showDeleteConfirmationDialog(
+                      context,
+                      familyMember,
+                      familyCubit,
+                    );
+                  },
+                ),
+                const SizedBox(height: 8),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.edit),
+                  label: const Text('تغيير دور فرد الأسرة'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    // Navigate to change role screen or show dialog
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   AppRoute.changeFamilyMemberRole,
+                    //   arguments: familyMember,
+                    // );
+                  },
+                ),
+              ],
+            ),
+          ),
         );
       },
       child: Container(
@@ -420,6 +486,40 @@ class MemberCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(
+    BuildContext context,
+    FamilyMember member,
+    FamilyCubit familyCubit,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تأكيد الحذف'),
+          content: const Text('هل أنت متأكد أنك تريد حذف هذا الفرد من الأسرة؟'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await familyCubit.deleteFamilyMember(
+                  familyCubit.family!.id,
+                  familyMember.familyMemberId,
+                );
+                Navigator.of(context).pop();
+              },
+              child: const Text('حذف'),
+            ),
+          ],
+        );
+      },
     );
   }
 

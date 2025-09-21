@@ -392,11 +392,6 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SmallButton(
-                      text: 'إلغاء',
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const SizedBox(width: 10),
-                    SmallButton(
                       text: 'إضافة للأسرة',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -407,6 +402,11 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           );
                         }
                       },
+                    ),
+                    const SizedBox(width: 10),
+                    SmallButton(
+                      text: 'إلغاء',
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ],
                 ),
