@@ -10,6 +10,7 @@ import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/confl
 import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/member_family_role_cubit/member_family_role_cubit.dart';
+import 'package:smart_negborhood_app/features/families/presentation/views/family_member_details.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
@@ -164,6 +165,17 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: familyCubit,
             child: FamilyDetiles(familyId: familyCubit.family!.id),
+          ),
+          fullscreenDialog: false,
+        );
+      case AppRoute.familyMemberDetails:
+        final familyCubit = settings.arguments as FamilyCubit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: familyCubit,
+            child: FamilyMemberDetailsPage(
+              familyMember: familyCubit.familyMember!,
+            ),
           ),
           fullscreenDialog: false,
         );

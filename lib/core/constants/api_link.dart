@@ -73,16 +73,14 @@ class ApiLink {
 
   // Families
   static const String getAllFamilyCategories = '$server/family-categories';
-  static const String getAllMemberFamilyRoles =
-      '$server/member-family-roles';
+  static const String getAllMemberFamilyRoles = '$server/member-family-roles';
   // static const String getAllFamilyTypes = '$server/familyTypes';
   static const String addFamily = '$server/families';
   static const String deleteFamily = '$server/families';
   static const String getAllFamily = '$server/families';
   static const String updateFamily = '$server/families';
   static const String addFamilyMember = '$server/family-members';
-  static const String addExistingPersonToFamily =
-      '$server/families/AddExistingPerson';
+
   static const String getFamilyMembers = '$server/family-members';
   static const String getFamilyDetailes = '$server/families/details';
 

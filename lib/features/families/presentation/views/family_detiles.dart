@@ -28,7 +28,9 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
   void initState() {
     super.initState();
     final familyCubit = context.read<FamilyCubit>();
-    familyCubit.getFamilyDetilesById(widget.familyId);
+    if (familyCubit.state is! FamilyDetilesLoaded) {
+      familyCubit.getFamilyDetilesById(widget.familyId);
+    }
   }
 
   @override
@@ -151,7 +153,7 @@ class FamilyDetailsBody extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(Icons.close),
                         ),
-                       prefixIcon : Icons.search,
+                        prefixIcon: Icons.search,
                         bachgroundColor: AppColor.gray2,
                         // onChanged: _onSearchChanged,
                       ),
@@ -326,7 +328,7 @@ class MemberCard extends StatelessWidget {
         Navigator.pushNamed(
           context,
           AppRoute.familyMemberDetails,
-          arguments: familyMember,
+          arguments: context.read<FamilyCubit>()..setFamilyMember(familyMember),
         );
       },
       child: Container(

@@ -400,7 +400,7 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                       text: 'إضافة للأسرة',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          familyCubit.addExistingPersonToFamily(
+                          familyCubit.addFamilyMember(
                             familyId: widget.familyId,
                             personId: selectedPerson!.id,
                             roleId: selectedRole!.id,
