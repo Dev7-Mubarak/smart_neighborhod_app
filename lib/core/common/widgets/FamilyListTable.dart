@@ -20,7 +20,7 @@ class FamilyListTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomTableWidget(
       columnTitles: const ['رقم', 'رب الأسرة', 'التصنيف', 'رقم التواصل'],
-      columnFlexes: const [1, 2, 3, 4],
+      columnFlexes: const [1, 3, 2, 2],
       rowData: families.asMap().entries.map((entry) {
         int index = entry.key;
         var family = entry.value;
@@ -31,6 +31,7 @@ class FamilyListTable extends StatelessWidget {
           family.familyHeadPhoneNumber,
         ];
       }).toList(),
+      originalObjects: families,
       onRowTap: (index) {
         final selectedFamily = families[index];
         familyCubit.setFamily(selectedFamily);
@@ -40,55 +41,60 @@ class FamilyListTable extends StatelessWidget {
           arguments: familyCubit,
         );
       },
-      onRowLongPress: (index, rowObject) async {
+      onRowLongPress: (index, rowObject) {
         final selectedFamily = families[index];
-        showModalBottomSheet(
-          context: context,
-          builder: (context) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'خيارات الأسرة',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: const Text('تعديل الأسرة'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    familyCubit.setFamily(selectedFamily);
-                    Navigator.pushNamed(
-                      context,
-                      AppRoute.addUpdateFamily,
-                      arguments: familyCubit,
-                    );
-                  },
-                ),
-                const SizedBox(height: 8),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.delete),
-                  label: const Text('حذف الأسرة'),
-                  onPressed: () {
-                    _showDeleteConfirmationDialog(
-                      context,
-                      selectedFamily,
-                      familyCubit,
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
+        _showOptionsBottomSheet(context, selectedFamily, familyCubit);
       },
+    );
+  }
+
+  void _showOptionsBottomSheet(
+    BuildContext context,
+    Family selectedFamily,
+    FamilyCubit familyCubit,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'خيارات الأسرة',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.edit),
+              label: const Text('تعديل الأسرة'),
+              onPressed: () {
+                Navigator.pop(context);
+                familyCubit.setFamily(selectedFamily);
+                Navigator.pushNamed(
+                  context,
+                  AppRoute.addUpdateFamily,
+                  arguments: familyCubit,
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.delete),
+              label: const Text('حذف الأسرة'),
+              onPressed: () {
+                _showDeleteConfirmationDialog(
+                  context,
+                  selectedFamily,
+                  familyCubit,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -105,9 +111,7 @@ class FamilyListTable extends StatelessWidget {
           content: const Text('هل أنت متأكد أنك تريد حذف هذه الأسرة؟'),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('إلغاء'),
             ),
             TextButton(
@@ -116,8 +120,8 @@ class FamilyListTable extends StatelessWidget {
                 BlocProvider.of<BlockCubit>(
                   context,
                 ).getBlockDetailes(family.blockId);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close dialog
+                Navigator.of(context).pop(); // Close sheet
               },
               child: const Text('حذف'),
             ),
