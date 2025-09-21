@@ -130,7 +130,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SmallText(text: 'الاسم الاول'),
                       const SizedBox(
@@ -408,7 +408,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         children: [
                           Expanded(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SmallText(text: 'الحالة الاجتماعية'),
                                 const SizedBox(
@@ -628,13 +628,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SmallButton(
-          text: 'إلغاء',
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        const SizedBox(width: 10),
-        SmallButton(
           text: widget.person == null ? 'إضافة' : 'تعديل',
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -662,6 +655,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 Navigator.pop(context);
               }
             }
+          },
+        ),
+        const SizedBox(width: 10),
+        SmallButton(
+          text: 'إلغاء',
+          onPressed: () {
+            Navigator.pop(context);
           },
         ),
       ],

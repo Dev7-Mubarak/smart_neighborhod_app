@@ -160,7 +160,7 @@ class _AllPeopleState extends State<AllPeople> {
                 },
                 icon: const Icon(Icons.close),
               ),
-             prefixIcon : Icons.search,
+              prefixIcon: Icons.search,
               bachgroundColor: AppColor.gray2,
               onChanged: (value) {
                 _delay?.cancel();
@@ -178,17 +178,22 @@ class _AllPeopleState extends State<AllPeople> {
   void _showOptions(BuildContext passContext, person) {
     showModalBottomSheet(
       context: passContext,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (BuildContext context) {
-        return Column(
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ListTile(
-              leading: const Icon(Icons.edit, color: Colors.blue),
-              title: const Text('تعديل'),
-              onTap: () {
+            const Text(
+              'خيارات الشخص',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.edit),
+              label: const Text('تعديل بيانات الشخص'),
+              onPressed: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(
                   context,
@@ -198,10 +203,15 @@ class _AllPeopleState extends State<AllPeople> {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('حذف'),
-              onTap: () async {
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.delete),
+              label: const Text('حذف الشخص'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () async {
                 Navigator.pop(context);
                 await showDialog<bool>(
                   context: passContext,
@@ -231,8 +241,8 @@ class _AllPeopleState extends State<AllPeople> {
               },
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }
