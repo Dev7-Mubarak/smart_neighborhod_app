@@ -114,66 +114,91 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     final locale = context.locale;
 
     context.showBottomSheet(
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.edit, color: Colors.blue),
-            title: Text(locale.changeBlockName),
-            onTap: () {
-              Navigator.pop(context);
-              _blockCubit.setBlock(block);
-              context.showBottomSheet(
-                BlocProvider.value(
-                  value: _blockCubit,
-                  child: ChangeBlockNameWidget(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.person, color: Colors.green),
-            title: Text(locale.changeManager),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(
-                context,
-                AppRoute.changeBlockManager,
-                arguments: context.read<BlockCubit>()..setBlock(block),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.delete, color: Colors.red),
-            title: Text(locale.delete),
-            onTap: () async {
-              Navigator.pop(context);
-              await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(locale.confirmDelete),
-                  content: Text(locale.deleteNotAllowed),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(locale.cancel),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        _blockCubit.deleteBlock(block.id);
-                      },
-                      child: Text(
-                        locale.delete,
-                        style: const TextStyle(color: Colors.red),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'خيارات المربعات السكنية',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+
+            ElevatedButton.icon(
+              icon: const Icon(Icons.edit),
+              label: Text(locale.changeBlockName),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.white,
+                foregroundColor: AppColor.primaryColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _blockCubit.setBlock(block);
+                context.showBottomSheet(
+                  BlocProvider.value(
+                    value: _blockCubit,
+                    child: ChangeBlockNameWidget(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.person),
+              label: Text(locale.changeManager),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.white,
+                foregroundColor: AppColor.primaryColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  AppRoute.changeBlockManager,
+                  arguments: context.read<BlockCubit>()..setBlock(block),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.delete),
+              label: Text(locale.delete),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: AppColor.white,
+              ),
+              onPressed: () async {
+                Navigator.pop(context);
+                await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(locale.confirmDelete),
+                    content: Text(locale.deleteNotAllowed),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(locale.cancel),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _blockCubit.deleteBlock(block.id);
+                        },
+                        child: Text(
+                          locale.delete,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

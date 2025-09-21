@@ -91,6 +91,10 @@ class FamilyListTable extends StatelessWidget {
                   familyCubit,
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
             ),
           ],
         ),

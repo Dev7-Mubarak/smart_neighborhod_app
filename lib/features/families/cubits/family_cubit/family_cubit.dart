@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
-import 'package:smart_negborhood_app/features/confilct/data/models/conflict_case.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/errors/exception.dart';
