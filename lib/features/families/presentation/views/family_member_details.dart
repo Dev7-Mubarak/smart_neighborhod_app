@@ -9,7 +9,6 @@ import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../cubits/family_member/family_member_cubit.dart';
 import '../../cubits/family_member/family_member_state.dart';
 
@@ -67,7 +66,6 @@ class _FamilyMemberDetailsPageState extends State<FamilyMemberDetailsPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

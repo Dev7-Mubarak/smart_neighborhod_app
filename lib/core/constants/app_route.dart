@@ -50,6 +50,7 @@ import '../../features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
 import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
 import '../../features/home/cubits/mainHome_cubit/main_home_cubit.dart';
+import '../../features/residdentailBlocks/presentation/views/residdential_blocks.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -68,6 +69,8 @@ class AppRouter {
             child: const MainHome(),
           ),
         );
+      case AppRoute.residentialBlocks:
+        return MaterialPageRoute(builder: (_) => const ResidentialBlock());
       case AppRoute.allPeople:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

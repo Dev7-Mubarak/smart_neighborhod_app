@@ -12,7 +12,6 @@ import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/ass
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 
@@ -73,7 +72,7 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                                    const SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(25),
                     decoration: BoxDecoration(
@@ -84,7 +83,9 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SmallText(text: 'إختر فريق'),
-                        const SizedBox(height: AppSize.spasingBetweenInputsAndLabale),
+                        const SizedBox(
+                          height: AppSize.spasingBetweenInputsAndLabale,
+                        ),
                         BlocBuilder<TeamCubit, TeamState>(
                           builder: (context, state) {
                             if (state is TeamLoading) {
@@ -96,10 +97,9 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                               if (state.allTeams.isEmpty) {
                                 return const Center(child: Text('لا يوجد فرق'));
                               }
-                              return
-                              CustomDropdownSearchWidget<Team>(
+                              return CustomDropdownSearchWidget<Team>(
                                 items: state.allTeams,
-                                itemAsString:(Team? u) => u?.name ?? '',
+                                itemAsString: (Team? u) => u?.name ?? '',
                                 onChanged: (Team? data) {
                                   _assistanceCubit.changeSelectedTeam(data!.id);
                                 },
@@ -170,7 +170,6 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

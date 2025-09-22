@@ -494,7 +494,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

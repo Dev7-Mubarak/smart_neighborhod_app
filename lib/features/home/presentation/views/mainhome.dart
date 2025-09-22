@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/residdential_blocks.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
-import '../../cubits/mainHome_cubit/main_home_cubit.dart';
+import '../../../../core/constants/app_route.dart';
 import 'home.dart';
 
 class MainHome extends StatefulWidget {
@@ -15,120 +13,99 @@ class MainHome extends StatefulWidget {
 }
 
 class MmainHomeState extends State<MainHome> {
-  static final List<Widget> _widgetOptions = [
-    const ResidentialBlock(),
-    const Home(),
-  ];
+  int _selectedIndex = 0;
+
+  void _onNavBarTap(int index) {
+    if (index == 1) {
+      // Navigate to ResidentialBlock
+      Navigator.pushReplacementNamed(context, AppRoute.residentialBlocks);
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var locale = context.locale;
+    final String username = "اسم المستخدم";
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
         bottomOpacity: 0,
-        title: Padding(
-          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-          child: Center(
-            child: Text(
-              locale.appTitle,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+        title: Row(
+          children: [
+            // Modern profile avatar with border and shadow
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+                border: Border.all(color: AppColor.primaryColor, width: 2),
+              ),
+              child: CircleAvatar(
+                radius: 22,
+                backgroundColor: AppColor.gray,
+                child: const Icon(Icons.person, color: Colors.black, size: 26),
               ),
             ),
-          ),
-        ),
-      ),
-      body: BlocBuilder<MainHomeCubit, MainHomeState>(
-        builder: (context, state) {
-          return Center(
-            child: Column(
+            const SizedBox(width: 12),
+            // Greeting and username with modern text style
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColor.gray,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              MainHomeCubit.get(context).changeSelectedIndex(1);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: MainHomeCubit.get(
-                                  context,
-                                ).changeSelectedBackgroundColor(1),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  locale.main,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: MainHomeCubit.get(
-                                      context,
-                                    ).changeSelectedFontColor(1),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              MainHomeCubit.get(context).changeSelectedIndex(0);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: MainHomeCubit.get(
-                                  context,
-                                ).changeSelectedBackgroundColor(0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  locale.residentialBlocks,
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: MainHomeCubit.get(
-                                      context,
-                                    ).changeSelectedFontColor(0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                Text(
+                  'مرحباً,', // Or use locale.hello if localized
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColor.primaryColor,
+                    letterSpacing: 0.5,
                   ),
                 ),
-                Expanded(
-                  child: _widgetOptions.elementAt(
-                    MainHomeCubit.get(context).selectedIndex,
+                Text(
+                  username, // Replace with actual username variable
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
                   ),
                 ),
               ],
             ),
-          );
-        },
+            const Spacer(),
+            IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {},
+              tooltip: 'الاشعارات',
+            ),
+          ],
+        ),
+        centerTitle: false,
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColor.white, AppColor.gray.withOpacity(0.1)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: const Home(),
+      ),
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onNavBarTap,
+      ),
     );
   }
 }

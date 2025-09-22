@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
-import 'package:smart_negborhood_app/core/common/widgets/custom_navigation_bar.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
@@ -231,7 +230,6 @@ class _ChangeBlockManagerViewState extends State<ChangeBlockManagerView> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

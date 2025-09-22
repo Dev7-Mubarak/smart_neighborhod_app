@@ -12,7 +12,6 @@ import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/ass
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
 import '../../../../core/constants/app_size.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/common/widgets/table.dart';
 
@@ -45,11 +44,11 @@ class _AllAssistancesState extends State<AllAssistances> {
 
   Widget buildBlocWidget() {
     return BlocBuilder<AssistancesCubit, AssistancesState>(
-       buildWhen: (previousState, currentState) {
-                    return currentState is AssistancesLoaded ||
-                        currentState is AssistancesLoading ||
-                        currentState is AssistancesFailure;
-                  },
+      buildWhen: (previousState, currentState) {
+        return currentState is AssistancesLoaded ||
+            currentState is AssistancesLoading ||
+            currentState is AssistancesFailure;
+      },
       builder: (context, state) {
         if (state is AssistancesLoaded) {
           _projectsListSearch = state.filteredProjects;
@@ -159,7 +158,6 @@ class _AllAssistancesState extends State<AllAssistances> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

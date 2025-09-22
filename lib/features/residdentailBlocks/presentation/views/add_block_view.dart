@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
-import 'package:smart_negborhood_app/core/common/widgets/custom_navigation_bar.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -274,7 +273,6 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

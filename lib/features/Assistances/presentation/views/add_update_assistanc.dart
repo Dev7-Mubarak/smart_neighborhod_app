@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +9,6 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
-import 'package:smart_negborhood_app/features/confilct/data/models/conflict_type.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_state.dart';
@@ -18,14 +16,12 @@ import 'package:smart_negborhood_app/features/Assistances/data/models/project.da
 import 'package:smart_negborhood_app/features/Assistances/data/models/project_catgory.dart';
 
 import '../../../../core/common/widgets/CustomDropdown.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
 import '../../../people/data/models/Person.dart';
 import '../../../../core/common/enums/project_priority.dart';
 import '../../../../core/common/enums/project_status.dart';
-// import '../../services/DateHelper.dart';
 
 class AddUpdateAssistanc extends StatefulWidget {
   const AddUpdateAssistanc({super.key, this.assistancProject});
@@ -212,12 +208,14 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   );
                               if (assistanceCubit.selectedProjectCategory ==
                                       null &&
-                                  _selectedProjectCategory != null){
+                                  _selectedProjectCategory != null) {
                                 assistanceCubit.changeSelectedProjectCategory(
                                   _selectedProjectCategory,
                                 );
                               }
-                              return CustomDropdownSearchWidget<ProjectCategory>(
+                              return CustomDropdownSearchWidget<
+                                ProjectCategory
+                              >(
                                 items: state.projectCategories,
                                 itemAsString: (ProjectCategory? u) =>
                                     u?.name ?? '',
@@ -228,7 +226,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 searchHintText: "ابحث عن تصنيف...",
                                 validator: (ProjectCategory? item) =>
                                     AppValidator.validateDropdown(item),
-                                   enabled: false, 
+                                enabled: false,
                               );
                             }
                             if (state is ProjectCategoryFailure) {
@@ -275,7 +273,7 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 labelText: "اختر مدير",
                                 hintText: "اختر مدير",
                                 searchHintText: "ابحث عن مدير...",
-                                validator:(Person? item) =>
+                                validator: (Person? item) =>
                                     AppValidator.validateDropdown(item),
                               );
                             }
@@ -438,7 +436,6 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

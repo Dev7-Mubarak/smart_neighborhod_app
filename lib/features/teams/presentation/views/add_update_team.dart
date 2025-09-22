@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,12 +7,10 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
-import 'package:smart_negborhood_app/features/confilct/data/models/conflict_type.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
@@ -91,7 +88,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
           scrolledUnderElevation: 0,
           backgroundColor: AppColor.white,
           iconTheme: const IconThemeData(color: Colors.black),
-                            centerTitle: true,
+          centerTitle: true,
           title: Text(
             widget.team == null ? 'إضافة فريق جديد' : 'تعديل فريق ',
             style: const TextStyle(
@@ -99,7 +96,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
               fontWeight: FontWeight.bold,
               fontSize: 22,
             ),
-         ),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(AppSize.paddingOfPage),
@@ -153,8 +150,7 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
                                   (person) => person.id == _selectedPerson,
                                 );
                               }
-                              return
-                               CustomDropdownSearchWidget<Person>(
+                              return CustomDropdownSearchWidget<Person>(
                                 items: state.people,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
@@ -224,7 +220,6 @@ class AddUpdateTeamState extends State<AddUpdateTeam> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

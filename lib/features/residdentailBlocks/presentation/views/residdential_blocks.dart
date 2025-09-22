@@ -5,6 +5,7 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
@@ -67,46 +68,61 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SmallButton(
-                text: locale.add,
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoute.addUpdateBlock).then((
-                    _,
-                  ) {
-                    _blockCubit.getBlocks();
-                  });
-                },
-              ),
-              const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-              Expanded(
-                child: SearchableTextFormField(
-                  hintText: locale.searchResidentialBlock,
-                  bachgroundColor: AppColor.gray2,
-                  suffixIcon: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.close),
-                  ),
-                  prefixIcon: Icons.search,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Padding(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: AppColor.white,
+        elevation: 0,
+        title: Text(locale.residentialBlocks),
+        centerTitle: true,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
             padding: const EdgeInsets.all(15),
-            child: buildBlocWidget(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SmallButton(
+                  text: locale.add,
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoute.addUpdateBlock).then((
+                      _,
+                    ) {
+                      _blockCubit.getBlocks();
+                    });
+                  },
+                ),
+                const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+                Expanded(
+                  child: SearchableTextFormField(
+                    hintText: locale.searchResidentialBlock,
+                    bachgroundColor: AppColor.gray2,
+                    suffixIcon: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.close),
+                    ),
+                    prefixIcon: Icons.search,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: buildBlocWidget(),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: 1,
+        onTap: (value) {
+          // You can provide navigation logic if needed
+        },
+      ),
     );
   }
 

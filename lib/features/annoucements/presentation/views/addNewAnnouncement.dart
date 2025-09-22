@@ -405,7 +405,6 @@ class _AddNewAnnouncementState extends State<AddNewAnnouncement> {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 

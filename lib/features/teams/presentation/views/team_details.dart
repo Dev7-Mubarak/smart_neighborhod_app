@@ -14,7 +14,6 @@ import 'package:smart_negborhood_app/features/teams/cubits/team/team_state.dart'
 import 'package:smart_negborhood_app/core/common/enums/project_status.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/small_text.dart';
 
 class TeamDetails extends StatefulWidget {
@@ -83,7 +82,7 @@ class TeamDetailsState extends State<TeamDetails> {
                             textAlign: TextAlign.start,
                           ),
                         ),
-                         SizedBox(width: 10),
+                        SizedBox(width: 10),
                         //  SvgPicture.asset(
                         //   AppImage.teamgroupName,
                         //   width: 40,
@@ -107,7 +106,7 @@ class TeamDetailsState extends State<TeamDetails> {
                             textAlign: TextAlign.start,
                           ),
                         ),
-                         SizedBox(width: 10),
+                        SizedBox(width: 10),
                         const Icon(
                           Icons.person,
                           color: AppColor.primaryColor,
@@ -126,7 +125,7 @@ class TeamDetailsState extends State<TeamDetails> {
                             textAlign: TextAlign.start,
                           ),
                         ),
-                         SizedBox(width: 10),
+                        SizedBox(width: 10),
                         // SvgPicture.asset(
                         //   AppImage.teamgroupNumBer,
                         //   width: 40,
@@ -235,7 +234,6 @@ class TeamDetailsState extends State<TeamDetails> {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

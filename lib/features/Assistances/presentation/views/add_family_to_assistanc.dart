@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
@@ -15,8 +14,6 @@ import 'package:smart_negborhood_app/features/families/cubits/family_cubit/famil
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
-import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 
@@ -181,7 +178,6 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
             ),
           ),
         ),
-        bottomNavigationBar: const CustomNavigationBar(),
       ),
     );
   }

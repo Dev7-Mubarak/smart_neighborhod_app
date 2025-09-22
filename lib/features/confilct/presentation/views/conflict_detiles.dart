@@ -6,7 +6,6 @@ import 'package:smart_negborhood_app/core/constants/app_image.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/constants/small_text.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 
 class ConflictDetiles extends StatefulWidget {
   const ConflictDetiles({super.key, required this.conflict});
@@ -69,7 +68,7 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
                   children: [
                     Row(
                       children: [
-                          const Icon(
+                        const Icon(
                           Icons.person,
                           color: AppColor.primaryColor,
                           size: 30,
@@ -120,7 +119,7 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
                     ),
                     Row(
                       children: [
-                             const Icon(
+                        const Icon(
                           Icons.calendar_month,
                           color: AppColor.primaryColor,
                           size: 30,
@@ -137,18 +136,14 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
                     ),
                     Row(
                       children: [
-                         //  SvgPicture.asset(
+                        //  SvgPicture.asset(
                         //   AppImage.handshakesvg,
                         //   width: 30,
                         //   height: 30,
                         //   fit: BoxFit.contain,
                         //     colorFilter: ColorFilter.mode(AppColor.primaryColor, BlendMode.srcIn),
                         // ),
-                        Image.asset(
-                          AppImage.handshake,
-                          width: 30,
-                          height: 30,
-                        ),
+                        Image.asset(AppImage.handshake, width: 30, height: 30),
                         SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
@@ -167,7 +162,10 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
                           width: 30,
                           height: 30,
                           fit: BoxFit.contain,
-                            colorFilter: ColorFilter.mode(AppColor.primaryColor, BlendMode.srcIn),
+                          colorFilter: ColorFilter.mode(
+                            AppColor.primaryColor,
+                            BlendMode.srcIn,
+                          ),
                         ),
                         SizedBox(width: 10),
                         Expanded(
@@ -188,7 +186,6 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 

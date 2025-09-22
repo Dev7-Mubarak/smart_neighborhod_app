@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_image.dart';
 import '../../../../core/common/widgets/searcharea.dart';
 import 'Announcemwnt.dart';
@@ -125,7 +124,6 @@ class _announcement1State extends State<announcement1> {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }

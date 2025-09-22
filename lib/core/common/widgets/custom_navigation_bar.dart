@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import '../../constants/app_color.dart';
 
 class CustomNavigationBar extends StatelessWidget {
-  const CustomNavigationBar({super.key});
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  const CustomNavigationBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +25,14 @@ class CustomNavigationBar extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         unselectedLabelStyle: const TextStyle(fontSize: 14),
-        currentIndex: 0,
-        onTap: (int j) {},
+        currentIndex: currentIndex,
+        onTap: onTap,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.apartment),
+            label: 'المربعات السكنية',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'الإعدادات',
