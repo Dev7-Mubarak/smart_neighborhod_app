@@ -11,7 +11,9 @@ class AppImage {
   static const String homehonesty = '$rootImage/home/honesty.png';
   static const String teamgroup = '$rootImage/ee.png';
   static const String teamgroupName = '$rootImage/1751454307823.png';
+    // static const String teamgroupName = '$rootImage/svg/group.svg';
   static const String teamgroupNumBer = '$rootImage/1751454219160.png';
+    // static const String teamgroupNumBer = '$rootImage/svg/group2.svg';
   static const String homeplan = '$rootImage/home/plan.png';
   static const String homepoliceman = '$rootImage/home/policeman.png';
   static const String homeresidential = '$rootImage/home/residential.png';
@@ -25,7 +27,8 @@ class AppImage {
   static const String load = '$rootImage/loading.gif';
   static const String notes = '$rootImage/svg/notes.svg';
 
-  static const String handshake = '$rootImage/svg/handshake.png';
+  static const String handshake = '$rootImage/handshake.png';
+    static const String handshakesvg = '$rootImage/svg/handshakesvg.svg';
   static const String loadingimage =
       '$rootImage/residentail/Animationloading.gif';
   static const String monashadatimage = '$rootImage/home/monashadat.png';

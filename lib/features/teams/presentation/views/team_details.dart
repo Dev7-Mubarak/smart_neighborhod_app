@@ -77,46 +77,47 @@ class TeamDetailsState extends State<TeamDetails> {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          AppImage.teamgroupName,
-                          width: 40,
-                          height: 40,
-                        ),
-                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text: "إسم الفريق: ${widget.team.name}",
                             textAlign: TextAlign.start,
                           ),
                         ),
+                         SizedBox(width: 10),
+                        //  SvgPicture.asset(
+                        //   AppImage.teamgroupName,
+                        //   width: 40,
+                        //   height: 40,
+                        //   fit: BoxFit.contain,
+                        //     colorFilter: ColorFilter.mode(AppColor.primaryColor, BlendMode.srcIn),
+                        // ),
+                        Image.asset(
+                          AppImage.teamgroupName,
+                          width: 40,
+                          height: 40,
+                        ),
                       ],
                     ),
                     SizedBox(height: 5),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.person,
-                          color: AppColor.primaryColor,
-                          size: 40,
-                        ),
-                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text: "إسم قائد الفريق: $teamLeaderName",
                             textAlign: TextAlign.start,
                           ),
                         ),
+                         SizedBox(width: 10),
+                        const Icon(
+                          Icons.person,
+                          color: AppColor.primaryColor,
+                          size: 40,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        Image.asset(
-                          AppImage.teamgroupNumBer,
-                          width: 40,
-                          height: 40,
-                        ),
-                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text:
@@ -124,6 +125,19 @@ class TeamDetailsState extends State<TeamDetails> {
                                 '${widget.team.teamMembers.length}',
                             textAlign: TextAlign.start,
                           ),
+                        ),
+                         SizedBox(width: 10),
+                        // SvgPicture.asset(
+                        //   AppImage.teamgroupNumBer,
+                        //   width: 40,
+                        //   height: 40,
+                        //   fit: BoxFit.contain,
+                        //     colorFilter: ColorFilter.mode(AppColor.primaryColor, BlendMode.srcIn),
+                        // ),
+                        Image.asset(
+                          AppImage.teamgroupNumBer,
+                          width: 40,
+                          height: 40,
                         ),
                       ],
                     ),

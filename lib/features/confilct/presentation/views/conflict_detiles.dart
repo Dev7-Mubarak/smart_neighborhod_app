@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_image.dart';
@@ -22,7 +23,7 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
-         scrolledUnderElevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: true,
         title: const Text(
@@ -64,100 +65,118 @@ class _ConflictDetilesState extends State<ConflictDetiles> {
                   color: AppColor.gray,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
+                          const Icon(
+                          Icons.person,
+                          color: AppColor.primaryColor,
+                          size: 30,
+                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text:
                                 "الطرف الأول :${widget.conflict.firstPartyName}",
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        const Icon(
-                          Icons.person,
-                          color: AppColor.primaryColor,
-                          size: 30,
                         ),
                       ],
                     ),
                     Row(
                       children: [
+                        const Icon(
+                          Icons.person,
+                          color: AppColor.primaryColor,
+                          size: 30,
+                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text:
                                 "الطرف الثاني :${widget.conflict.secondPartyName}",
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        const Icon(
-                          Icons.person,
-                          color: AppColor.primaryColor,
-                          size: 30,
                         ),
                       ],
                     ),
                     Row(
                       children: [
+                        const Icon(
+                          Icons.person,
+                          color: AppColor.primaryColor,
+                          size: 30,
+                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text:
                                 "المشرف على المعاهدة: ${widget.conflict.managerName}",
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        const Icon(
-                          Icons.person,
-                          color: AppColor.primaryColor,
-                          size: 30,
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Expanded(
-                          child: SmallText(
-                            text:
-                                " تاريخ الجلسة : ${DateFormat('yyyy-MM-dd').format(widget.conflict.sessionDate!)}",
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        const Icon(
+                             const Icon(
                           Icons.calendar_month,
                           color: AppColor.primaryColor,
                           size: 30,
                         ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: SmallText(
+                            text:
+                                " تاريخ الجلسة : ${DateFormat('yyyy-MM-dd').format(widget.conflict.sessionDate!)}",
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
                       ],
                     ),
                     Row(
                       children: [
+                         //  SvgPicture.asset(
+                        //   AppImage.handshakesvg,
+                        //   width: 30,
+                        //   height: 30,
+                        //   fit: BoxFit.contain,
+                        //     colorFilter: ColorFilter.mode(AppColor.primaryColor, BlendMode.srcIn),
+                        // ),
+                        Image.asset(
+                          AppImage.handshake,
+                          width: 30,
+                          height: 30,
+                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text: widget.conflict.isResolved
                                 ? "تم إنهاء الخلاف"
                                 : "لم يتم إنهاء الخلاف",
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Image.asset(AppImage.handshake, width: 30, height: 30),
                       ],
                     ),
                     Row(
                       children: [
+                        SvgPicture.asset(
+                          AppImage.notes,
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.contain,
+                            colorFilter: ColorFilter.mode(AppColor.primaryColor, BlendMode.srcIn),
+                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           child: SmallText(
                             text: "ملاحظات :${widget.conflict.notes}",
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Image.asset(AppImage.notes, width: 20, height: 20),
+                        // Image.asset(AppImage.notes, width: 20, height: 20),
                       ],
                     ),
                     SizedBox(height: AppSize.spasingBetweenInputBloc),
