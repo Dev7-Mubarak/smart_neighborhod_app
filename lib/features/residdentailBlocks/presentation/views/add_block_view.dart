@@ -112,7 +112,7 @@ class _AddBlockViewState extends State<AddBlockView> {
                       color: AppColor.gray,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BlocBuilder<PersonCubit, PersonState>(
                           builder: (context, state) {
@@ -191,7 +191,7 @@ class _AddBlockViewState extends State<AddBlockView> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        const SmallText(text: 'اسم المستخدم'),
+                        const SmallText(text: 'الايميل'),
                         CustomTextFormField(
                           controller: usernameController,
                           suffixIcon: null,
@@ -203,26 +203,24 @@ class _AddBlockViewState extends State<AddBlockView> {
                             return null;
                           },
                         ),
-                        if (blockCubit.block == null) ...[
-                          const SizedBox(height: 20),
-                          const SmallText(text: 'كلمة المرور'),
-                          CustomTextFormField(
-                            controller: passwordController,
-                            suffixIcon: null,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.length < 8) {
-                                return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
-                              }
-                              if (!RegExp(
-                                r'^(?=.*[A-Z])(?=.*[0-9])',
-                              ).hasMatch(value)) {
-                                return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
+                        const SizedBox(height: 20),
+                        const SmallText(text: 'كلمة المرور'),
+                        CustomTextFormField(
+                          controller: passwordController,
+                          suffixIcon: null,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.length < 8) {
+                              return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
+                            }
+                            if (!RegExp(
+                              r'^(?=.*[A-Z])(?=.*[0-9])',
+                            ).hasMatch(value)) {
+                              return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
+                            }
+                            return null;
+                          },
+                        ),
                       ],
                     ),
                   ),
