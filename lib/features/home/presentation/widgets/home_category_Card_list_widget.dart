@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import '../../../../core/common/widgets/category_card.dart';
 import '../../../../core/constants/app_image.dart';
+import 'category_card.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeCategoryCardListWidget extends StatefulWidget {
+  const HomeCategoryCardListWidget({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeCategoryCardListWidget> createState() =>
+      _HomeCategoryCardListWidgetState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeCategoryCardListWidgetState
+    extends State<HomeCategoryCardListWidget> {
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
@@ -41,7 +43,7 @@ class _HomeState extends State<Home> {
           Navigator.pushNamed(context, AppRoute.allConflict);
         },
       ),
-        CategoryCard(
+      CategoryCard(
         title: locale.assistanceSection,
         imagePath: AppImage.homehelping,
         backgroundColor: const Color(0xFFE8618C),

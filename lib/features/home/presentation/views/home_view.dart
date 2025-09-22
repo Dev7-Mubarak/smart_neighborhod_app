@@ -3,7 +3,8 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_route.dart';
-import 'home.dart';
+import '../../../../core/constants/home_tab_enum.dart';
+import '../widgets/home_category_Card_list_widget.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({super.key});
@@ -13,15 +14,18 @@ class MainHome extends StatefulWidget {
 }
 
 class MmainHomeState extends State<MainHome> {
-  int _selectedIndex = 0;
+  HomeTabEnum _selectedTab = HomeTabEnum.home;
 
   void _onNavBarTap(int index) {
-    if (index == 1) {
-      // Navigate to ResidentialBlock
+    final tappedTab = HomeTabEnum.values[index];
+
+    if (tappedTab == HomeTabEnum.residentialBlocks) {
       Navigator.pushReplacementNamed(context, AppRoute.residentialBlocks);
+    } else if (tappedTab == HomeTabEnum.settings) {
+      Navigator.pushReplacementNamed(context, AppRoute.settings);
     } else {
       setState(() {
-        _selectedIndex = index;
+        _selectedTab = tappedTab;
       });
     }
   }
@@ -100,10 +104,10 @@ class MmainHomeState extends State<MainHome> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: const Home(),
+        child: const HomeCategoryCardListWidget(),
       ),
       bottomNavigationBar: CustomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedTab.index,
         onTap: _onNavBarTap,
       ),
     );

@@ -14,6 +14,7 @@ import 'package:smart_negborhood_app/features/families/presentation/views/family
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
+import 'package:smart_negborhood_app/features/settings/presentation/views/setteings_view.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_role/team_role_cubit.dart';
@@ -30,7 +31,7 @@ import 'package:smart_negborhood_app/features/auth/presentation/views/checkEmail
 import 'package:smart_negborhood_app/features/auth/presentation/views/createNewPassword.dart';
 import 'package:smart_negborhood_app/features/auth/presentation/views/forgetapassword.dart';
 import 'package:smart_negborhood_app/features/auth/presentation/views/login.dart';
-import 'package:smart_negborhood_app/features/home/presentation/views/mainhome.dart';
+import 'package:smart_negborhood_app/features/home/presentation/views/home_view.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/add_update_conflict.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/all_confilcts.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/conflict_detiles.dart';
@@ -386,6 +387,8 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => ConflictDetiles(conflict: conflict),
         );
+      case AppRoute.settings:
+        return MaterialPageRoute(builder: (_) => const SettingsView());
       default:
         return null;
     }
@@ -396,6 +399,7 @@ class AppRoute {
   static const String onBoarding = '/onBoarding';
   static const String login = '/login';
   static const String mainHome = '/mainhome';
+  static const String settings = '/settings';
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
   static const String residentialBlocks = '/ResidentialBlock';
   static const String changeBlockManager = '/ChangeBlockManager';

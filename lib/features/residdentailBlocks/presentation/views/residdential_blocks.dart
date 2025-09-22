@@ -9,6 +9,7 @@ import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
+import '../../../../core/constants/home_tab_enum.dart';
 import '../../cubits/block_cubit/block_cubit.dart';
 import '../../cubits/block_cubit/block_state.dart';
 import '../../data/models/Block.dart';
@@ -25,6 +26,21 @@ class ResidentialBlock extends StatefulWidget {
 class _ResidentialBlockState extends State<ResidentialBlock> {
   List<Block> residentialList = [];
   late final BlockCubit _blockCubit;
+  HomeTabEnum _selectedTab = HomeTabEnum.residentialBlocks;
+
+  void _onNavBarTap(int index) {
+    final tappedTab = HomeTabEnum.values[index];
+
+    if (tappedTab == HomeTabEnum.home) {
+      Navigator.pushReplacementNamed(context, AppRoute.mainHome);
+    } else if (tappedTab == HomeTabEnum.settings) {
+      Navigator.pushReplacementNamed(context, AppRoute.settings);
+    } else {
+      setState(() {
+        _selectedTab = tappedTab;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -118,10 +134,8 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
         ],
       ),
       bottomNavigationBar: CustomNavigationBar(
-        currentIndex: 1,
-        onTap: (value) {
-          // You can provide navigation logic if needed
-        },
+        currentIndex: _selectedTab.index,
+        onTap: _onNavBarTap,
       ),
     );
   }
