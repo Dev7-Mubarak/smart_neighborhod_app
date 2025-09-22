@@ -88,7 +88,11 @@ class MmainHomeState extends State<MainHome> {
             ),
             const Spacer(),
             IconButton(
-              icon: Icon(Icons.notifications),
+              icon: Icon(
+                Icons.notifications_rounded,
+                color: AppColor.primaryColor.withOpacity(0.9),
+                size: 28,
+              ),
               onPressed: () {},
               tooltip: 'الاشعارات',
             ),

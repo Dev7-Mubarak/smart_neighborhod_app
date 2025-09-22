@@ -103,9 +103,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                 SmallButton(
                   text: locale.add,
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoute.addUpdateBlock).then((
-                      _,
-                    ) {
+                    Navigator.pushNamed(context, AppRoute.addBlock).then((_) {
                       _blockCubit.getBlocks();
                     });
                   },

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
@@ -12,14 +13,14 @@ import '../../cubits/block_cubit/block_cubit.dart';
 import '../../cubits/block_cubit/block_state.dart';
 import '../../../people/data/models/Person.dart';
 
-class AddUpdateBlock extends StatefulWidget {
-  const AddUpdateBlock({super.key});
+class AddBlockView extends StatefulWidget {
+  const AddBlockView({super.key});
 
   @override
-  State<AddUpdateBlock> createState() => _AddUpdateBlockState();
+  State<AddBlockView> createState() => _AddBlockViewState();
 }
 
-class _AddUpdateBlockState extends State<AddUpdateBlock> {
+class _AddBlockViewState extends State<AddBlockView> {
   late final TextEditingController blockNameController;
   late final TextEditingController usernameController;
   final TextEditingController passwordController = TextEditingController();
@@ -35,12 +36,8 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
     super.initState();
     personCubit = context.read<PersonCubit>()..getPeople();
     blockCubit = context.read<BlockCubit>();
-    blockNameController = TextEditingController(
-      text: blockCubit.block?.name ?? '',
-    );
-    usernameController = TextEditingController(
-      text: blockCubit.block?.email ?? '',
-    );
+    blockNameController = TextEditingController();
+    usernameController = TextEditingController();
   }
 
   @override
@@ -55,21 +52,15 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
   Widget build(BuildContext context) {
     return BlocListener<BlockCubit, BlockState>(
       listener: (context, state) {
+        if (state is WaitingForUpdateOrAddBlock) {
+          context.showLoadingDialog();
+        }
         if (state is BlockAddedSuccessfully) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.green,
-            ),
-          );
+          context.showSuccessSnackBar(state.message);
           Navigator.pop(context);
         } else if (state is BlocksFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+          context.showErrorSnackBar(state.errorMessage);
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
@@ -79,9 +70,7 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
-              blockCubit.block == null
-                  ? 'إضافة مربع سكني جديد'
-                  : 'تعديل بيانات مربع سكني',
+              'إضافة مربع سكني',
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -96,7 +85,7 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
                   const SmallText(text: 'اسم المربع السكني'),
@@ -242,29 +231,22 @@ class _AddUpdateBlockState extends State<AddUpdateBlock> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SmallButton(
-                        text: 'إلغاء',
-                        onPressed: () => Navigator.pop(context),
+                        text: 'إضافة',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            blockCubit.addNewBlock(
+                              blockNameController.text,
+                              usernameController.text,
+                              passwordController.text,
+                            );
+                            Navigator.pop(context);
+                          }
+                        },
                       ),
                       const SizedBox(width: 10),
                       SmallButton(
-                        text: blockCubit.block == null ? 'إضافة' : 'تعديل',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (blockCubit.block == null) {
-                              blockCubit.addNewBlock(
-                                blockNameController.text,
-                                usernameController.text,
-                                passwordController.text,
-                              );
-                            } else {
-                              blockCubit.updateBlock(
-                                id: blockCubit.block!.id,
-                                name: blockNameController.text,
-                              );
-                              Navigator.pop(context);
-                            }
-                          }
-                        },
+                        text: 'إلغاء',
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ],
                   ),

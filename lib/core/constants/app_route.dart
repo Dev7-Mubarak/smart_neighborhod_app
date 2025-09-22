@@ -80,6 +80,14 @@ class AppRouter {
             child: const AllPeople(),
           ),
         );
+      case AppRoute.residentialBlockDetial:
+        final blockId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider<FamilyCubit>(
+            create: (_) => FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
+            child: ResiddentialBlocksDetail(blockId: blockId),
+          ),
+        );
       case AppRoute.addUpdatePerson:
         final personCubit = settings.arguments as PersonCubit;
         return MaterialPageRoute(
@@ -117,14 +125,6 @@ class AppRouter {
           ),
         );
 
-      case AppRoute.residentialBlockDetial:
-        final blockId = settings.arguments as int;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider<FamilyCubit>(
-            create: (_) => FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
-            child: ResiddentialBlocksDetail(blockId: blockId),
-          ),
-        );
       case AppRoute.forgetapassword:
         return MaterialPageRoute(
           builder: (_) => BlocProvider<ForgetapasswordCubit>(
@@ -154,11 +154,11 @@ class AppRouter {
           fullscreenDialog: false,
         );
 
-      case AppRoute.addUpdateBlock:
+      case AppRoute.addBlock:
         return MaterialPageRoute(
           builder: (context) => BlocProvider<PersonCubit>(
             create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
-            child: const AddUpdateBlock(),
+            child: const AddBlockView(),
           ),
           fullscreenDialog: false,
         );
@@ -406,7 +406,7 @@ class AppRoute {
   static const String forgetapassword = '/forgetapassword';
   static const String checkEmail = '/CheckEmail';
   static const String createNewPassword = '/createNewPassword';
-  static const String addUpdateBlock = '/AddUpdateBlock';
+  static const String addBlock = '/AddBlock';
   static const String familyDetiles = '/FamilyDetiles';
   static const String addUpdateFamily = '/AddUpdateFamily';
   static const String addFamilyMember = '/AddFamilyMember';
