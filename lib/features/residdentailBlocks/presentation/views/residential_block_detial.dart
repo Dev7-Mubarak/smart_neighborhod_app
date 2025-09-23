@@ -190,6 +190,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                       FamilyListTable(
                         families: searchedFamilies,
                         familyCubit: context.read<FamilyCubit>(),
+                        blockDetailCubit: context.read<BlockDetailCubit>(),
                       ),
                     ],
                   ),

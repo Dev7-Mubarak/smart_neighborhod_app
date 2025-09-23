@@ -26,6 +26,12 @@ class FamilyCubit extends Cubit<FamilyState> {
     this.family = family;
   }
 
+  void setFamilyForUpdate(Family family) {
+    this.family = family;
+    this.selectedCategoryId = family.familyCatgoryId;
+    this.selectedFamilyHeadId = family.familyHeadId;
+  }
+
   void setFamilyMember(FamilyMember? familyMember) {
     this.familyMember = familyMember;
   }

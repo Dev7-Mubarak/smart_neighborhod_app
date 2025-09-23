@@ -11,11 +11,13 @@ import '../../../features/residdentailBlocks/data/models/bind_cubit.dart';
 class FamilyListTable extends StatelessWidget {
   final List<Family> families;
   final FamilyCubit familyCubit;
+  final BlockDetailCubit blockDetailCubit;
 
   const FamilyListTable({
     super.key,
     required this.families,
     required this.familyCubit,
+    required this.blockDetailCubit,
   });
 
   @override
@@ -74,11 +76,7 @@ class FamilyListTable extends StatelessWidget {
               label: const Text('تعديل الأسرة'),
               onPressed: () {
                 Navigator.pop(context);
-                FamilyCubit familyCubit = context.read<FamilyCubit>();
-                familyCubit.setFamily(selectedFamily);
-
-                BlockDetailCubit blockDetailCubit = context
-                    .read<BlockDetailCubit>();
+                familyCubit.setFamilyForUpdate(selectedFamily);
 
                 final bindCubit = BindCubit(
                   familyCubit: familyCubit,
@@ -96,11 +94,7 @@ class FamilyListTable extends StatelessWidget {
               icon: const Icon(Icons.delete),
               label: const Text('حذف الأسرة'),
               onPressed: () {
-                _showDeleteConfirmationDialog(
-                  context,
-                  selectedFamily,
-                  familyCubit,
-                );
+                _showDeleteConfirmationDialog(context, selectedFamily);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
@@ -113,11 +107,7 @@ class FamilyListTable extends StatelessWidget {
     );
   }
 
-  void _showDeleteConfirmationDialog(
-    BuildContext context,
-    Family family,
-    FamilyCubit familyCubit,
-  ) {
+  void _showDeleteConfirmationDialog(BuildContext context, Family family) {
     showDialog(
       context: context,
       builder: (context) {
@@ -132,9 +122,7 @@ class FamilyListTable extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 await familyCubit.deleteFamily(family.id);
-                context.read<BlockDetailCubit>().getBlockDetailes(
-                  family.blockId,
-                );
+                blockDetailCubit.getBlockDetailes(family.blockId);
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pop(); // Close sheet
               },
