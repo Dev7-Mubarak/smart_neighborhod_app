@@ -5,7 +5,7 @@ import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart'
 
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
-import '../../../../core/services/cache_helper.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -13,7 +13,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
-  late UserData userData;
+  late ProfileModel profileModel;
   final DioConsumer api;
   IconData prefixIcon = Icons.visibility;
   bool isPassword = true;
@@ -25,11 +25,14 @@ class LoginCubit extends Cubit<LoginState> {
         ApiLink.login,
         data: {'email': email, 'password': password},
       );
-      userData = UserData.fromJson(response["data"]);
-      CacheHelper().saveData(key: 'id', value: userData.id);
-      CacheHelper().saveData(key: 'token', value: userData.token);
-      CacheHelper().saveData(key: 'email', value: userData.email);
-      emit(LoginSuccess(userdata: userData, message: response['message']));
+
+      if (response['isSuccess']) {
+        profileModel = ProfileModel.fromJson(response["data"]);
+        SharedPreferencesService.setProfile(profileModel);
+        emit(
+          LoginSuccess(userdata: profileModel, message: response['message']),
+        );
+      }
     } on Serverexception catch (e) {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
     }

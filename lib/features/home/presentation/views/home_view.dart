@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
@@ -28,6 +31,16 @@ class MmainHomeState extends State<MainHome> {
         _selectedTab = tappedTab;
       });
     }
+  }
+
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+
+  void _getUserInfo() async {
+    final prefs = await SharedPreferences.getInstance();
   }
 
   @override
@@ -77,7 +90,7 @@ class MmainHomeState extends State<MainHome> {
                   ),
                 ),
                 Text(
-                  username, // Replace with actual username variable
+                  username,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

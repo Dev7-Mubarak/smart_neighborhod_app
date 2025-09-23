@@ -1,14 +1,24 @@
-class UserData {
+class ProfileModel {
   late String id;
   late String email;
   late String token;
-  
+  late String role;
 
-  UserData({required this.id, required this.email,required this.token});
+  ProfileModel({
+    required this.id,
+    required this.email,
+    required this.token,
+    required this.role,
+  });
 
-  UserData.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? '';
-    email = json['email'] ?? '';
-    token = json['token'] ?? '';
+  ProfileModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    role = json['role'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'email': email, 'role': role, 'token': token};
   }
 }

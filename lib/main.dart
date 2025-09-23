@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
-import 'package:smart_negborhood_app/core/services/cache_helper.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 import 'core/config/app_Bloc_observer.dart';
 import 'features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,7 +12,7 @@ import 'core/config/generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await CacheHelper.init();
+  await SharedPreferencesService.init();
   Bloc.observer = AppBlocObserver();
   runApp(SmartNeighbourhood(appRouter: AppRouter()));
 }
@@ -41,7 +41,7 @@ class SmartNeighbourhood extends StatelessWidget {
           fontFamily: 'Tajawal-Regular',
         ),
         onGenerateRoute: appRouter.generateRoute,
-        initialRoute: AppRoute.mainHome,
+        initialRoute: AppRoute.login,
       ),
     );
   }
