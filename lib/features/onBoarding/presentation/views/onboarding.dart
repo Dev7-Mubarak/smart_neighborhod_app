@@ -58,7 +58,7 @@ class Onboarding extends StatelessWidget {
                 backgroundColor: AppColor.white,
                 color: AppColor.primaryColor,
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoute.login);
+                  Navigator.pushReplacementNamed(context, AppRoute.login);
                 },
                 fontsize: 25,
               ),
