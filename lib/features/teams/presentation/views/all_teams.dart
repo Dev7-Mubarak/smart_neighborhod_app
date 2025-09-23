@@ -184,7 +184,7 @@ class _AllTeamsState extends State<AllTeams> {
                               ),
                               SizedBox(height: 10),
                               Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.centerRight,
                                 child: SmallButton(
                                   text: 'إضافة عضو',
                                   onPressed: () {

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_state.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/blockCubit/block_state.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
@@ -152,7 +151,11 @@ class BlockCubit extends Cubit<BlockState> {
       final response = await api.delete('${ApiLink.deleteBlocke}/$id');
 
       if (response["isSuccess"]) {
-        emit(BlockDeletedSuccessfully(message: response["message"]));
+        emit(
+          BlockDeletedSuccessfully(
+            message: response["message"] ?? 'تم الحذف بنجاح',
+          ),
+        );
         await getBlocks();
       } else {
         Serverexception(
@@ -163,32 +166,6 @@ class BlockCubit extends Cubit<BlockState> {
           ),
         );
       }
-    } on Serverexception catch (e) {
-      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
-      emit(BlocksFailure(errorMessage: e.toString()));
-    }
-  }
-
-  Future<void> getBlockDetailes(int blockId) async {
-    emit(BlocksLoading());
-    try {
-      final response = await api.get(
-        ApiLink.getBlockDetails,
-        queryparameters: {'blockId': blockId},
-      );
-
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: '400',
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
-
-      emit(BlocksDetailesLoaded(BlockDetails.fromJson(response["data"])));
     } on Serverexception catch (e) {
       emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

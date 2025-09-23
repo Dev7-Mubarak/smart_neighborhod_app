@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/table.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
+
+import '../../../features/residdentailBlocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
+import '../../../features/residdentailBlocks/data/models/bind_cubit.dart';
 
 class FamilyListTable extends StatelessWidget {
   final List<Family> families;
@@ -72,11 +74,20 @@ class FamilyListTable extends StatelessWidget {
               label: const Text('تعديل الأسرة'),
               onPressed: () {
                 Navigator.pop(context);
+                FamilyCubit familyCubit = context.read<FamilyCubit>();
                 familyCubit.setFamily(selectedFamily);
+
+                BlockDetailCubit blockDetailCubit = context
+                    .read<BlockDetailCubit>();
+
+                final bindCubit = BindCubit(
+                  familyCubit: familyCubit,
+                  blockDetailCubit: blockDetailCubit,
+                );
                 Navigator.pushNamed(
                   context,
                   AppRoute.addUpdateFamily,
-                  arguments: familyCubit,
+                  arguments: bindCubit,
                 );
               },
             ),
@@ -121,9 +132,9 @@ class FamilyListTable extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 await familyCubit.deleteFamily(family.id);
-                BlocProvider.of<BlockCubit>(
-                  context,
-                ).getBlockDetailes(family.blockId);
+                context.read<BlockDetailCubit>().getBlockDetailes(
+                  family.blockId,
+                );
                 Navigator.of(context).pop(); // Close dialog
                 Navigator.of(context).pop(); // Close sheet
               },

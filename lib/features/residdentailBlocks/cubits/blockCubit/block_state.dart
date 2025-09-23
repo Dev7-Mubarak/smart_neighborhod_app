@@ -14,12 +14,6 @@ class BlocksLoaded extends BlockState {
   BlocksLoaded(this.allBlocks);
 }
 
-class BlocksDetailesLoaded extends BlockState {
-  final BlockDetails blockDetailes;
-
-  BlocksDetailesLoaded(this.blockDetailes);
-}
-
 class BlocksLoading extends BlockState {}
 
 class BlocksFailure extends BlockState {

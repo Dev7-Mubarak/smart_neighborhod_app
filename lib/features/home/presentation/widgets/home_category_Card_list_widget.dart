@@ -28,11 +28,11 @@ class _HomeCategoryCardListWidgetState
         },
       ),
       CategoryCard(
-        title: locale.generalUnitReport,
+        title: "المربعات السكنية",
         imagePath: AppImage.homeresidential,
         backgroundColor: const Color(0xFFEFA98D),
         onTap: () {
-          // Navigator.pushNamed(context, AppRoute.residentialBlocks);
+          // Navigator.pushReplacementNamed(context, AppRoute.residentialBlocks);
         },
       ),
       CategoryCard(

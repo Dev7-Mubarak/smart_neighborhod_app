@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
-import '../../cubits/block_cubit/block_cubit.dart';
-import '../../cubits/block_cubit/block_state.dart';
+import '../../cubits/blockCubit/block_cubit.dart';
 import '../../../people/data/models/Person.dart';
 
 class AddBlockView extends StatefulWidget {

@@ -10,12 +10,11 @@ import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/constants/home_tab_enum.dart';
-import '../../cubits/block_cubit/block_cubit.dart';
-import '../../cubits/block_cubit/block_state.dart';
+import '../../cubits/blockCubit/block_cubit.dart';
+import '../../cubits/blockCubit/block_state.dart';
 import '../../data/models/Block.dart';
 import '../widgets/change_block_name_widget.dart';
 import '../widgets/residential_block_card_widget.dart';
-import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 
 class ResidentialBlock extends StatefulWidget {
   const ResidentialBlock({super.key});
@@ -72,13 +71,12 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     return ListView.builder(
       itemCount: blocks.length,
       itemBuilder: (context, index) {
-        final blockCubit = context.read<BlockCubit>();
         return ResidentialBlockCardWidget(
           onTapCallback: (ctx, block) {
             Navigator.pushNamed(
               context,
               AppRoute.residentialBlockDetial,
-              arguments: blockCubit..setBlock(block),
+              arguments: block.id,
             );
           },
           block: blocks[index],
@@ -111,71 +109,7 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: AppColor.white,
-          elevation: 0,
-          bottomOpacity: 0,
-          title: Row(
-            children: [
-              // Modern profile avatar with border and shadow
-              Container(
-                child: CircleAvatar(
-                  radius: 22,
-                  backgroundColor: AppColor.primaryColor,
-                  child: Text(
-                    // You can fetch the profile/email from SharedPreferencesService if needed
-                    SharedPreferencesService.getProfile()?.email.isNotEmpty ==
-                            true
-                        ? SharedPreferencesService.getProfile()!.email[0]
-                              .toUpperCase()
-                        : '',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.white,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Greeting and username with modern text style
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'مرحباً,', // Or use locale.hello if localized
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: AppColor.primaryColor,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  Text(
-                    SharedPreferencesService.getProfile()?.email ?? '',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              IconButton(
-                icon: Icon(
-                  Icons.notifications_rounded,
-                  color: AppColor.primaryColor.withOpacity(0.9),
-                  size: 28,
-                ),
-                onPressed: () {},
-                tooltip: 'الاشعارات',
-              ),
-            ],
-          ),
-          centerTitle: false,
-        ),
+
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

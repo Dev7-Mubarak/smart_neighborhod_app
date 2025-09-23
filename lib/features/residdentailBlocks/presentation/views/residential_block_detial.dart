@@ -7,13 +7,14 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/block_cubit/block_state.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/bind_cubit.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_image.dart';
+import '../../cubits/BlockDetailCubit/block_detail_cubit.dart';
+import '../../cubits/BlockDetailCubit/block_detail_state.dart';
 
 //Edit Searching and use pagination
 class ResiddentialBlocksDetail extends StatefulWidget {
@@ -34,8 +35,12 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
 
   @override
   void initState() {
+    _getBlockDetailes();
     super.initState();
-    context.read<BlockCubit>().getBlockDetailes(widget.blockId);
+  }
+
+  Future<void> _getBlockDetailes() async {
+    await context.read<BlockDetailCubit>().getBlockDetailes(widget.blockId);
   }
 
   @override
@@ -90,14 +95,14 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
         ),
       ),
       body: SafeArea(
-        child: BlocBuilder<BlockCubit, BlockState>(
+        child: BlocBuilder<BlockDetailCubit, BlockDetailState>(
           builder: (context, state) {
-            if (state is BlocksLoading) {
+            if (state is BlockDetailLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (state is BlocksDetailesLoaded) {
-              blockDetails = state.blockDetailes;
+            if (state is BlockDetailLoaded) {
+              blockDetails = state.blockDetails;
 
               if (_searchController.text.isEmpty) {
                 searchedFamilies = blockDetails.families;
@@ -143,15 +148,22 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                             SmallButton(
                               text: 'أضافة',
                               onPressed: () {
-                                var familyCubit = BlocProvider.of<FamilyCubit>(
-                                  context,
-                                );
+                                FamilyCubit familyCubit = context
+                                    .read<FamilyCubit>();
                                 familyCubit.setFamily(null);
+
+                                BlockDetailCubit blockDetailCubit = context
+                                    .read<BlockDetailCubit>();
+
+                                final bindCubit = BindCubit(
+                                  familyCubit: familyCubit,
+                                  blockDetailCubit: blockDetailCubit,
+                                );
 
                                 Navigator.pushNamed(
                                   context,
                                   AppRoute.addUpdateFamily,
-                                  arguments: familyCubit,
+                                  arguments: bindCubit,
                                 );
                               },
                             ),
@@ -185,7 +197,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
               );
             }
 
-            if (state is BlocksFailure) {
+            if (state is BlockDetailFailure) {
               return Center(child: Text(state.errorMessage));
             }
 

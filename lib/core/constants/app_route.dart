@@ -13,7 +13,7 @@ import 'package:smart_negborhood_app/features/families/cubits/member_family_role
 import 'package:smart_negborhood_app/features/families/presentation/views/family_member_details.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/Block.dart';
+import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/bind_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
 import 'package:smart_negborhood_app/features/settings/presentation/views/setteings_view.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
@@ -48,7 +48,8 @@ import 'package:smart_negborhood_app/features/teams/presentation/views/add_updat
 import 'package:smart_negborhood_app/features/teams/presentation/views/add_update_team_member.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/all_teams.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/team_details.dart';
-import '../../features/residdentailBlocks/cubits/block_cubit/block_cubit.dart';
+import '../../features/residdentailBlocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
+import '../../features/residdentailBlocks/cubits/blockCubit/block_cubit.dart';
 import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
 import '../../features/home/cubits/mainHome_cubit/main_home_cubit.dart';
@@ -87,19 +88,19 @@ class AppRouter {
           ),
         );
       case AppRoute.residentialBlockDetial:
-        final blockCubit = settings.arguments as BlockCubit;
+        final blockId = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<FamilyCubit>(
-                create: (_) => FamilyCubit(
-                  blockCubit.block!.id,
-                  api: DioConsumer(dio: Dio()),
-                ),
+                create: (_) =>
+                    FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
               ),
-              BlocProvider.value(value: blockCubit),
+              BlocProvider<BlockDetailCubit>(
+                create: (_) => BlockDetailCubit(api: DioConsumer(dio: Dio())),
+              ),
             ],
-            child: ResiddentialBlocksDetail(blockId: blockCubit.block!.id),
+            child: ResiddentialBlocksDetail(blockId: blockId),
           ),
         );
       case AppRoute.addUpdatePerson:
@@ -111,11 +112,12 @@ class AppRouter {
           ),
         );
       case AppRoute.addUpdateFamily:
-        final familyCubit = settings.arguments as FamilyCubit;
+        final bindCubit = settings.arguments as BindCubit;
         return MaterialPageRoute(
           builder: (context) => MultiBlocProvider(
             providers: [
-              BlocProvider.value(value: familyCubit),
+              BlocProvider.value(value: bindCubit.familyCubit),
+              BlocProvider.value(value: bindCubit.blockDetailCubit),
               BlocProvider(
                 create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
               ),
@@ -125,8 +127,8 @@ class AppRouter {
               ),
             ],
             child: AddUpdateFamily(
-              blockId: familyCubit.blockId,
-              family: familyCubit.family,
+              blockId: bindCubit.familyCubit.blockId,
+              family: bindCubit.familyCubit.family,
             ),
           ),
         );
