@@ -22,12 +22,11 @@ class AddBlockView extends StatefulWidget {
 
 class _AddBlockViewState extends State<AddBlockView> {
   late final TextEditingController blockNameController;
-  late final TextEditingController usernameController;
+  late final TextEditingController emailController;
   final TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // int? _personId;
-  Person? _selectedPerson;
+  int? _selectedPersonId;
   late PersonCubit personCubit;
   late BlockCubit blockCubit;
 
@@ -37,13 +36,13 @@ class _AddBlockViewState extends State<AddBlockView> {
     personCubit = context.read<PersonCubit>()..getPeople();
     blockCubit = context.read<BlockCubit>();
     blockNameController = TextEditingController();
-    usernameController = TextEditingController();
+    emailController = TextEditingController();
   }
 
   @override
   void dispose() {
     blockNameController.dispose();
-    usernameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -58,9 +57,10 @@ class _AddBlockViewState extends State<AddBlockView> {
         if (state is BlockAddedSuccessfully) {
           context.showSuccessSnackBar(state.message);
           Navigator.pop(context);
-        } else if (state is BlocksFailure) {
-          context.showErrorSnackBar(state.errorMessage);
           Navigator.pop(context);
+        } else if (state is BlocksFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -128,11 +128,12 @@ class _AddBlockViewState extends State<AddBlockView> {
                                 );
                               }
 
-                              if (_selectedPerson == null &&
-                                  state.people.isNotEmpty) {
-                                _selectedPerson = state.people.first;
+                              Person? initialSelectedPerson;
+                              if (_selectedPersonId != null) {
+                                initialSelectedPerson = state.people.firstWhere(
+                                  (person) => person.id == _selectedPersonId,
+                                );
                               }
-
                               return DropdownSearch<Person>(
                                 popupProps: PopupProps.menu(
                                   showSearchBox: true,
@@ -162,9 +163,11 @@ class _AddBlockViewState extends State<AddBlockView> {
                                 items: state.people,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
-                                  // blockCubit.changeSelectedManager(data?.id);
+                                  blockCubit.changeSelectedBlockManager(
+                                    data?.id,
+                                  );
                                 },
-                                selectedItem: _selectedPerson,
+                                selectedItem: initialSelectedPerson,
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     labelText: "اختر المدير",
@@ -193,7 +196,7 @@ class _AddBlockViewState extends State<AddBlockView> {
                         const SizedBox(height: 20),
                         const SmallText(text: 'الايميل'),
                         CustomTextFormField(
-                          controller: usernameController,
+                          controller: emailController,
                           suffixIcon: null,
                           keyboardType: TextInputType.name,
                           validator: (value) {
@@ -234,10 +237,9 @@ class _AddBlockViewState extends State<AddBlockView> {
                           if (_formKey.currentState!.validate()) {
                             blockCubit.addNewBlock(
                               blockNameController.text,
-                              usernameController.text,
+                              emailController.text,
                               passwordController.text,
                             );
-                            Navigator.pop(context);
                           }
                         },
                       ),

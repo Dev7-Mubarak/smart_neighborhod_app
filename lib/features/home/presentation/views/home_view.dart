@@ -1,12 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_route.dart';
 import '../../../../core/constants/home_tab_enum.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 import '../widgets/home_category_Card_list_widget.dart';
 
 class MainHome extends StatefulWidget {
@@ -18,6 +17,7 @@ class MainHome extends StatefulWidget {
 
 class MmainHomeState extends State<MainHome> {
   HomeTabEnum _selectedTab = HomeTabEnum.home;
+  late final ProfileModel? _profile;
 
   void _onNavBarTap(int index) {
     final tappedTab = HomeTabEnum.values[index];
@@ -35,18 +35,13 @@ class MmainHomeState extends State<MainHome> {
 
   @override
   void initState() {
-    _getUserInfo();
+    _profile = SharedPreferencesService.getProfile();
     super.initState();
-  }
-
-  void _getUserInfo() async {
-    final prefs = await SharedPreferences.getInstance();
   }
 
   @override
   Widget build(BuildContext context) {
     var locale = context.locale;
-    final String username = "اسم المستخدم";
 
     return Scaffold(
       appBar: AppBar(
@@ -57,21 +52,19 @@ class MmainHomeState extends State<MainHome> {
           children: [
             // Modern profile avatar with border and shadow
             Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-                border: Border.all(color: AppColor.primaryColor, width: 2),
-              ),
               child: CircleAvatar(
                 radius: 22,
-                backgroundColor: AppColor.gray,
-                child: const Icon(Icons.person, color: Colors.black, size: 26),
+                backgroundColor: AppColor.primaryColor,
+                child: Text(
+                  _profile?.email.isNotEmpty == true
+                      ? _profile!.email[0].toUpperCase()
+                      : '',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.white,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -90,7 +83,7 @@ class MmainHomeState extends State<MainHome> {
                   ),
                 ),
                 Text(
-                  username,
+                  _profile?.email ?? '',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

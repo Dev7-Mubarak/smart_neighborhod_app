@@ -35,7 +35,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<BlockCubit>(context).getBlockDetailes(widget.blockId);
+    context.read<BlockCubit>().getBlockDetailes(widget.blockId);
   }
 
   @override

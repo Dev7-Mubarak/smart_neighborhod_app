@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,23 +8,38 @@ import '../constants/shared_preferences_keys.dart';
 class SharedPreferencesService {
   static late SharedPreferences _pref;
 
-  //! Here The Initialize of cache .
+  /// Initialize SharedPreferences
   static Future<void> init() async {
     _pref = await SharedPreferences.getInstance();
   }
 
-  static Future<void> setBool(String key, bool value) async {
-    await _pref.setBool(key, value);
+  static Future<void> setValue(String key, dynamic value) async {
+    if (value is bool) {
+      await _pref.setBool(key, value);
+    } else if (value is int) {
+      await _pref.setInt(key, value);
+    } else if (value is double) {
+      await _pref.setDouble(key, value);
+    } else if (value is String) {
+      await _pref.setString(key, value);
+    } else {
+      throw ArgumentError("Unsupported type");
+    }
   }
 
-  static Future<bool?> getBool(String key) async => await _pref.getBool(key);
+  static dynamic getValue(String key) => _pref.get(key);
 
-  static Future<ProfileModel?> getProfile() async {
-    final profileString = await _pref.getString(SharedPreferencesKeys.profile);
+  static ProfileModel? getProfile() {
+    final profileString = _pref.getString(SharedPreferencesKeys.profile);
     if (profileString != null) {
-      final profileJson = jsonDecode(profileString) as Map<String, dynamic>;
-      debugPrint("the profile from local storage is $profileJson");
-      return ProfileModel.fromJson(profileJson);
+      try {
+        final profileJson = jsonDecode(profileString) as Map<String, dynamic>;
+        debugPrint("Profile from local storage: $profileJson");
+        return ProfileModel.fromJson(profileJson);
+      } catch (e) {
+        debugPrint("Error parsing profile: $e");
+        removeProfile(); // Optional: clear corrupted data
+      }
     }
     return null;
   }
@@ -37,5 +51,9 @@ class SharedPreferencesService {
 
   static Future<void> removeProfile() async {
     await _pref.remove(SharedPreferencesKeys.profile);
+  }
+
+  static Future<void> clear() async {
+    await _pref.clear();
   }
 }

@@ -82,19 +82,15 @@ class BlockCubit extends Cubit<BlockState> {
     }
   }
 
-  Future<void> addNewBlock(
-    String name,
-    String userName,
-    String password,
-  ) async {
-    emit(BlocksLoading());
+  Future<void> addNewBlock(String name, String email, String password) async {
+    emit(WaitingForUpdateOrAddBlock());
     try {
       final response = await api.post(
         ApiLink.addBlocke,
         data: {
           'name': name,
           'personId': selectedManager,
-          'userName': userName,
+          'email': email,
           'password': password,
         },
       );

@@ -4,6 +4,8 @@ import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_route.dart';
 import '../../../../core/constants/home_tab_enum.dart';
+import '../../../../core/services/shared_preferences_service.dart';
+import '../../../auth/data/models/login_model.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -14,6 +16,7 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   HomeTabEnum _selectedTab = HomeTabEnum.settings;
+  late final ProfileModel? _profile;
 
   void _onNavBarTap(int index) {
     final tappedTab = HomeTabEnum.values[index];
@@ -30,9 +33,15 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   @override
+  void initState() {
+    _profile = SharedPreferencesService.getProfile();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final String username = "مبارك خالد";
-    final String userId = "#0a299e75";
+    final String email = _profile?.email ?? "";
+    final String defaultCover = email[0].toUpperCase();
     final String appVersion = "1.0.0";
 
     return Scaffold(
@@ -62,9 +71,12 @@ class _SettingsViewState extends State<SettingsView> {
                     CircleAvatar(
                       radius: 45,
                       backgroundColor: Colors.grey[300],
-                      child: const Text(
-                        "M",
-                        style: TextStyle(fontSize: 40, color: Colors.black),
+                      child: Text(
+                        defaultCover,
+                        style: const TextStyle(
+                          fontSize: 40,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     Positioned(
@@ -88,9 +100,9 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
                 const SizedBox(height: 10),
 
-                // Username
+                // Email
                 Text(
-                  username,
+                  email,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

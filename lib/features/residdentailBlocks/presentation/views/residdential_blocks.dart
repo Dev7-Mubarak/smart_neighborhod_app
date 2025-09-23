@@ -15,6 +15,7 @@ import '../../cubits/block_cubit/block_state.dart';
 import '../../data/models/Block.dart';
 import '../widgets/change_block_name_widget.dart';
 import '../widgets/residential_block_card_widget.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 
 class ResidentialBlock extends StatefulWidget {
   const ResidentialBlock({super.key});
@@ -71,7 +72,15 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
     return ListView.builder(
       itemCount: blocks.length,
       itemBuilder: (context, index) {
+        final blockCubit = context.read<BlockCubit>();
         return ResidentialBlockCardWidget(
+          onTapCallback: (ctx, block) {
+            Navigator.pushNamed(
+              context,
+              AppRoute.residentialBlockDetial,
+              arguments: blockCubit..setBlock(block),
+            );
+          },
           block: blocks[index],
           onLongPressCallback: (ctx, block) {
             _showOptions(block);
@@ -89,8 +98,67 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
-        title: Text(locale.residentialBlocks),
-        centerTitle: true,
+        bottomOpacity: 0,
+        title: Row(
+          children: [
+            // Modern profile avatar with border and shadow
+            Container(
+              child: CircleAvatar(
+                radius: 22,
+                backgroundColor: AppColor.primaryColor,
+                child: Text(
+                  // You can fetch the profile/email from SharedPreferencesService if needed
+                  SharedPreferencesService.getProfile()?.email.isNotEmpty ==
+                          true
+                      ? SharedPreferencesService.getProfile()!.email[0]
+                            .toUpperCase()
+                      : '',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.white,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            // Greeting and username with modern text style
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'مرحباً,', // Or use locale.hello if localized
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColor.primaryColor,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                Text(
+                  SharedPreferencesService.getProfile()?.email ?? '',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            IconButton(
+              icon: Icon(
+                Icons.notifications_rounded,
+                color: AppColor.primaryColor.withOpacity(0.9),
+                size: 28,
+              ),
+              onPressed: () {},
+              tooltip: 'الاشعارات',
+            ),
+          ],
+        ),
+        centerTitle: false,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,9 +171,11 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
                 SmallButton(
                   text: locale.add,
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoute.addBlock).then((_) {
-                      _blockCubit.getBlocks();
-                    });
+                    Navigator.pushNamed(
+                      context,
+                      AppRoute.addBlock,
+                      arguments: _blockCubit,
+                    );
                   },
                 ),
                 const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),

@@ -22,7 +22,7 @@ class _HomeCategoryCardListWidgetState
       CategoryCard(
         title: locale.allPeople,
         imagePath: AppImage.homecomplan,
-        backgroundColor: const Color(0xFF5B27D5),
+        backgroundColor: const Color(0xFFE8618C),
         onTap: () {
           Navigator.pushNamed(context, AppRoute.allPeople);
         },

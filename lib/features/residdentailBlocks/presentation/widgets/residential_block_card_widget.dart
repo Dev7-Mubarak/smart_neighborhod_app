@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_image.dart';
-import '../../../../core/constants/app_route.dart';
-import '../../cubits/block_cubit/block_cubit.dart';
 import '../../data/models/Block.dart';
 
 class ResidentialBlockCardWidget extends StatelessWidget {
   final Block block;
   final void Function(BuildContext context, Block block) onLongPressCallback;
+  final void Function(BuildContext context, Block block) onTapCallback;
 
   const ResidentialBlockCardWidget({
     super.key,
     required this.block,
     required this.onLongPressCallback,
+    required this.onTapCallback,
   });
 
   @override
@@ -23,12 +22,7 @@ class ResidentialBlockCardWidget extends StatelessWidget {
     var locale = context.locale;
     return InkWell(
       onTap: () {
-        BlocProvider.of<BlockCubit>(context).setBlock(block);
-        Navigator.pushNamed(
-          context,
-          AppRoute.residentialBlockDetial,
-          arguments: block.id,
-        );
+        onTapCallback(context, block);
       },
       onLongPress: () {
         onLongPressCallback(context, block);

@@ -28,7 +28,7 @@ class LoginCubit extends Cubit<LoginState> {
 
       if (response['isSuccess']) {
         profileModel = ProfileModel.fromJson(response["data"]);
-        SharedPreferencesService.setProfile(profileModel);
+        await SharedPreferencesService.setProfile(profileModel);
         emit(
           LoginSuccess(userdata: profileModel, message: response['message']),
         );
