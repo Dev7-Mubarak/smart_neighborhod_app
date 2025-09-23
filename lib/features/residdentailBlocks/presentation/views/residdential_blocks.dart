@@ -93,117 +93,134 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: AppColor.white,
-        elevation: 0,
-        bottomOpacity: 0,
-        title: Row(
+    return BlocListener<BlockCubit, BlockState>(
+      listener: (context, state) {
+        if (state is WaitingForUpdateOrAddBlock) {
+          context.showLoadingDialog();
+        } else if (state is BlockAddedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          Navigator.pop(context);
+        } else if (state is BlockDeletedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+        } else if (state is BlocksFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          bottomOpacity: 0,
+          title: Row(
+            children: [
+              // Modern profile avatar with border and shadow
+              Container(
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundColor: AppColor.primaryColor,
+                  child: Text(
+                    // You can fetch the profile/email from SharedPreferencesService if needed
+                    SharedPreferencesService.getProfile()?.email.isNotEmpty ==
+                            true
+                        ? SharedPreferencesService.getProfile()!.email[0]
+                              .toUpperCase()
+                        : '',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColor.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Greeting and username with modern text style
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'مرحباً,', // Or use locale.hello if localized
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: AppColor.primaryColor,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  Text(
+                    SharedPreferencesService.getProfile()?.email ?? '',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              IconButton(
+                icon: Icon(
+                  Icons.notifications_rounded,
+                  color: AppColor.primaryColor.withOpacity(0.9),
+                  size: 28,
+                ),
+                onPressed: () {},
+                tooltip: 'الاشعارات',
+              ),
+            ],
+          ),
+          centerTitle: false,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Modern profile avatar with border and shadow
-            Container(
-              child: CircleAvatar(
-                radius: 22,
-                backgroundColor: AppColor.primaryColor,
-                child: Text(
-                  // You can fetch the profile/email from SharedPreferencesService if needed
-                  SharedPreferencesService.getProfile()?.email.isNotEmpty ==
-                          true
-                      ? SharedPreferencesService.getProfile()!.email[0]
-                            .toUpperCase()
-                      : '',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.white,
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SmallButton(
+                    text: locale.add,
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoute.addBlock,
+                        arguments: _blockCubit,
+                      );
+                    },
                   ),
-                ),
+                  const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+                  Expanded(
+                    child: SearchableTextFormField(
+                      hintText: locale.searchResidentialBlock,
+                      bachgroundColor: AppColor.gray2,
+                      suffixIcon: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.close),
+                      ),
+                      prefixIcon: Icons.search,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 12),
-            // Greeting and username with modern text style
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'مرحباً,', // Or use locale.hello if localized
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.primaryColor,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                Text(
-                  SharedPreferencesService.getProfile()?.email ?? '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            IconButton(
-              icon: Icon(
-                Icons.notifications_rounded,
-                color: AppColor.primaryColor.withOpacity(0.9),
-                size: 28,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: buildBlocWidget(),
               ),
-              onPressed: () {},
-              tooltip: 'الاشعارات',
             ),
           ],
         ),
-        centerTitle: false,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SmallButton(
-                  text: locale.add,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoute.addBlock,
-                      arguments: _blockCubit,
-                    );
-                  },
-                ),
-                const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-                Expanded(
-                  child: SearchableTextFormField(
-                    hintText: locale.searchResidentialBlock,
-                    bachgroundColor: AppColor.gray2,
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.close),
-                    ),
-                    prefixIcon: Icons.search,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: buildBlocWidget(),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: CustomNavigationBar(
-        currentIndex: _selectedTab.index,
-        onTap: _onNavBarTap,
+        bottomNavigationBar: CustomNavigationBar(
+          currentIndex: _selectedTab.index,
+          onTap: _onNavBarTap,
+        ),
       ),
     );
   }

@@ -49,209 +49,192 @@ class _AddBlockViewState extends State<AddBlockView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<BlockCubit, BlockState>(
-      listener: (context, state) {
-        if (state is WaitingForUpdateOrAddBlock) {
-          context.showLoadingDialog();
-        }
-        if (state is BlockAddedSuccessfully) {
-          context.showSuccessSnackBar(state.message);
-          Navigator.pop(context);
-          Navigator.pop(context);
-        } else if (state is BlocksFailure) {
-          Navigator.of(context, rootNavigator: true).pop();
-          context.showErrorSnackBar(state.errorMessage);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColor.white,
-          elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              'إضافة مربع سكني',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColor.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: Center(
+          child: Text(
+            'إضافة مربع سكني',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  const SmallText(text: 'اسم المربع السكني'),
-                  const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                  CustomTextFormField(
-                    bachgroundColor: AppColor.white,
-                    controller: blockNameController,
-                    keyboardType: TextInputType.name,
-                    suffixIcon: null,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'الرجاء إدخال اسم المربع السكني';
-                      }
-                      return null;
-                    },
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                const SmallText(text: 'اسم المربع السكني'),
+                const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                CustomTextFormField(
+                  bachgroundColor: AppColor.white,
+                  controller: blockNameController,
+                  keyboardType: TextInputType.name,
+                  suffixIcon: null,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'الرجاء إدخال اسم المربع السكني';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 30),
+                const SmallText(text: 'مدير المربع السكني'),
+                const SizedBox(height: 18),
+                Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: AppColor.gray,
                   ),
-                  const SizedBox(height: 30),
-                  const SmallText(text: 'مدير المربع السكني'),
-                  const SizedBox(height: 18),
-                  Container(
-                    padding: const EdgeInsets.all(25),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: AppColor.gray,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BlocBuilder<PersonCubit, PersonState>(
-                          builder: (context, state) {
-                            if (state is PersonLoading) {
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocBuilder<PersonCubit, PersonState>(
+                        builder: (context, state) {
+                          if (state is PersonLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (state is PersonLoaded) {
+                            if (state.people.isEmpty) {
                               return const Center(
-                                child: CircularProgressIndicator(),
+                                child: Text('لا يوجد مديرين متاحين'),
                               );
                             }
-                            if (state is PersonLoaded) {
-                              if (state.people.isEmpty) {
-                                return const Center(
-                                  child: Text('لا يوجد مديرين متاحين'),
-                                );
-                              }
 
-                              Person? initialSelectedPerson;
-                              if (_selectedPersonId != null) {
-                                initialSelectedPerson = state.people.firstWhere(
-                                  (person) => person.id == _selectedPersonId,
-                                );
-                              }
-                              return DropdownSearch<Person>(
-                                popupProps: PopupProps.menu(
-                                  showSearchBox: true,
-                                  searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
-                                      hintText: "ابحث عن مدير...",
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    textDirection: TextDirection.rtl,
-                                  ),
-                                  menuProps: MenuProps(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  itemBuilder: (context, person, isSelected) {
-                                    return ListTile(
-                                      title: Text(
-                                        person.fullName,
-                                        textDirection: TextDirection.rtl,
-                                      ),
-                                      selected: isSelected,
-                                    );
-                                  },
-                                  fit: FlexFit.loose,
-                                ),
-                                items: state.people,
-                                itemAsString: (Person? u) => u?.fullName ?? '',
-                                onChanged: (Person? data) {
-                                  blockCubit.changeSelectedBlockManager(
-                                    data?.id,
-                                  );
-                                },
-                                selectedItem: initialSelectedPerson,
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: "اختر المدير",
-                                    hintText: "اختر مدير المربع السكني",
+                            Person? initialSelectedPerson;
+                            if (_selectedPersonId != null) {
+                              initialSelectedPerson = state.people.firstWhere(
+                                (person) => person.id == _selectedPersonId,
+                              );
+                            }
+                            return DropdownSearch<Person>(
+                              popupProps: PopupProps.menu(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  decoration: InputDecoration(
+                                    hintText: "ابحث عن مدير...",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
+                                  ),
+                                  textDirection: TextDirection.rtl,
+                                ),
+                                menuProps: MenuProps(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                itemBuilder: (context, person, isSelected) {
+                                  return ListTile(
+                                    title: Text(
+                                      person.fullName,
+                                      textDirection: TextDirection.rtl,
                                     ),
+                                    selected: isSelected,
+                                  );
+                                },
+                                fit: FlexFit.loose,
+                              ),
+                              items: state.people,
+                              itemAsString: (Person? u) => u?.fullName ?? '',
+                              onChanged: (Person? data) {
+                                blockCubit.changeSelectedBlockManager(data?.id);
+                              },
+                              selectedItem: initialSelectedPerson,
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "اختر المدير",
+                                  hintText: "اختر مدير المربع السكني",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
                                   ),
                                 ),
-                                validator: (Person? item) {
-                                  if (item == null) {
-                                    return "الرجاء اختيار مدير للمربع";
-                                  }
-                                  return null;
-                                },
-                              );
-                            }
-
-                            return Container();
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        const SmallText(text: 'الايميل'),
-                        CustomTextFormField(
-                          controller: emailController,
-                          suffixIcon: null,
-                          keyboardType: TextInputType.name,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'الرجاء إدخال اسم المستخدم';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        const SmallText(text: 'كلمة المرور'),
-                        CustomTextFormField(
-                          controller: passwordController,
-                          suffixIcon: null,
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.length < 8) {
-                              return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
-                            }
-                            if (!RegExp(
-                              r'^(?=.*[A-Z])(?=.*[0-9])',
-                            ).hasMatch(value)) {
-                              return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SmallButton(
-                        text: 'إضافة',
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            blockCubit.addNewBlock(
-                              blockNameController.text,
-                              emailController.text,
-                              passwordController.text,
+                              ),
+                              validator: (Person? item) {
+                                if (item == null) {
+                                  return "الرجاء اختيار مدير للمربع";
+                                }
+                                return null;
+                              },
                             );
                           }
+
+                          return Container();
                         },
                       ),
-                      const SizedBox(width: 10),
-                      SmallButton(
-                        text: 'إلغاء',
-                        onPressed: () => Navigator.pop(context),
+                      const SizedBox(height: 20),
+                      const SmallText(text: 'الايميل'),
+                      CustomTextFormField(
+                        controller: emailController,
+                        suffixIcon: null,
+                        keyboardType: TextInputType.name,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'الرجاء إدخال اسم المستخدم';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      const SmallText(text: 'كلمة المرور'),
+                      CustomTextFormField(
+                        controller: passwordController,
+                        suffixIcon: null,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.length < 8) {
+                            return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
+                          }
+                          if (!RegExp(
+                            r'^(?=.*[A-Z])(?=.*[0-9])',
+                          ).hasMatch(value)) {
+                            return 'يجب أن تحتوي على حرف كبير ورقم على الأقل';
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SmallButton(
+                      text: 'إضافة',
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          blockCubit.addNewBlock(
+                            blockNameController.text,
+                            emailController.text,
+                            passwordController.text,
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 10),
+                    SmallButton(
+                      text: 'إلغاء',
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

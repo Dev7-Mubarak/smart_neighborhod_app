@@ -101,6 +101,7 @@ class BlockCubit extends Cubit<BlockState> {
             message: response["message"] ?? "تمت الإضافة بنجاح",
           ),
         );
+        await getBlocks();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -146,7 +147,7 @@ class BlockCubit extends Cubit<BlockState> {
   }
 
   Future<void> deleteBlock(int id) async {
-    emit(BlocksLoading());
+    emit(WaitingForUpdateOrAddBlock());
     try {
       final response = await api.delete('${ApiLink.deleteBlocke}/$id');
 
