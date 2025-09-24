@@ -78,13 +78,13 @@ class _AllConflictState extends State<AllConflict> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(AppSize.paddingOfPage),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                _buildToBar(context),
-                const SizedBox(height: 20),
-                BlocBuilder<ConflictCubit, ConflictState>(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              _buildToBar(context),
+              const SizedBox(height: 20),
+              Expanded(
+                child: BlocBuilder<ConflictCubit, ConflictState>(
                   buildWhen: (previousState, currentState) {
                     return currentState is ConflictLoading ||
                         currentState is ConflictLoaded ||
@@ -219,8 +219,8 @@ class _AllConflictState extends State<AllConflict> {
                     }
                   },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

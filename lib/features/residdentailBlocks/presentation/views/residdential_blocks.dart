@@ -86,7 +86,6 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
         } else if (state is BlocksFailure) {
-          Navigator.of(context, rootNavigator: true).pop();
           context.showErrorSnackBar(state.errorMessage);
         }
       },

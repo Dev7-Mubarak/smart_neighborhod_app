@@ -26,19 +26,24 @@ class ConflictCubit extends Cubit<ConflictState> {
   Future<void> getAllConflicts({String? search}) async {
     emit(ConflictLoading());
     try {
-      final response = await api.get(ApiLink.getAllConflict,treat404AsEmptyList: true);
+      final response = await api.get(
+        ApiLink.getAllConflict,
+        treat404AsEmptyList: true,
+      );
       List<dynamic> conflictsJson = response["data"];
       _allconflicts = conflictsJson.map((e) => Conflict.fromJson(e)).toList();
-    
+
       if (search != null && search.isNotEmpty) {
         // filterTeams(search);
       } else {
-        emit(
-          ConflictLoaded(
-            filteredConflicts: _allconflicts,
-            allConflicts: _allconflicts,
-          ),
-        );
+        if (!isClosed) {
+          emit(
+            ConflictLoaded(
+              filteredConflicts: _allconflicts,
+              allConflicts: _allconflicts,
+            ),
+          );
+        }
       }
     } on Serverexception catch (e) {
       emit(ConflictFailure(errorMessage: e.errModel.errorMessage));

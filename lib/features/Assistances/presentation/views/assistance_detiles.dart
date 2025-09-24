@@ -194,7 +194,7 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: Align(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.topRight,
                     child: SmallButton(
                       text: 'إضافة فريق',
                       onPressed: () {
@@ -202,11 +202,6 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                           context,
                           AppRoute.addTeamsToAssistance,
                           arguments: BlocProvider.of<AssistancesCubit>(context),
-                          // ).then((_) {
-                          //   _assistancesCubit.getProjectTeams(
-                          //     id: widget.project.id,
-                          //   );
-                          // }
                         );
                       },
                     ),
@@ -301,7 +296,7 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                               Padding(
                                 padding: const EdgeInsets.all(15),
                                 child: Align(
-                                  alignment: Alignment.topLeft,
+                                  alignment: Alignment.topRight,
                                   child: SmallButton(
                                     text: 'إضافة أسرة',
                                     onPressed: () {
@@ -314,11 +309,6 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                             )..setBlockIdForAddFamily(
                                               block.blockId,
                                             ),
-                                        // ).then((_) {
-                                        //   _assistancesCubit.getProjectBlockFamilies(
-                                        //     id: widget.project.id,
-                                        //   );
-                                        // }
                                       );
                                     },
                                   ),

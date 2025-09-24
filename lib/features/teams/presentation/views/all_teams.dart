@@ -96,13 +96,13 @@ class _AllTeamsState extends State<AllTeams> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(AppSize.paddingOfPage),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                _buildToBar(context),
-                const SizedBox(height: 20),
-                BlocBuilder<TeamCubit, TeamState>(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              _buildToBar(context),
+              const SizedBox(height: 20),
+              Expanded(
+                child: BlocBuilder<TeamCubit, TeamState>(
                   buildWhen: (previousState, currentState) {
                     return currentState is TeamLoading ||
                         currentState is TeamLoaded ||
@@ -231,8 +231,8 @@ class _AllTeamsState extends State<AllTeams> {
                     }
                   },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

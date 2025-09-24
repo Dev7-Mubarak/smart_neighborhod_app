@@ -31,9 +31,7 @@ class _HomeCategoryCardListWidgetState
         title: "المربعات السكنية",
         imagePath: AppImage.homeresidential,
         backgroundColor: const Color(0xFFEFA98D),
-        onTap: () {
-          // Navigator.pushReplacementNamed(context, AppRoute.residentialBlocks);
-        },
+        onTap: () {},
       ),
       CategoryCard(
         title: locale.conflictSection,

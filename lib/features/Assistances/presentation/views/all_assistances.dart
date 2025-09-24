@@ -147,15 +147,13 @@ class _AllAssistancesState extends State<AllAssistances> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(AppSize.paddingOfPage),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                _buildToBar(context),
-                const SizedBox(height: 20),
-                buildBlocWidget(),
-              ],
-            ),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              _buildToBar(context),
+              const SizedBox(height: 20),
+              Expanded(child: buildBlocWidget()),
+            ],
           ),
         ),
       ),
