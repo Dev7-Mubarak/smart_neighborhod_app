@@ -128,10 +128,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                       const SizedBox(height: 15),
                       BlockStatsSection(details: blockDetails),
                       const SizedBox(height: 10),
-                      const Divider(
-                        color: Color.fromARGB(255, 44, 44, 44),
-                        thickness: 1.5,
-                      ),
+                      const Divider(color: AppColor.gray2, thickness: 1.5),
                       const SizedBox(height: 10),
                       const Text(
                         'الأسر في المربع السكني',

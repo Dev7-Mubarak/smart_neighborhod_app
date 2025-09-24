@@ -14,10 +14,6 @@ class BlockStatsSection extends StatelessWidget {
         Text('مدير المربع: ${details.managerName}', style: _style),
         SizedBox(height: 5),
         Text('عدد الأسر: ${details.familyCount}', style: _style),
-        SizedBox(height: 3),
-        Text('عدد الأرامل: ${details.orphansCount}', style: _style),
-        SizedBox(height: 3),
-        Text('عدد الأيتام: ${details.widowsCount}', style: _style),
       ],
     );
   }
