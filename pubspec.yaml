@@ -127,7 +127,7 @@ flutter_intl:
 
 flutter_native_splash:
   color: "#FFFFFF"                
-  image: assets/images/logo.png
+  image: assets/images/logo5.png
   android: true
   ios: true
   web: false
