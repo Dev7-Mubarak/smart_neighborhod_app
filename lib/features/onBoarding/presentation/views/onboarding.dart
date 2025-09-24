@@ -54,7 +54,7 @@ class Onboarding extends StatelessWidget {
               ),
               const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
                 child: DefaultButton(
                   text: 'تسجيل الدخول',
                   backgroundColor: AppColor.white,

@@ -5,42 +5,25 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
-import '../../../../core/constants/home_tab_enum.dart';
 import '../../cubits/blockCubit/block_cubit.dart';
 import '../../cubits/blockCubit/block_state.dart';
 import '../../data/models/Block.dart';
 import '../widgets/change_block_name_widget.dart';
 import '../widgets/residential_block_card_widget.dart';
 
-class ResidentialBlock extends StatefulWidget {
-  const ResidentialBlock({super.key});
+class ResidentialBlockView extends StatefulWidget {
+  const ResidentialBlockView({super.key});
 
   @override
-  State<ResidentialBlock> createState() => _ResidentialBlockState();
+  State<ResidentialBlockView> createState() => _ResidentialBlockViewState();
 }
 
-class _ResidentialBlockState extends State<ResidentialBlock> {
+class _ResidentialBlockViewState extends State<ResidentialBlockView> {
   List<Block> residentialList = [];
   late final BlockCubit _blockCubit;
-  HomeTabEnum _selectedTab = HomeTabEnum.residentialBlocks;
-
-  void _onNavBarTap(int index) {
-    final tappedTab = HomeTabEnum.values[index];
-
-    if (tappedTab == HomeTabEnum.home) {
-      Navigator.pushReplacementNamed(context, AppRoute.mainHome);
-    } else if (tappedTab == HomeTabEnum.settings) {
-      Navigator.pushReplacementNamed(context, AppRoute.settings);
-    } else {
-      setState(() {
-        _selectedTab = tappedTab;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -154,10 +137,6 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
               ),
             ],
           ),
-        ),
-        bottomNavigationBar: CustomNavigationBar(
-          currentIndex: _selectedTab.index,
-          onTap: _onNavBarTap,
         ),
       ),
     );

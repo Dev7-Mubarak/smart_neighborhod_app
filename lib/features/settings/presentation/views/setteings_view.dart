@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
-import '../../../../core/constants/app_route.dart';
-import '../../../../core/constants/home_tab_enum.dart';
 import '../../../../core/services/shared_preferences_service.dart';
 import '../../../auth/data/models/login_model.dart';
 
@@ -15,22 +12,7 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  HomeTabEnum _selectedTab = HomeTabEnum.settings;
   late final ProfileModel? _profile;
-
-  void _onNavBarTap(int index) {
-    final tappedTab = HomeTabEnum.values[index];
-
-    if (tappedTab == HomeTabEnum.residentialBlocks) {
-      Navigator.pushReplacementNamed(context, AppRoute.residentialBlocks);
-    } else if (tappedTab == HomeTabEnum.home) {
-      Navigator.pushReplacementNamed(context, AppRoute.mainHome);
-    } else {
-      setState(() {
-        _selectedTab = tappedTab;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -222,12 +204,6 @@ class _SettingsViewState extends State<SettingsView> {
             ),
           ),
         ],
-      ),
-
-      // ======== BOTTOM NAVIGATION ========
-      bottomNavigationBar: CustomNavigationBar(
-        currentIndex: _selectedTab.index,
-        onTap: _onNavBarTap,
       ),
     );
   }

@@ -1,38 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/app_route.dart';
-import '../../../../core/constants/home_tab_enum.dart';
 import '../../../../core/services/shared_preferences_service.dart';
 import '../widgets/home_category_Card_list_widget.dart';
 
-class MainHome extends StatefulWidget {
-  const MainHome({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  MmainHomeState createState() => MmainHomeState();
+  HomeViewState createState() => HomeViewState();
 }
 
-class MmainHomeState extends State<MainHome> {
-  HomeTabEnum _selectedTab = HomeTabEnum.home;
-  ProfileModel? _profile;
-
-  void _onNavBarTap(int index) {
-    final tappedTab = HomeTabEnum.values[index];
-
-    if (tappedTab == HomeTabEnum.residentialBlocks) {
-      Navigator.pushReplacementNamed(context, AppRoute.residentialBlocks);
-    } else if (tappedTab == HomeTabEnum.settings) {
-      Navigator.pushReplacementNamed(context, AppRoute.settings);
-    } else {
-      setState(() {
-        _selectedTab = tappedTab;
-      });
-    }
-  }
-
+class HomeViewState extends State<HomeView> {
+  late final ProfileModel? _profile;
   @override
   void initState() {
     _profile = SharedPreferencesService.getProfile();
@@ -41,8 +21,6 @@ class MmainHomeState extends State<MainHome> {
 
   @override
   Widget build(BuildContext context) {
-    var locale = context.locale;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.white,
@@ -50,10 +28,10 @@ class MmainHomeState extends State<MainHome> {
         bottomOpacity: 0,
         title: Row(
           children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: AppColor.primaryColor,
-              child: Center(
+            Container(
+              child: CircleAvatar(
+                radius: 22,
+                backgroundColor: AppColor.primaryColor,
                 child: Text(
                   _profile?.email.isNotEmpty == true
                       ? _profile!.email[0].toUpperCase()
@@ -72,7 +50,7 @@ class MmainHomeState extends State<MainHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'مرحباً,', // Or use locale.hello if localized
+                  'مرحباً,',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -113,10 +91,6 @@ class MmainHomeState extends State<MainHome> {
           ),
         ),
         child: const HomeCategoryCardListWidget(),
-      ),
-      bottomNavigationBar: CustomNavigationBar(
-        currentIndex: _selectedTab.index,
-        onTap: _onNavBarTap,
       ),
     );
   }
