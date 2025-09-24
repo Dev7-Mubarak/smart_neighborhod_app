@@ -110,46 +110,50 @@ class _ResidentialBlockState extends State<ResidentialBlock> {
       child: Scaffold(
         backgroundColor: Colors.white,
 
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SmallButton(
-                    text: locale.add,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoute.addBlock,
-                        arguments: _blockCubit,
-                      );
-                    },
-                  ),
-                  const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
-                  Expanded(
-                    child: SearchableTextFormField(
-                      hintText: locale.searchResidentialBlock,
-                      bachgroundColor: AppColor.gray2,
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.close),
-                      ),
-                      prefixIcon: Icons.search,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(15),
-                child: buildBlocWidget(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SmallButton(
+                      text: locale.add,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoute.addBlock,
+                          arguments: _blockCubit,
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      width: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    Expanded(
+                      child: SearchableTextFormField(
+                        hintText: locale.searchResidentialBlock,
+                        bachgroundColor: AppColor.gray2,
+                        suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.close),
+                        ),
+                        prefixIcon: Icons.search,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: buildBlocWidget(),
+                ),
+              ),
+            ],
+          ),
         ),
         bottomNavigationBar: CustomNavigationBar(
           currentIndex: _selectedTab.index,

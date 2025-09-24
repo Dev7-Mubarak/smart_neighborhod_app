@@ -11,13 +11,30 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesService.init();
   Bloc.observer = AppBlocObserver();
-  runApp(SmartNeighbourhood(appRouter: AppRouter()));
+
+  String initialRoute;
+  if (!SharedPreferencesService.isOnboardingCompleted) {
+    initialRoute = AppRoute.onBoarding;
+  } else if (!SharedPreferencesService.isLoggedIn) {
+    initialRoute = AppRoute.login;
+  } else {
+    initialRoute = AppRoute.mainHome;
+  }
+
+  runApp(
+    SmartNeighbourhood(appRouter: AppRouter(), initialRoute: initialRoute),
+  );
 }
 
 class SmartNeighbourhood extends StatelessWidget {
-  const SmartNeighbourhood({super.key, required this.appRouter});
+  const SmartNeighbourhood({
+    super.key,
+    required this.appRouter,
+    required this.initialRoute,
+  });
 
   final AppRouter appRouter;
+  final String initialRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +53,7 @@ class SmartNeighbourhood extends StatelessWidget {
         fontFamily: 'Tajawal-Regular',
       ),
       onGenerateRoute: appRouter.generateRoute,
-      initialRoute: AppRoute.onBoarding,
+      initialRoute: initialRoute,
     );
   }
 }

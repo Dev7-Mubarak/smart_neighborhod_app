@@ -17,7 +17,7 @@ class MainHome extends StatefulWidget {
 
 class MmainHomeState extends State<MainHome> {
   HomeTabEnum _selectedTab = HomeTabEnum.home;
-  late final ProfileModel? _profile;
+  ProfileModel? _profile;
 
   void _onNavBarTap(int index) {
     final tappedTab = HomeTabEnum.values[index];
@@ -50,11 +50,10 @@ class MmainHomeState extends State<MainHome> {
         bottomOpacity: 0,
         title: Row(
           children: [
-            // Modern profile avatar with border and shadow
-            Container(
-              child: CircleAvatar(
-                radius: 22,
-                backgroundColor: AppColor.primaryColor,
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColor.primaryColor,
+              child: Center(
                 child: Text(
                   _profile?.email.isNotEmpty == true
                       ? _profile!.email[0].toUpperCase()
@@ -68,7 +67,6 @@ class MmainHomeState extends State<MainHome> {
               ),
             ),
             const SizedBox(width: 12),
-            // Greeting and username with modern text style
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,

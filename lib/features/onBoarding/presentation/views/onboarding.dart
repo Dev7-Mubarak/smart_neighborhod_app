@@ -4,6 +4,7 @@ import '../../../../core/common/widgets/circular_logo.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_route.dart';
 import '../../../../core/common/widgets/defult_button.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
@@ -59,6 +60,7 @@ class Onboarding extends StatelessWidget {
                   backgroundColor: AppColor.white,
                   color: AppColor.primaryColor,
                   onPressed: () {
+                    SharedPreferencesService.setOnboardingCompleted();
                     Navigator.pushReplacementNamed(context, AppRoute.login);
                   },
                   fontsize: 25,
