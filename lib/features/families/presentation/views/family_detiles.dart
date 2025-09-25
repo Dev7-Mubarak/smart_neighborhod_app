@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
@@ -14,6 +15,7 @@ import 'package:smart_negborhood_app/features/families/cubits/family_member/fami
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/common/widgets/smallButton.dart';
+import '../../../../core/services/API/dio_consumer.dart';
 import '../../data/models/family_detiles_model.dart';
 
 class FamilyDetiles extends StatefulWidget {
@@ -319,6 +321,9 @@ class FamilyMembersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(
+      'Rendering FamilyMembersSection with ${familyMembers.length} members',
+    );
     return SizedBox(
       height: 450,
       child: ListView.builder(
@@ -339,15 +344,14 @@ class MemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final familyMemberCubit = context.read<FamilyMemberCubit>();
-    familyMemberCubit.setFamilyMember(familyMember);
     final familyCubit = context.read<FamilyCubit>();
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           context,
           AppRoute.familyMemberDetails,
-          arguments: familyMemberCubit,
+          arguments: FamilyMemberCubit(api: DioConsumer(dio: Dio()))
+            ..setFamilyMember(familyMember),
         );
       },
       onLongPress: () {
