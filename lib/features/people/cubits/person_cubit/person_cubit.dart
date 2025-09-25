@@ -104,7 +104,7 @@ class PersonCubit extends Cubit<PersonState> {
     required String identityNumber,
     required String? email,
   }) async {
-    emit(PersonLoading());
+    emit(WaitingForUpdateOrAddPerson());
     try {
       final response = await api.post(
         ApiLink.addNewPerson,
@@ -144,8 +144,6 @@ class PersonCubit extends Cubit<PersonState> {
         emit(PersonAddedSuccessfully(message: response["message"]));
         _resetPeopleList();
         await getPeople();
-      } else {
-        emit(PersonFailure(errorMessage: response["message"]));
       }
     } on Serverexception catch (e) {
       emit(PersonFailure(errorMessage: e.errModel.errorMessage));
@@ -164,7 +162,7 @@ class PersonCubit extends Cubit<PersonState> {
     String? identityNumber,
     String? email,
   }) async {
-    emit(PersonLoading());
+    emit(WaitingForUpdateOrAddPerson());
     try {
       final response = await api.update(
         '${ApiLink.updatePerson}/$id',
@@ -214,7 +212,7 @@ class PersonCubit extends Cubit<PersonState> {
   }
 
   Future<void> deletePerson(int id) async {
-    emit(PersonLoading());
+    emit(WaitingForUpdateOrAddPerson());
     try {
       final response = await api.delete('${ApiLink.deletePerson}/$id');
 

@@ -33,7 +33,6 @@ import 'package:smart_negborhood_app/features/auth/presentation/views/checkEmail
 import 'package:smart_negborhood_app/features/auth/presentation/views/createNewPassword.dart';
 import 'package:smart_negborhood_app/features/auth/presentation/views/forgetapassword.dart';
 import 'package:smart_negborhood_app/features/auth/presentation/views/login.dart';
-import 'package:smart_negborhood_app/features/home/presentation/views/home_view.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/add_update_conflict.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/all_confilcts.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/conflict_detiles.dart';

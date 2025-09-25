@@ -12,7 +12,6 @@ import 'package:smart_negborhood_app/core/common/enums/gender.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/core/common/enums/occupation_status.dart';
 import '../../../../core/common/widgets/CustomDropdown.dart';
-import '../../../../core/common/widgets/custom_navigation_bar.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
@@ -85,413 +84,396 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<PersonCubit>();
-    return BlocListener<PersonCubit, PersonState>(
-      listener: (context, state) {
-        if (state is PersonAddedSuccessfully) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-          Navigator.pop(context);
-        } else if (state is PersonFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColor.white,
-          elevation: 0,
-          iconTheme: const IconThemeData(color: Colors.black),
-          title: Center(
-            child: Text(
-              context.read<PersonCubit>().person == null
-                  ? 'إضافة شخص جديد'
-                  : 'تعديل بيانات الشخص',
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColor.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: Center(
+          child: Text(
+            context.read<PersonCubit>().person == null
+                ? 'إضافة شخص جديد'
+                : 'تعديل بيانات الشخص',
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
             ),
           ),
         ),
-        body: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(25),
-                  decoration: BoxDecoration(
-                    color: AppColor.gray,
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SmallText(text: 'الاسم الاول'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: firstNameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الاسم الاول مطلوب';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الاسم الثاني'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: secondNameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الاسم الثاني مطلوب';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الاسم الثالث'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: thirdNameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الاسم الثالث مطلوب';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الاسم الربع'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: lastNameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الاسم الرابع مطلوب';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'رقم الهوية'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: identityNumberController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'رقم الهوية مطلوب';
-                          }
-                          if (value.length < 6) {
-                            return 'رقم الهوية يجب أن يكون 6 أرقام أو أكثر';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'نوع الهوية'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      BlocBuilder<PersonCubit, PersonState>(
-                        buildWhen: (previous, current) =>
-                            current is ChangeSelectedIdentityType,
-                        builder: (context, state) {
-                          return CustomDropdown(
-                            items: IdentityType.values
-                                .map((e) => e.arabicName)
-                                .toList(),
-                            selectedValue: context
+      ),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(25),
+                decoration: BoxDecoration(
+                  color: AppColor.gray,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SmallText(text: 'الاسم الاول'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    CustomTextFormField(
+                      controller: firstNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الاسم الاول مطلوب';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'الاسم الثاني'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    CustomTextFormField(
+                      controller: secondNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الاسم الثاني مطلوب';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'الاسم الثالث'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    CustomTextFormField(
+                      controller: thirdNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الاسم الثالث مطلوب';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'الاسم الربع'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    CustomTextFormField(
+                      controller: lastNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'الاسم الرابع مطلوب';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'رقم الهوية'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    CustomTextFormField(
+                      controller: identityNumberController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'رقم الهوية مطلوب';
+                        }
+                        if (value.length < 6) {
+                          return 'رقم الهوية يجب أن يكون 6 أرقام أو أكثر';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'نوع الهوية'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    BlocBuilder<PersonCubit, PersonState>(
+                      buildWhen: (previous, current) =>
+                          current is ChangeSelectedIdentityType,
+                      builder: (context, state) {
+                        return CustomDropdown(
+                          items: IdentityType.values
+                              .map((e) => e.arabicName)
+                              .toList(),
+                          selectedValue: context
+                              .read<PersonCubit>()
+                              .selectedIdentityType
+                              ?.arabicName,
+                          onChanged: (String? newValue) {
+                            context
                                 .read<PersonCubit>()
-                                .selectedIdentityType
-                                ?.arabicName,
-                            onChanged: (String? newValue) {
-                              context
-                                  .read<PersonCubit>()
-                                  .changeSelectedIdentityType(
-                                    IdentityType.values.firstWhere(
-                                      (e) => e.arabicName == newValue,
-                                    ),
-                                  );
-                            },
-                            text: 'اختيار نوع الهوية',
+                                .changeSelectedIdentityType(
+                                  IdentityType.values.firstWhere(
+                                    (e) => e.arabicName == newValue,
+                                  ),
+                                );
+                          },
+                          text: 'اختيار نوع الهوية',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'يرجى اختيار نوع الهوية';
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    _buildGenderSelector(cubit),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'رقم التواصل'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: phoneNumberController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'يرجى اختيار نوع الهوية';
+                                return 'رقم التواصل مطلوب';
+                              }
+                              if (!RegExp(r'^[0-9]{8,}$').hasMatch(value)) {
+                                return 'رقم التواصل غير صحيح';
                               }
                               return null;
                             },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      _buildGenderSelector(cubit),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'رقم التواصل'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: phoneNumberController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'رقم التواصل مطلوب';
-                                }
-                                if (!RegExp(r'^[0-9]{8,}$').hasMatch(value)) {
-                                  return 'رقم التواصل غير صحيح';
-                                }
-                                return null;
-                              },
-                            ),
                           ),
-                          Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()..scale(-1.0, 1.0),
-                            child: const Icon(
-                              Icons.phone_callback,
-                              color: AppColor.primaryColor,
-                              size: 30,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'طريقة الإتصال'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      BlocBuilder<PersonCubit, PersonState>(
-                        buildWhen: (previous, current) =>
-                            current is ChangeContactType,
-                        builder: (context, state) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  const SmallText(text: 'اتصال'),
-                                  Checkbox(
-                                    value: cubit.isCall,
-                                    activeColor: AppColor.primaryColor,
-                                    onChanged: (bool? value) {
-                                      context
-                                          .read<PersonCubit>()
-                                          .toggleContactType(
-                                            isCall: value,
-                                            isWhatsapp: context
-                                                .read<PersonCubit>()
-                                                .isWhatsapp,
-                                          );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: AppSize.spasingBetweenInputBloc,
-                              ),
-                              Row(
-                                children: [
-                                  const SmallText(text: 'واتس اب'),
-                                  Checkbox(
-                                    value: context
-                                        .read<PersonCubit>()
-                                        .isWhatsapp,
-                                    activeColor: AppColor.primaryColor,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        context
-                                            .read<PersonCubit>()
-                                            .toggleContactType(
-                                              isWhatsapp: value,
-                                              isCall: context
-                                                  .read<PersonCubit>()
-                                                  .isCall,
-                                            );
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الإيميل'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: emailController,
-                              validator: (value) {
-                                return null;
-                              },
-                            ),
-                          ),
-                          const Icon(
-                            Icons.email,
+                        ),
+                        Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.identity()..scale(-1.0, 1.0),
+                          child: const Icon(
+                            Icons.phone_callback,
                             color: AppColor.primaryColor,
                             size: 30,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'تاريخ الميلاد'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: birthDateController,
-                        suffixIcon: Icons.calendar_today,
-                        readOnly: true,
-                        onTap: () => cubit.pickDate(context),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'تاريخ الميلاد مطلوب';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'فصيلة الدم'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      BlocBuilder<PersonCubit, PersonState>(
-                        builder: (context, state) {
-                          return CustomDropdown(
-                            items: BloodType.values
-                                .map((e) => e.arabicName)
-                                .toList(),
-                            selectedValue: cubit.selectedBloodType?.arabicName,
-                            onChanged: (String? newValue) {
-                              cubit.changeSelectedBloodType(
-                                BloodType.values.firstWhere(
-                                  (e) => e.arabicName == newValue,
-                                ),
-                              );
-                            },
-                            text: 'اختبار فصيلة الدم',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'يرجى اختيار فصيلة الدم';
-                              }
-                              return null;
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'طريقة الإتصال'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    BlocBuilder<PersonCubit, PersonState>(
+                      buildWhen: (previous, current) =>
+                          current is ChangeContactType,
+                      builder: (context, state) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Row(
                               children: [
-                                const SmallText(text: 'الحالة الاجتماعية'),
-                                const SizedBox(
-                                  height: AppSize.spasingBetweenInputsAndLabale,
-                                ),
-                                BlocBuilder<PersonCubit, PersonState>(
-                                  buildWhen: (previous, current) =>
-                                      current is ChangeSelectedMaritalStatus,
-                                  builder: (context, state) {
-                                    return CustomDropdown(
-                                      items: MaritalStatus.values
-                                          .map((e) => e.arabicName)
-                                          .toList(),
-                                      selectedValue: cubit
-                                          .selectedMaritalStatus
-                                          ?.arabicName,
-                                      onChanged: (newValue) {
-                                        cubit.changeSelectedMaritalStatus(
-                                          MaritalStatus.values.firstWhere(
-                                            (e) => e.arabicName == newValue,
-                                          ),
+                                const SmallText(text: 'اتصال'),
+                                Checkbox(
+                                  value: cubit.isCall,
+                                  activeColor: AppColor.primaryColor,
+                                  onChanged: (bool? value) {
+                                    context
+                                        .read<PersonCubit>()
+                                        .toggleContactType(
+                                          isCall: value,
+                                          isWhatsapp: context
+                                              .read<PersonCubit>()
+                                              .isWhatsapp,
                                         );
-                                      },
-                                      text: 'اختيار الحالة الاجتماعية',
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'يرجى اختيار الحالة الاجتماعية';
-                                        }
-                                        return null;
-                                      },
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: AppSize.spasingBetweenInputBloc,
-                                ),
-                                const SmallText(text: 'الحالة المهنية'),
-                                const SizedBox(
-                                  height: AppSize.spasingBetweenInputsAndLabale,
-                                ),
-                                BlocBuilder<PersonCubit, PersonState>(
-                                  buildWhen: (previous, current) =>
-                                      current is ChangeSelectedOccupationStatus,
-                                  builder: (context, state) {
-                                    return CustomDropdown(
-                                      items: OccupationStatus.values
-                                          .map((e) => e.arabicName)
-                                          .toList(),
-                                      selectedValue: context
-                                          .read<PersonCubit>()
-                                          .selectedOccupationStatus
-                                          ?.arabicName,
-                                      onChanged: (newValue) {
-                                        cubit.changeSelectedOccupationStatus(
-                                          OccupationStatus.values.firstWhere(
-                                            (e) => e.arabicName == newValue,
-                                          ),
-                                        );
-                                      },
-                                      text: 'اختيار الحالة المهنية',
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'يرجى اختيار الحالة المهنية';
-                                        }
-                                        return null;
-                                      },
-                                    );
                                   },
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              width: AppSize.spasingBetweenInputBloc,
+                            ),
+                            Row(
+                              children: [
+                                const SmallText(text: 'واتس اب'),
+                                Checkbox(
+                                  value: context.read<PersonCubit>().isWhatsapp,
+                                  activeColor: AppColor.primaryColor,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      context
+                                          .read<PersonCubit>()
+                                          .toggleContactType(
+                                            isWhatsapp: value,
+                                            isCall: context
+                                                .read<PersonCubit>()
+                                                .isCall,
+                                          );
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'الإيميل'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: emailController,
+                            validator: (value) {
+                              return null;
+                            },
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      _buildImagePicker(context, cubit),
-                    ],
-                  ),
+                        ),
+                        const Icon(
+                          Icons.email,
+                          color: AppColor.primaryColor,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'تاريخ الميلاد'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    CustomTextFormField(
+                      controller: birthDateController,
+                      suffixIcon: Icons.calendar_today,
+                      readOnly: true,
+                      onTap: () => cubit.pickDate(context),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'تاريخ الميلاد مطلوب';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    const SmallText(text: 'فصيلة الدم'),
+                    const SizedBox(
+                      height: AppSize.spasingBetweenInputsAndLabale,
+                    ),
+                    BlocBuilder<PersonCubit, PersonState>(
+                      builder: (context, state) {
+                        return CustomDropdown(
+                          items: BloodType.values
+                              .map((e) => e.arabicName)
+                              .toList(),
+                          selectedValue: cubit.selectedBloodType?.arabicName,
+                          onChanged: (String? newValue) {
+                            cubit.changeSelectedBloodType(
+                              BloodType.values.firstWhere(
+                                (e) => e.arabicName == newValue,
+                              ),
+                            );
+                          },
+                          text: 'اختبار فصيلة الدم',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'يرجى اختيار فصيلة الدم';
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SmallText(text: 'الحالة الاجتماعية'),
+                              const SizedBox(
+                                height: AppSize.spasingBetweenInputsAndLabale,
+                              ),
+                              BlocBuilder<PersonCubit, PersonState>(
+                                buildWhen: (previous, current) =>
+                                    current is ChangeSelectedMaritalStatus,
+                                builder: (context, state) {
+                                  return CustomDropdown(
+                                    items: MaritalStatus.values
+                                        .map((e) => e.arabicName)
+                                        .toList(),
+                                    selectedValue:
+                                        cubit.selectedMaritalStatus?.arabicName,
+                                    onChanged: (newValue) {
+                                      cubit.changeSelectedMaritalStatus(
+                                        MaritalStatus.values.firstWhere(
+                                          (e) => e.arabicName == newValue,
+                                        ),
+                                      );
+                                    },
+                                    text: 'اختيار الحالة الاجتماعية',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'يرجى اختيار الحالة الاجتماعية';
+                                      }
+                                      return null;
+                                    },
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                height: AppSize.spasingBetweenInputBloc,
+                              ),
+                              const SmallText(text: 'الحالة المهنية'),
+                              const SizedBox(
+                                height: AppSize.spasingBetweenInputsAndLabale,
+                              ),
+                              BlocBuilder<PersonCubit, PersonState>(
+                                buildWhen: (previous, current) =>
+                                    current is ChangeSelectedOccupationStatus,
+                                builder: (context, state) {
+                                  return CustomDropdown(
+                                    items: OccupationStatus.values
+                                        .map((e) => e.arabicName)
+                                        .toList(),
+                                    selectedValue: context
+                                        .read<PersonCubit>()
+                                        .selectedOccupationStatus
+                                        ?.arabicName,
+                                    onChanged: (newValue) {
+                                      cubit.changeSelectedOccupationStatus(
+                                        OccupationStatus.values.firstWhere(
+                                          (e) => e.arabicName == newValue,
+                                        ),
+                                      );
+                                    },
+                                    text: 'اختيار الحالة المهنية',
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'يرجى اختيار الحالة المهنية';
+                                      }
+                                      return null;
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                    _buildImagePicker(context, cubit),
+                  ],
                 ),
-                const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                _buildSubmitButtons(context, cubit),
-              ],
-            ),
+              ),
+              const SizedBox(height: AppSize.spasingBetweenInputBloc),
+              _buildSubmitButtons(context, cubit),
+            ],
           ),
         ),
       ),
@@ -651,7 +633,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   identityNumber: identityNumberController.text,
                   email: emailController.text,
                 );
-                Navigator.pop(context);
               }
             }
           },

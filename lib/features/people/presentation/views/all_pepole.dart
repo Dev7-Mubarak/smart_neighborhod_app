@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/common/widgets/searcable_text_input_filed.dart';
 import '../../../../core/common/widgets/smallButton.dart';
@@ -56,22 +57,38 @@ class _AllPeopleState extends State<AllPeople> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        centerTitle: true,
-        title: const Text(
-          'الأشخاص',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+    return BlocListener<PersonCubit, PersonState>(
+      listener: (context, state) {
+        if (state is WaitingForUpdateOrAddPerson) {
+          context.showLoadingDialog();
+        } else if (state is PersonDeletedSuccessfully ||
+            state is PersonAddedSuccessfully ||
+            state is PersonUpdatedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          Navigator.of(context).pop();
+          context.showSuccessSnackBar((state as dynamic).message);
+        } else if (state is PersonFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColor.white,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          centerTitle: true,
+          title: const Text(
+            'الأشخاص',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
+        body: Column(children: [_buildTopBar(context), _peopleListView()]),
       ),
-      body: Column(children: [_buildTopBar(context), _peopleListView()]),
     );
   }
 

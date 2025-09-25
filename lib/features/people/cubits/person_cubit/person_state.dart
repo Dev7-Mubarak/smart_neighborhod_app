@@ -8,10 +8,7 @@ class PersonInitial extends PersonState {}
 class PersonLoaded extends PersonState {
   final List<Person> people;
 
-  PersonLoaded({
-    required this.people,
-  });
-  
+  PersonLoaded({required this.people});
 }
 
 class PersonLoading extends PersonState {
@@ -21,9 +18,7 @@ class PersonLoading extends PersonState {
 
 class PersonFailure extends PersonState {
   final String errorMessage;
-  PersonFailure({
-    required this.errorMessage,
-  });
+  PersonFailure({required this.errorMessage});
 }
 
 class PersonAddedSuccessfully extends PersonState {
@@ -42,6 +37,8 @@ class PersonUpdatedSuccessfully extends PersonState {
 }
 
 class UplodePeofilePicture extends PersonState {}
+
+class WaitingForUpdateOrAddPerson extends PersonState {}
 
 class ChangeBirthDate extends PersonState {}
 

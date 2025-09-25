@@ -1,6 +1,6 @@
 class AppSize {
   static const double defaultPadding = 0;
-  static const double paddingOfPage = 10;
+  static const double paddingOfPage = 16;
   static const double textSizeOfLable = 15;
   static const double fontSizeOfBigButton = 20;
   static const double siize = 10;
