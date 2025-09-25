@@ -101,6 +101,7 @@ class _AllTeamsState extends State<AllTeams> {
               const SizedBox(height: 20),
               _buildToBar(context),
               const SizedBox(height: 20),
+              // Make the list take all remaining space and be scrollable
               Expanded(
                 child: BlocBuilder<TeamCubit, TeamState>(
                   buildWhen: (previousState, currentState) {
@@ -115,8 +116,7 @@ class _AllTeamsState extends State<AllTeams> {
                         return NoResultWidget();
                       }
                       return ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(bottom: 20),
                         itemCount: _teamsListDisplay.length,
                         separatorBuilder: (context, index) => const Divider(),
                         itemBuilder: (context, index) {
@@ -147,10 +147,9 @@ class _AllTeamsState extends State<AllTeams> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                   ),
-                                  // textAlign: TextAlign.right,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               CustomTableWidget(
                                 columnTitles: [
                                   'رقم',
@@ -167,7 +166,6 @@ class _AllTeamsState extends State<AllTeams> {
                                   return [
                                     '${index + 1}',
                                     (teamMember.personName),
-
                                     DateFormat(
                                       'yyyy-MM-dd',
                                     ).format(teamMember.dateOfJoin!),
@@ -182,7 +180,7 @@ class _AllTeamsState extends State<AllTeams> {
                                   );
                                 },
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: SmallButton(
@@ -206,7 +204,7 @@ class _AllTeamsState extends State<AllTeams> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                             ],
                           );
                         },
@@ -227,7 +225,7 @@ class _AllTeamsState extends State<AllTeams> {
                         onRetry: () => _teamsCubit.getAllTeams(),
                       );
                     } else {
-                      return Center(child: Text("حدث خطأ غير معروف"));
+                      return const Center(child: Text("حدث خطأ غير معروف"));
                     }
                   },
                 ),

@@ -146,9 +146,9 @@ class PersonCubit extends Cubit<PersonState> {
         await getPeople();
       }
     } on Serverexception catch (e) {
-      emit(PersonFailure(errorMessage: e.errModel.errorMessage));
+      emit(PersonAddedFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(PersonFailure(errorMessage: e.toString()));
+      emit(PersonAddedFailure(errorMessage: e.toString()));
     }
   }
 
@@ -220,13 +220,11 @@ class PersonCubit extends Cubit<PersonState> {
         emit(PersonDeletedSuccessfully(message: response["message"]));
         _resetPeopleList();
         await getPeople();
-      } else {
-        emit(PersonFailure(errorMessage: response["message"]));
       }
     } on Serverexception catch (e) {
-      emit(PersonFailure(errorMessage: e.errModel.errorMessage));
+      emit(PersonDeletedFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(PersonFailure(errorMessage: e.toString()));
+      emit(PersonDeletedFailure(errorMessage: e.toString()));
     }
   }
 

@@ -26,14 +26,29 @@ class PersonAddedSuccessfully extends PersonState {
   PersonAddedSuccessfully({required this.message});
 }
 
+class PersonAddedFailure extends PersonState {
+  final String errorMessage;
+  PersonAddedFailure({required this.errorMessage});
+}
+
 class PersonDeletedSuccessfully extends PersonState {
   final String message;
   PersonDeletedSuccessfully({required this.message});
 }
 
+class PersonDeletedFailure extends PersonState {
+  final String errorMessage;
+  PersonDeletedFailure({required this.errorMessage});
+}
+
 class PersonUpdatedSuccessfully extends PersonState {
   final String message;
   PersonUpdatedSuccessfully({required this.message});
+}
+
+class PersonUpdatedFailure extends PersonState {
+  final String errorMessage;
+  PersonUpdatedFailure({required this.errorMessage});
 }
 
 class UplodePeofilePicture extends PersonState {}

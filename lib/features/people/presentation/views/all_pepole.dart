@@ -52,6 +52,7 @@ class _AllPeopleState extends State<AllPeople> {
     _searchingController.dispose();
     _scrollController.dispose();
     _delay?.cancel();
+    _personCubit.close();
     super.dispose();
   }
 
@@ -68,6 +69,14 @@ class _AllPeopleState extends State<AllPeople> {
           Navigator.of(context).pop();
           context.showSuccessSnackBar((state as dynamic).message);
         } else if (state is PersonFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is PersonAddedFailure) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is PersonDeletedFailure) {
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is PersonUpdatedFailure) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showErrorSnackBar(state.errorMessage);
         }

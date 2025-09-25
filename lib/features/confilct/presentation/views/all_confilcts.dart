@@ -96,108 +96,113 @@ class _AllConflictState extends State<AllConflict> {
                       if (_conflictListDisplay.isEmpty) {
                         return NoResultWidget();
                       }
-
-                      return StaggeredGrid.count(
-                        crossAxisCount: crossAxisCount,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        children: _conflictListDisplay.map((e) {
-                          return StaggeredGridTile.fit(
-                            crossAxisCellCount: 1,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoute.conflictDetiles,
-                                  arguments: e,
-                                ).then((_) {
-                                  _conflictCubit.getAllConflicts(
-                                    search: _searchingController.text.trim(),
-                                  );
-                                });
-                              },
-                              onLongPress: () => _showOptions(context, e),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: const Color(0x80636AE8),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: 50,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: FadeInImage.assetNetwork(
-                                          placeholder: AppImage.load,
-                                          image: e.imageUrl,
-                                          fit: BoxFit.scaleDown,
-                                          imageErrorBuilder:
-                                              (context, error, stackTrace) {
-                                                return Container(
-                                                  color: Colors.grey[200],
-                                                  child: Center(
-                                                    child: Icon(
-                                                      Icons.image_not_supported,
-                                                      size: 60,
-                                                      color: Colors.grey[500],
+                      return SingleChildScrollView(
+                        child: StaggeredGrid.count(
+                          crossAxisCount: crossAxisCount,
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 16,
+                          children: _conflictListDisplay.map((e) {
+                            return StaggeredGridTile.fit(
+                              crossAxisCellCount: 1,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoute.conflictDetiles,
+                                    arguments: e,
+                                  ).then((_) {
+                                    _conflictCubit.getAllConflicts(
+                                      search: _searchingController.text.trim(),
+                                    );
+                                  });
+                                },
+                                onLongPress: () => _showOptions(context, e),
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0x80636AE8),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 50,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                          child: FadeInImage.assetNetwork(
+                                            placeholder: AppImage.load,
+                                            image: e.imageUrl,
+                                            fit: BoxFit.scaleDown,
+                                            imageErrorBuilder:
+                                                (context, error, stackTrace) {
+                                                  return Container(
+                                                    color: Colors.grey[200],
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons
+                                                            .image_not_supported,
+                                                        size: 60,
+                                                        color: Colors.grey[500],
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
+                                                  );
+                                                },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      e.title,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        e.title,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      'الطرف الأول: ${e.firstPartyName}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        'الطرف الأول: ${e.firstPartyName}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      'الطرف الثاني: ${e.secondPartyName}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        'الطرف الثاني: ${e.secondPartyName}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      e.sessionDate != null
-                                          ? 'تاريخ الجلسة: ${DateFormat('yyyy-MM-dd').format(e.sessionDate!)}'
-                                          : 'تاريخ غير محدد',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        e.sessionDate != null
+                                            ? 'تاريخ الجلسة: ${DateFormat('yyyy-MM-dd').format(e.sessionDate!)}'
+                                            : 'تاريخ غير محدد',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
+                            );
+                          }).toList(),
+                        ),
                       );
                     } else if (state is ConflictLoading) {
                       return Center(
