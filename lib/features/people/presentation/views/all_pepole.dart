@@ -62,21 +62,10 @@ class _AllPeopleState extends State<AllPeople> {
       listener: (context, state) {
         if (state is WaitingForUpdateOrAddPerson) {
           context.showLoadingDialog();
-        } else if (state is PersonDeletedSuccessfully ||
-            state is PersonAddedSuccessfully ||
-            state is PersonUpdatedSuccessfully) {
+        } else if (state is PersonDeletedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
-          Navigator.of(context).pop();
-          context.showSuccessSnackBar((state as dynamic).message);
+          context.showSuccessSnackBar("تم حدف الشخص  بنجاح");
         } else if (state is PersonFailure) {
-          Navigator.of(context, rootNavigator: true).pop();
-          context.showErrorSnackBar(state.errorMessage);
-        } else if (state is PersonAddedFailure) {
-          Navigator.of(context, rootNavigator: true).pop();
-          context.showErrorSnackBar(state.errorMessage);
-        } else if (state is PersonDeletedFailure) {
-          context.showErrorSnackBar(state.errorMessage);
-        } else if (state is PersonUpdatedFailure) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showErrorSnackBar(state.errorMessage);
         }

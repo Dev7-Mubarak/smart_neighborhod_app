@@ -236,6 +236,7 @@ class _AddMemberButtonRow extends StatelessWidget {
 class FamilyDetilesCard extends StatelessWidget {
   final FamilyDetilesModel familyDetiles;
   const FamilyDetilesCard({super.key, required this.familyDetiles});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -243,72 +244,141 @@ class FamilyDetilesCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       child: Card(
         color: AppColor.gray,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        elevation: 8,
+        shadowColor: Colors.black.withOpacity(0.08),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Column(
-              children: [
-                infoRow('أسم الأسرة', familyDetiles.name),
-                infoRow('المربع السكني', familyDetiles.blockName),
-                infoRow('الموقع', familyDetiles.location),
-                infoRow('نوع الأسرة', familyDetiles.familyTypeName),
-                infoRow('تصنيف الأسرة', familyDetiles.familyCategoryName),
-                infoRow(
-                  'رب الأسرة',
-                  familyDetiles.headOfFamily?.fullName ?? '',
-                ),
-                infoRow(
-                  'رقم الجوال',
-                  familyDetiles.headOfFamily?.phoneNumber ?? '',
-                ),
-                infoRow(
-                  'الأيميل',
-                  familyDetiles.familyMembers.isNotEmpty
-                      ? familyDetiles.familyMembers.first.person.email ?? ''
-                      : '',
-                ),
-              ],
-            ),
+          padding: const EdgeInsets.all(22.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Modern family avatar & name
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 32,
+                    backgroundColor: AppColor.primaryColor.withOpacity(0.12),
+                    child: Icon(
+                      Icons.groups,
+                      color: AppColor.primaryColor,
+                      size: 36,
+                    ),
+                  ),
+                  const SizedBox(width: 18),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          familyDetiles.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            color: Colors.black,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.grey[600],
+                              size: 18,
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                familyDetiles.location,
+                                style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontSize: 13,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+              Divider(color: Colors.grey[300], thickness: 1.2),
+              const SizedBox(height: 10),
+              // Modern info rows with icons
+              _modernInfoRow(
+                Icons.apartment,
+                'المربع السكني',
+                familyDetiles.blockName,
+              ),
+              _modernInfoRow(
+                Icons.category,
+                'تصنيف الأسرة',
+                familyDetiles.familyCategoryName,
+              ),
+              _modernInfoRow(
+                Icons.person,
+                'رب الأسرة',
+                familyDetiles.headOfFamily?.fullName ?? '',
+              ),
+              _modernInfoRow(
+                Icons.phone,
+                'رقم الجوال',
+                familyDetiles.headOfFamily?.phoneNumber ?? '',
+              ),
+              _modernInfoRow(
+                Icons.email,
+                'الأيميل',
+                familyDetiles.familyMembers.isNotEmpty
+                    ? familyDetiles.familyMembers.first.person.email ?? ''
+                    : '',
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget infoRow(String label, String value) {
+  Widget _modernInfoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Directionality(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
         textDirection: TextDirection.rtl,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+        children: [
+          Icon(icon, color: AppColor.primaryColor, size: 22),
+          const SizedBox(width: 10),
+          Flexible(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
               ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              value,
-              style: const TextStyle(color: Colors.black54, fontSize: 16),
-              textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            flex: 3,
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Colors.black54,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -321,7 +391,7 @@ class FamilyMembersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
+    debugPrint(
       'Rendering FamilyMembersSection with ${familyMembers.length} members',
     );
     return SizedBox(
@@ -434,9 +504,9 @@ class MemberCard extends StatelessWidget {
                           ),
                         )
                       : Icon(
-                          familyMember.person.gender == "ذكر"
-                              ? Icons.male
-                              : Icons.female,
+                          familyMember.person.gender == "Female"
+                              ? Icons.woman
+                              : Icons.man,
                           size: 36,
                           color: Colors.blueGrey,
                         ),

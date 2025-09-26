@@ -105,50 +105,64 @@ class PersonCubit extends Cubit<PersonState> {
     required String? email,
   }) async {
     emit(WaitingForUpdateOrAddPerson());
+
     try {
+      final Map<String, dynamic> requestData = {
+        "FirstName": firstName,
+        "SecondName": secondName,
+        "ThirdName": thirdName,
+        "LastName": lastName,
+        "PhoneNumber": phoneNumber,
+        "IsWhatsapp": isWhatsapp,
+        "IsContactNumber": isCall,
+        "Email": email?.isNotEmpty == true ? email : null,
+        "DateOfBirth": selectedDate?.toIso8601String(),
+        "Gender": GenderExtension.fromDisplayName(
+          selectedGender!,
+        ).toString().split('.').last,
+
+        "BloodType": selectedBloodType?.toString().split('.').last,
+        "IdentityNumber": identityNumber,
+        "IdentityType": selectedIdentityType?.toString().split('.').last,
+        "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
+        "OccupationStatus": selectedOccupationStatus
+            ?.toString()
+            .split('.')
+            .last,
+        "Job": null,
+
+        "Image": profilePicture != null
+            ? await MultipartFile.fromFile(
+                profilePicture!.path,
+                filename: profilePicture!.name,
+              )
+            : null,
+      };
+
+      // Debug log to ensure data is ready
+      print("Request Data: $requestData");
+
       final response = await api.post(
         ApiLink.addNewPerson,
         isFromData: true,
-        data: {
-          "FirstName": firstName,
-          "SecondName": secondName,
-          "ThirdName": thirdName,
-          "LastName": lastName,
-          "PhoneNumber": phoneNumber,
-          "IsWhatsapp": isWhatsapp,
-          "IsContactNumber": isCall,
-          "Email": email,
-          "DateOfBirth": selectedDate?.toIso8601String(),
-          "Gender": GenderExtension.fromDisplayName(
-            selectedGender!,
-          ).toString().split('.').last,
-          "BloodType": selectedBloodType?.toString().split('.').last,
-          "IdentityNumber": identityNumber,
-          "IdentityType": selectedIdentityType?.toString().split('.').last,
-          "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
-          "OccupationStatus": selectedOccupationStatus
-              ?.toString()
-              .split('.')
-              .last,
-          "Job": null,
-          "Image": profilePicture != null
-              ? await MultipartFile.fromFile(
-                  profilePicture!.path,
-                  filename: profilePicture!.name,
-                )
-              : null,
-        },
+        data: requestData,
       );
 
       if (response["isSuccess"]) {
         emit(PersonAddedSuccessfully(message: response["message"]));
         _resetPeopleList();
         await getPeople();
+      } else {
+        emit(PersonAddedFailure(errorMessage: response["message"]));
       }
     } on Serverexception catch (e) {
       emit(PersonAddedFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
-      emit(PersonAddedFailure(errorMessage: e.toString()));
+    } catch (e, stackTrace) {
+      print("Unexpected error: $e");
+      print(stackTrace);
+      emit(
+        PersonAddedFailure(errorMessage: "An unexpected error occurred: $e"),
+      );
     }
   }
 

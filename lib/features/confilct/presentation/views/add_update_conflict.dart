@@ -377,14 +377,6 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SmallButton(
-                        text: 'إلغاء',
-                        onPressed: () {
-                          // conflictCubit.resetInputs();
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      const SizedBox(width: 10),
-                      SmallButton(
                         text: conflictCubit.conflict == null
                             ? 'إضافة'
                             : 'تعديل',
@@ -403,6 +395,13 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                               );
                             }
                           }
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      SmallButton(
+                        text: 'إلغاء',
+                        onPressed: () {
+                          Navigator.of(context).pop();
                         },
                       ),
                     ],

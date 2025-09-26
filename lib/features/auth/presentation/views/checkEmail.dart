@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/TextFieldOTP.dart';
 import 'package:smart_negborhood_app/core/common/widgets/circular_logo.dart';
 import 'package:smart_negborhood_app/core/common/widgets/defult_button.dart';
-import 'package:smart_negborhood_app/core/common/widgets/resend_timer.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
@@ -61,7 +59,6 @@ class _CheckEmailState extends State<CheckEmail> {
     return BlocListener<ForgetapasswordCubit, ForgetapasswordState>(
       listener: (context, state) {
         if (state is SendConfirmationCodeLoading) {
-
           context.showLoadingDialog();
         } else if (state is SendConfirmationCodeSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
@@ -83,9 +80,7 @@ class _CheckEmailState extends State<CheckEmail> {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(
-           AppSize.paddingOfPage,
-          ),
+          padding: const EdgeInsets.all(AppSize.paddingOfPage),
           child: Center(
             child: SingleChildScrollView(
               child: Column(

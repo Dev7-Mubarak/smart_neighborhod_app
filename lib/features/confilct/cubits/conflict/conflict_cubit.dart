@@ -8,6 +8,7 @@ import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 import 'conflict_state.dart';
 
 class ConflictCubit extends Cubit<ConflictState> {
@@ -130,8 +131,8 @@ class ConflictCubit extends Cubit<ConflictState> {
   Future<void> addConflict(String notes, String title) async {
     emit(WiateAddedUpdatedConflict());
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final idmanger = prefs.getString('id');
+      final profile = await SharedPreferencesService.getProfile();
+      final idmanger = profile!.id;
       final response = await api.post(
         ApiLink.addConflict,
         data: {
