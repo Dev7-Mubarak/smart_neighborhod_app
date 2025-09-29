@@ -328,13 +328,6 @@ class FamilyDetilesCard extends StatelessWidget {
                 'رقم الجوال',
                 familyDetiles.headOfFamily?.phoneNumber ?? '',
               ),
-              _modernInfoRow(
-                Icons.email,
-                'الأيميل',
-                familyDetiles.familyMembers.isNotEmpty
-                    ? familyDetiles.familyMembers.first.person.email ?? ''
-                    : '',
-              ),
             ],
           ),
         ),
@@ -395,7 +388,7 @@ class FamilyMembersSection extends StatelessWidget {
       'Rendering FamilyMembersSection with ${familyMembers.length} members',
     );
     return SizedBox(
-      height: 450,
+      height: 400,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: familyMembers.length,
@@ -522,11 +515,6 @@ class MemberCard extends StatelessWidget {
                   ),
                 ),
                 const Divider(height: 18, color: Colors.grey, thickness: 1),
-                infoRow('رقم الهوية', familyMember.person.identityNumber),
-                infoRow(
-                  'نوع الهوية',
-                  familyMember.person.identityType.arabicName,
-                ),
                 infoRow('رقم الجوال', familyMember.person.phoneNumber),
                 infoRow(
                   'الجنس',

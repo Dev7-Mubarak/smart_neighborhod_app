@@ -149,11 +149,6 @@ class _MemberDetailsSection extends StatelessWidget {
                   'الجنس',
                   familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
                 ),
-                _DetailRow('رقم الهوية', familyMember.person.identityNumber),
-                _DetailRow(
-                  'نوع الهوية',
-                  familyMember.person.identityType.arabicName,
-                ),
                 _DetailRow(
                   'تاريخ الميلاد',
                   familyMember.person.dateOfBirth.toString().split(' ').first,
@@ -167,7 +162,6 @@ class _MemberDetailsSection extends StatelessWidget {
                   'طريقة التواصل',
                   familyMember.person.isWhatsapp ? "واتساب" : "مكالمة",
                 ),
-                _DetailRow('الأيميل', familyMember.person.email ?? '-'),
                 _DetailRow(
                   'الحالة الاجتماعية',
                   familyMember.person.maritalStatus.arabicName,

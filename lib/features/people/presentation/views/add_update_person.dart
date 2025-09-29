@@ -31,10 +31,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
   late final TextEditingController secondNameController;
   late final TextEditingController thirdNameController;
   late final TextEditingController lastNameController;
-  late final TextEditingController identityNumberController;
   late final TextEditingController birthDateController;
   late final TextEditingController phoneNumberController;
-  late final TextEditingController emailController;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -52,9 +50,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     lastNameController = TextEditingController(
       text: widget.person?.lastName ?? '',
     );
-    identityNumberController = TextEditingController(
-      text: widget.person?.identityNumber ?? '',
-    );
+
     final date =
         cubit.selectedDate ??
         widget.person?.dateOfBirth ??
@@ -65,7 +61,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     phoneNumberController = TextEditingController(
       text: widget.person?.phoneNumber ?? '',
     );
-    emailController = TextEditingController(text: widget.person?.email ?? '');
     super.initState();
   }
 
@@ -75,10 +70,8 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     secondNameController.dispose();
     thirdNameController.dispose();
     lastNameController.dispose();
-    identityNumberController.dispose();
     birthDateController.dispose();
     phoneNumberController.dispose();
-    emailController.dispose();
     super.dispose();
   }
 
@@ -191,59 +184,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'رقم الهوية'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: identityNumberController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'رقم الهوية مطلوب';
-                          }
-                          if (value.length < 6) {
-                            return 'رقم الهوية يجب أن يكون 6 أرقام أو أكثر';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'نوع الهوية'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      BlocBuilder<PersonCubit, PersonState>(
-                        buildWhen: (previous, current) =>
-                            current is ChangeSelectedIdentityType,
-                        builder: (context, state) {
-                          return CustomDropdown(
-                            items: IdentityType.values
-                                .map((e) => e.arabicName)
-                                .toList(),
-                            selectedValue: context
-                                .read<PersonCubit>()
-                                .selectedIdentityType
-                                ?.arabicName,
-                            onChanged: (String? newValue) {
-                              context
-                                  .read<PersonCubit>()
-                                  .changeSelectedIdentityType(
-                                    IdentityType.values.firstWhere(
-                                      (e) => e.arabicName == newValue,
-                                    ),
-                                  );
-                            },
-                            text: 'اختيار نوع الهوية',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'يرجى اختيار نوع الهوية';
-                              }
-                              return null;
-                            },
-                          );
-                        },
-                      ),
+
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       _buildGenderSelector(cubit),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
@@ -339,28 +280,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                           );
                         },
                       ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'الإيميل'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: emailController,
-                              validator: (value) {
-                                return null;
-                              },
-                            ),
-                          ),
-                          const Icon(
-                            Icons.email,
-                            color: AppColor.primaryColor,
-                            size: 30,
-                          ),
-                        ],
-                      ),
+
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'تاريخ الميلاد'),
                       const SizedBox(
@@ -651,8 +571,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   thirdName: thirdNameController.text,
                   lastName: lastNameController.text,
                   phoneNumber: phoneNumberController.text,
-                  identityNumber: identityNumberController.text,
-                  email: emailController.text,
                 );
               } else {
                 cubit.updatePerson(
@@ -662,8 +580,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   thirdName: thirdNameController.text,
                   lastName: lastNameController.text,
                   phoneNumber: phoneNumberController.text,
-                  identityNumber: identityNumberController.text,
-                  email: emailController.text,
                 );
               }
             }

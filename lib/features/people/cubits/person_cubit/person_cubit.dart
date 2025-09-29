@@ -24,7 +24,6 @@ class PersonCubit extends Cubit<PersonState> {
   String? selectedGender;
   bool isCall = false;
   bool isWhatsapp = false;
-  IdentityType? selectedIdentityType;
   BloodType? selectedBloodType;
   MaritalStatus? selectedMaritalStatus;
   OccupationStatus? selectedOccupationStatus;
@@ -38,7 +37,6 @@ class PersonCubit extends Cubit<PersonState> {
   /// Copies all relevant fields from the given [person] to the cubit state.
   void setPersonForUpdate(Person person) {
     this.person = person;
-    selectedIdentityType = person.identityType;
     selectedBloodType = person.bloodType;
     selectedMaritalStatus = person.maritalStatus;
     selectedOccupationStatus = person.occupationStatus;
@@ -101,8 +99,6 @@ class PersonCubit extends Cubit<PersonState> {
     required String thirdName,
     required String lastName,
     required String phoneNumber,
-    required String identityNumber,
-    required String? email,
   }) async {
     emit(WaitingForUpdateOrAddPerson());
 
@@ -115,15 +111,12 @@ class PersonCubit extends Cubit<PersonState> {
         "PhoneNumber": phoneNumber,
         "IsWhatsapp": isWhatsapp,
         "IsContactNumber": isCall,
-        "Email": email?.isNotEmpty == true ? email : null,
         "DateOfBirth": selectedDate?.toIso8601String(),
         "Gender": GenderExtension.fromDisplayName(
           selectedGender!,
         ).toString().split('.').last,
 
         "BloodType": selectedBloodType?.toString().split('.').last,
-        "IdentityNumber": identityNumber,
-        "IdentityType": selectedIdentityType?.toString().split('.').last,
         "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
         "OccupationStatus": selectedOccupationStatus
             ?.toString()
@@ -173,8 +166,6 @@ class PersonCubit extends Cubit<PersonState> {
     String? thirdName,
     String? lastName,
     String? phoneNumber,
-    String? identityNumber,
-    String? email,
   }) async {
     emit(WaitingForUpdateOrAddPerson());
     try {
@@ -189,14 +180,11 @@ class PersonCubit extends Cubit<PersonState> {
           "PhoneNumber": phoneNumber,
           "IsWhatsapp": isWhatsapp,
           "IsContactNumber": isCall,
-          "Email": email,
           "DateOfBirth": selectedDate?.toIso8601String(),
           "Gender": GenderExtension.fromDisplayName(
             selectedGender!,
           ).toString().split('.').last,
           "BloodType": selectedBloodType?.toString().split('.').last,
-          "IdentityNumber": identityNumber,
-          "IdentityType": selectedIdentityType?.toString().split('.').last,
           "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
           "OccupationStatus": selectedOccupationStatus
               ?.toString()
@@ -274,11 +262,6 @@ class PersonCubit extends Cubit<PersonState> {
     this.isCall = isCall ?? false;
     this.isWhatsapp = isWhatsapp ?? false;
     emit(ChangeContactType());
-  }
-
-  void changeSelectedIdentityType(IdentityType selectedIdentityType) {
-    this.selectedIdentityType = selectedIdentityType;
-    emit(ChangeSelectedIdentityType());
   }
 
   void changeSelectedBloodType(BloodType selectedBloodType) {

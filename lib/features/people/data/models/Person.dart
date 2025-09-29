@@ -5,7 +5,7 @@ import '../../../../core/common/enums/occupation_status.dart';
 
 class Person {
   final int id;
-   String? fullNameOneString;
+  String? fullNameOneString;
 
   String firstName;
   String secondName;
@@ -13,15 +13,12 @@ class Person {
   String lastName;
   DateTime dateOfBirth;
   String phoneNumber;
-  String? email;
-  
+
   String? image;
   String gender;
   bool isCall;
   bool isWhatsapp;
   BloodType bloodType;
-  String identityNumber;
-  IdentityType identityType;
   OccupationStatus occupationStatus;
   MaritalStatus maritalStatus;
   String? job;
@@ -33,15 +30,12 @@ class Person {
     required this.thirdName,
     required this.lastName,
     required this.phoneNumber,
-        this.fullNameOneString,
+    this.fullNameOneString,
 
-    this.email,
     this.image,
     required this.dateOfBirth,
     required this.gender,
     required this.bloodType,
-    required this.identityNumber,
-    required this.identityType,
     required this.occupationStatus,
     required this.maritalStatus,
     this.job,
@@ -65,12 +59,9 @@ class Person {
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
       phoneNumber: json['phoneNumber'] as String,
       fullNameOneString: json['fullName'] as String? ?? "",
-      email: json['email'],
       image: json['image'],
       gender: json['gender'] as String,
       bloodType: _bloodTypeFromString(json['bloodType']),
-      identityNumber: json['identityNumber'] as String,
-      identityType: _identityTypeFromString(json['identityType']),
       occupationStatus: _occupationStatusFromString(json['occupationStatus']),
       maritalStatus: _maritalStatusFromString(json['maritalStatus']),
       isCall: json['isCall'] as bool? ?? false,
@@ -84,13 +75,6 @@ class Person {
     return BloodType.values.firstWhere(
       (e) => e.toString().split('.').last == value,
       orElse: () => BloodType.aPositive,
-    );
-  }
-
-  static IdentityType _identityTypeFromString(String value) {
-    return IdentityType.values.firstWhere(
-      (e) => e.toString().split('.').last == value,
-      orElse: () => IdentityType.identityCard,
     );
   }
 
