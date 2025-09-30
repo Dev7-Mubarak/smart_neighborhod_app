@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
+import 'package:smart_negborhood_app/core/constants/app_route.dart';
 
 import '../../../../core/services/shared_preferences_service.dart';
 import '../../../auth/data/models/login_model.dart';
@@ -106,36 +107,8 @@ class _SettingsViewState extends State<SettingsView> {
                   icon: Icons.person,
                   title: 'تغير كلمة المرور',
                   onTap: () {
-                    // Navigate to edit profile page
+                    Navigator.pushNamed(context, AppRoute.forgetapassword);
                   },
-                ),
-                _buildMenuItem(
-                  icon: Icons.verified_user,
-                  title: 'التحقق الثنائي',
-                  onTap: () {
-                    // Navigate to edit profile page
-                  },
-                ),
-                _buildMenuItem(
-                  icon: Icons.security,
-                  title: 'الخصوصية',
-                  onTap: () {
-                    // Navigate to edit profile page
-                  },
-                ),
-                const SizedBox(height: 30),
-
-                // ======== GENERAL SETTINGS SECTION ========
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    "الإعدادات العامة",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
                 ),
                 _buildMenuItem(
                   icon: Icons.notifications,
@@ -178,7 +151,7 @@ class _SettingsViewState extends State<SettingsView> {
                   },
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
 
                 // ======== LOGOUT BUTTON ========
                 ElevatedButton.icon(
@@ -195,8 +168,37 @@ class _SettingsViewState extends State<SettingsView> {
                     'تسجيل الخروج',
                     style: TextStyle(fontSize: 16),
                   ),
-                  onPressed: () {
-                    // Handle logout
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('تأكيد تسجيل الخروج'),
+                        content: const Text(
+                          'هل أنت متأكد أنك تريد تسجيل الخروج من التطبيق؟',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('إلغاء'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              'تسجيل الخروج',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) {
+                      SharedPreferencesService.removeProfile();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppRoute.login,
+                        (route) => false,
+                      );
+                    }
                   },
                 ),
                 const SizedBox(height: 20),

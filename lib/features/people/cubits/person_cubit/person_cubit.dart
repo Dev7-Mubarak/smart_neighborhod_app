@@ -9,7 +9,6 @@ import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
 import '../../data/models/Person.dart';
 import '../../../../core/common/enums/blood_type.dart';
-import '../../../../core/common/enums/identity_type.dart';
 import '../../../../core/common/enums/marital_status.dart';
 import '../../../../core/common/enums/occupation_status.dart';
 part 'person_state.dart';

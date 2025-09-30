@@ -17,7 +17,6 @@ import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
 import '../../data/models/Person.dart';
-import '../../../../core/common/enums/identity_type.dart';
 
 class AddUpdatePerson extends StatefulWidget {
   const AddUpdatePerson({super.key, this.person});

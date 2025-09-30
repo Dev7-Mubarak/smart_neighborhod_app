@@ -5,7 +5,6 @@ import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart'
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict_case.dart';
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
-import 'package:smart_negborhood_app/core/common/enums/identity_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 

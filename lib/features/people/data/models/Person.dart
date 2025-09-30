@@ -1,5 +1,4 @@
 import '../../../../core/common/enums/blood_type.dart';
-import '../../../../core/common/enums/identity_type.dart';
 import '../../../../core/common/enums/marital_status.dart';
 import '../../../../core/common/enums/occupation_status.dart';
 
