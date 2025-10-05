@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
-import 'package:smart_negborhood_app/core/common/enums/gender.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/exception.dart';
@@ -39,8 +38,6 @@ class PersonCubit extends Cubit<PersonState> {
     selectedBloodType = person.bloodType;
     selectedMaritalStatus = person.maritalStatus;
     selectedOccupationStatus = person.occupationStatus;
-    isCall = person.isCall;
-    isWhatsapp = person.isWhatsapp;
     selectedDate = person.dateOfBirth;
     selectedGender = person.gender;
   }
@@ -97,7 +94,7 @@ class PersonCubit extends Cubit<PersonState> {
     required String secondName,
     required String thirdName,
     required String lastName,
-    required String phoneNumber,
+    required String? phoneNumber,
   }) async {
     emit(WaitingForUpdateOrAddPerson());
 
@@ -108,12 +105,8 @@ class PersonCubit extends Cubit<PersonState> {
         "ThirdName": thirdName,
         "LastName": lastName,
         "PhoneNumber": phoneNumber,
-        "IsWhatsapp": isWhatsapp,
-        "IsContactNumber": isCall,
-        "DateOfBirth": selectedDate?.toIso8601String(),
-        "Gender": GenderExtension.fromDisplayName(
-          selectedGender!,
-        ).toString().split('.').last,
+        "DateOfBirth": selectedDate,
+        "Gender": selectedGender,
 
         "BloodType": selectedBloodType?.toString().split('.').last,
         "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
@@ -177,12 +170,8 @@ class PersonCubit extends Cubit<PersonState> {
           "ThirdName": thirdName,
           "LastName": lastName,
           "PhoneNumber": phoneNumber,
-          "IsWhatsapp": isWhatsapp,
-          "IsContactNumber": isCall,
           "DateOfBirth": selectedDate?.toIso8601String(),
-          "Gender": GenderExtension.fromDisplayName(
-            selectedGender!,
-          ).toString().split('.').last,
+          "Gender": selectedGender,
           "BloodType": selectedBloodType?.toString().split('.').last,
           "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
           "OccupationStatus": selectedOccupationStatus

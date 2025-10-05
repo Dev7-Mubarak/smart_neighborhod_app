@@ -58,8 +58,11 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
       text: DateFormat('yyyy-MM-dd').format(date),
     );
     phoneNumberController = TextEditingController(
-      text: widget.person?.phoneNumber ?? '',
+      text: widget.person?.phoneNumber,
     );
+
+    cubit.selectedGender = widget.person?.gender;
+
     super.initState();
   }
 
@@ -193,20 +196,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                       ),
                       Row(
                         children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              controller: phoneNumberController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'رقم التواصل مطلوب';
-                                }
-                                if (!RegExp(r'^[0-9]{8,}$').hasMatch(value)) {
-                                  return 'رقم التواصل غير صحيح';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
                           Transform(
                             alignment: Alignment.center,
                             transform: Matrix4.identity()..scale(-1.0, 1.0),
@@ -216,70 +205,21 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                               size: 30,
                             ),
                           ),
+                          Expanded(
+                            child: CustomTextFormField(
+                              controller: phoneNumberController,
+                              validator: (value) {
+                                if (value != null &&
+                                    value.isNotEmpty &&
+                                    !RegExp(r'^[0-9]{8,}$').hasMatch(value)) {
+                                  return 'رقم التواصل غير صحيح';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
                         ],
                       ),
-                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'طريقة الإتصال'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      BlocBuilder<PersonCubit, PersonState>(
-                        buildWhen: (previous, current) =>
-                            current is ChangeContactType,
-                        builder: (context, state) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  const SmallText(text: 'اتصال'),
-                                  Checkbox(
-                                    value: cubit.isCall,
-                                    activeColor: AppColor.primaryColor,
-                                    onChanged: (bool? value) {
-                                      context
-                                          .read<PersonCubit>()
-                                          .toggleContactType(
-                                            isCall: value,
-                                            isWhatsapp: context
-                                                .read<PersonCubit>()
-                                                .isWhatsapp,
-                                          );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: AppSize.spasingBetweenInputBloc,
-                              ),
-                              Row(
-                                children: [
-                                  const SmallText(text: 'واتس اب'),
-                                  Checkbox(
-                                    value: context
-                                        .read<PersonCubit>()
-                                        .isWhatsapp,
-                                    activeColor: AppColor.primaryColor,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        context
-                                            .read<PersonCubit>()
-                                            .toggleContactType(
-                                              isWhatsapp: value,
-                                              isCall: context
-                                                  .read<PersonCubit>()
-                                                  .isCall,
-                                            );
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'تاريخ الميلاد'),
                       const SizedBox(
@@ -290,12 +230,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         suffixIcon: Icons.calendar_today,
                         readOnly: true,
                         onTap: () => cubit.pickDate(context),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'تاريخ الميلاد مطلوب';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'فصيلة الدم'),
@@ -515,7 +449,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 Row(
                   children: [
                     Radio<String>(
-                      value: Gender.male.arabicName,
+                      value: Gender.Male.name,
                       groupValue: cubit.selectedGender,
                       onChanged: (value) {
                         cubit.changeSelctedGender(value!);
@@ -528,7 +462,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                 Row(
                   children: [
                     Radio<String>(
-                      value: Gender.female.arabicName,
+                      value: Gender.Female.name,
                       groupValue: cubit.selectedGender,
                       onChanged: (value) {
                         cubit.changeSelctedGender(value!);
@@ -556,12 +490,6 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
               context.showErrorSnackBar("يرجى اختيار الجنس.");
               return;
             }
-
-            if (cubit.selectedDate == null) {
-              context.showErrorSnackBar("يرجى اختيار تاريخ الميلاد.");
-              return;
-            }
-
             if (_formKey.currentState!.validate()) {
               if (widget.person == null) {
                 cubit.addNewPerson(

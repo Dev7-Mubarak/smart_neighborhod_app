@@ -156,11 +156,11 @@ class _MemberDetailsSection extends StatelessWidget {
                   'فصيلة الدم',
                   familyMember.person.bloodType.arabicName,
                 ),
-                _DetailRow('رقم الجوال', familyMember.person.phoneNumber),
                 _DetailRow(
-                  'طريقة التواصل',
-                  familyMember.person.isWhatsapp ? "واتساب" : "مكالمة",
+                  'رقم الجوال',
+                  familyMember.person.phoneNumber ?? '-',
                 ),
+
                 _DetailRow(
                   'الحالة الاجتماعية',
                   familyMember.person.maritalStatus.arabicName,

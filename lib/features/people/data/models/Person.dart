@@ -6,21 +6,21 @@ class Person {
   final int id;
   String? fullNameOneString;
 
-  String firstName;
-  String secondName;
-  String thirdName;
-  String lastName;
-  DateTime dateOfBirth;
-  String phoneNumber;
+  final String firstName;
+  final String secondName;
+  final String thirdName;
+  final String lastName;
+  final DateTime? dateOfBirth;
+  final String? phoneNumber;
 
-  String? image;
-  String gender;
-  bool isCall;
-  bool isWhatsapp;
-  BloodType bloodType;
-  OccupationStatus occupationStatus;
-  MaritalStatus maritalStatus;
-  String? job;
+  final String? image;
+  final String? gender;
+  // final bool isCall;
+  // final bool isWhatsapp;
+  final BloodType bloodType;
+  final OccupationStatus occupationStatus;
+  final MaritalStatus maritalStatus;
+  final String? job;
 
   Person({
     required this.id,
@@ -38,8 +38,6 @@ class Person {
     required this.occupationStatus,
     required this.maritalStatus,
     this.job,
-    required this.isCall,
-    required this.isWhatsapp,
   });
 
   // Getter for full name
@@ -55,16 +53,16 @@ class Person {
       secondName: json['secondName'] as String? ?? "",
       thirdName: json['thirdName'] as String? ?? "",
       lastName: json['lastName'] as String? ?? "",
-      dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
-      phoneNumber: json['phoneNumber'] as String,
+      dateOfBirth: DateTime.parse(
+        json['dateOfBirth'] as String? ?? DateTime.now().toIso8601String(),
+      ),
+      phoneNumber: json['phoneNumber'] as String?,
       fullNameOneString: json['fullName'] as String? ?? "",
       image: json['image'],
-      gender: json['gender'] as String,
+      gender: json['gender'] as String?,
       bloodType: _bloodTypeFromString(json['bloodType']),
       occupationStatus: _occupationStatusFromString(json['occupationStatus']),
       maritalStatus: _maritalStatusFromString(json['maritalStatus']),
-      isCall: json['isCall'] as bool? ?? false,
-      isWhatsapp: json['isWhatsapp'] as bool? ?? false,
       job: json['job'],
     );
   }
