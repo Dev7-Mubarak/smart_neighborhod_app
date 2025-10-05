@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import '../../../../core/constants/app_image.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 import 'category_card.dart';
 
 class HomeCategoryCardListWidget extends StatefulWidget {
@@ -18,15 +20,23 @@ class _HomeCategoryCardListWidgetState
   Widget build(BuildContext context) {
     final locale = context.locale;
 
+    // Read stored role (could be enum name or string). Normalize for comparison.
+    final profileRole = SharedPreferencesService.getProfile()?.role;
+    final roleString = profileRole?.toString() ?? '';
+    final isAdmin =
+        roleString.toLowerCase() == AppRole.Admin.name.toLowerCase();
+
     List<CategoryCard> categoryCardList = [
-      CategoryCard(
-        title: locale.allPeople,
-        imagePath: AppImage.homecomplan,
-        backgroundColor: const Color(0xFFE8618C),
-        onTap: () {
-          Navigator.pushNamed(context, AppRoute.allPeople);
-        },
-      ),
+      if (isAdmin)
+        CategoryCard(
+          title: locale.allPeople,
+          imagePath: AppImage.homecomplan,
+          backgroundColor: const Color(0xFFE8618C),
+          onTap: () {
+            Navigator.pushNamed(context, AppRoute.allPeople);
+          },
+        ),
+
       CategoryCard(
         title: "المربعات السكنية",
         imagePath: AppImage.homeresidential,
