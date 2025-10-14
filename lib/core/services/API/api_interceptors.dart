@@ -9,7 +9,7 @@ class ApiInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final profile = await SharedPreferencesService.getProfile();
-    options.headers["Authorization"] = "Bearer ${profile!.token}";
+    options.headers["Authorization"] = "Bearer ${profile?.token}";
     super.onRequest(options, handler);
   }
 }
