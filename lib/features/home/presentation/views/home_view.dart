@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
+import '../../../../core/common/cubits/navigation_cubit.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/services/shared_preferences_service.dart';
 import '../widgets/home_category_Card_list_widget.dart';
@@ -28,12 +30,16 @@ class HomeViewState extends State<HomeView> {
         bottomOpacity: 0,
         title: Row(
           children: [
-            Container(
+            InkWell(
+              onTap: () {
+                context.read<NavigationCubit>().changePage(2);
+              },
+              borderRadius: BorderRadius.circular(50),
               child: CircleAvatar(
                 radius: 22,
                 backgroundColor: AppColor.primaryColor,
                 child: Text(
-                  _profile.email.isNotEmpty == true
+                  _profile.email.isNotEmpty
                       ? _profile.email[0].toUpperCase()
                       : '',
                   style: const TextStyle(
@@ -44,31 +50,44 @@ class HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
+
             const SizedBox(width: 12),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'مرحباً,',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.primaryColor,
-                    letterSpacing: 0.5,
-                  ),
+
+            InkWell(
+              onTap: () {
+                context.read<NavigationCubit>().changePage(2);
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'مرحباً,',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppColor.primaryColor,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    Text(
+                      _profile.email,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  _profile.email,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
+              ),
             ),
+
             const Spacer(),
+
             IconButton(
               icon: Icon(
                 Icons.notifications_rounded,
@@ -82,6 +101,7 @@ class HomeViewState extends State<HomeView> {
         ),
         centerTitle: false,
       ),
+
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
