@@ -8,9 +8,12 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_state.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
+import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
+import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/common/widgets/table.dart';
@@ -27,12 +30,14 @@ class _AllAssistancesState extends State<AllAssistances> {
   late AssistancesCubit _assistancesCubit;
   late TextEditingController _searchingController;
   Timer? _delay;
+  late final ProfileModel _profile;
 
   @override
   void initState() {
     super.initState();
     _assistancesCubit = context.read<AssistancesCubit>()..getAssistances();
     _searchingController = TextEditingController();
+    _profile = SharedPreferencesService.getProfile()!;
   }
 
   @override
@@ -70,14 +75,16 @@ class _AllAssistancesState extends State<AllAssistances> {
   }
 
   Widget showLoadingIndicator() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 16),
-          Text('جاري تحميل المساعدات...'),
-        ],
+    return Expanded(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('جاري تحميل المساعدات...'),
+          ],
+        ),
       ),
     );
   }
@@ -97,7 +104,9 @@ class _AllAssistancesState extends State<AllAssistances> {
       }).toList(),
       originalObjects: _projectsListSearch,
       onRowLongPress: (rowIndex, rowObject) {
-        _showOptions(context, rowObject as Project);
+        if (_profile.role == AppRole.Admin.name) {
+          _showOptions(context, rowObject as Project);
+        }
       },
       onRowTap: (rowIndex) {
         Navigator.pushNamed(
@@ -152,7 +161,7 @@ class _AllAssistancesState extends State<AllAssistances> {
               const SizedBox(height: 20),
               _buildToBar(context),
               const SizedBox(height: 20),
-              Expanded(child: buildBlocWidget()),
+              buildBlocWidget(),
             ],
           ),
         ),
@@ -164,21 +173,22 @@ class _AllAssistancesState extends State<AllAssistances> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SmallButton(
-          text: 'إضافة',
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              AppRoute.addUpdateAssistanc,
-              arguments: BlocProvider.of<AssistancesCubit>(context),
-            ).then((_) {
-              _assistancesCubit.resetInputs();
-              _assistancesCubit.getAssistances(
-                search: _searchingController.text.trim(),
-              );
-            });
-          },
-        ),
+        if (_profile.role == AppRole.Admin.name)
+          SmallButton(
+            text: 'إضافة',
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                AppRoute.addUpdateAssistanc,
+                arguments: BlocProvider.of<AssistancesCubit>(context),
+              ).then((_) {
+                _assistancesCubit.resetInputs();
+                _assistancesCubit.getAssistances(
+                  search: _searchingController.text.trim(),
+                );
+              });
+            },
+          ),
         const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
         Expanded(
           child: SearchableTextFormField(

@@ -14,9 +14,11 @@ import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_memb
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_state.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_member.dart';
+import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/common/widgets/table.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 
 class AllTeams extends StatefulWidget {
   const AllTeams({super.key});
@@ -127,7 +129,11 @@ class _AllTeamsState extends State<AllTeams> {
                             children: [
                               InkWell(
                                 onLongPress: () {
-                                  _showTeamOptions(context, team);
+                                  final profile =
+                                      SharedPreferencesService.getProfile();
+                                  if (profile!.role == AppRole.Admin.name) {
+                                    _showTeamOptions(context, team);
+                                  }
                                 },
                                 onTap: () {
                                   Navigator.pushNamed(

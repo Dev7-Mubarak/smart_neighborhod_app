@@ -14,8 +14,11 @@ import 'package:smart_negborhood_app/core/common/enums/project_status.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team.dart';
+import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/common/widgets/table.dart';
+import '../../../../core/services/shared_preferences_service.dart';
+import '../../../auth/data/models/login_model.dart';
 import '../../cubits/assistances/assistances_cubit.dart';
 
 class AssistanceDetiles extends StatefulWidget {
@@ -30,6 +33,7 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
   late AssistancesCubit _assistancesCubit;
   List<Team> _teamsList = [];
   List<ProjectBlockFamilies> _blockFamiliesList = [];
+  late final ProfileModel _profile;
 
   @override
   void initState() {
@@ -37,6 +41,8 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
     _assistancesCubit = context.read<AssistancesCubit>()
       ..getProjectTeams(id: widget.project.id)
       ..getProjectBlockFamilies(id: widget.project.id);
+
+    _profile = SharedPreferencesService.getProfile()!;
   }
 
   @override
@@ -191,22 +197,26 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                     }
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: SmallButton(
-                      text: 'إضافة فريق',
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoute.addTeamsToAssistance,
-                          arguments: BlocProvider.of<AssistancesCubit>(context),
-                        );
-                      },
+                if (_profile.role == AppRole.Admin.name)
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: SmallButton(
+                        text: 'إضافة فريق',
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.addTeamsToAssistance,
+                            arguments: BlocProvider.of<AssistancesCubit>(
+                              context,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
+
                 SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -293,27 +303,29 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                       ),
                                     ),
                               SizedBox(height: 10),
-                              Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: SmallButton(
-                                    text: 'إضافة أسرة',
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        AppRoute.addFamilyToAssistance,
-                                        arguments:
-                                            BlocProvider.of<AssistancesCubit>(
-                                              context,
-                                            )..setBlockIdForAddFamily(
-                                              block.blockId,
-                                            ),
-                                      );
-                                    },
+                              if (_profile.role == AppRole.Admin.name)
+                                Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: SmallButton(
+                                      text: 'إضافة أسرة',
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoute.addFamilyToAssistance,
+                                          arguments:
+                                              BlocProvider.of<AssistancesCubit>(
+                                                context,
+                                              )..setBlockIdForAddFamily(
+                                                block.blockId,
+                                              ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
+                              SizedBox(height: 20),
                             ],
                           );
                         },

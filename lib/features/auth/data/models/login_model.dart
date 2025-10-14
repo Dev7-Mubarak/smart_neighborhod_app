@@ -1,3 +1,5 @@
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
+
 class ProfileModel {
   late String id;
   late String email;
