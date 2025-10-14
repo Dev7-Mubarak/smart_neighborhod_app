@@ -114,7 +114,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -144,7 +144,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -411,7 +411,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث المشروع";
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: errorMessage,
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -435,7 +435,7 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),

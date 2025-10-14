@@ -17,7 +17,7 @@ void handleDioExceptions(DioException error) {
       throw Serverexception(
         errModel: ErrorModel(
           errorMessage: 'فشل الاتصال، يرجى التحقق من اتصالك بالإنترنت',
-          statusCode: '',
+          statusCode: 500,
           isSuccess: false,
         ),
       );
@@ -27,7 +27,7 @@ void handleDioExceptions(DioException error) {
       throw Serverexception(
         errModel: ErrorModel(
           errorMessage: 'حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى',
-          statusCode: '',
+          statusCode: 500,
           isSuccess: false,
         ),
       );
@@ -48,7 +48,7 @@ void handleDioExceptions(DioException error) {
           throw Serverexception(
             errModel: ErrorModel(
               errorMessage: 'حدث خطأ من الخادم، يرجى المحاولة لاحقاً',
-              statusCode: '',
+              statusCode: 500,
               isSuccess: false,
             ),
           );

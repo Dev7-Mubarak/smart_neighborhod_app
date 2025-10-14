@@ -98,7 +98,7 @@ class TeamCubit extends Cubit<TeamState> {
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث المشروع";
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: errorMessage,
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -122,7 +122,7 @@ class TeamCubit extends Cubit<TeamState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -212,7 +212,7 @@ class TeamCubit extends Cubit<TeamState> {
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "No data received",
             isSuccess: response["isSuccess"] ?? false,
           ),

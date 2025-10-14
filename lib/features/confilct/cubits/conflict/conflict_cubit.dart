@@ -225,7 +225,7 @@ class ConflictCubit extends Cubit<ConflictState> {
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث المشروع";
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: errorMessage,
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -248,7 +248,7 @@ class ConflictCubit extends Cubit<ConflictState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),

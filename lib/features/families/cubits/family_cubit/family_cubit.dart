@@ -66,7 +66,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -99,7 +99,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -123,7 +123,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "No data received",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -160,7 +160,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: response["message"] ?? "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -183,7 +183,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: response["message"] ?? "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -203,7 +203,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "No data received",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -216,7 +216,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       if (familiesObjects == []) {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "لا توجد أسر",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -246,7 +246,7 @@ class FamilyCubit extends Cubit<FamilyState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: response["message"] ?? "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),

@@ -71,7 +71,7 @@ class PersonCubit extends Cubit<PersonState> {
       if (response["data"]["items"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "No data received",
             isSuccess: response["isSuccess"] ?? false,
           ),

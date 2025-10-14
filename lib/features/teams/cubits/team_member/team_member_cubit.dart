@@ -119,7 +119,7 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث عضو الفريق";
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"] ?? 400,
             errorMessage: errorMessage,
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -142,7 +142,7 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"] ?? 400,
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),

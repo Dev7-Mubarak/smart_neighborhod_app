@@ -43,7 +43,7 @@ class BlockCubit extends Cubit<BlockState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"] ?? '400',
+            statusCode: response["statusCode"] ?? 400,
             errorMessage: response["message"] ?? "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -64,7 +64,7 @@ class BlockCubit extends Cubit<BlockState> {
       if (response["data"] == null) {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: '400',
+            statusCode: 400,
             errorMessage: "No data received",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -104,7 +104,7 @@ class BlockCubit extends Cubit<BlockState> {
       } else {
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"] ?? '400',
+            statusCode: response["statusCode"] ?? 400,
             errorMessage: response["message"] ?? "حدث خطأ غير معروف",
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -132,7 +132,7 @@ class BlockCubit extends Cubit<BlockState> {
             response["message"] ?? "حدث خطأ غير معروف أثناء تحديث البلوك";
         throw Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: errorMessage,
             isSuccess: response["isSuccess"] ?? false,
           ),
@@ -160,7 +160,7 @@ class BlockCubit extends Cubit<BlockState> {
       } else {
         Serverexception(
           errModel: ErrorModel(
-            statusCode: response["statusCode"]?.toString() ?? '400',
+            statusCode: response["statusCode"],
             errorMessage: response["message"],
             isSuccess: response["isSuccess"] ?? false,
           ),
