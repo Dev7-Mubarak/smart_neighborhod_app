@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import '../../../../core/common/cubits/navigation_cubit.dart';
 import '../../../../core/constants/app_image.dart';
 import '../../../../core/services/shared_preferences_service.dart';
 import 'category_card.dart';
@@ -41,7 +43,7 @@ class _HomeCategoryCardListWidgetState
         title: "المربعات السكنية",
         imagePath: AppImage.homeresidential,
         backgroundColor: const Color(0xFFEFA98D),
-        onTap: () {},
+        onTap: () => context.read<NavigationCubit>().changePage(1),
       ),
       CategoryCard(
         title: locale.conflictSection,
