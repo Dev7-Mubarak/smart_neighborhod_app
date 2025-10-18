@@ -30,7 +30,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
   late final TextEditingController secondNameController;
   late final TextEditingController thirdNameController;
   late final TextEditingController lastNameController;
-  late final TextEditingController birthDateController;
+  // late final TextEditingController birthDateController;
   late final TextEditingController phoneNumberController;
   final _formKey = GlobalKey<FormState>();
 
@@ -50,13 +50,13 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
       text: widget.person?.lastName ?? '',
     );
 
-    final date =
-        cubit.selectedDate ??
-        widget.person?.dateOfBirth ??
-        DateTime(2000, 1, 1);
-    birthDateController = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(date),
-    );
+    // final date =
+    //     cubit.selectedDate ??
+    //     widget.person?.dateOfBirth ??
+    //     DateTime(2000, 1, 1);
+    // birthDateController = TextEditingController(
+    //   text: DateFormat('yyyy-MM-dd').format(date),
+    // );
     phoneNumberController = TextEditingController(
       text: widget.person?.phoneNumber,
     );
@@ -72,7 +72,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     secondNameController.dispose();
     thirdNameController.dispose();
     lastNameController.dispose();
-    birthDateController.dispose();
+    // birthDateController.dispose();
     phoneNumberController.dispose();
     super.dispose();
   }
@@ -221,16 +221,16 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                         ],
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      const SmallText(text: 'تاريخ الميلاد'),
-                      const SizedBox(
-                        height: AppSize.spasingBetweenInputsAndLabale,
-                      ),
-                      CustomTextFormField(
-                        controller: birthDateController,
-                        suffixIcon: Icons.calendar_today,
-                        readOnly: true,
-                        onTap: () => cubit.pickDate(context),
-                      ),
+                      // const SmallText(text: 'تاريخ الميلاد'),
+                      // const SizedBox(
+                      //   height: AppSize.spasingBetweenInputsAndLabale,
+                      // ),
+                      // CustomTextFormField(
+                      //   controller: birthDateController,
+                      //   suffixIcon: Icons.calendar_today,
+                      //   readOnly: true,
+                      //   onTap: () => cubit.pickDate(context),
+                      // ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       const SmallText(text: 'فصيلة الدم'),
                       const SizedBox(

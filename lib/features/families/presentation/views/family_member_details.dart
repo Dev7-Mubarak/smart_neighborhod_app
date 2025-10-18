@@ -148,10 +148,10 @@ class _MemberDetailsSection extends StatelessWidget {
                   'الجنس',
                   familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
                 ),
-                _DetailRow(
-                  'تاريخ الميلاد',
-                  familyMember.person.dateOfBirth.toString().split(' ').first,
-                ),
+                // _DetailRow(
+                //   'تاريخ الميلاد',
+                //   familyMember.person.dateOfBirth.toString().split(' ').first,
+                // ),
                 _DetailRow(
                   'فصيلة الدم',
                   familyMember.person.bloodType.arabicName,

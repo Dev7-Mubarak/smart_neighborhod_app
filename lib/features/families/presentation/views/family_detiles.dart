@@ -410,7 +410,7 @@ class FamilyMembersSection extends StatelessWidget {
       'Rendering FamilyMembersSection with ${familyMembers.length} members',
     );
     return SizedBox(
-      height: 400,
+      height: 390,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: familyMembers.length,
@@ -551,10 +551,10 @@ class MemberCard extends StatelessWidget {
                   'الجنس',
                   familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
                 ),
-                infoRow(
-                  'تاريخ الميلاد',
-                  familyMember.person.dateOfBirth.toString().split(' ').first,
-                ),
+                // infoRow(
+                //   'تاريخ الميلاد',
+                //   familyMember.person.dateOfBirth.toString().split(' ').first,
+                // ),
                 infoRow('فصيلة الدم', familyMember.person.bloodType.arabicName),
                 infoRow(
                   'الحالة الاجتماعية',
