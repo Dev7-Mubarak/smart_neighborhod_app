@@ -27,13 +27,13 @@ class ResidentialBlockView extends StatefulWidget {
 class _ResidentialBlockViewState extends State<ResidentialBlockView> {
   List<Block> residentialList = [];
   late final BlockCubit _blockCubit;
-  late final ProfileModel _profileModel;
+  late final ProfileModel? _profileModel;
 
   @override
   void initState() {
     super.initState();
     _blockCubit = context.read<BlockCubit>()..getBlocks();
-    _profileModel = SharedPreferencesService.getProfile()!;
+    _profileModel = SharedPreferencesService.getProfile();
   }
 
   Widget buildBlocWidget() {
@@ -69,7 +69,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
           },
           block: blocks[index],
           onLongPressCallback: (ctx, block) {
-            if (_profileModel.role == AppRole.Admin.name) {
+            if (_profileModel?.role == AppRole.Admin.name) {
               _showOptions(block);
             }
           },
@@ -108,7 +108,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (_profileModel.role == AppRole.Admin.name)
+                    if (_profileModel?.role == AppRole.Admin.name)
                       SmallButton(
                         text: locale.add,
                         onPressed: () {
@@ -119,7 +119,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                           );
                         },
                       ),
-                    if (_profileModel.role == AppRole.Admin.name)
+                    if (_profileModel?.role == AppRole.Admin.name)
                       const SizedBox(
                         width: AppSize.spasingBetweenInputsAndLabale,
                       ),

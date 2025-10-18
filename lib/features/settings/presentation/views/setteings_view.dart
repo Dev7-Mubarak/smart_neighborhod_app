@@ -23,7 +23,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    final String email = _profile?.email ?? "";
+    final String email = _profile?.email ?? "S";
     final String defaultCover = email[0].toUpperCase();
     final String appVersion = "1.0.0";
 
@@ -31,7 +31,6 @@ class _SettingsViewState extends State<SettingsView> {
       backgroundColor: AppColor.white,
       body: Column(
         children: [
-          // ======== TOP PROFILE HEADER ========
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 40),
@@ -192,7 +191,7 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     );
                     if (confirm == true) {
-                      SharedPreferencesService.removeProfile();
+                      SharedPreferencesService.clear();
                       Navigator.pushNamedAndRemoveUntil(
                         context,
                         AppRoute.login,

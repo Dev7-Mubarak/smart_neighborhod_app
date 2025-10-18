@@ -14,10 +14,10 @@ class HomeView extends StatefulWidget {
 }
 
 class HomeViewState extends State<HomeView> {
-  late final ProfileModel _profile;
+  late final ProfileModel? _profile;
   @override
   void initState() {
-    _profile = SharedPreferencesService.getProfile()!;
+    _profile = SharedPreferencesService.getProfile();
     super.initState();
   }
 
@@ -39,8 +39,8 @@ class HomeViewState extends State<HomeView> {
                 radius: 22,
                 backgroundColor: AppColor.primaryColor,
                 child: Text(
-                  _profile.email.isNotEmpty
-                      ? _profile.email[0].toUpperCase()
+                  _profile?.email.isNotEmpty == true
+                      ? _profile!.email[0].toUpperCase()
                       : '',
                   style: const TextStyle(
                     fontSize: 20,
@@ -74,7 +74,7 @@ class HomeViewState extends State<HomeView> {
                       ),
                     ),
                     Text(
-                      _profile.email,
+                      _profile?.email ?? '',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
