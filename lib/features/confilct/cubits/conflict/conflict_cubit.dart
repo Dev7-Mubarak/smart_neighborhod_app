@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
 import '../../../../core/constants/api_link.dart';
@@ -192,8 +191,8 @@ class ConflictCubit extends Cubit<ConflictState> {
   }) async {
     emit(WiateAddedUpdatedConflict());
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final idmanger = prefs.getString('id');
+      final profile = await SharedPreferencesService.getProfile();
+      final idmanger = profile!.id;
       final response = await api.update(
         '${ApiLink.updateConflict}/$id',
         data: {

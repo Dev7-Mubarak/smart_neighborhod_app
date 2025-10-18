@@ -23,7 +23,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    final String email = _profile?.email ?? "S";
+    final String email = _profile?.email ?? "";
     final String defaultCover = email[0].toUpperCase();
     final String appVersion = "1.0.0";
 
@@ -57,23 +57,6 @@ class _SettingsViewState extends State<SettingsView> {
                         defaultCover,
                         style: const TextStyle(
                           fontSize: 40,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.yellow,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
-                        ),
-                        padding: const EdgeInsets.all(4),
-                        child: const Icon(
-                          Icons.edit,
-                          size: 18,
                           color: Colors.black,
                         ),
                       ),
