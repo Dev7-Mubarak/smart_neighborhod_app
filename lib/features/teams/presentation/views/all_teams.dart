@@ -19,6 +19,7 @@ import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/common/widgets/table.dart';
 import '../../../../core/services/shared_preferences_service.dart';
+import '../../../auth/data/models/login_model.dart';
 
 class AllTeams extends StatefulWidget {
   const AllTeams({super.key});
@@ -33,6 +34,7 @@ class _AllTeamsState extends State<AllTeams> {
   late TeamMemberCubit _teamsMemberCubit;
   late TextEditingController _searchingController;
   Timer? _delay;
+  late final ProfileModel _profile;
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class _AllTeamsState extends State<AllTeams> {
     _teamsCubit = context.read<TeamCubit>()..getAllTeams();
     _teamsMemberCubit = context.read<TeamMemberCubit>();
     _searchingController = TextEditingController();
+    _profile = SharedPreferencesService.getProfile()!;
   }
 
   @override
@@ -180,36 +183,39 @@ class _AllTeamsState extends State<AllTeams> {
                                 }).toList(),
                                 originalObjects: teamMembers,
                                 onRowLongPress: (rowIndex, rowObject) {
-                                  _showTeamMemberOptions(
-                                    context,
-                                    rowObject as TeamMember,
-                                  );
+                                  if (_profile.role == AppRole.Admin.name) {
+                                    _showTeamMemberOptions(
+                                      context,
+                                      rowObject as TeamMember,
+                                    );
+                                  }
                                 },
                               ),
                               const SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: SmallButton(
-                                  text: 'إضافة عضو',
-                                  onPressed: () {
-                                    _teamsMemberCubit.setTeamId(team.id);
-                                    Navigator.pushNamed(
-                                      context,
-                                      AppRoute.addUpdateTeamMember,
-                                      arguments:
-                                          BlocProvider.of<TeamMemberCubit>(
-                                            context,
-                                          ),
-                                    ).then((_) {
-                                      _teamsCubit.getAllTeams(
-                                        search: _searchingController.text
-                                            .trim(),
-                                      );
-                                      _teamsMemberCubit.resetInputs();
-                                    });
-                                  },
+                              if (_profile.role == AppRole.Admin.name)
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SmallButton(
+                                    text: 'إضافة عضو',
+                                    onPressed: () {
+                                      _teamsMemberCubit.setTeamId(team.id);
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRoute.addUpdateTeamMember,
+                                        arguments:
+                                            BlocProvider.of<TeamMemberCubit>(
+                                              context,
+                                            ),
+                                      ).then((_) {
+                                        _teamsCubit.getAllTeams(
+                                          search: _searchingController.text
+                                              .trim(),
+                                        );
+                                        _teamsMemberCubit.resetInputs();
+                                      });
+                                    },
+                                  ),
                                 ),
-                              ),
                               const SizedBox(height: 10),
                             ],
                           );
@@ -247,19 +253,22 @@ class _AllTeamsState extends State<AllTeams> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SmallButton(
-          text: 'إضافة فريق',
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              AppRoute.addUpdateTeam,
-              arguments: BlocProvider.of<TeamCubit>(context),
-            ).then((_) {
-              _teamsCubit.getAllTeams(search: _searchingController.text.trim());
-              _teamsCubit.resetInputs();
-            });
-          },
-        ),
+        if (_profile.role == AppRole.Admin.name)
+          SmallButton(
+            text: 'إضافة فريق',
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                AppRoute.addUpdateTeam,
+                arguments: BlocProvider.of<TeamCubit>(context),
+              ).then((_) {
+                _teamsCubit.getAllTeams(
+                  search: _searchingController.text.trim(),
+                );
+                _teamsCubit.resetInputs();
+              });
+            },
+          ),
         const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
         Expanded(
           child: SearchableTextFormField(

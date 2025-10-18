@@ -12,9 +12,12 @@ import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
+import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/services/API/dio_consumer.dart';
+import '../../../../core/services/shared_preferences_service.dart';
+import '../../../auth/data/models/login_model.dart';
 import '../../data/models/family_detiles_model.dart';
 
 class FamilyDetiles extends StatefulWidget {
@@ -26,10 +29,13 @@ class FamilyDetiles extends StatefulWidget {
 }
 
 class _FamilyDetilesState extends State<FamilyDetiles> {
+  late final ProfileModel _profileModel;
+
   @override
   void initState() {
     super.initState();
     _getFamilyDetiles();
+    _profileModel = SharedPreferencesService.getProfile()!;
   }
 
   void _getFamilyDetiles() async {
@@ -71,7 +77,10 @@ class _FamilyDetilesState extends State<FamilyDetiles> {
               );
             }
             if (state is FamilyDetilesLoaded) {
-              return FamilyDetailsBody(state: state);
+              return FamilyDetailsBody(
+                state: state,
+                profileModel: _profileModel,
+              );
             }
             if (state is FamilyLoading) {
               return const Center(
@@ -130,7 +139,12 @@ class FamilyDetailsAppBar extends StatelessWidget
 
 class FamilyDetailsBody extends StatelessWidget {
   final FamilyDetilesLoaded state;
-  const FamilyDetailsBody({super.key, required this.state});
+  final ProfileModel profileModel;
+  const FamilyDetailsBody({
+    super.key,
+    required this.state,
+    required this.profileModel,
+  });
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -143,9 +157,11 @@ class FamilyDetailsBody extends StatelessWidget {
           const SizedBox(height: 16),
           FamilyMembersSection(
             familyMembers: state.familyDetiles.familyMembers,
+            profileModel: profileModel,
           ),
           const SizedBox(height: 16),
-          const _AddMemberButtonRow(),
+          if (profileModel.role == AppRole.Admin.name)
+            const _AddMemberButtonRow(),
           const Padding(
             padding: EdgeInsets.all(16),
             child: Divider(
@@ -378,8 +394,13 @@ class FamilyDetilesCard extends StatelessWidget {
 
 class FamilyMembersSection extends StatelessWidget {
   final List<FamilyMember> familyMembers;
+  final ProfileModel profileModel;
 
-  const FamilyMembersSection({super.key, required this.familyMembers});
+  const FamilyMembersSection({
+    super.key,
+    required this.familyMembers,
+    required this.profileModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -392,7 +413,10 @@ class FamilyMembersSection extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: familyMembers.length,
         itemBuilder: (context, index) {
-          return MemberCard(familyMember: familyMembers[index]);
+          return MemberCard(
+            familyMember: familyMembers[index],
+            profileModel: profileModel,
+          );
         },
       ),
     );
@@ -401,8 +425,13 @@ class FamilyMembersSection extends StatelessWidget {
 
 class MemberCard extends StatelessWidget {
   final FamilyMember familyMember;
+  final ProfileModel profileModel;
 
-  const MemberCard({super.key, required this.familyMember});
+  const MemberCard({
+    super.key,
+    required this.familyMember,
+    required this.profileModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -417,57 +446,58 @@ class MemberCard extends StatelessWidget {
         );
       },
       onLongPress: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'خيارات فرد الأسرة',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+        if (profileModel.role == AppRole.Admin.name)
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'خيارات فرد الأسرة',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.delete),
-                  label: const Text('حذف فرد الأسرة'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.delete),
+                    label: const Text('حذف فرد الأسرة'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showDeleteConfirmationDialog(
+                        context,
+                        familyMember,
+                        familyCubit,
+                      );
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _showDeleteConfirmationDialog(
-                      context,
-                      familyMember,
-                      familyCubit,
-                    );
-                  },
-                ),
-                const SizedBox(height: 8),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: const Text('تغيير دور فرد الأسرة'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // Navigate to change role screen or show dialog
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   AppRoute.changeFamilyMemberRole,
-                    //   arguments: familyMember,
-                    // );
-                  },
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.edit),
+                    label: const Text('تغيير دور فرد الأسرة'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      // Navigate to change role screen or show dialog
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   AppRoute.changeFamilyMemberRole,
+                      //   arguments: familyMember,
+                      // );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
+          );
       },
       child: Container(
         width: 220,

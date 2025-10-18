@@ -11,8 +11,11 @@ import 'package:smart_negborhood_app/features/families/cubits/family_cubit/famil
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/bind_cubit.dart';
+import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_image.dart';
+import '../../../../core/services/shared_preferences_service.dart';
+import '../../../auth/data/models/login_model.dart';
 import '../../cubits/BlockDetailCubit/block_detail_cubit.dart';
 import '../../cubits/BlockDetailCubit/block_detail_state.dart';
 
@@ -32,10 +35,12 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
   List<Family> searchedFamilies = [];
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
+  late final ProfileModel _profileModel;
 
   @override
   void initState() {
     _getBlockDetailes();
+    _profileModel = SharedPreferencesService.getProfile()!;
     super.initState();
   }
 
@@ -142,31 +147,33 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
-                            SmallButton(
-                              text: 'أضافة',
-                              onPressed: () {
-                                FamilyCubit familyCubit = context
-                                    .read<FamilyCubit>();
-                                familyCubit.setFamily(null);
+                            if (_profileModel.role == AppRole.Admin.name)
+                              SmallButton(
+                                text: 'أضافة',
+                                onPressed: () {
+                                  FamilyCubit familyCubit = context
+                                      .read<FamilyCubit>();
+                                  familyCubit.setFamily(null);
 
-                                BlockDetailCubit blockDetailCubit = context
-                                    .read<BlockDetailCubit>();
+                                  BlockDetailCubit blockDetailCubit = context
+                                      .read<BlockDetailCubit>();
 
-                                final bindCubit = BindCubit(
-                                  familyCubit: familyCubit,
-                                  blockDetailCubit: blockDetailCubit,
-                                );
+                                  final bindCubit = BindCubit(
+                                    familyCubit: familyCubit,
+                                    blockDetailCubit: blockDetailCubit,
+                                  );
 
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoute.addUpdateFamily,
-                                  arguments: bindCubit,
-                                );
-                              },
-                            ),
-                            const SizedBox(
-                              width: AppSize.spasingBetweenInputsAndLabale,
-                            ),
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoute.addUpdateFamily,
+                                    arguments: bindCubit,
+                                  );
+                                },
+                              ),
+                            if (_profileModel.role == AppRole.Admin.name)
+                              const SizedBox(
+                                width: AppSize.spasingBetweenInputsAndLabale,
+                              ),
                             Expanded(
                               child: SearchableTextFormField(
                                 controller: _searchController,
@@ -188,6 +195,7 @@ class _ResiddentialBlocksDetailState extends State<ResiddentialBlocksDetail> {
                         families: searchedFamilies,
                         familyCubit: context.read<FamilyCubit>(),
                         blockDetailCubit: context.read<BlockDetailCubit>(),
+                        profileModel: _profileModel,
                       ),
                     ],
                   ),

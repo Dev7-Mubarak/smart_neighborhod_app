@@ -5,9 +5,12 @@ import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
+import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 import '../../cubits/blockCubit/block_cubit.dart';
 import '../../cubits/blockCubit/block_state.dart';
 import '../../data/models/Block.dart';
@@ -24,11 +27,13 @@ class ResidentialBlockView extends StatefulWidget {
 class _ResidentialBlockViewState extends State<ResidentialBlockView> {
   List<Block> residentialList = [];
   late final BlockCubit _blockCubit;
+  late final ProfileModel _profileModel;
 
   @override
   void initState() {
     super.initState();
     _blockCubit = context.read<BlockCubit>()..getBlocks();
+    _profileModel = SharedPreferencesService.getProfile()!;
   }
 
   Widget buildBlocWidget() {
@@ -64,7 +69,9 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
           },
           block: blocks[index],
           onLongPressCallback: (ctx, block) {
-            _showOptions(block);
+            if (_profileModel.role == AppRole.Admin.name) {
+              _showOptions(block);
+            }
           },
         );
       },
@@ -101,19 +108,21 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SmallButton(
-                      text: locale.add,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoute.addBlock,
-                          arguments: _blockCubit,
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      width: AppSize.spasingBetweenInputsAndLabale,
-                    ),
+                    if (_profileModel.role == AppRole.Admin.name)
+                      SmallButton(
+                        text: locale.add,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.addBlock,
+                            arguments: _blockCubit,
+                          );
+                        },
+                      ),
+                    if (_profileModel.role == AppRole.Admin.name)
+                      const SizedBox(
+                        width: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                     Expanded(
                       child: SearchableTextFormField(
                         hintText: locale.searchResidentialBlock,

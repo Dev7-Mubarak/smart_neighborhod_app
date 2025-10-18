@@ -17,6 +17,7 @@ import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/services/shared_preferences_service.dart';
+import '../../../auth/data/models/login_model.dart';
 
 class AllConflict extends StatefulWidget {
   const AllConflict({super.key});
@@ -29,6 +30,7 @@ class _AllConflictState extends State<AllConflict> {
   // late TeamCubit _teamsCubit;
   late ConflictCubit _conflictCubit;
   late TextEditingController _searchingController;
+  late final ProfileModel _profile;
 
   Timer? _delay;
 
@@ -36,6 +38,7 @@ class _AllConflictState extends State<AllConflict> {
   void initState() {
     super.initState();
     _conflictCubit = context.read<ConflictCubit>()..getAllConflicts();
+    _profile = SharedPreferencesService.getProfile()!;
     _searchingController = TextEditingController();
   }
 
@@ -244,21 +247,22 @@ class _AllConflictState extends State<AllConflict> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SmallButton(
-          text: 'إضافة إتفاقية',
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              AppRoute.addUpdateConflict,
-              arguments: BlocProvider.of<ConflictCubit>(context),
-            ).then((_) {
-              _conflictCubit.getAllConflicts(
-                search: _searchingController.text.trim(),
-              );
-              _conflictCubit.resetInputs();
-            });
-          },
-        ),
+        if (_profile.role == AppRole.Admin.name)
+          SmallButton(
+            text: 'إضافة إتفاقية',
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                AppRoute.addUpdateConflict,
+                arguments: BlocProvider.of<ConflictCubit>(context),
+              ).then((_) {
+                _conflictCubit.getAllConflicts(
+                  search: _searchingController.text.trim(),
+                );
+                _conflictCubit.resetInputs();
+              });
+            },
+          ),
         const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
         Expanded(
           child: SearchableTextFormField(

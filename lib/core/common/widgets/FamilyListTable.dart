@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/table.dart';
+import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 
 import '../../../features/residdentailBlocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
 import '../../../features/residdentailBlocks/data/models/bind_cubit.dart';
+import '../enums/app_role.dart';
 
 class FamilyListTable extends StatelessWidget {
   final List<Family> families;
   final FamilyCubit familyCubit;
   final BlockDetailCubit blockDetailCubit;
+  final ProfileModel profileModel;
 
   const FamilyListTable({
     super.key,
     required this.families,
     required this.familyCubit,
     required this.blockDetailCubit,
+    required this.profileModel,
   });
 
   @override
@@ -45,6 +49,9 @@ class FamilyListTable extends StatelessWidget {
         );
       },
       onRowLongPress: (index, rowObject) {
+        if (profileModel.role != AppRole.Admin.name) {
+          return;
+        }
         final selectedFamily = families[index];
         _showOptionsBottomSheet(context, selectedFamily, familyCubit);
       },
