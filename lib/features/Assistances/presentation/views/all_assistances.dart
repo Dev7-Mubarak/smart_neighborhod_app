@@ -6,7 +6,6 @@ import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart'
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
-import 'package:smart_negborhood_app/core/common/enums/project_priority.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/assistances_cubit.dart';
@@ -14,6 +13,7 @@ import 'package:smart_negborhood_app/features/Assistances/cubits/assistances/ass
 import 'package:smart_negborhood_app/features/Assistances/data/models/project.dart';
 import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import '../../../../core/common/enums/app_role.dart';
+import '../../../../core/common/enums/project_status.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
 import '../../../../core/common/widgets/table.dart';
@@ -91,7 +91,7 @@ class _AllAssistancesState extends State<AllAssistances> {
 
   Widget buildLoadedListWidgets() {
     return CustomTableWidget(
-      columnTitles: ['رقم', 'إسم المشروع', 'الأولوية'],
+      columnTitles: ['رقم', 'إسم المشروع', 'حالة المشروع'],
       columnFlexes: [1, 3, 2],
       rowData: _projectsListSearch.asMap().entries.map((entry) {
         int index = entry.key;
@@ -99,7 +99,7 @@ class _AllAssistancesState extends State<AllAssistances> {
         return [
           '${index + 1}',
           project.name,
-          project.projectPriority.displayName,
+          project.projectStatus.displayName,
         ];
       }).toList(),
       originalObjects: _projectsListSearch,
@@ -243,38 +243,39 @@ class _AllAssistancesState extends State<AllAssistances> {
                 });
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('حذف'),
-              onTap: () async {
-                Navigator.pop(context);
-                await showDialog<bool>(
-                  context: passContext,
-                  builder: (context) => AlertDialog(
-                    title: const Text('تأكيد الحذف'),
-                    content: const Text(
-                      'هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('إلغاء'),
+            if (project.projectStatus != ProjectStatus.Completed)
+              ListTile(
+                leading: const Icon(Icons.delete, color: Colors.red),
+                title: const Text('حذف'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await showDialog<bool>(
+                    context: passContext,
+                    builder: (context) => AlertDialog(
+                      title: const Text('تأكيد الحذف'),
+                      content: const Text(
+                        'هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟',
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          _assistancesCubit.deleteAssistance(project.id);
-                        },
-                        child: const Text(
-                          'حذف',
-                          style: TextStyle(color: Colors.red),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('إلغاء'),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _assistancesCubit.deleteAssistance(project.id);
+                          },
+                          child: const Text(
+                            'حذف',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
           ],
         );
       },
