@@ -196,7 +196,13 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                       );
                     }
 
-                    final people = personCubit.people;
+                    final people = personCubit.people
+                        .where(
+                          (e) =>
+                              e.lastName ==
+                              familyCubit.selectedFamilyHead?.lastName,
+                        )
+                        .toList();
                     if (people.isEmpty) {
                       return Container(
                         height: 56,

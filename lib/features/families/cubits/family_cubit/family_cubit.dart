@@ -18,6 +18,7 @@ class FamilyCubit extends Cubit<FamilyState> {
   List<Family> allFamilies = [];
   final int blockId;
   int? selectedFamilyHeadId;
+  HeadOfFamily? selectedFamilyHead;
   int? selectedCategoryId;
   Family? family;
   FamilyMember? familyMember;

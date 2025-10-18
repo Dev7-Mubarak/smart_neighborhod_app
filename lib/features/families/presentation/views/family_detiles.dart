@@ -161,7 +161,7 @@ class FamilyDetailsBody extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           if (profileModel.role == AppRole.Admin.name)
-            const _AddMemberButtonRow(),
+            _AddMemberButtonRow(state.familyDetiles.headOfFamily),
           const Padding(
             padding: EdgeInsets.all(16),
             child: Divider(
@@ -223,7 +223,8 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _AddMemberButtonRow extends StatelessWidget {
-  const _AddMemberButtonRow();
+  final HeadOfFamily? selectedFamilyHead;
+  const _AddMemberButtonRow(this.selectedFamilyHead);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -235,6 +236,7 @@ class _AddMemberButtonRow extends StatelessWidget {
             text: 'إضافة فرد جديد',
             onPressed: () {
               final familyCubit = context.read<FamilyCubit>();
+              familyCubit.selectedFamilyHead = selectedFamilyHead;
               Navigator.pushNamed(
                 context,
                 AppRoute.addFamilyMember,

@@ -5,17 +5,23 @@ class HeadOfFamily {
   late String identityNumber;
   late String fullName;
   late String phoneNumber;
+  late String firstName;
+  late String lastName;
 
   HeadOfFamily({
     required this.identityNumber,
     required this.fullName,
     required this.phoneNumber,
+    required this.firstName,
+    required this.lastName,
   });
 
   HeadOfFamily.fromJson(Map<String, dynamic> json) {
     identityNumber = json["identityNumber"] ?? "";
     fullName = json["fullName"] ?? "";
     phoneNumber = json["phoneNumber"] ?? "";
+    firstName = json["firstName"] ?? "";
+    lastName = json["lastName"] ?? "";
   }
 }
 
