@@ -129,8 +129,9 @@ class FamilyListTable extends StatelessWidget {
               onPressed: () async {
                 await familyCubit.deleteFamily(family.id);
                 blockDetailCubit.getBlockDetailes(family.blockId);
-                Navigator.of(context).pop(); // Close dialog
-                Navigator.of(context).pop(); // Close sheet
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('حذف'),
             ),

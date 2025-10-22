@@ -222,7 +222,9 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                               ),
                             );
                           } else {
-                            return const Text("فشل تحميل الأشخاص");
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
                           }
                         },
                       ),
