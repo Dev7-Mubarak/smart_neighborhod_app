@@ -9,7 +9,7 @@ extension OccupationStatusExtension on OccupationStatus {
   String get arabicName {
     switch (this) {
       case OccupationStatus.employee:
-        return 'موظف';
+        return 'يعمل';
       case OccupationStatus.student:
         return 'طالب';
       case OccupationStatus.unemployed:

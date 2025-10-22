@@ -69,23 +69,14 @@ class Person {
 
   // Helper methods to convert string to enum
   static BloodType _bloodTypeFromString(String value) {
-    return BloodType.values.firstWhere(
-      (e) => e.toString().split('.').last == value,
-      orElse: () => BloodType.aPositive,
-    );
+    return BloodType.values.firstWhere((e) => e.arabicName == value);
   }
 
   static OccupationStatus _occupationStatusFromString(String value) {
-    return OccupationStatus.values.firstWhere(
-      (e) => e.toString().split('.').last == value,
-      orElse: () => OccupationStatus.employee,
-    );
+    return OccupationStatus.values.firstWhere((e) => e.arabicName == value);
   }
 
   static MaritalStatus _maritalStatusFromString(String value) {
-    return MaritalStatus.values.firstWhere(
-      (e) => e.toString().split('.').last == value,
-      orElse: () => MaritalStatus.single,
-    );
+    return MaritalStatus.values.firstWhere((e) => e.arabicName == value);
   }
 }
