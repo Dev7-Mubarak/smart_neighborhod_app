@@ -184,24 +184,12 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                           minLines: 3,
                           validator: AppValidator.validateEmptyField,
                         ),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        const SmallText(text: 'تصنيف المشروع'),
                         const SizedBox(
                           height: AppSize.spasingBetweenInputsAndLabale,
                         ),
                         BlocBuilder<ProjectCategoryCubit, ProjectCategoryState>(
                           builder: (context, state) {
-                            if (state is ProjectCategoryLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
                             if (state is ProjectCategoryLoaded) {
-                              if (state.projectCategories.isEmpty) {
-                                return const Center(
-                                  child: Text('لا يوجد تصنيفات متاحة'),
-                                );
-                              }
                               _selectedProjectCategory = state.projectCategories
                                   .firstWhere(
                                     (element) => element.name == "مساعدات",
@@ -213,28 +201,9 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                   _selectedProjectCategory,
                                 );
                               }
-                              return CustomDropdownSearchWidget<
-                                ProjectCategory
-                              >(
-                                items: state.projectCategories,
-                                itemAsString: (ProjectCategory? u) =>
-                                    u?.name ?? '',
-                                onChanged: null,
-                                selectedItem: _selectedProjectCategory,
-                                labelText: "اختر تصنيف",
-                                hintText: "اختر تصنيف",
-                                searchHintText: "ابحث عن تصنيف...",
-                                validator: (ProjectCategory? item) =>
-                                    AppValidator.validateDropdown(item),
-                                enabled: false,
-                              );
+                              return SizedBox();
                             }
-                            if (state is ProjectCategoryFailure) {
-                              return OnFailureWidget(
-                                onRetry: projectCategory.getProjectCategories,
-                              );
-                            }
-                            return Center(child: Text("حدث خطأ غير معروف"));
+                            return SizedBox();
                           },
                         ),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
