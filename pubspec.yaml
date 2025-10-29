@@ -34,47 +34,34 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  conditional_builder_null_safety: ^0.0.6
   dropdown_search: ^5.0.6
   shared_preferences: ^2.2.2
   image_picker: ^0.8.6
   equatable: ^2.0.7
   flutter_bloc: ^9.1.1
   dio: ^5.8.0+1
-  flutter_intl: ^0.0.1
   intl: ^0.20.2
-  collection: ^1.18.0
   flutter_localization: ^0.3.3
   flutter_svg: ^2.2.0
   flutter_staggered_grid_view: ^0.7.0
   sentry_flutter: ^9.6.0
 
 
+
 dev_dependencies:
-  flutter_launcher_icons: ^0.14.4
-  flutter_native_splash: ^2.4.6
-
-
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/images/svg/logo.svg"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^5.0.0
   test: ^1.25.7
   build_runner: ^2.6.0
   mockito: ^5.4.4
   mocktail: ^1.0.4
   bloc_test: ^10.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
@@ -126,6 +113,12 @@ flutter_intl:
   class_name: AppLocalizations
   arb_dir: lib/core/config/l10n
   output_dir: lib/core/config/generated
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/svg/logo.svg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter_native_splash:
   color: "#FFFFFF"                
