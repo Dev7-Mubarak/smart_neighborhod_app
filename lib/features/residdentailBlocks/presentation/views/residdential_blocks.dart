@@ -92,9 +92,14 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
         } else if (state is BlockDeletedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
-        } else if (state is BlocksFailure) {
+        } else if (state is BlocksFailure ||
+            state is FailureForUpdateOrAddBlock) {
           Navigator.of(context, rootNavigator: true).pop();
-          context.showErrorSnackBar(state.errorMessage);
+          context.showErrorSnackBar(
+            state is BlocksFailure
+                ? state.errorMessage
+                : (state as FailureForUpdateOrAddBlock).errorMessage,
+          );
         }
       },
       child: Scaffold(

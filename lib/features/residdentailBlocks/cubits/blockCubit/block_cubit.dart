@@ -21,7 +21,6 @@ class BlockCubit extends Cubit<BlockState> {
 
   void changeSelectedBlockManager(int? selectedBlockManager) {
     this.selectedManager = selectedBlockManager;
-    emit(ChangeSelectedManager());
   }
 
   void changeBlockManager({
@@ -50,9 +49,9 @@ class BlockCubit extends Cubit<BlockState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(BlocksFailure(errorMessage: e.toString()));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.toString()));
     }
   }
 
@@ -111,9 +110,9 @@ class BlockCubit extends Cubit<BlockState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(BlocksFailure(errorMessage: e.toString()));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.toString()));
     }
   }
 
@@ -139,9 +138,9 @@ class BlockCubit extends Cubit<BlockState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(BlocksFailure(errorMessage: e.toString()));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.toString()));
     }
   }
 
@@ -167,9 +166,9 @@ class BlockCubit extends Cubit<BlockState> {
         );
       }
     } on Serverexception catch (e) {
-      emit(BlocksFailure(errorMessage: e.errModel.errorMessage));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(BlocksFailure(errorMessage: e.toString()));
+      emit(FailureForUpdateOrAddBlock(errorMessage: e.toString()));
     }
   }
 }

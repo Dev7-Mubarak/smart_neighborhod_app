@@ -38,4 +38,9 @@ class BlockUpdatedSuccessfully extends BlockState {
 
 class WaitingForUpdateOrAddBlock extends BlockState {}
 
+class FailureForUpdateOrAddBlock extends BlockState {
+  final String errorMessage;
+  FailureForUpdateOrAddBlock({required this.errorMessage});
+}
+
 class ChangeSelectedManager extends BlockState {}

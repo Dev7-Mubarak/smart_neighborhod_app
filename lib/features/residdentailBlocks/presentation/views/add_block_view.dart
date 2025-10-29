@@ -180,10 +180,17 @@ class _AddBlockViewState extends State<AddBlockView> {
                       CustomTextFormField(
                         controller: emailController,
                         suffixIcon: null,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'الرجاء إدخال اسم المستخدم';
+                            return 'الرجاء إدخال الايميل';
+                          }
+                          final email = value.trim();
+                          final emailRegex = RegExp(
+                            r'^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$',
+                          );
+                          if (!emailRegex.hasMatch(email)) {
+                            return 'الرجاء إدخال ايميل صالح';
                           }
                           return null;
                         },
