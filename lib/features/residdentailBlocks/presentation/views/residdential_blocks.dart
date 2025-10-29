@@ -46,7 +46,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
         } else if (state is BlocksFailure) {
           return OnFailureWidget(onRetry: () => _blockCubit.getBlocks());
         } else {
-          return const Center(child: Text("لا توجد بيانات للعرض حاليًا."));
+          return OnFailureWidget(onRetry: () => _blockCubit.getBlocks());
         }
       },
     );
