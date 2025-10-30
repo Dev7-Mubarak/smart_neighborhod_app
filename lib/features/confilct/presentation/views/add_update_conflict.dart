@@ -18,10 +18,10 @@ import 'package:smart_negborhood_app/features/families/cubits/family_member/fami
 import 'package:smart_negborhood_app/features/families/cubits/family_member/family_member_state.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict_type.dart';
-import 'package:smart_negborhood_app/features/families/data/models/family_member2.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../../families/data/models/family_member.dart';
 
 class AddUpdateConflict extends StatefulWidget {
   const AddUpdateConflict({super.key, this.conflict});
@@ -246,7 +246,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                   child: Text('لا يوجد أفراد متاحين'),
                                 );
                               }
-                              FamilyMember2? initialSelectedPerson;
+                              FamilyMember? initialSelectedPerson;
                               if (_selectedFirstPart != null) {
                                 initialSelectedPerson = state.familyMembers
                                     .firstWhere(
@@ -255,11 +255,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                           _selectedFirstPart,
                                     );
                               }
-                              return CustomDropdownSearchWidget<FamilyMember2>(
+                              return CustomDropdownSearchWidget<FamilyMember>(
                                 items: state.familyMembers,
-                                itemAsString: (FamilyMember2? u) =>
+                                itemAsString: (FamilyMember? u) =>
                                     u?.person.fullNameOneString ?? '',
-                                onChanged: (FamilyMember2? data) {
+                                onChanged: (FamilyMember? data) {
                                   conflictCubit.changeSelectedFirstParty(
                                     data!.familyMemberId,
                                   );
@@ -267,7 +267,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 labelText: "اختر الطرف الأول",
                                 hintText: "اختر الطرف الأول",
                                 searchHintText: "ابحث عن الطرف الأول...",
-                                validator: (FamilyMember2? item) =>
+                                validator: (FamilyMember? item) =>
                                     AppValidator.validateDropdown(item),
                                 selectedItem: initialSelectedPerson,
                               );
@@ -311,7 +311,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                   child: Text('لا يوجد أفراد متاحين'),
                                 );
                               }
-                              FamilyMember2? initialSelectedPerson2;
+                              FamilyMember? initialSelectedPerson2;
                               if (_selectedSecondPart != null) {
                                 initialSelectedPerson2 = state.familyMembers
                                     .firstWhere(
@@ -320,11 +320,11 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                           _selectedSecondPart,
                                     );
                               }
-                              return CustomDropdownSearchWidget<FamilyMember2>(
+                              return CustomDropdownSearchWidget<FamilyMember>(
                                 items: state.familyMembers,
-                                itemAsString: (FamilyMember2? u) =>
+                                itemAsString: (FamilyMember? u) =>
                                     u?.person.fullNameOneString ?? '',
-                                onChanged: (FamilyMember2? data) {
+                                onChanged: (FamilyMember? data) {
                                   conflictCubit.changeSelectedSecondParty(
                                     data!.familyMemberId,
                                   );
@@ -332,7 +332,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                                 labelText: "اختر الطرف الثاني",
                                 hintText: "اختر الطرف الثاني",
                                 searchHintText: "ابحث عن الطرف الثاني...",
-                                validator: (FamilyMember2? item) =>
+                                validator: (FamilyMember? item) =>
                                     AppValidator.validateDropdown(item),
                                 selectedItem: initialSelectedPerson2,
                               );

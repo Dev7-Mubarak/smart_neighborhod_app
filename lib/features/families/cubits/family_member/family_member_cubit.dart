@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
-import 'package:smart_negborhood_app/features/families/data/models/family_member2.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/errormodel.dart';
@@ -35,13 +34,13 @@ class FamilyMemberCubit extends Cubit<FamilyMemberState> {
 
       List<dynamic> familyMembers = response["data"];
 
-      emit(
-        FamilyMemberLoaded(
-          familyMembers: familyMembers
-              .map((e) => FamilyMember2.fromJson(e))
-              .toList(),
-        ),
-      );
+      var familyMembersList = familyMembers
+          .map((e) => FamilyMember.fromJson(e))
+          .toList();
+
+      emit(FamilyMemberLoaded(familyMembers: familyMembersList));
+
+      print('object');
     } on Serverexception catch (e) {
       emit(FamilyMemberFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {

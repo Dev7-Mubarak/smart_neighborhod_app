@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smart_negborhood_app/features/families/data/models/family_member2.dart';
 
 import '../../../confilct/data/models/conflict_case.dart';
+import '../../data/models/family_member.dart';
 
 @immutable
 abstract class FamilyMemberState {}
@@ -9,7 +9,7 @@ abstract class FamilyMemberState {}
 class FamilyMemberInitial extends FamilyMemberState {}
 
 class FamilyMemberLoaded extends FamilyMemberState {
-  final List<FamilyMember2> familyMembers;
+  final List<FamilyMember> familyMembers;
 
   FamilyMemberLoaded({required this.familyMembers});
 }
