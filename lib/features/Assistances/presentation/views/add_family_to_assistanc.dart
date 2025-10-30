@@ -130,21 +130,21 @@ class AddFamilyToAssistanceState extends State<AddFamilyToAssistance> {
                         const SmallText(
                           textAlign: TextAlign.right,
                           text:
-                              'إذا كنت تريد إنشاء أسرة جديدة إنتقل الى قسم المربعات السكنية من هنا',
+                              'إذا كنت تريد إنشاء أسرة جديدة إنتقل الى قسم المربعات السكنية',
                         ),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        SmallButton(
-                          text: 'إنشاء أسرة  جديد',
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoute.addUpdateFamily,
-                              arguments: BlocProvider.of<FamilyCubit>(context),
-                            ).then((_) {
-                              _familyCubit.getFamiliesByBlockId();
-                            });
-                          },
-                        ),
+                        // const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        // SmallButton(
+                        //   text: 'إنشاء أسرة  جديد',
+                        //   onPressed: () {
+                        //     Navigator.pushNamed(
+                        //       context,
+                        //       AppRoute.addUpdateFamily,
+                        //       arguments: BlocProvider.of<FamilyCubit>(context),
+                        //     ).then((_) {
+                        //       _familyCubit.getFamiliesByBlockId();
+                        //     });
+                        //   },
+                        // ),
                       ],
                     ),
                   ),
