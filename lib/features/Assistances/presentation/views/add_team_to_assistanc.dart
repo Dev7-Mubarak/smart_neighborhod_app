@@ -122,21 +122,21 @@ class AddTeamsToAssistanceState extends State<AddTeamsToAssistance> {
                         const SmallText(
                           textAlign: TextAlign.right,
                           text:
-                              'إذا كنت تريد إنشاء فريق جديد إنتقل إللى قسم الفرق من هنا',
+                              'إذا كنت تريد إنشاء فريق جديد إنتقل إللى قسم الفرق',
                         ),
-                        const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        SmallButton(
-                          text: 'إضافة فريق جديد',
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoute.addUpdateTeam,
-                              arguments: BlocProvider.of<TeamCubit>(context),
-                            ).then((_) {
-                              _teamsCubit.getAllTeams();
-                            });
-                          },
-                        ),
+                        // const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                        // SmallButton(
+                        //   text: 'إضافة فريق جديد',
+                        //   onPressed: () {
+                        //     Navigator.pushNamed(
+                        //       context,
+                        //       AppRoute.addUpdateTeam,
+                        //       arguments: BlocProvider.of<TeamCubit>(context),
+                        //     ).then((_) {
+                        //       _teamsCubit.getAllTeams();
+                        //     });
+                        //   },
+                        // ),
                       ],
                     ),
                   ),
