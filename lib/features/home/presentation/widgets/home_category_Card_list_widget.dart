@@ -46,7 +46,7 @@ class _HomeCategoryCardListWidgetState
         onTap: () => context.read<NavigationCubit>().changePage(1),
       ),
       CategoryCard(
-        title: locale.conflictSection,
+        title: "قسم الاتفاقيات",
         imagePath: AppImage.homehandshake,
         backgroundColor: const Color(0xFF878CED),
         onTap: () {

@@ -146,7 +146,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                           validator: AppValidator.validateEmptyField,
                         ),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        const SmallText(text: 'نوع الخلاف'),
+                        const SmallText(text: 'نوع الاتفاقية'),
                         const SizedBox(
                           height: AppSize.spasingBetweenInputsAndLabale,
                         ),
@@ -355,7 +355,7 @@ class AddUpdateConflictState extends State<AddUpdateConflict> {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const SmallText(text: 'تم إنهاء الخلاف'),
+                                const SmallText(text: 'تم الاتفاق '),
                                 Checkbox(
                                   value: conflictCubit.isResolved ?? false,
                                   activeColor: AppColor.primaryColor,

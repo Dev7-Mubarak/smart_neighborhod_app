@@ -73,7 +73,7 @@ class _AllConflictState extends State<AllConflict> {
           iconTheme: const IconThemeData(color: Colors.black),
           centerTitle: true,
           title: const Text(
-            'إدارة الخلافات',
+            'الاتفاقيات',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
