@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/services/shared_preferences_service.dart';
 import '../../../auth/data/models/login_model.dart';
@@ -108,9 +110,18 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
                 _buildMenuItem(
                   icon: Icons.chat_bubble_outline,
-                  title: 'الشكاوي والاقتراحات',
-                  onTap: () {
-                    // Navigate to complaints and suggestions
+                  title: 'تواصل معا رئيس اللجان',
+                  onTap: () async {
+                    final String phone = '967777005001';
+                    final Uri whatsappUrl = Uri.parse('https://wa.me/$phone');
+                    if (await canLaunchUrl(whatsappUrl)) {
+                      await launchUrl(
+                        whatsappUrl,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      context.showErrorSnackBar('لا يمكن فتح واتساب');
+                    }
                   },
                 ),
                 _buildMenuItem(
