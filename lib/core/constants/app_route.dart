@@ -53,6 +53,9 @@ import '../../features/residdentailBlocks/cubits/blockCubit/block_cubit.dart';
 import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
 import '../../features/residdentailBlocks/presentation/views/residdential_blocks.dart';
+import '../../features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart'
+    show ResidentialNeighborhoodsCubit;
+import '../../features/residential_neighborhoods/presentation/views/residential_neighborhood_view.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -66,6 +69,14 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => BlockCubit(api: DioConsumer(dio: Dio())),
             child: const ResidentialBlockView(),
+          ),
+        );
+      case AppRoute.residentialNeighborhoods:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                ResidentialNeighborhoodsCubit(api: DioConsumer(dio: Dio())),
+            child: const ResidentialNeighborhoodView(),
           ),
         );
       case AppRoute.allPeople:
@@ -410,6 +421,12 @@ class AppRoute {
   static const String onBoarding = '/onBoarding';
   static const String login = '/login';
   static const String mainHome = '/mainhome';
+
+  static const String addResidentialNeighborhood =
+      '/AddResidentialNeighborhood';
+
+  static const String residentialNeighborhoods = '/ResidentialNeighborhood';
+
   static const String settings = '/settings';
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
   static const String residentialBlocks = '/ResidentialBlock';

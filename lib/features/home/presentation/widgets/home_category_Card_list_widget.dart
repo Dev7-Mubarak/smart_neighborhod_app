@@ -40,7 +40,7 @@ class _HomeCategoryCardListWidgetState
         ),
 
       CategoryCard(
-        title: "المربعات السكنية",
+        title: "الأحياء السكنية",
         imagePath: AppImage.homeresidential,
         backgroundColor: const Color(0xFFEFA98D),
         onTap: () => context.read<NavigationCubit>().changePage(1),
