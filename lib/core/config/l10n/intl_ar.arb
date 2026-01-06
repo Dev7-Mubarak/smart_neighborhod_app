@@ -6,7 +6,7 @@
     "description": "The title of the application"
   },
   
-  "username": "إسم المستخدم",
+  "username": " إسم المستخدم أو بريده الإلكتروني ",
   "@username": {
     "description": "Username label"
   },
@@ -23,7 +23,7 @@
   
 
   
-  "enterUsername": "قم بإدخال اسم المستخدم",
+  "enterUsername": "قم بإدخال اسم المستخدم أو بريده الإلكتروني",
   "@enterUsername": {
     "description": "Enter username hint"
   },
@@ -486,12 +486,8 @@
   "searchFamilyHead": "ابحث عن مدير...",
   "chooseFamilyHead": "اختر المدير",
   "pleaseChooseFamilyHead": "الرجاء اختيار مدير للمربع",
-  "username": "اسم المستخدم",
-  "pleaseEnterUsername": "الرجاء إدخال اسم المستخدم",
-  "password": "كلمة المرور",
   "passwordValidationHint": "كلمة المرور يجب أن تكون 8 أحرف على الأقل ويجب أن تحتوي على حرف كبير ورقم على الأقل",
-  "edit": "تعديل",
-  "delete": "حذف",
+ 
   "deleteNotAllowed": "لا يسمح بالحذف حاليا",
   "noResultsFound": "لم يتم العثور على أي نتائج",
 

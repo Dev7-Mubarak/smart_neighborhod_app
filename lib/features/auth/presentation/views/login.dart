@@ -100,8 +100,8 @@ class _LoginState extends State<Login> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "البريد الإكتروني للمستخدم :",
+                        Text(
+                          context.locale.username,
                           style: TextStyle(
                             fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
@@ -112,22 +112,21 @@ class _LoginState extends State<Login> {
                           height: AppSize.spasingBetweenInputsAndLabale,
                         ),
                         CustomTextFormField(
-                          hintText: 'قم بإدخال البريد الإلكتروني ',
+                          hintText: context.locale.enterUsername,
                           controller: emailContoller,
                           keyboardType: TextInputType.emailAddress,
-                          validator: AppValidator.validateEmail,
+                          validator: AppValidator.validateEmptyField,
                           prefixIcon: Icons.person,
                           focusNode: emailFocusNode,
                           onSubmitted: (value) {
-                            // FocusScope.of(context).nextFocus();
                             FocusScope.of(
                               context,
                             ).requestFocus(passwordFocusNode);
                           },
                         ),
                         const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                        const Text(
-                          "كلمة المرور :",
+                        Text(
+                          context.locale.password,
                           style: TextStyle(
                             fontSize: AppSize.textSizeOfLable,
                             color: Colors.black,
@@ -142,7 +141,7 @@ class _LoginState extends State<Login> {
                               current is ChangePasswordVisibility,
                           builder: (context, state) {
                             return CustomTextFormField(
-                              hintText: 'قم بإدخال كلمة المرور',
+                              hintText: context.locale.enterPassword,
                               controller: passwordContoller,
                               keyboardType: TextInputType.visiblePassword,
                               validator: AppValidator.validateEmptyField,
@@ -166,8 +165,8 @@ class _LoginState extends State<Login> {
                               AppRoute.forgetapassword,
                             );
                           },
-                          child: const Text(
-                            "هل نسيت كلمة السر؟",
+                          child: Text(
+                            context.locale.forgotPassword,
                             style: TextStyle(
                               fontSize: 16,
                               color: AppColor.primaryColor,
@@ -180,7 +179,7 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 30),
                   DefaultButton(
-                    text: 'تسجيل الدخول',
+                    text: context.locale.login,
                     backgroundColor: AppColor.primaryColor,
                     color: AppColor.white,
                     onPressed: () {
