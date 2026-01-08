@@ -296,6 +296,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "join_date": MessageLookupByLibrary.simpleMessage("تاريخ انضمامه"),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "...ابحث عن حي سكني",
+    ),
+    "lookingunit": MessageLookupByLibrary.simpleMessage("ابحث عن وحده سكنية"),
     "main": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "male": MessageLookupByLibrary.simpleMessage("ذكر"),
     "managerName": MessageLookupByLibrary.simpleMessage("اسم المدير"),
@@ -335,6 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noFamilyMembersAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يوجد أفراد متاحين",
     ),
+    "noManager": MessageLookupByLibrary.simpleMessage("لا يوجد مدير"),
     "noManagersAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يوجد مديرين متاحين",
     ),
@@ -451,6 +456,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
       "خيارات الأحياء السكنية ",
     ),
+    "residentialUnits": MessageLookupByLibrary.simpleMessage("الوحدات السكنية"),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       ":أعد كتابة كلمة المرور",
     ),

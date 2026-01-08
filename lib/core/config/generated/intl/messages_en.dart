@@ -293,6 +293,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "join_date": MessageLookupByLibrary.simpleMessage("Join Date"),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "...looking for a residential neighborhood",
+    ),
+    "lookingunit": MessageLookupByLibrary.simpleMessage(
+      "...looking for a residential unit",
+    ),
     "main": MessageLookupByLibrary.simpleMessage("Home"),
     "male": MessageLookupByLibrary.simpleMessage("Male"),
     "managerName": MessageLookupByLibrary.simpleMessage("Manager Name"),
@@ -333,6 +339,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noFamilyMembersAvailable": MessageLookupByLibrary.simpleMessage(
       "No family members available",
     ),
+    "noManager": MessageLookupByLibrary.simpleMessage("There is no manager"),
     "noManagersAvailable": MessageLookupByLibrary.simpleMessage(
       "No managers available",
     ),
@@ -450,6 +457,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
       "residential Neighborhood Options",
+    ),
+    "residentialUnits": MessageLookupByLibrary.simpleMessage(
+      "residential units",
     ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Re-enter password:",

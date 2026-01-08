@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_Dashboard_model.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_units_model.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/unit_model.dart';
 
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
@@ -19,6 +21,8 @@ class ResidentialNeighborhoodsCubit
   int? selectedManager;
   ResidentialNeighborhoodDashboardModel? _dashboardData;
   List<ResidentialNeighborhoodModel> _allNeighborhoods = [];
+  ResidentialNeighborhoodUnitModel? _neighborhoodWithUnits;
+  List<Unit> _allNeighborhoodUnits = [];
 
   Future<void> setResidentialNeighborhood(
     ResidentialNeighborhoodModel residentialNeighborhood,
@@ -304,5 +308,73 @@ class ResidentialNeighborhoodsCubit
         ),
       );
     }
+  }
+
+  Future<void> getResidentialNeighborhoodUnits(int id) async {
+    emit(ResidentialNeighborhoodUnitsLoading());
+    try {
+      final response = await api.get(
+        ApiLink.getResidentialNeighborhoodUnits(neighborhoodId: id),
+      );
+
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+
+      _neighborhoodWithUnits = ResidentialNeighborhoodUnitModel.fromJson(
+        response["data"],
+      );
+      _allNeighborhoodUnits = _neighborhoodWithUnits!.residentialUnits;
+
+      if (!isClosed) {
+        emit(
+          ResidentialNeighborhoodUnitssLoaded(
+            neighborhoodWithUnits: _neighborhoodWithUnits!,
+            allNeighborhoodUnits: _allNeighborhoodUnits,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(
+        FailureForUpdateOrAddResidentialNeighborhood(
+          errorMessage: e.errModel.errorMessage,
+        ),
+      );
+    } catch (e) {
+      emit(
+        FailureForUpdateOrAddResidentialNeighborhood(
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  void filterNeighborhoodUnits(String query) {
+    if (_neighborhoodWithUnits == null) return;
+
+    if (query.isEmpty) {
+      emit(
+        ResidentialNeighborhoodUnitssLoaded(
+          neighborhoodWithUnits: _neighborhoodWithUnits!,
+          allNeighborhoodUnits: _allNeighborhoodUnits,
+        ),
+      );
+      return;
+    }
+    final filteredList = _allNeighborhoodUnits
+        .where((unit) => unit.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    emit(
+      ResidentialNeighborhoodUnitssLoaded(
+        neighborhoodWithUnits: _neighborhoodWithUnits!,
+        allNeighborhoodUnits: filteredList,
+      ),
+    );
   }
 }

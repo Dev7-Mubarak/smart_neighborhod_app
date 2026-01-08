@@ -1322,5 +1322,21 @@
     "Blocks":"Blocks",
   "@Blocks": {
     "description": "Blocks"
-  }   
+  }  ,
+   "residentialUnits": "residential units",
+  "@residentialUnits": {
+    "description": "residential units"
+  },
+  "noManager":   "There is no manager",
+  "@noManager": {
+    "description": "There is no manager"
+  },
+   "lookingNeighborhood": "...looking for a residential neighborhood",
+  "@lookingNeighborhood": {
+    "description": "...looking for a residential neighborhood"
+  },
+  "lookingunit": "...looking for a residential unit",
+  "@lookingunit": {
+    "description": "...looking for a residential unit"
+  }
 }

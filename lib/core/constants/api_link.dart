@@ -22,6 +22,9 @@ class ApiLink {
       '$server/residential-neighborhoods';
   static const String changeResidentialNeighborhoodManager =
       '$server/residential-neighborhoods';
+  static String getResidentialNeighborhoodUnits({required int neighborhoodId}) {
+    return '$server/residential-neighborhoods/$neighborhoodId/units';
+  }
 
   // Blocks
   static const String getAllBlockes = '$server/blocks';

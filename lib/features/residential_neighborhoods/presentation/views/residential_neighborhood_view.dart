@@ -1044,7 +1044,7 @@ class _ResidentialNeighborhoodViewState
           Expanded(
             child: SearchableTextFormField(
               controller: _searchingController,
-              hintText: locale.searchResidentialBlock,
+              hintText: locale.lookingNeighborhood,
               bachgroundColor: AppColor.gray2,
               suffixIcon: IconButton(
                 onPressed: () {
@@ -1105,6 +1105,19 @@ class _ResidentialNeighborhoodViewState
                         crossAxisCellCount: 1,
                         child: NeighborhoodCardWidget(
                           neighborhood: neighborhood,
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoute.residentialNeighborhoodUnits,
+                              arguments:
+                                  BlocProvider.of<
+                                      ResidentialNeighborhoodsCubit
+                                    >(context)
+                                    ..getResidentialNeighborhoodUnits(
+                                      neighborhood.neighborhoodId,
+                                    ),
+                            );
+                          },
                           onLongPress: () {
                             if (_profileModel?.role == AppRole.Admin.name) {
                               _showOptions(neighborhood, locale);

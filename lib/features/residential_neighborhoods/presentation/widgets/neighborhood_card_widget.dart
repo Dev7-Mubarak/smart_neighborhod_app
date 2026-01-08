@@ -7,11 +7,13 @@ import 'package:smart_negborhood_app/features/residential_neighborhoods/presenta
 class NeighborhoodCardWidget extends StatelessWidget {
   final ResidentialNeighborhoodModel neighborhood;
   final VoidCallback? onLongPress;
+  final VoidCallback? onTap;
 
   const NeighborhoodCardWidget({
     super.key,
     required this.neighborhood,
     this.onLongPress,
+    this.onTap,
   });
 
   @override
@@ -19,7 +21,7 @@ class NeighborhoodCardWidget extends StatelessWidget {
     final locale = context.locale;
 
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       onLongPress: onLongPress,
       borderRadius: BorderRadius.circular(16),
       child: Container(

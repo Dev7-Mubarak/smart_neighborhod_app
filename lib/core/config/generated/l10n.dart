@@ -2733,6 +2733,46 @@ class AppLocalizations {
   String get Blocks {
     return Intl.message('Blocks', name: 'Blocks', desc: 'Blocks', args: []);
   }
+
+  /// `residential units`
+  String get residentialUnits {
+    return Intl.message(
+      'residential units',
+      name: 'residentialUnits',
+      desc: 'residential units',
+      args: [],
+    );
+  }
+
+  /// `There is no manager`
+  String get noManager {
+    return Intl.message(
+      'There is no manager',
+      name: 'noManager',
+      desc: 'There is no manager',
+      args: [],
+    );
+  }
+
+  /// `...looking for a residential neighborhood`
+  String get lookingNeighborhood {
+    return Intl.message(
+      '...looking for a residential neighborhood',
+      name: 'lookingNeighborhood',
+      desc: '...looking for a residential neighborhood',
+      args: [],
+    );
+  }
+
+  /// `...looking for a residential unit`
+  String get lookingunit {
+    return Intl.message(
+      '...looking for a residential unit',
+      name: 'lookingunit',
+      desc: '...looking for a residential unit',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
