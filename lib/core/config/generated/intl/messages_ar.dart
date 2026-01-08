@@ -26,6 +26,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "AddResidentialNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "إضافة حي سكني",
+    ),
+    "Block": MessageLookupByLibrary.simpleMessage("مربع"),
+    "Blocks": MessageLookupByLibrary.simpleMessage("المربعات"),
+    "ChangeNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
+      "تغيير مدير الحي السكني",
+    ),
+    "ChangeNeighborhoodName": MessageLookupByLibrary.simpleMessage(
+      "تغيير اسم الحي السكني",
+    ),
+    "Neighborhoods": MessageLookupByLibrary.simpleMessage("الأحياء"),
+    "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
+      "مدير الحي السكني",
+    ),
+    "ResidentialNeighborhoodName": MessageLookupByLibrary.simpleMessage(
+      "اسم الحي السكني",
+    ),
+    "Unit": MessageLookupByLibrary.simpleMessage("وحدة"),
+    "Units": MessageLookupByLibrary.simpleMessage("الوحدات"),
     "add": MessageLookupByLibrary.simpleMessage("إضافة"),
     "addAssistanceProjectTitle": MessageLookupByLibrary.simpleMessage(
       "إضافة مشروع توزيع مساعدات جديد",
@@ -143,7 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "conflictResolvedStatus": MessageLookupByLibrary.simpleMessage(
       "تم إنهاء الخلاف",
     ),
-    "conflictSection": MessageLookupByLibrary.simpleMessage("قسم الإتفاقات"),
+    "conflictSection": MessageLookupByLibrary.simpleMessage("قسم الاتفاقيات"),
     "conflictTitleLabel": MessageLookupByLibrary.simpleMessage(
       "عنوان الإتفاقية",
     ),
@@ -214,7 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "قم بإدخال كلمة المرور",
     ),
     "enterUsername": MessageLookupByLibrary.simpleMessage(
-      "قم بإدخال اسم المستخدم",
+      "قم بإدخال اسم المستخدم أو بريده الإلكتروني",
     ),
     "enterverifyCode": MessageLookupByLibrary.simpleMessage(
       "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
@@ -397,7 +417,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "الرجاء إدخال كلمة المرور",
     ),
     "pleaseEnterUsername": MessageLookupByLibrary.simpleMessage(
-      "الرجاء إدخال اسم المستخدم",
+      "الرجاء إدخال إسم المستخدم",
     ),
     "priority": MessageLookupByLibrary.simpleMessage("الأولوية"),
     "projectCategory": MessageLookupByLibrary.simpleMessage("تصنيف المشروع"),
@@ -427,6 +447,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialBlocksAndFamilies": MessageLookupByLibrary.simpleMessage(
       "المربعات السكنية و الأسر التي تم التوزيع لها",
+    ),
+    "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
+      "خيارات الأحياء السكنية ",
     ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       ":أعد كتابة كلمة المرور",
@@ -548,7 +571,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "updated_successfully": MessageLookupByLibrary.simpleMessage(
       "تم التحديث بنجاح",
     ),
-    "username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
+    "username": MessageLookupByLibrary.simpleMessage(
+      " إسم المستخدم أو بريده الإلكتروني ",
+    ),
     "usernameLabel": MessageLookupByLibrary.simpleMessage(":إسم المستخدم"),
     "verifyCode": MessageLookupByLibrary.simpleMessage("التحقق من رمز الكود"),
     "waitingForAssistanceUpdate": MessageLookupByLibrary.simpleMessage(

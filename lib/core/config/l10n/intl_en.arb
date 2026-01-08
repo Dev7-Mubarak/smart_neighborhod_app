@@ -485,12 +485,8 @@
   "searchFamilyHead": "Search for manager...",
   "chooseFamilyHead": "Choose manager",
   "pleaseChooseFamilyHead": "Please choose a manager for the block",
-  "username": "Username",
-  "pleaseEnterUsername": "Please enter username",
-  "password": "Password",
   "passwordValidationHint": "Password must be at least 8 characters and contain an uppercase letter and a number",
-  "edit": "Edit",
-  "delete": "Delete",
+
   "deleteNotAllowed": "Deletion is not allowed at this time",
   "noResultsFound": "No results found",
 
@@ -1281,6 +1277,50 @@
     "no_teams_roles": "No teams roles",
     "@no_teams_roles": {
       "description": "Error message when there are no team roles."
-    }
+    },
     
+  "AddResidentialNeighborhood": "Add a residential neighborhood",
+  "@AddResidentialNeighborhood": {
+    "description": "Adding a residential neighborhood"
+  } ,
+    "ResidentialNeighborhoodName": "Name of residential neighborhood",
+  "@ResidentialNeighborhoodName": {
+    "description": "Name of residential neighborhood"
+  } ,
+      "ResidentialNeighborhoodManagerName":"Name of residential neighborhood manager",
+  "@ResidentialNeighborhoodManagerName": {
+    "description": "Name of residential neighborhood manager"
+  },
+   "residentialNeighborhoodOptions":"residential Neighborhood Options",
+  "@residentialNeighborhoodOptions": {
+    "description": "residential neighborhood options"
+  },  
+    "ChangeNeighborhoodName":"Change Neighborhood Name",
+  "@ChangeNeighborhoodName": {
+    "description": "Change Neighborhood Name"
+  }  
+  ,    "ChangeNeighborhoodManagerName":"Change Neighborhood Manager Name",
+  "@ChangeNeighborhoodManagerName": {
+    "description": "Change Neighborhood Manager Name"
+  },
+    "Neighborhoods":"Neighborhoods",
+  "@Neighborhoods": {
+    "description": "Neighborhoods"
+  }, 
+  "Units":"Units",
+  "@Units": {
+    "description": "Units"
+  },
+     "Unit":"Unit",
+  "@Unit": {
+    "description": "Unit"
+  },
+     "Block":"Block",
+  "@Block": {
+    "description": "Block"
+  },
+    "Blocks":"Blocks",
+  "@Blocks": {
+    "description": "Blocks"
+  }   
 }

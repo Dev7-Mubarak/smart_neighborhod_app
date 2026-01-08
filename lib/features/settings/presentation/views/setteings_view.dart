@@ -25,8 +25,10 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    final String email = _profile?.email ?? "";
-    final String defaultCover = email[0].toUpperCase();
+    final String identifier = _profile?.identifier ?? "";
+    final String defaultCover = identifier.isNotEmpty
+        ? identifier[0].toUpperCase()
+        : "?";
     final String appVersion = "1.0.0";
 
     return Scaffold(
@@ -67,9 +69,8 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
                 const SizedBox(height: 10),
 
-                // Email
                 Text(
-                  email,
+                  identifier.isNotEmpty ? identifier : "مستخدم غير معروف",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

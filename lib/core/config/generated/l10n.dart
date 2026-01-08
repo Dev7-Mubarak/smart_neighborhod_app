@@ -2643,6 +2643,96 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Add a residential neighborhood`
+  String get AddResidentialNeighborhood {
+    return Intl.message(
+      'Add a residential neighborhood',
+      name: 'AddResidentialNeighborhood',
+      desc: 'Adding a residential neighborhood',
+      args: [],
+    );
+  }
+
+  /// `Name of residential neighborhood`
+  String get ResidentialNeighborhoodName {
+    return Intl.message(
+      'Name of residential neighborhood',
+      name: 'ResidentialNeighborhoodName',
+      desc: 'Name of residential neighborhood',
+      args: [],
+    );
+  }
+
+  /// `Name of residential neighborhood manager`
+  String get ResidentialNeighborhoodManagerName {
+    return Intl.message(
+      'Name of residential neighborhood manager',
+      name: 'ResidentialNeighborhoodManagerName',
+      desc: 'Name of residential neighborhood manager',
+      args: [],
+    );
+  }
+
+  /// `residential Neighborhood Options`
+  String get residentialNeighborhoodOptions {
+    return Intl.message(
+      'residential Neighborhood Options',
+      name: 'residentialNeighborhoodOptions',
+      desc: 'residential neighborhood options',
+      args: [],
+    );
+  }
+
+  /// `Change Neighborhood Name`
+  String get ChangeNeighborhoodName {
+    return Intl.message(
+      'Change Neighborhood Name',
+      name: 'ChangeNeighborhoodName',
+      desc: 'Change Neighborhood Name',
+      args: [],
+    );
+  }
+
+  /// `Change Neighborhood Manager Name`
+  String get ChangeNeighborhoodManagerName {
+    return Intl.message(
+      'Change Neighborhood Manager Name',
+      name: 'ChangeNeighborhoodManagerName',
+      desc: 'Change Neighborhood Manager Name',
+      args: [],
+    );
+  }
+
+  /// `Neighborhoods`
+  String get Neighborhoods {
+    return Intl.message(
+      'Neighborhoods',
+      name: 'Neighborhoods',
+      desc: 'Neighborhoods',
+      args: [],
+    );
+  }
+
+  /// `Units`
+  String get Units {
+    return Intl.message('Units', name: 'Units', desc: 'Units', args: []);
+  }
+
+  /// `Unit`
+  String get Unit {
+    return Intl.message('Unit', name: 'Unit', desc: 'Unit', args: []);
+  }
+
+  /// `Block`
+  String get Block {
+    return Intl.message('Block', name: 'Block', desc: 'Block', args: []);
+  }
+
+  /// `Blocks`
+  String get Blocks {
+    return Intl.message('Blocks', name: 'Blocks', desc: 'Blocks', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

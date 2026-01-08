@@ -26,6 +26,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "AddResidentialNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "Add a residential neighborhood",
+    ),
+    "Block": MessageLookupByLibrary.simpleMessage("Block"),
+    "Blocks": MessageLookupByLibrary.simpleMessage("Blocks"),
+    "ChangeNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
+      "Change Neighborhood Manager Name",
+    ),
+    "ChangeNeighborhoodName": MessageLookupByLibrary.simpleMessage(
+      "Change Neighborhood Name",
+    ),
+    "Neighborhoods": MessageLookupByLibrary.simpleMessage("Neighborhoods"),
+    "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
+      "Name of residential neighborhood manager",
+    ),
+    "ResidentialNeighborhoodName": MessageLookupByLibrary.simpleMessage(
+      "Name of residential neighborhood",
+    ),
+    "Unit": MessageLookupByLibrary.simpleMessage("Unit"),
+    "Units": MessageLookupByLibrary.simpleMessage("Units"),
     "add": MessageLookupByLibrary.simpleMessage("Add"),
     "addAssistanceProjectTitle": MessageLookupByLibrary.simpleMessage(
       "Add New Assistance Distribution Project",
@@ -427,6 +447,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialBlocksAndFamilies": MessageLookupByLibrary.simpleMessage(
       "Residential Blocks and Distributed Families",
+    ),
+    "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
+      "residential Neighborhood Options",
     ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Re-enter password:",

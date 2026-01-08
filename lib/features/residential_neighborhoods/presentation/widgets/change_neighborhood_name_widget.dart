@@ -2,36 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/blockCubit/block_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/cubits/blockCubit/block_state.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_state.dart';
 
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
-import '../../../../core/utils/validataion.dart';
 
-class ChangeBlockNameWidget extends StatefulWidget {
-  const ChangeBlockNameWidget({super.key});
+class ChangeNeighborhoodNameWidget extends StatefulWidget {
+  const ChangeNeighborhoodNameWidget({super.key});
   @override
-  State<ChangeBlockNameWidget> createState() => _ChangeBlockNameWidgetState();
+  State<ChangeNeighborhoodNameWidget> createState() =>
+      _ChangeNeighborhoodNameWidgetState();
 }
 
-class _ChangeBlockNameWidgetState extends State<ChangeBlockNameWidget> {
+class _ChangeNeighborhoodNameWidgetState
+    extends State<ChangeNeighborhoodNameWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode _focusNode = FocusNode();
-  late final TextEditingController _blockNameController;
-  late final BlockCubit _blockCubit;
+  late final TextEditingController _neighborhoodNameController;
+  late final ResidentialNeighborhoodsCubit _neighborhoodCubit;
 
   @override
   void initState() {
     super.initState();
-    _blockCubit = context.read<BlockCubit>();
-    _blockNameController = TextEditingController(
-      text: _blockCubit.block?.name ?? '',
+    _neighborhoodCubit = context.read<ResidentialNeighborhoodsCubit>();
+    _neighborhoodNameController = TextEditingController(
+      text: _neighborhoodCubit.residentialNeighborhood?.neighborhoodName ?? '',
     );
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _blockNameController.selection = TextSelection(
+        _neighborhoodNameController.selection = TextSelection(
           baseOffset: 0,
-          extentOffset: _blockNameController.text.length,
+          extentOffset: _neighborhoodNameController.text.length,
         );
       }
     });
@@ -39,7 +41,7 @@ class _ChangeBlockNameWidgetState extends State<ChangeBlockNameWidget> {
 
   @override
   void dispose() {
-    _blockNameController.dispose();
+    _neighborhoodNameController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -47,16 +49,19 @@ class _ChangeBlockNameWidgetState extends State<ChangeBlockNameWidget> {
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
-    return BlocListener<BlockCubit, BlockState>(
+    return BlocListener<
+      ResidentialNeighborhoodsCubit,
+      ResidentialNeighborhoodsState
+    >(
       listener: (context, state) {
-        if (state is WaitingForUpdateOrAddBlock) {
+        if (state is WaitingForUpdateOrAddResidentialNeighborhood) {
           context.showLoadingDialog();
         }
-        if (state is BlockUpdatedSuccessfully) {
+        if (state is ResidentialNeighborhoodUpdatedSuccessfully) {
           context.showSuccessSnackBar(state.message);
           Navigator.of(context, rootNavigator: true).pop();
           Navigator.pop(context);
-        } else if (state is BlocksFailure) {
+        } else if (state is FailureForUpdateOrAddResidentialNeighborhood) {
           context.showErrorSnackBar(state.errorMessage);
           Navigator.of(context, rootNavigator: true).pop();
         }
@@ -71,9 +76,9 @@ class _ChangeBlockNameWidgetState extends State<ChangeBlockNameWidget> {
             const SizedBox(height: 15),
             CustomTextFormField(
               focusNode: _focusNode,
-              controller: _blockNameController,
+              controller: _neighborhoodNameController,
               hintText: locale.changeBlockName,
-              validator: Validataion.validateName,
+              validator: AppValidator.validateEmptyField,
             ),
             const SizedBox(height: 14),
             Row(
@@ -82,17 +87,16 @@ class _ChangeBlockNameWidgetState extends State<ChangeBlockNameWidget> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _blockCubit.updateBlock(
-                          id: _blockCubit.block!.id,
-                          name: _blockNameController.text,
+                        _neighborhoodCubit.updateNeighborhood(
+                          name: _neighborhoodNameController.text,
                         );
                       }
                     },
-                    child: Text(locale.confirm),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.primaryColor,
                       foregroundColor: AppColor.white,
                     ),
+                    child: Text(locale.confirm),
                   ),
                 ),
                 const SizedBox(width: 12),

@@ -1279,6 +1279,52 @@
             "no_teams_roles": "لا توجد فرق",
             "@no_teams_roles": {
               "description": "Error message when there are no team roles."
-            }
+            },
+  "AddResidentialNeighborhood": "إضافة حي سكني",
+  "@AddResidentialNeighborhood": {
+    "description": "Adding a residential neighborhood"
+  } ,
+  "ResidentialNeighborhoodName": "اسم الحي السكني",
+  "@ResidentialNeighborhoodName": {
+    "description": "Name of residential neighborhood"
+  },
+    "ResidentialNeighborhoodManagerName":"مدير الحي السكني",
+  "@ResidentialNeighborhoodManagerName": {
+    "description": "Name of residential neighborhood manager"
+  } , 
+  "residentialNeighborhoodOptions":"خيارات الأحياء السكنية ",
+  "@residentialNeighborhoodOptions": {
+    "description": "residential neighborhood options"
+  } , 
+
+    "ChangeNeighborhoodName":"تغيير اسم الحي السكني",
+  "@ChangeNeighborhoodName": {
+    "description": "Change Neighborhood Name"
+  }  ,
+
+     "ChangeNeighborhoodManagerName":"تغيير مدير الحي السكني",
+  "@ChangeNeighborhoodManagerName": {
+    "description": "Change Neighborhood Manager Name"
+  },
+    "Neighborhoods":"الأحياء",
+  "@Neighborhoods": {
+    "description": "Neighborhoods"
+  },
+     "Units":"الوحدات",
+  "@Units": {
+    "description": "Units"
+  },
+     "Unit":"وحدة",
+  "@Unit": {
+    "description": "Unit"
+  },
+     "Block":"مربع",
+  "@Block": {
+    "description": "Block"
+  },
+     "Blocks":"المربعات",
+  "@Blocks": {
+    "description": "Blocks"
+  }
 
 }

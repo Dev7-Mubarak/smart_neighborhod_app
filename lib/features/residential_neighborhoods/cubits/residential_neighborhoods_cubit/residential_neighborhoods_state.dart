@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_Dashboard_model.dart';
 
 import '../../data/models/residential_neighborhood_model.dart';
 
@@ -8,9 +9,20 @@ abstract class ResidentialNeighborhoodsState {}
 class ResidentialNeighborhoodsInitial extends ResidentialNeighborhoodsState {}
 
 class ResidentialNeighborhoodsLoaded extends ResidentialNeighborhoodsState {
-  final List<ResidentialNeighborhoodModel> allResidentialNeighborhoods;
+  // final List<ResidentialNeighborhoodModel> allResidentialNeighborhoods;
+  // final List<ResidentialNeighborhoodModel> allFilteredNeighborhoods;
 
-  ResidentialNeighborhoodsLoaded(this.allResidentialNeighborhoods);
+  // ResidentialNeighborhoodsLoaded({
+  //   required this.allFilteredNeighborhoods,
+  //   required this.allResidentialNeighborhoods,
+  // });
+  final ResidentialNeighborhoodDashboardModel dashboardData;
+  final List<ResidentialNeighborhoodModel> filteredNeighborhoods;
+
+  ResidentialNeighborhoodsLoaded({
+    required this.dashboardData,
+    required this.filteredNeighborhoods,
+  });
 }
 
 class ResidentialNeighborhoodsLoading extends ResidentialNeighborhoodsState {}

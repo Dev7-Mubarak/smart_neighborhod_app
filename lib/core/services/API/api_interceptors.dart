@@ -16,5 +16,5 @@ class ApiInterceptor extends Interceptor {
 
 // {
 //   "email": "sys.smartneighborhood@gmail.com",
-//   "password": "Mub_@12345"
+//   "password": "Mub_12345"
 // }

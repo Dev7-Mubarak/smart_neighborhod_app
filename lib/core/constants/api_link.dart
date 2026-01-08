@@ -12,6 +12,8 @@ class ApiLink {
   // Residentail Neighborhoods
   static const String getAllResidentialNeighborhoods =
       '$server/residential-neighborhoods';
+  static const String getAllResidentialNeighborhoodsDashboard =
+      '$server/residential-neighborhoods/dashboard';
   static const String addResidentialNeighborhood =
       '$server/residential-neighborhoods';
   static const String updateResidentialNeighborhood =

@@ -84,7 +84,9 @@ class PersonCubit extends Cubit<PersonState> {
       emit(PersonLoaded(people: people));
     } on Serverexception catch (e) {
       emit(PersonFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Parsing Error: $e"); // سيطبع لك سبب المشكلة بالضبط
+      print(stackTrace);
       emit(PersonFailure(errorMessage: e.toString()));
     }
   }
