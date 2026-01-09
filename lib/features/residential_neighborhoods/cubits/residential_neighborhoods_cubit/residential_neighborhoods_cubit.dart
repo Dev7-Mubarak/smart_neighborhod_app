@@ -35,7 +35,7 @@ class ResidentialNeighborhoodsCubit
   }
 
   void changeResidentialNeighborhoodManager({
-    required String identifier,
+    required String email,
     required String password,
   }) async {
     emit(WaitingForUpdateOrAddResidentialNeighborhood());
@@ -46,7 +46,7 @@ class ResidentialNeighborhoodsCubit
         ),
         data: {
           'personId': selectedManager,
-          'email': identifier,
+          'email': email,
           'password': password,
         },
       );

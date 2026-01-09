@@ -139,14 +139,14 @@ class _ChangeNeighborhoodManagerViewState
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      SmallText(text: locale.username),
+                      SmallText(text: locale.emailLabel),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
                       CustomTextFormField(
                         controller: _identifierController,
                         suffixIcon: null,
-                        validator: AppValidator.validateEmptyField,
+                        validator: AppValidator.validateEmail,
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       SmallText(text: locale.password),
@@ -171,7 +171,7 @@ class _ChangeNeighborhoodManagerViewState
                         if (_formKey.currentState!.validate()) {
                           _residentialNeighborhoodCubit
                               .changeResidentialNeighborhoodManager(
-                                identifier: _identifierController.text,
+                                email: _identifierController.text,
                                 password: _passwordController.text,
                               );
                         }

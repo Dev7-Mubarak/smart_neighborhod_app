@@ -15,7 +15,10 @@
   "@usernameLabel": {
     "description": "Username label with colon"
   },
-  
+  "emailLabel": ":ُEmail",
+  "@emailLabel": {
+    "description": "ُEmail"
+  },
   "password": "Password",
   "@password": {
     "description": "Password label"

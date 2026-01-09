@@ -228,6 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailConfirmedSuccess": MessageLookupByLibrary.simpleMessage(
       "Email has been confirmed",
     ),
+    "emailLabel": MessageLookupByLibrary.simpleMessage(":ُEmail"),
     "emailSentSuccess": MessageLookupByLibrary.simpleMessage(
       "Email sent successfully, a confirmation code will be sent to your email address.",
     ),

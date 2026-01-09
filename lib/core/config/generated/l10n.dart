@@ -84,6 +84,16 @@ class AppLocalizations {
     );
   }
 
+  /// `:ُEmail`
+  String get emailLabel {
+    return Intl.message(
+      ':ُEmail',
+      name: 'emailLabel',
+      desc: 'ُEmail',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get password {
     return Intl.message(
