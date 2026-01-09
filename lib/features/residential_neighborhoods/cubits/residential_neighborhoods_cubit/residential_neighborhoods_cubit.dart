@@ -28,7 +28,6 @@ class ResidentialNeighborhoodsCubit
     ResidentialNeighborhoodModel residentialNeighborhood,
   ) async {
     this.residentialNeighborhood = residentialNeighborhood;
-    // this.selectedManager = residentialNeighborhood.personId;
   }
 
   void changeSelectedNeighborhoodManager(int? selectedResidentialManager) {
@@ -36,18 +35,21 @@ class ResidentialNeighborhoodsCubit
   }
 
   void changeResidentialNeighborhoodManager({
-    required int id,
-    required int personId,
-    required String email,
+    required String identifier,
     required String password,
   }) async {
     emit(WaitingForUpdateOrAddResidentialNeighborhood());
     try {
-      final response = await api.update(
-        '${ApiLink.changeBlockManager}/$id/manager',
-        data: {"email": email, "password": password, "personId": personId},
+      final response = await api.post(
+        ApiLink.changeResidentialNeighborhoodManager(
+          neighborhoodId: residentialNeighborhood!.neighborhoodId,
+        ),
+        data: {
+          'personId': selectedManager,
+          'email': identifier,
+          'password': password,
+        },
       );
-
       if (response["isSuccess"]) {
         emit(
           ResidentialNeighborhoodUpdatedSuccessfully(
@@ -78,44 +80,6 @@ class ResidentialNeighborhoodsCubit
       );
     }
   }
-
-  // Future<void> getResidentialNeighborhoods({String? search}) async {
-  //   emit(ResidentialNeighborhoodsLoading());
-  //   try {
-  //     final response = await api.get(ApiLink.getAllResidentialNeighborhoods);
-  //     if (response["data"] == null) {
-  //       throw Serverexception(
-  //         errModel: ErrorModel(
-  //           statusCode: 400,
-  //           errorMessage: "No data received",
-  //           isSuccess: response["isSuccess"] ?? false,
-  //         ),
-  //       );
-  //     }
-  //     List<dynamic> neighborhoods = response["data"];
-  //     _allNeighborhoods = neighborhoods
-  //         .map((e) => ResidentialNeighborhoodModel.fromJson(e))
-  //         .toList();
-  //     if (search != null && search.isNotEmpty) {
-  //       filterNeighborhoods(search);
-  //     } else {
-  //       if (!isClosed) {
-  //         emit(
-  //           ResidentialNeighborhoodsLoaded(
-  //             allFilteredNeighborhoods: _allNeighborhoods,
-  //             allResidentialNeighborhoods: _allNeighborhoods,
-  //           ),
-  //         );
-  //       }
-  //     }
-  //   } on Serverexception catch (e) {
-  //     emit(
-  //       ResidentialNeighborhoodsFailure(errorMessage: e.errModel.errorMessage),
-  //     );
-  //   } catch (e) {
-  //     emit(ResidentialNeighborhoodsFailure(errorMessage: e.toString()));
-  //   }
-  // }
 
   Future<void> getResidentialNeighborhoodsDashboard({String? search}) async {
     emit(ResidentialNeighborhoodsLoading());
@@ -377,4 +341,42 @@ class ResidentialNeighborhoodsCubit
       ),
     );
   }
+
+  // Future<void> getResidentialNeighborhoods({String? search}) async {
+  //   emit(ResidentialNeighborhoodsLoading());
+  //   try {
+  //     final response = await api.get(ApiLink.getAllResidentialNeighborhoods);
+  //     if (response["data"] == null) {
+  //       throw Serverexception(
+  //         errModel: ErrorModel(
+  //           statusCode: 400,
+  //           errorMessage: "No data received",
+  //           isSuccess: response["isSuccess"] ?? false,
+  //         ),
+  //       );
+  //     }
+  //     List<dynamic> neighborhoods = response["data"];
+  //     _allNeighborhoods = neighborhoods
+  //         .map((e) => ResidentialNeighborhoodModel.fromJson(e))
+  //         .toList();
+  //     if (search != null && search.isNotEmpty) {
+  //       filterNeighborhoods(search);
+  //     } else {
+  //       if (!isClosed) {
+  //         emit(
+  //           ResidentialNeighborhoodsLoaded(
+  //             allFilteredNeighborhoods: _allNeighborhoods,
+  //             allResidentialNeighborhoods: _allNeighborhoods,
+  //           ),
+  //         );
+  //       }
+  //     }
+  //   } on Serverexception catch (e) {
+  //     emit(
+  //       ResidentialNeighborhoodsFailure(errorMessage: e.errModel.errorMessage),
+  //     );
+  //   } catch (e) {
+  //     emit(ResidentialNeighborhoodsFailure(errorMessage: e.toString()));
+  //   }
+  // }
 }

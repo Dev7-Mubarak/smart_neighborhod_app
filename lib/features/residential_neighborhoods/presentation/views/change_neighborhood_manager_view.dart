@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
+import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
 
 import '../../../../core/constants/small_text.dart';
@@ -21,7 +24,8 @@ class ChangeNeighborhoodManagerView extends StatefulWidget {
 
 class _ChangeNeighborhoodManagerViewState
     extends State<ChangeNeighborhoodManagerView> {
-  late final TextEditingController _identifierController;
+  late final TextEditingController _identifierController =
+      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -35,15 +39,11 @@ class _ChangeNeighborhoodManagerViewState
     _personCubit = context.read<PersonCubit>()..getPeople();
     _residentialNeighborhoodCubit = context
         .read<ResidentialNeighborhoodsCubit>();
-    // _identifierController = TextEditingController(
-    //   text: _residentialNeighborhoodCubit.residentialNeighborhood?. ?? '',
-    // );
-    // _selectedPerson = _residentialNeighborhoodCubit.residentialNeighborhood?.neighborhoodManagerId;
   }
 
   @override
   void dispose() {
-    // _emailController.dispose();
+    _identifierController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -56,10 +56,12 @@ class _ChangeNeighborhoodManagerViewState
       appBar: AppBar(
         backgroundColor: AppColor.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
+        centerTitle: true,
         title: Center(
           child: Text(
-            locale.changeManager,
+            locale.ChangeNeighborhoodManagerName,
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -74,7 +76,9 @@ class _ChangeNeighborhoodManagerViewState
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
@@ -84,6 +88,12 @@ class _ChangeNeighborhoodManagerViewState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SmallText(
+                        text: locale.ResidentialNeighborhoodManagerName,
+                      ),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       BlocBuilder<PersonCubit, PersonState>(
                         builder: (context, state) {
                           if (state is PersonLoading) {
@@ -94,7 +104,7 @@ class _ChangeNeighborhoodManagerViewState
                           if (state is PersonLoaded) {
                             if (state.people.isEmpty) {
                               return Center(
-                                child: Text(locale.failedToLoadPeople),
+                                child: Text(locale.noManagersAvailable),
                               );
                             }
                             Person? initialSelectedPerson;
@@ -103,90 +113,50 @@ class _ChangeNeighborhoodManagerViewState
                                 (person) => person.id == _selectedPerson,
                               );
                             }
-                            return DropdownSearch<Person>(
-                              popupProps: PopupProps.menu(
-                                showSearchBox: true,
-                                searchFieldProps: TextFieldProps(
-                                  decoration: InputDecoration(
-                                    hintText: locale.searchFamilyHead,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                                menuProps: MenuProps(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                itemBuilder: (context, person, isSelected) {
-                                  return ListTile(
-                                    title: Text(person.fullName),
-                                    selected: isSelected,
-                                  );
-                                },
-                                fit: FlexFit.loose,
-                              ),
+                            return CustomDropdownSearchWidget<Person>(
                               items: state.people,
                               itemAsString: (Person? u) => u?.fullName ?? '',
                               onChanged: (Person? data) {
-                                // _blockCubit.changeSelectedBlockManager(
-                                //   data!.id,
-                                // );
+                                _residentialNeighborhoodCubit
+                                    .changeSelectedNeighborhoodManager(
+                                      data?.id,
+                                    );
                               },
                               selectedItem: initialSelectedPerson,
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: locale.chooseFamilyHead,
-                                  hintText: locale.chooseFamilyHead,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                ),
-                              ),
-                              validator: (Person? item) {
-                                if (item == null) {
-                                  return locale.pleaseChooseFamilyHead;
-                                }
-                                return null;
-                              },
+                              labelText: locale.chooseManager,
+                              hintText: locale.chooseManager,
+                              searchHintText: locale.searchManagerHint,
+                              validator: (Person? item) =>
+                                  AppValidator.validateDropdown(item),
                             );
+                          } else if (state is PersonFailure) {
+                            return OnFailureWidget(
+                              onRetry: () => _personCubit.getPeople(),
+                            );
+                          } else {
+                            return Center(child: Text(locale.unknownError));
                           }
-                          return Container();
                         },
                       ),
-                      const SizedBox(height: 20),
-                      SmallText(text: locale.email),
+                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                      SmallText(text: locale.username),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: _identifierController,
                         suffixIcon: null,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return locale.pleaseEnterUsername;
-                          }
-                          return null;
-                        },
+                        validator: AppValidator.validateEmptyField,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       SmallText(text: locale.password),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
                       CustomTextFormField(
                         controller: _passwordController,
                         suffixIcon: null,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.length < 8) {
-                            return locale.passwordValidationHint;
-                          }
-                          if (!RegExp(
-                            r'^(?=.*[A-Z])(?=.*[0-9])',
-                          ).hasMatch(value)) {
-                            return locale.passwordValidationHint;
-                          }
-                          return null;
-                        },
+                        validator: AppValidator.validatePassword,
                       ),
                     ],
                   ),
@@ -196,14 +166,15 @@ class _ChangeNeighborhoodManagerViewState
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SmallButton(
-                      text: locale.save,
+                      text: locale.update,
                       onPressed: () {
-                        // _blockCubit.changeBlockManager(
-                        //   id: _blockCubit.block?.id ?? 0,
-                        //   personId: _blockCubit.selectedManager ?? 0,
-                        //   email: _identifierController.text,
-                        //   password: _passwordController.text,
-                        // );
+                        if (_formKey.currentState!.validate()) {
+                          _residentialNeighborhoodCubit
+                              .changeResidentialNeighborhoodManager(
+                                identifier: _identifierController.text,
+                                password: _passwordController.text,
+                              );
+                        }
                       },
                     ),
                     const SizedBox(width: 10),

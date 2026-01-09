@@ -20,8 +20,13 @@ class ApiLink {
       '$server/residential-neighborhoods';
   static const String deleteResidentialNeighborhood =
       '$server/residential-neighborhoods';
-  static const String changeResidentialNeighborhoodManager =
-      '$server/residential-neighborhoods';
+
+  static String changeResidentialNeighborhoodManager({
+    required int neighborhoodId,
+  }) {
+    return '$server/residential-neighborhoods/$neighborhoodId/manager';
+  }
+
   static String getResidentialNeighborhoodUnits({required int neighborhoodId}) {
     return '$server/residential-neighborhoods/$neighborhoodId/units';
   }

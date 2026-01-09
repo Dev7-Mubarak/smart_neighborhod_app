@@ -49,74 +49,56 @@ class _ChangeNeighborhoodNameWidgetState
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
-    return BlocListener<
-      ResidentialNeighborhoodsCubit,
-      ResidentialNeighborhoodsState
-    >(
-      listener: (context, state) {
-        if (state is WaitingForUpdateOrAddResidentialNeighborhood) {
-          context.showLoadingDialog();
-        }
-        if (state is ResidentialNeighborhoodUpdatedSuccessfully) {
-          context.showSuccessSnackBar(state.message);
-          Navigator.of(context, rootNavigator: true).pop();
-          Navigator.pop(context);
-        } else if (state is FailureForUpdateOrAddResidentialNeighborhood) {
-          context.showErrorSnackBar(state.errorMessage);
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-      },
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 14),
-            Text(locale.changeBlockName),
-            const SizedBox(height: 15),
-            CustomTextFormField(
-              focusNode: _focusNode,
-              controller: _neighborhoodNameController,
-              hintText: locale.changeBlockName,
-              validator: AppValidator.validateEmptyField,
-            ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _neighborhoodCubit.updateNeighborhood(
-                          name: _neighborhoodNameController.text,
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.primaryColor,
-                      foregroundColor: AppColor.white,
-                    ),
-                    child: Text(locale.confirm),
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 14),
+          Text(locale.changeBlockName),
+          const SizedBox(height: 15),
+          CustomTextFormField(
+            focusNode: _focusNode,
+            controller: _neighborhoodNameController,
+            hintText: locale.changeBlockName,
+            validator: AppValidator.validateEmptyField,
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _neighborhoodCubit.updateNeighborhood(
+                        name: _neighborhoodNameController.text,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.primaryColor,
+                    foregroundColor: AppColor.white,
+                  ),
+                  child: Text(locale.confirm),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(locale.cancel),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.primaryColor,
+                    foregroundColor: AppColor.white,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(locale.cancel),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.primaryColor,
-                      foregroundColor: AppColor.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-          ],
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+        ],
       ),
     );
   }

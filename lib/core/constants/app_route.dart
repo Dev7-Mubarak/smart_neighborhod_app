@@ -17,6 +17,7 @@ import 'package:smart_negborhood_app/features/people/cubits/project_category/pro
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/bind_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/add_residential_neighborhood_view.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/change_neighborhood_manager_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/residential_neighborhood_units_view.dart';
 import 'package:smart_negborhood_app/features/settings/presentation/views/setteings_view.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
@@ -79,6 +80,20 @@ class AppRouter {
             create: (context) =>
                 ResidentialNeighborhoodsCubit(api: DioConsumer(dio: Dio())),
             child: const ResidentialNeighborhoodView(),
+          ),
+        );
+      case AppRoute.changeResidentialNeighborhoodManager:
+        final residentialNeighborhoodsCubit =
+            settings.arguments as ResidentialNeighborhoodsCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialNeighborhoodsCubit),
+            ],
+            child: ChangeNeighborhoodManagerView(),
           ),
         );
       case AppRoute.addResidentialNeighborhood:
@@ -451,6 +466,8 @@ class AppRoute {
   static const String residentialNeighborhoods = '/ResidentialNeighborhood';
   static const String residentialNeighborhoodUnits =
       '/residentialNeighborhoodUnits';
+  static const String changeResidentialNeighborhoodManager =
+      '/ChangeResidentialNeighborhoodManager';
 
   static const String settings = '/settings';
   static const String residentialBlockDetial = '/ResidentialBlockDetial';

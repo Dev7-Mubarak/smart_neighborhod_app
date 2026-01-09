@@ -6,7 +6,6 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_model.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/widgets/change_neighborhood_name_widget.dart';
-// import cubits, models, colors...
 
 class NeighborhoodOptionsSheet extends StatelessWidget {
   final ResidentialNeighborhoodModel neighborhood;
@@ -65,7 +64,7 @@ class NeighborhoodOptionsSheet extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pushNamed(
                 context,
-                AppRoute.changeBlockManager,
+                AppRoute.changeResidentialNeighborhoodManager,
                 arguments: context.read<ResidentialNeighborhoodsCubit>()
                   ..setResidentialNeighborhood(neighborhood),
               );
