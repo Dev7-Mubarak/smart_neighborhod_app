@@ -139,14 +139,14 @@ class _ChangeNeighborhoodManagerViewState
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      SmallText(text: locale.emailLabel),
+                      SmallText(text: locale.username),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
                       CustomTextFormField(
                         controller: _identifierController,
                         suffixIcon: null,
-                        validator: AppValidator.validateEmail,
+                        validator: AppValidator.validateEmptyField,
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       SmallText(text: locale.password),

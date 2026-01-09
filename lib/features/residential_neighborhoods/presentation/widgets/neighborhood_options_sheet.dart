@@ -70,44 +70,6 @@ class NeighborhoodOptionsSheet extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 8),
-
-          ElevatedButton.icon(
-            icon: const Icon(Icons.delete),
-            label: Text(locale.delete),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: AppColor.white,
-            ),
-            onPressed: () => _confirmDelete(context, locale),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _confirmDelete(BuildContext context, locale) async {
-    Navigator.pop(context);
-    await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(locale.confirmDelete),
-        content: Text(locale.deleteNotAllowed),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(locale.cancel),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              cubit.deleteResidentialNeighborhood(neighborhood.neighborhoodId);
-            },
-            child: Text(
-              locale.delete,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
         ],
       ),
     );

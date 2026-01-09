@@ -28,7 +28,7 @@ class PersonCubit extends Cubit<PersonState> {
   DateTime? selectedDate;
   bool _hasNextPage = false;
   int _pageNumber = 1;
-  final int _pageSize = 10;
+  final int _pageSize = 1000;
   List<Person> people = [];
 
   /// Sets the cubit fields for editing a person.

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/core/utils/app_validator.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_state.dart';
 
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
+import '../../../../core/constants/app_color.dart';
+import '../../../../core/utils/app_validator.dart';
+import '../../cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
 
 class ChangeNeighborhoodNameWidget extends StatefulWidget {
   const ChangeNeighborhoodNameWidget({super.key});
