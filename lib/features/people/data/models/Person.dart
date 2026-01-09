@@ -77,6 +77,9 @@ class Person {
   }
 
   static MaritalStatus _maritalStatusFromString(String value) {
-    return MaritalStatus.values.firstWhere((e) => e.arabicName == value);
+    return MaritalStatus.values.firstWhere(
+      (e) => e.arabicName == value,
+      orElse: () => MaritalStatus.values.first,
+    );
   }
 }

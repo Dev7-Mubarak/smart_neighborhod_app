@@ -39,8 +39,8 @@ class HomeViewState extends State<HomeView> {
                 radius: 22,
                 backgroundColor: AppColor.primaryColor,
                 child: Text(
-                  _profile?.email.isNotEmpty == true
-                      ? _profile!.email[0].toUpperCase()
+                  _profile?.identifier.isNotEmpty == true
+                      ? _profile!.identifier[0].toUpperCase()
                       : '',
                   style: const TextStyle(
                     fontSize: 20,
@@ -74,7 +74,7 @@ class HomeViewState extends State<HomeView> {
                       ),
                     ),
                     Text(
-                      _profile?.email ?? '',
+                      _profile?.identifier ?? '',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

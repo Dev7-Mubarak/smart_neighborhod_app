@@ -12,14 +12,24 @@ class ApiLink {
   // Residentail Neighborhoods
   static const String getAllResidentialNeighborhoods =
       '$server/residential-neighborhoods';
+  static const String getAllResidentialNeighborhoodsDashboard =
+      '$server/residential-neighborhoods/dashboard';
   static const String addResidentialNeighborhood =
       '$server/residential-neighborhoods';
   static const String updateResidentialNeighborhood =
       '$server/residential-neighborhoods';
   static const String deleteResidentialNeighborhood =
       '$server/residential-neighborhoods';
-  static const String changeResidentialNeighborhoodManager =
-      '$server/residential-neighborhoods';
+
+  static String changeResidentialNeighborhoodManager({
+    required int neighborhoodId,
+  }) {
+    return '$server/residential-neighborhoods/$neighborhoodId/manager';
+  }
+
+  static String getResidentialNeighborhoodUnits({required int neighborhoodId}) {
+    return '$server/residential-neighborhoods/$neighborhoodId/units';
+  }
 
   // Blocks
   static const String getAllBlockes = '$server/blocks';

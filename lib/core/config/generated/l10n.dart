@@ -84,6 +84,16 @@ class AppLocalizations {
     );
   }
 
+  /// `:ُEmail`
+  String get emailLabel {
+    return Intl.message(
+      ':ُEmail',
+      name: 'emailLabel',
+      desc: 'ُEmail',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get password {
     return Intl.message(
@@ -2640,6 +2650,136 @@ class AppLocalizations {
       'No teams roles',
       name: 'no_teams_roles',
       desc: 'Error message when there are no team roles.',
+      args: [],
+    );
+  }
+
+  /// `Add a residential neighborhood`
+  String get AddResidentialNeighborhood {
+    return Intl.message(
+      'Add a residential neighborhood',
+      name: 'AddResidentialNeighborhood',
+      desc: 'Adding a residential neighborhood',
+      args: [],
+    );
+  }
+
+  /// `Name of residential neighborhood`
+  String get ResidentialNeighborhoodName {
+    return Intl.message(
+      'Name of residential neighborhood',
+      name: 'ResidentialNeighborhoodName',
+      desc: 'Name of residential neighborhood',
+      args: [],
+    );
+  }
+
+  /// `Name of residential neighborhood manager`
+  String get ResidentialNeighborhoodManagerName {
+    return Intl.message(
+      'Name of residential neighborhood manager',
+      name: 'ResidentialNeighborhoodManagerName',
+      desc: 'Name of residential neighborhood manager',
+      args: [],
+    );
+  }
+
+  /// `residential Neighborhood Options`
+  String get residentialNeighborhoodOptions {
+    return Intl.message(
+      'residential Neighborhood Options',
+      name: 'residentialNeighborhoodOptions',
+      desc: 'residential neighborhood options',
+      args: [],
+    );
+  }
+
+  /// `Change Neighborhood Name`
+  String get ChangeNeighborhoodName {
+    return Intl.message(
+      'Change Neighborhood Name',
+      name: 'ChangeNeighborhoodName',
+      desc: 'Change Neighborhood Name',
+      args: [],
+    );
+  }
+
+  /// `Change Neighborhood Manager Name`
+  String get ChangeNeighborhoodManagerName {
+    return Intl.message(
+      'Change Neighborhood Manager Name',
+      name: 'ChangeNeighborhoodManagerName',
+      desc: 'Change Neighborhood Manager Name',
+      args: [],
+    );
+  }
+
+  /// `Neighborhoods`
+  String get Neighborhoods {
+    return Intl.message(
+      'Neighborhoods',
+      name: 'Neighborhoods',
+      desc: 'Neighborhoods',
+      args: [],
+    );
+  }
+
+  /// `Units`
+  String get Units {
+    return Intl.message('Units', name: 'Units', desc: 'Units', args: []);
+  }
+
+  /// `Unit`
+  String get Unit {
+    return Intl.message('Unit', name: 'Unit', desc: 'Unit', args: []);
+  }
+
+  /// `Block`
+  String get Block {
+    return Intl.message('Block', name: 'Block', desc: 'Block', args: []);
+  }
+
+  /// `Blocks`
+  String get Blocks {
+    return Intl.message('Blocks', name: 'Blocks', desc: 'Blocks', args: []);
+  }
+
+  /// `residential units`
+  String get residentialUnits {
+    return Intl.message(
+      'residential units',
+      name: 'residentialUnits',
+      desc: 'residential units',
+      args: [],
+    );
+  }
+
+  /// `There is no manager`
+  String get noManager {
+    return Intl.message(
+      'There is no manager',
+      name: 'noManager',
+      desc: 'There is no manager',
+      args: [],
+    );
+  }
+
+  /// `...looking for a residential neighborhood`
+  String get lookingNeighborhood {
+    return Intl.message(
+      '...looking for a residential neighborhood',
+      name: 'lookingNeighborhood',
+      desc: '...looking for a residential neighborhood',
+      args: [],
+    );
+  }
+
+  /// `...looking for a residential unit`
+  String get lookingunit {
+    return Intl.message(
+      '...looking for a residential unit',
+      name: 'lookingunit',
+      desc: '...looking for a residential unit',
       args: [],
     );
   }

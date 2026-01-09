@@ -1,350 +1,281 @@
 {
   "@@locale": "ar",
-  
   "appTitle": "الحارة الذكية",
   "@appTitle": {
     "description": "The title of the application"
   },
-  
-  "username": "إسم المستخدم",
+  "username": " إسم المستخدم أو بريده الإلكتروني ",
   "@username": {
     "description": "Username label"
   },
-  
   "usernameLabel": ":إسم المستخدم",
   "@usernameLabel": {
     "description": "Username label with colon"
   },
-  
+  "emailLabel": ":البريد الإلكتروني",
+  "@emailLabel": {
+    "description": "ُEmail"
+  },
   "password": "كلمة المرور",
   "@password": {
     "description": "Password label"
   },
-  
-
-  
-  "enterUsername": "قم بإدخال اسم المستخدم",
+  "enterUsername": "قم بإدخال اسم المستخدم أو بريده الإلكتروني",
   "@enterUsername": {
     "description": "Enter username hint"
   },
-  
   "enterPassword": "قم بإدخال كلمة المرور",
   "@enterPassword": {
     "description": "Enter password hint"
   },
-  
   "pleaseEnterUsername": "الرجاء إدخال إسم المستخدم",
   "@pleaseEnterUsername": {
     "description": "Please enter username validation"
   },
-  
   "pleaseEnterPassword": "الرجاء إدخال كلمة المرور",
   "@pleaseEnterPassword": {
     "description": "Please enter password validation"
   },
-  
   "forgotPassword": "هل نسيت كلمة السر؟",
   "@forgotPassword": {
     "description": "Forgot password text"
   },
-  
   "login": "تسجيل الدخول",
   "@login": {
     "description": "Login button text"
   },
-  
   "familyName": "اسم الأسرة",
   "@familyName": {
     "description": "Family name label"
   },
-  
   "pleaseEnterFamilyName": "يرجى إدخال اسم الأسرة",
   "@pleaseEnterFamilyName": {
     "description": "Please enter family name validation"
   },
-  
   "familyHead": "رب الأسرة",
   "@familyHead": {
     "description": "Family head label"
   },
-  
   "searchFamilyHead": "ابحث عن رب الأسرة...",
   "@searchFamilyHead": {
     "description": "Search for family head hint"
   },
-  
   "chooseFamilyHead": "أختر رب الأسرة",
   "@chooseFamilyHead": {
     "description": "Choose family head label"
   },
-  
   "pleaseChooseFamilyHead": "يرجى اختيار رب الأسرة",
   "@pleaseChooseFamilyHead": {
     "description": "Please choose family head validation"
   },
-  
   "failedToLoadPeople": "فشل تحميل الأشخاص",
   "@failedToLoadPeople": {
     "description": "Failed to load people error"
   },
-  
   "familyCategory": "تصنيف الأسرة",
   "@familyCategory": {
     "description": "Family category label"
   },
-  
   "chooseFamilyCategory": "اختيار تصنيف الأسرة",
   "@chooseFamilyCategory": {
     "description": "Choose family category label"
   },
-  
   "pleaseChooseFamilyCategory": "يرجى اختيار تصنيف الأسرة",
   "@pleaseChooseFamilyCategory": {
     "description": "Please choose family category validation"
   },
-  
   "failedToLoadCategories": "فشل تحميل التصنيفات",
   "@failedToLoadCategories": {
     "description": "Failed to load categories error"
   },
-  
   "location": "الموقع",
   "@location": {
     "description": "Location label"
   },
-  
   "pleaseEnterLocation": "يرجى إدخال الموقع",
   "@pleaseEnterLocation": {
     "description": "Please enter location validation"
   },
-  
   "notes": "ملاحظات",
   "@notes": {
     "description": "Notes label"
   },
-  
   "cancel": "إلغاء",
   "@cancel": {
     "description": "Cancel button"
   },
-  
   "add": "إضافة",
   "@add": {
     "description": "Add button"
   },
-  
   "edit": "تعديل",
   "@edit": {
     "description": "Edit button"
   },
-  
   "delete": "حذف",
   "@delete": {
     "description": "Delete button"
   },
-  
   "changeManager": "تغيير المدير",
   "@changeManager": {
     "description": "Change manager label"
   },
-  
   "changeManagerLogic": "هنا يمكنك تنفيذ منطق تغيير المدير.",
   "@changeManagerLogic": {
     "description": "Change manager logic description"
   },
-  
   "close": "إغلاق",
   "@close": {
     "description": "Close button"
   },
-  
   "confirmDelete": "تأكيد الحذف",
   "@confirmDelete": {
     "description": "Confirm delete text"
   },
-  
   "confirmDeleteBlock": "هل أنت متأكد أنك تريد حذف هذا المربع؟",
   "@confirmDeleteBlock": {
     "description": "Confirm delete block text"
   },
-  
   "update": "تحديث",
   "@update": {
     "description": "Update button"
   },
-  
   "thirdName": "الاسم الثالث",
   "@thirdName": {
     "description": "Third name label"
   },
-  
   "thirdNameRequired": "الاسم الثالث مطلوب",
   "@thirdNameRequired": {
     "description": "Third name required validation"
   },
-  
   "fourthName": "الاسم الربع",
   "@fourthName": {
     "description": "Fourth name label"
   },
-  
   "fourthNameRequired": "الاسم الرابع مطلوب",
   "@fourthNameRequired": {
     "description": "Fourth name required validation"
   },
-  
   "identityNumber": "رقم الهوية",
   "@identityNumber": {
     "description": "Identity number label"
   },
-  
   "identityType": "نوع الهوية",
   "@identityType": {
     "description": "Identity type label"
   },
-  
   "chooseIdentityType": "اختيار نوع الهوية",
   "@chooseIdentityType": {
     "description": "Choose identity type label"
   },
-  
   "pleaseChooseIdentityType": "يرجى اختيار نوع الهوية",
   "@pleaseChooseIdentityType": {
     "description": "Please choose identity type validation"
   },
-  
   "phoneNumber": "رقم الجوال",
   "@phoneNumber": {
     "description": "Phone number label"
   },
-  
   "contactNumber": "رقم التواصل",
   "@contactNumber": {
     "description": "Contact number label"
   },
-  
   "gender": "الجنس",
   "@gender": {
     "description": "Gender label"
   },
-  
   "male": "ذكر",
   "@male": {
     "description": "Male gender"
   },
-  
   "female": "أنثى",
   "@female": {
     "description": "Female gender"
   },
-  
   "birthDate": "تاريخ الميلاد",
   "@birthDate": {
     "description": "Birth date label"
   },
-  
   "birthDateRequired": "تاريخ الميلاد مطلوب",
   "@birthDateRequired": {
     "description": "Birth date required validation"
   },
-  
   "bloodType": "فصيلة الدم",
   "@bloodType": {
     "description": "Blood type label"
   },
-  
   "chooseBloodType": "اختبار فصيلة الدم",
   "@chooseBloodType": {
     "description": "Choose blood type label"
   },
-  
   "pleaseChooseBloodType": "يرجى اختيار فصيلة الدم",
   "@pleaseChooseBloodType": {
     "description": "Please choose blood type validation"
   },
-  
   "maritalStatus": "الحالة الاجتماعية",
   "@maritalStatus": {
     "description": "Marital status label"
   },
-  
   "job": "المهنة",
   "@job": {
     "description": "Job label"
   },
-  
   "notSpecified": "غير محدد",
   "@notSpecified": {
     "description": "Not specified text"
   },
-  
   "clickForMoreDetails": "اضغط للمزيد من التفاصيل",
   "@clickForMoreDetails": {
     "description": "Click for more details text"
   },
-  
-
-  
   "familyType": "نوع الأسرة",
   "@familyType": {
     "description": "Family type label"
   },
-  
   "addNewPerson": "إضافة شخص جديد",
   "@addNewPerson": {
     "description": "Add new person title"
   },
-  
   "editPersonData": "تعديل بيانات الشخص",
   "@editPersonData": {
     "description": "Edit person data title"
   },
-  
   "firstName": "الاسم الاول",
   "@firstName": {
     "description": "First name label"
   },
-  
   "firstNameRequired": "الاسم الاول مطلوب",
   "@firstNameRequired": {
     "description": "First name required validation"
   },
-  
   "secondName": "الاسم الثاني",
   "@secondName": {
     "description": "Second name label"
   },
-  
   "secondNameRequired": "الاسم الثاني مطلوب",
   "@secondNameRequired": {
     "description": "Second name required validation"
   },
-  
   "identityNumberRequired": "رقم الهوية مطلوب",
   "@identityNumberRequired": {
     "description": "Identity number required validation"
   },
-  
   "addNewMember": "إضافة فرد جديد",
   "@addNewMember": {
     "description": "Add new member button"
   },
-  
   "residentialBlock": "المربع السكني",
   "@residentialBlock": {
     "description": "Residential block label"
   },
-  
   "searchResidentialBlock": "ابحث عن المربع السكني...",
   "@searchResidentialBlock": {
     "description": "Search for a residential block hint"
   },
-  
   "identityNumberMinLength": "رقم الهوية يجب أن يكون 6 أرقام أو أكثر",
   "@identityNumberMinLength": {
     "description": "Identity number minimum length validation"
   },
-  
   "allPeople": "جميع الأفراد",
   "@allPeople": {},
   "generalUnitReport": "كشف عام للوحدة",
@@ -355,53 +286,40 @@
   "@conflictSection": {},
   "teamsSection": "قسم الفرق",
   "@teamsSection": {},
-  
   "main": "الرئيسية",
   "@main": {},
   "blockManager": "مدير المربع",
-  "@blockManager": {
-  },
-
+  "@blockManager": {},
   "residentialBlocks": "المربعات السكنية",
   "@residentialBlocks": {},
-
-
-
   "verifyCode": "التحقق من رمز الكود",
   "@verifyCode": {
     "description": "The sub title of the CheckEmail page"
   },
-  
-   "enterverifyCode": "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
+  "enterverifyCode": "الرجاء إدخال رمز الكود الذي أرسلناه للتو إلى الإيميل المدخل",
   "@enterverifyCode": {
     "description": "The label of verifyCode in CheckEmail page"
   },
-
-   "next": "التالي",
+  "next": "التالي",
   "@next": {
     "description": "The next button"
   },
-
   "warningVerifycodeEmpty": "الرجاء إدخال رمز التأكيد'",
   "@warningVerifycodeEmpty": {
     "description": "The warning of not entering the Verify code"
   },
-
-   "warningVerifycodeType": "الرجاء إدخال أرقام فقط",
+  "warningVerifycodeType": "الرجاء إدخال أرقام فقط",
   "@warningVerifycodeType": {
     "description": "The warning of entering  not number value for Verify code"
   },
-
-   "resendVerifycode": "إعادة إرسال الكود",
+  "resendVerifycode": "إعادة إرسال الكود",
   "@resendVerifycode": {
     "description": "Resend Verify code button"
   },
-
-    "resendVerifycodeAt": "إعادة إرسال الكود في 00:",
+  "resendVerifycodeAt": "إعادة إرسال الكود في 00:",
   "@resendVerifycodeAt": {
     "description": "Resend Verify code Timer"
   },
-
   "createNewPasswordTitle": "انشأ كلمة مرور جديدة",
   "@createNewPasswordTitle": {
     "description": "Title for the create new password page"
@@ -434,12 +352,10 @@
   "@passwordsMismatch": {
     "description": "Passwords mismatch error message"
   },
-
-   "forgotPasswordTitle": "نسيت كلمة المرور",
+  "forgotPasswordTitle": "نسيت كلمة المرور",
   "@forgotPasswordTitle": {
     "description": "Title for the forgot password page"
   },
-
   "forgotPasswordHint": "لا تقلق! الرجاء إدخال الأيميل",
   "@forgotPasswordHint": {
     "description": "Hint for forgot password page"
@@ -466,12 +382,10 @@
   },
   "passwordChangedSuccess": "تم تعديل كلمة المرور بنجاح",
   "@passwordChangedSuccess": {
-    "description": "Success message when password is changed"  
+    "description": "Success message when password is changed"
   },
-
   "changeBlockName": "تغيير اسم المربع",
-  "@changeBlockName": {
-  },
+  "@changeBlockName": {},
   "save": "حفظ",
   "@save": {
     "description": "Save button"
@@ -480,665 +394,528 @@
   "@confirm": {
     "description": "Confirm button"
   },
-
   "changeManager": "تغيير مدير المربع السكني",
   "failedToLoadPeople": "لا يوجد مديرين متاحين",
   "searchFamilyHead": "ابحث عن مدير...",
   "chooseFamilyHead": "اختر المدير",
   "pleaseChooseFamilyHead": "الرجاء اختيار مدير للمربع",
-  "username": "اسم المستخدم",
-  "pleaseEnterUsername": "الرجاء إدخال اسم المستخدم",
-  "password": "كلمة المرور",
   "passwordValidationHint": "كلمة المرور يجب أن تكون 8 أحرف على الأقل ويجب أن تحتوي على حرف كبير ورقم على الأقل",
-  "edit": "تعديل",
-  "delete": "حذف",
   "deleteNotAllowed": "لا يسمح بالحذف حاليا",
   "noResultsFound": "لم يتم العثور على أي نتائج",
-
   "addFamilyToAssistanceTitle": "إضافة أسرة لتوزيع المساعدات لها",
   "@addFamilyToAssistanceTitle": {
     "description": "Title for the AddFamilyToAssistance page"
   },
-  
   "selectFamily": "إختر أسرة",
   "@selectFamily": {
     "description": "Label for selecting a family"
   },
-  
   "searchFamilyHint": "ابحث عن أسرة...",
   "@searchFamilyHint": {
     "description": "Hint text for searching family"
   },
-  
   "noFamiliesFound": "لا يوجد أسر",
   "@noFamiliesFound": {
     "description": "Message when no families are found"
   },
-  
   "createNewFamilyHint": "إذا كنت تريد إنشاء أسرة جديدة إنتقل الى قسم المربعات السكنية من هنا",
   "@createNewFamilyHint": {
     "description": "Hint text guiding to create a new family"
   },
-  
   "createNewFamilyButton": "إنشاء أسرة جديد",
   "@createNewFamilyButton": {
     "description": "Button text to create new family"
   },
-   
   "addTeamToAssistanceTitle": "إضافة فريق لتوزيع المساعدات",
   "@addTeamToAssistanceTitle": {
     "description": "Title of the Add Team to Assistance Distribution page"
   },
-  
   "selectTeam": "اختر فريق",
   "@selectTeam": {
     "description": "Label for selecting a team"
   },
-  
   "searchTeamHint": "ابحث عن فريق...",
   "@searchTeamHint": {
     "description": "Hint text for searching for a team"
   },
-  
   "noTeamsFound": "لا يوجد فرق",
   "@noTeamsFound": {
     "description": "Message displayed when no teams are found"
   },
-  
   "createNewTeamHint": "إذا كنت تريد إنشاء فريق جديد انتقل إلى قسم الفرق من هنا",
   "@createNewTeamHint": {
     "description": "Hint text guiding to create a new team"
   },
-  
   "teamAssignedSuccessfully": "تم تعيين الفريق بنجاح",
   "@teamAssignedSuccessfully": {
     "description": "Success message when team is assigned successfully"
   },
-  
   "teamAssignmentFailed": "فشل تعيين الفريق",
   "@teamAssignmentFailed": {
     "description": "Error message when team assignment fails"
-  }
-,  
+  },
   "addAssistanceProjectTitle": "إضافة مشروع توزيع مساعدات جديد",
   "@addAssistanceProjectTitle": {
     "description": "Title for adding new assistance distribution project"
   },
-  
   "editAssistanceProjectTitle": "تعديل مشروع توزيع المساعدات",
   "@editAssistanceProjectTitle": {
     "description": "Title for editing assistance distribution project"
   },
-  
   "projectName": "أسم المشروع",
   "@projectName": {
     "description": "Project name label"
   },
-  
   "projectDescription": "وصف المشروع",
   "@projectDescription": {
     "description": "Project description label"
   },
-  
   "projectCategory": "تصنيف المشروع",
   "@projectCategory": {
     "description": "Project category label"
   },
-  
   "searchCategoryHint": "ابحث عن تصنيف...",
   "@searchCategoryHint": {
     "description": "Hint text for searching category"
   },
-  
   "chooseCategory": "اختر تصنيف",
   "@chooseCategory": {
     "description": "Choose category label"
   },
-  
   "noCategoriesAvailable": "لا يوجد تصنيفات متاحة",
   "@noCategoriesAvailable": {
     "description": "Message when no categories are available"
   },
-  
   "managerName": "اسم المدير",
   "@managerName": {
     "description": "Manager name label"
   },
-  
   "searchManagerHint": "ابحث عن مدير...",
   "@searchManagerHint": {
     "description": "Hint text for searching manager"
   },
-  
   "chooseManager": "اختر المدير",
   "@chooseManager": {
     "description": "Choose manager label"
   },
-  
   "noManagersAvailable": "لا يوجد مديرين متاحين",
   "@noManagersAvailable": {
     "description": "Message when no managers are available"
   },
-  
   "distributionStartDate": "تاريخ بداية التوزيع",
   "@distributionStartDate": {
     "description": "Distribution start date label"
   },
-  
   "distributionEndDate": "تاريخ نهاية التوزيع",
   "@distributionEndDate": {
     "description": "Distribution end date label"
   },
-  
   "projectStatus": "حالة المشروع",
   "@projectStatus": {
     "description": "Project status label"
   },
-  
   "chooseProjectStatus": "اختيار حالة المشروع",
   "@chooseProjectStatus": {
     "description": "Choose project status label"
   },
-  
   "projectPriority": "أولوية المشروع",
   "@projectPriority": {
     "description": "Project priority label"
   },
-  
   "chooseProjectPriority": "اختيار أولوية المشروع",
   "@chooseProjectPriority": {
     "description": "Choose project priority label"
   },
-  
   "budget": "الميزانية",
   "@budget": {
     "description": "Budget label"
   },
-  
   "assistanceAddedSuccessfully": "تم إضافة المساعدة بنجاح",
   "@assistanceAddedSuccessfully": {
     "description": "Success message when assistance is added"
   },
-  
   "assistanceUpdatedSuccessfully": "تم تعديل المساعدة بنجاح",
   "@assistanceUpdatedSuccessfully": {
     "description": "Success message when assistance is updated"
   },
-    
-    "assistanceProjectsTitle": "مشاريع توزيع المساعدات",
-    "@assistanceProjectsTitle": {
-      "description": "Title for assistance distribution projects page"
-    },
-    
-    "searchAssistanceProjectHint": "ابحث عن مشروع مساعدات",
-    "@searchAssistanceProjectHint": {
-      "description": "Hint text for searching assistance projects"
-    },
-    
-    "noDataAvailable": "لا توجد بيانات للعرض حاليًا",
-    "@noDataAvailable": {
-      "description": "Message when no data is available for display"
-    },
-    
-    "tableColumnPriority": "الأولوية",
-    "@tableColumnPriority": {
-      "description": "Table column title for priority"
-    },
-    
-    "tableColumnProjectName": "إسم المشروع",
-    "@tableColumnProjectName": {
-      "description": "Table column title for project name"
-    },
-    
-    "tableColumnNumber": "رقم",
-    "@tableColumnNumber": {
-      "description": "Table column title for number/ID"
-    },
-    
-    "deleteAssistanceConfirmation": "هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟",
-    "@deleteAssistanceConfirmation": {
-      "description": "Confirmation message for deleting assistance project"
-    }
-  ,
-    "assistanceDetailsTitle": "تفاصيل المساعدة",
-    "@assistanceDetailsTitle": {
-      "description": "Title for assistance details page"
-    },
-    
-    "distributionTeams": "فرق التوزيع",
-    "@distributionTeams": {
-      "description": "Label for distribution teams section"
-    },
-    
-    "noTeamsAvailable": "لا توجد فرق لعرضها حاليًا",
-    "@noTeamsAvailable": {
-      "description": "Message when no teams are available to display"
-    },
-    
-    "teamName": "إسم الفريق",
-    "@teamName": {
-      "description": "Label for team name"
-    },
-    
-    "addTeam": "إضافة فريق",
-    "@addTeam": {
-      "description": "Button text to add team"
-    },
-    
-    "residentialBlocksAndFamilies": "المربعات السكنية و الأسر التي تم التوزيع لها",
-    "@residentialBlocksAndFamilies": {
-      "description": "Label for residential blocks and families section"
-    },
-    
-    "noFamiliesAvailable": "لا توجد أسر لعرضها حاليًا",
-    "@noFamiliesAvailable": {
-      "description": "Message when no families are available to display"
-    },
-    
-    "residentialBlockName": "إسم المربع السكني",
-    "@residentialBlockName": {
-      "description": "Label for residential block name"
-    },
-    
-    "addFamily": "إضافة أسرة",
-    "@addFamily": {
-      "description": "Button text to add family"
-    },
-    
-    "teamRole": "وظيفته",
-    "@teamRole": {
-      "description": "Table column for team role"
-    },
-    
-    "joinDate": "تاريخ انضمامه",
-    "@joinDate": {
-      "description": "Table column for join date"
-    },
-    
-    "memberName": "اسم العضو",
-    "@memberName": {
-      "description": "Table column for member name"
-    },
-    
-    "number": "رقم",
-    "@number": {
-      "description": "Table column for number/ID"
-    },
-    
-
-    "familyHeadName": "إسم رب الأسرة",
-    "@familyHeadName": {
-      "description": "Table column for family head name"
-    },
-    
-
-    
-    "deleteTeamConfirmation": "هل أنت متأكد أنك تريد حذف هذا الفريق؟",
-    "@deleteTeamConfirmation": {
-      "description": "Confirmation message for deleting team"
-    },
-    
-    "deleteFamilyConfirmation": "هل أنت متأكد أنك تريد حذف هذه الأسرة",
-    "@deleteFamilyConfirmation": {
-      "description": "Confirmation message for deleting family"
-    },
-    
-    "description": "وصف",
-    "@description": {
-      "description": "Label for description"
-    },
-    
-    "projectManager": "مدير المشروع",
-    "@projectManager": {
-      "description": "Label for project manager"
-    },
-   
-    
-    
-    
-    "priority": "الأولوية",
-    "@priority": {
-      "description": "Label for priority"
-    },
-      "noAssistanceProjects": "لا توجد مشاريع مساعدات",
-      "@noAssistanceProjects": {
-        "description": "Message when there are no assistance projects"
-      },
-      
-      "noDataReceived": "لم يتم استلام أي بيانات",
-      "@noDataReceived": {
-        "description": "Message when no data is received from server"
-      },
-      
-      "unknownErrorOccurred": "حدث خطأ غير معروف",
-      "@unknownErrorOccurred": {
-        "description": "Generic unknown error message"
-      },
-      
-      "teamDeletedSuccessfully": "تم حذف الفريق بنجاح",
-      "@teamDeletedSuccessfully": {
-        "description": "Success message when team is deleted successfully"
-      },
-      
-      "familyDeletedSuccessfully": "تم حذف الأسرة بنجاح",
-      "@familyDeletedSuccessfully": {
-        "description": "Success message when family is deleted successfully"
-      },
-      
-      "noTeamsAvailableMessage": "لا توجد فرق",
-      "@noTeamsAvailableMessage": {
-        "description": "Message when no teams are available"
-      },
-      
-      "noFamiliesAvailableMessage": "لا توجد أسر",
-      "@noFamiliesAvailableMessage": {
-        "description": "Message when no families are available"
-      },
-      
-      "waitingForTeamAssignment": "جاري تعيين الفريق...",
-      "@waitingForTeamAssignment": {
-        "description": "Loading message for team assignment"
-      },
-      
-      "waitingForFamilyAssignment": "جاري تعيين الأسرة...",
-      "@waitingForFamilyAssignment": {
-        "description": "Loading message for family assignment"
-      },
-      
-      "waitingForAssistanceUpdate": "جاري تحديث المساعدة...",
-      "@waitingForAssistanceUpdate": {
-        "description": "Loading message for assistance update"
-      },
-      
-      "familyAssignedSuccessfully": "تم تعيين الأسرة بنجاح",
-      "@familyAssignedSuccessfully": {
-        "description": "Success message when family is assigned successfully"
-      },
-      
-      "assistanceDeletedSuccessfully": "تم حذف المساعدة بنجاح",
-      "@assistanceDeletedSuccessfully": {
-        "description": "Success message when assistance is deleted successfully"
-      },
-      
-
-
-      
-      
-"@@comment": "صفحه AddUpdateConflict",
-
-        "addConflictTitle": "إضافة إتفاقية",
-        "@addConflictTitle": {
-          "description": "Title for adding a new conflict"
-        },
-        
-        "editConflictTitle": "تعديل إتفاقية",
-        "@editConflictTitle": {
-          "description": "Title for editing a conflict"
-        },
-        
-        "conflictTitleLabel": "عنوان الإتفاقية",
-        "@conflictTitleLabel": {
-          "description": "Label for conflict title input field"
-        },
-        
-        "conflictTypeLabel": "نوع الخلاف",
-        "@conflictTypeLabel": {
-          "description": "Label for conflict type selection"
-        },
-        
-        "searchConflictTypeHint": "ابحث عن نوع الخلاف...",
-        "@searchConflictTypeHint": {
-          "description": "Hint text for searching conflict types"
-        },
-        
-        "chooseConflictTypeLabel": "اختر نوع الخلاف",
-        "@chooseConflictTypeLabel": {
-          "description": "Label for choosing conflict type"
-        },
-        
-        "noConflictTypesAvailable": "لا يوجد أنواع",
-        "@noConflictTypesAvailable": {
-          "description": "Message when no conflict types are available"
-        },
-        
-        "notesLabel": "الملاحظات",
-        "@notesLabel": {
-          "description": "Label for notes input field"
-        },
-        
-        "conflictDateLabel": "تاريخ الإتفاقية",
-        "@conflictDateLabel": {
-          "description": "Label for conflict date input field"
-        },
-        
-        "firstPartyLabel": "الطرف الأول",
-        "@firstPartyLabel": {
-          "description": "Label for first party selection"
-        },
-        
-        "searchFirstPartyHint": "ابحث عن الطرف الأول...",
-        "@searchFirstPartyHint": {
-          "description": "Hint text for searching first party"
-        },
-        
-        "chooseFirstPartyLabel": "اختر الطرف الأول",
-        "@chooseFirstPartyLabel": {
-          "description": "Label for choosing first party"
-        },
-        
-        "noFamilyMembersAvailable": "لا يوجد أفراد متاحين",
-        "@noFamilyMembersAvailable": {
-          "description": "Message when no family members are available"
-        },
-        
-        "secondPartyLabel": "الطرف الثاني",
-        "@secondPartyLabel": {
-          "description": "Label for second party selection"
-        },
-        
-        "searchSecondPartyHint": "ابحث عن الطرف الثاني...",
-        "@searchSecondPartyHint": {
-          "description": "Hint text for searching second party"
-        },
-        
-        "chooseSecondPartyLabel": "اختر الطرف الثاني",
-        "@chooseSecondPartyLabel": {
-          "description": "Label for choosing second party"
-        },
-        
-        "conflictResolvedLabel": "تم إنهاء الخلاف",
-        "@conflictResolvedLabel": {
-          "description": "Label for conflict resolved checkbox"
-        },
-
-        "conflictAddedSuccessfully": "تمت إضافة الإتفاقية بنجاح",
-        "@conflictAddedSuccessfully": {
-          "description": "Success message when conflict is added"
-        },
-        
-        "conflictUpdatedSuccessfully": "تم تعديل الإتفاقية بنجاح",
-        "@conflictUpdatedSuccessfully": {
-          "description": "Success message when conflict is updated"
-        },
-        
-        "pleaseChooseConflictType": "الرجاء اختيار نوع الخلاف",
-        "@pleaseChooseConflictType": {
-          "description": "Validation message for conflict type selection"
-        },
-      
-    
+  "assistanceProjectsTitle": "مشاريع توزيع المساعدات",
+  "@assistanceProjectsTitle": {
+    "description": "Title for assistance distribution projects page"
+  },
+  "searchAssistanceProjectHint": "ابحث عن مشروع مساعدات",
+  "@searchAssistanceProjectHint": {
+    "description": "Hint text for searching assistance projects"
+  },
+  "noDataAvailable": "لا توجد بيانات للعرض حاليًا",
+  "@noDataAvailable": {
+    "description": "Message when no data is available for display"
+  },
+  "tableColumnPriority": "الأولوية",
+  "@tableColumnPriority": {
+    "description": "Table column title for priority"
+  },
+  "tableColumnProjectName": "إسم المشروع",
+  "@tableColumnProjectName": {
+    "description": "Table column title for project name"
+  },
+  "tableColumnNumber": "رقم",
+  "@tableColumnNumber": {
+    "description": "Table column title for number/ID"
+  },
+  "deleteAssistanceConfirmation": "هل أنت متأكد أنك تريد حذف مشروع المساعدات هذا؟",
+  "@deleteAssistanceConfirmation": {
+    "description": "Confirmation message for deleting assistance project"
+  },
+  "assistanceDetailsTitle": "تفاصيل المساعدة",
+  "@assistanceDetailsTitle": {
+    "description": "Title for assistance details page"
+  },
+  "distributionTeams": "فرق التوزيع",
+  "@distributionTeams": {
+    "description": "Label for distribution teams section"
+  },
+  "noTeamsAvailable": "لا توجد فرق لعرضها حاليًا",
+  "@noTeamsAvailable": {
+    "description": "Message when no teams are available to display"
+  },
+  "teamName": "إسم الفريق",
+  "@teamName": {
+    "description": "Label for team name"
+  },
+  "addTeam": "إضافة فريق",
+  "@addTeam": {
+    "description": "Button text to add team"
+  },
+  "residentialBlocksAndFamilies": "المربعات السكنية و الأسر التي تم التوزيع لها",
+  "@residentialBlocksAndFamilies": {
+    "description": "Label for residential blocks and families section"
+  },
+  "noFamiliesAvailable": "لا توجد أسر لعرضها حاليًا",
+  "@noFamiliesAvailable": {
+    "description": "Message when no families are available to display"
+  },
+  "residentialBlockName": "إسم المربع السكني",
+  "@residentialBlockName": {
+    "description": "Label for residential block name"
+  },
+  "addFamily": "إضافة أسرة",
+  "@addFamily": {
+    "description": "Button text to add family"
+  },
+  "teamRole": "وظيفته",
+  "@teamRole": {
+    "description": "Table column for team role"
+  },
+  "joinDate": "تاريخ انضمامه",
+  "@joinDate": {
+    "description": "Table column for join date"
+  },
+  "memberName": "اسم العضو",
+  "@memberName": {
+    "description": "Table column for member name"
+  },
+  "number": "رقم",
+  "@number": {
+    "description": "Table column for number/ID"
+  },
+  "familyHeadName": "إسم رب الأسرة",
+  "@familyHeadName": {
+    "description": "Table column for family head name"
+  },
+  "deleteTeamConfirmation": "هل أنت متأكد أنك تريد حذف هذا الفريق؟",
+  "@deleteTeamConfirmation": {
+    "description": "Confirmation message for deleting team"
+  },
+  "deleteFamilyConfirmation": "هل أنت متأكد أنك تريد حذف هذه الأسرة",
+  "@deleteFamilyConfirmation": {
+    "description": "Confirmation message for deleting family"
+  },
+  "description": "وصف",
+  "@description": {
+    "description": "Label for description"
+  },
+  "projectManager": "مدير المشروع",
+  "@projectManager": {
+    "description": "Label for project manager"
+  },
+  "priority": "الأولوية",
+  "@priority": {
+    "description": "Label for priority"
+  },
+  "noAssistanceProjects": "لا توجد مشاريع مساعدات",
+  "@noAssistanceProjects": {
+    "description": "Message when there are no assistance projects"
+  },
+  "noDataReceived": "لم يتم استلام أي بيانات",
+  "@noDataReceived": {
+    "description": "Message when no data is received from server"
+  },
+  "unknownErrorOccurred": "حدث خطأ غير معروف",
+  "@unknownErrorOccurred": {
+    "description": "Generic unknown error message"
+  },
+  "teamDeletedSuccessfully": "تم حذف الفريق بنجاح",
+  "@teamDeletedSuccessfully": {
+    "description": "Success message when team is deleted successfully"
+  },
+  "familyDeletedSuccessfully": "تم حذف الأسرة بنجاح",
+  "@familyDeletedSuccessfully": {
+    "description": "Success message when family is deleted successfully"
+  },
+  "noTeamsAvailableMessage": "لا توجد فرق",
+  "@noTeamsAvailableMessage": {
+    "description": "Message when no teams are available"
+  },
+  "noFamiliesAvailableMessage": "لا توجد أسر",
+  "@noFamiliesAvailableMessage": {
+    "description": "Message when no families are available"
+  },
+  "waitingForTeamAssignment": "جاري تعيين الفريق...",
+  "@waitingForTeamAssignment": {
+    "description": "Loading message for team assignment"
+  },
+  "waitingForFamilyAssignment": "جاري تعيين الأسرة...",
+  "@waitingForFamilyAssignment": {
+    "description": "Loading message for family assignment"
+  },
+  "waitingForAssistanceUpdate": "جاري تحديث المساعدة...",
+  "@waitingForAssistanceUpdate": {
+    "description": "Loading message for assistance update"
+  },
+  "familyAssignedSuccessfully": "تم تعيين الأسرة بنجاح",
+  "@familyAssignedSuccessfully": {
+    "description": "Success message when family is assigned successfully"
+  },
+  "assistanceDeletedSuccessfully": "تم حذف المساعدة بنجاح",
+  "@assistanceDeletedSuccessfully": {
+    "description": "Success message when assistance is deleted successfully"
+  },
+  "@@comment": "صفحه AddUpdateConflict",
+  "addConflictTitle": "إضافة إتفاقية",
+  "@addConflictTitle": {
+    "description": "Title for adding a new conflict"
+  },
+  "editConflictTitle": "تعديل إتفاقية",
+  "@editConflictTitle": {
+    "description": "Title for editing a conflict"
+  },
+  "conflictTitleLabel": "عنوان الإتفاقية",
+  "@conflictTitleLabel": {
+    "description": "Label for conflict title input field"
+  },
+  "conflictTypeLabel": "نوع الخلاف",
+  "@conflictTypeLabel": {
+    "description": "Label for conflict type selection"
+  },
+  "searchConflictTypeHint": "ابحث عن نوع الخلاف...",
+  "@searchConflictTypeHint": {
+    "description": "Hint text for searching conflict types"
+  },
+  "chooseConflictTypeLabel": "اختر نوع الخلاف",
+  "@chooseConflictTypeLabel": {
+    "description": "Label for choosing conflict type"
+  },
+  "noConflictTypesAvailable": "لا يوجد أنواع",
+  "@noConflictTypesAvailable": {
+    "description": "Message when no conflict types are available"
+  },
+  "notesLabel": "الملاحظات",
+  "@notesLabel": {
+    "description": "Label for notes input field"
+  },
+  "conflictDateLabel": "تاريخ الإتفاقية",
+  "@conflictDateLabel": {
+    "description": "Label for conflict date input field"
+  },
+  "firstPartyLabel": "الطرف الأول",
+  "@firstPartyLabel": {
+    "description": "Label for first party selection"
+  },
+  "searchFirstPartyHint": "ابحث عن الطرف الأول...",
+  "@searchFirstPartyHint": {
+    "description": "Hint text for searching first party"
+  },
+  "chooseFirstPartyLabel": "اختر الطرف الأول",
+  "@chooseFirstPartyLabel": {
+    "description": "Label for choosing first party"
+  },
+  "noFamilyMembersAvailable": "لا يوجد أفراد متاحين",
+  "@noFamilyMembersAvailable": {
+    "description": "Message when no family members are available"
+  },
+  "secondPartyLabel": "الطرف الثاني",
+  "@secondPartyLabel": {
+    "description": "Label for second party selection"
+  },
+  "searchSecondPartyHint": "ابحث عن الطرف الثاني...",
+  "@searchSecondPartyHint": {
+    "description": "Hint text for searching second party"
+  },
+  "chooseSecondPartyLabel": "اختر الطرف الثاني",
+  "@chooseSecondPartyLabel": {
+    "description": "Label for choosing second party"
+  },
+  "conflictResolvedLabel": "تم إنهاء الخلاف",
+  "@conflictResolvedLabel": {
+    "description": "Label for conflict resolved checkbox"
+  },
+  "conflictAddedSuccessfully": "تمت إضافة الإتفاقية بنجاح",
+  "@conflictAddedSuccessfully": {
+    "description": "Success message when conflict is added"
+  },
+  "conflictUpdatedSuccessfully": "تم تعديل الإتفاقية بنجاح",
+  "@conflictUpdatedSuccessfully": {
+    "description": "Success message when conflict is updated"
+  },
+  "pleaseChooseConflictType": "الرجاء اختيار نوع الخلاف",
+  "@pleaseChooseConflictType": {
+    "description": "Validation message for conflict type selection"
+  },
   "@@comment": "صفحه AllConflict",
- 
-    "conflictManagementTitle": "إدارة الخلافات",
-    "@conflictManagementTitle": {
-      "description": "Title for conflict management page"
-    },
-    
-    "noConflictsAvailable": "لا توجد خلافات لعرضها حاليًا",
-    "@noConflictsAvailable": {
-      "description": "Message when no conflicts are available to display"
-    },
-    
-    "firstPartyLabelWithColon": "الطرف الأول:",
-    "@firstPartyLabelWithColon": {
-      "description": "Label for first party with colon"
-    },
-    
-    "secondPartyLabelWithColon": "الطرف الثاني:",
-    "@secondPartyLabelWithColon": {
-      "description": "Label for second party with colon"
-    },
-    
-    "sessionDateLabel": "تاريخ الجلسة:",
-    "@sessionDateLabel": {
-      "description": "Label for session date with colon"
-    },
-    
-    "searchConflictHint": "ابحث عن اسم الفريق",
-    "@searchConflictHint": {
-      "description": "Hint text for searching conflicts"
-    },
-    
-    "deleteConflictConfirmation": "هل أنت متأكد أنك تريد حذف هذه الوثيقة",
-    "@deleteConflictConfirmation": {
-      "description": "Confirmation message for deleting conflict document"
-    },
-    
-    "noDataAvailableConflict": "لا توجد بيانات للعرض حاليًا",
-    "@noDataAvailableConflict": {
-      "description": "Message when no data is available for display in conflicts page"
-    },
-
-
+  "conflictManagementTitle": "إدارة الخلافات",
+  "@conflictManagementTitle": {
+    "description": "Title for conflict management page"
+  },
+  "noConflictsAvailable": "لا توجد خلافات لعرضها حاليًا",
+  "@noConflictsAvailable": {
+    "description": "Message when no conflicts are available to display"
+  },
+  "firstPartyLabelWithColon": "الطرف الأول:",
+  "@firstPartyLabelWithColon": {
+    "description": "Label for first party with colon"
+  },
+  "secondPartyLabelWithColon": "الطرف الثاني:",
+  "@secondPartyLabelWithColon": {
+    "description": "Label for second party with colon"
+  },
+  "sessionDateLabel": "تاريخ الجلسة:",
+  "@sessionDateLabel": {
+    "description": "Label for session date with colon"
+  },
+  "searchConflictHint": "ابحث عن اسم الفريق",
+  "@searchConflictHint": {
+    "description": "Hint text for searching conflicts"
+  },
+  "deleteConflictConfirmation": "هل أنت متأكد أنك تريد حذف هذه الوثيقة",
+  "@deleteConflictConfirmation": {
+    "description": "Confirmation message for deleting conflict document"
+  },
+  "noDataAvailableConflict": "لا توجد بيانات للعرض حاليًا",
+  "@noDataAvailableConflict": {
+    "description": "Message when no data is available for display in conflicts page"
+  },
   "@@comment": "صفحه ConflictDetiles",
-
   "conflictDetailsTitle": "تفاصيل الخلاف",
   "@conflictDetailsTitle": {
     "description": "Title for conflict details page"
   },
-  
   "firstPartyWithColon": "الطرف الأول :",
   "@firstPartyWithColon": {
     "description": "Label for first party with colon"
   },
-  
   "secondPartyWithColon": "الطرف الثاني :",
   "@secondPartyWithColon": {
     "description": "Label for second party with colon"
   },
-  
   "treatySupervisor": "المشرف على المعاهدة:",
   "@treatySupervisor": {
     "description": "Label for treaty supervisor with colon"
   },
-  
   "sessionDateWithColon": "تاريخ الجلسة :",
   "@sessionDateWithColon": {
     "description": "Label for session date with colon"
   },
-  
   "conflictResolvedStatus": "تم إنهاء الخلاف",
   "@conflictResolvedStatus": {
     "description": "Status message when conflict is resolved"
   },
-  
   "conflictNotResolvedStatus": "لم يتم إنهاء الخلاف",
   "@conflictNotResolvedStatus": {
     "description": "Status message when conflict is not resolved"
   },
-  
   "notesWithColon": "ملاحظات :",
   "@notesWithColon": {
     "description": "Label for notes with colon"
-  }
-
- 
-  ,  "@@comment": "صفحه ConflictCubit",
-
+  },
+  "@@comment": "صفحه ConflictCubit",
   "no_data_received": "لا توجد بيانات مستلمة",
-      "@no_data_received": {
-        "description": "Error message when no data is received from the server"
-      },
-      "no_teams_found": "لا توجد فرق",
-      "@no_teams_found": {
-        "description": "Error message when no teams are found"
-      },
-      "added_successfully": "تمت الإضافة بنجاح",
-      "@added_successfully": {
-        "description": "Success message for a new conflict"
-      },
-      "unknown_error_add": "حدث خطأ غير معروف",
-      "@unknown_error_add": {
-        "description": "Generic unknown error message for adding a conflict"
-      },
-      "updated_successfully": "تم التحديث بنجاح",
-      "@updated_successfully": {
-        "description": "Success message for updating a conflict"
-      },
-      "unknown_error_update": "حدث خطأ غير معروف أثناء تحديث المشروع",
-      "@unknown_error_update": {
-        "description": "Generic unknown error message for updating a conflict"
-      },
-      "deleted_successfully": "تم الحذف بنجاح",
-      "@deleted_successfully": {
-        "description": "Success message for deleting a conflict"
-      },
-
-
-    "@@comment": "صفحه AddUpdateTeamMember",
-
-    "team_page_title": "فريق",
-    "@team_page_title": {
-      "description": "The title for the team page or screen."
-    },
-    "add_new_member": "إضافة عضو جديد",
-    "@add_new_member": {
-      "description": "The title for adding a new team member."
-    },
-    "update_member": "تعديل عضو",
-    "@update_member": {
-      "description": "The title for updating an existing team member."
-    },
-    "member_name": "اسم العضو",
-    "@member_name": {
-      "description": "Label for the team member's name."
-    },
-    "search_for_a_leader": "ابحث عن قائد...",
-    "@search_for_a_leader": {
-      "description": "Hint text for searching for a leader in a dropdown."
-    },
-    "no_available_people": "لا يوجد أشخاص متاحين",
-    "@no_available_people": {
-      "description": "Message shown when there are no people available to select."
-    },
-    "select_member": "اختر عضو",
-    "@select_member": {
-      "description": "Label for selecting a team member."
-    },
-    "join_date": "تاريخ انضمامه",
-    "@join_date": {
-      "description": "Label for the date a member joined the team."
-    },
-    "member_role": "وظيفة العضو",
-    "@member_role": {
-      "description": "Label for the role of a team member."
-    },
-    "search_for_a_role": "ابحث عن وظيفة...",
-    "@search_for_a_role": {
-      "description": "Hint text for searching for a role in a dropdown."
-    },
-    "no_available_roles": "لا يوجد أدوار متاحه",
-    "@no_available_roles": {
-      "description": "Message shown when no roles are available to select."
-    },
-    "select_role": "اختر دور",
-    "@select_role": {
-      "description": "Label for selecting a team role."
-    },
-
-
-
- "@@comment": "صفحه AddUpdateTeam",
+  "@no_data_received": {
+    "description": "Error message when no data is received from the server"
+  },
+  "no_teams_found": "لا توجد فرق",
+  "@no_teams_found": {
+    "description": "Error message when no teams are found"
+  },
+  "added_successfully": "تمت الإضافة بنجاح",
+  "@added_successfully": {
+    "description": "Success message for a new conflict"
+  },
+  "unknown_error_add": "حدث خطأ غير معروف",
+  "@unknown_error_add": {
+    "description": "Generic unknown error message for adding a conflict"
+  },
+  "updated_successfully": "تم التحديث بنجاح",
+  "@updated_successfully": {
+    "description": "Success message for updating a conflict"
+  },
+  "unknown_error_update": "حدث خطأ غير معروف أثناء تحديث المشروع",
+  "@unknown_error_update": {
+    "description": "Generic unknown error message for updating a conflict"
+  },
+  "deleted_successfully": "تم الحذف بنجاح",
+  "@deleted_successfully": {
+    "description": "Success message for deleting a conflict"
+  },
+  "@@comment": "صفحه AddUpdateTeamMember",
+  "team_page_title": "فريق",
+  "@team_page_title": {
+    "description": "The title for the team page or screen."
+  },
+  "add_new_member": "إضافة عضو جديد",
+  "@add_new_member": {
+    "description": "The title for adding a new team member."
+  },
+  "update_member": "تعديل عضو",
+  "@update_member": {
+    "description": "The title for updating an existing team member."
+  },
+  "member_name": "اسم العضو",
+  "@member_name": {
+    "description": "Label for the team member's name."
+  },
+  "search_for_a_leader": "ابحث عن قائد...",
+  "@search_for_a_leader": {
+    "description": "Hint text for searching for a leader in a dropdown."
+  },
+  "no_available_people": "لا يوجد أشخاص متاحين",
+  "@no_available_people": {
+    "description": "Message shown when there are no people available to select."
+  },
+  "select_member": "اختر عضو",
+  "@select_member": {
+    "description": "Label for selecting a team member."
+  },
+  "join_date": "تاريخ انضمامه",
+  "@join_date": {
+    "description": "Label for the date a member joined the team."
+  },
+  "member_role": "وظيفة العضو",
+  "@member_role": {
+    "description": "Label for the role of a team member."
+  },
+  "search_for_a_role": "ابحث عن وظيفة...",
+  "@search_for_a_role": {
+    "description": "Hint text for searching for a role in a dropdown."
+  },
+  "no_available_roles": "لا يوجد أدوار متاحه",
+  "@no_available_roles": {
+    "description": "Message shown when no roles are available to select."
+  },
+  "select_role": "اختر دور",
+  "@select_role": {
+    "description": "Label for selecting a team role."
+  },
+  "@@comment": "صفحه AddUpdateTeam",
   "add_new_team": "إضافة فريق جديد",
   "@add_new_team": {
     "description": "The title for adding a new team."
@@ -1159,130 +936,177 @@
   "@select_leader_hint": {
     "description": "Hint text for the team leader dropdown."
   },
-
-
   "@@comment": "صفحه AllTeams",
-
-    "teams": "الفرق",
-    "@teams": {
-      "description": "The title for the teams page."
-    },
-    "no_teams_to_display": "لا توجد فرق لعرضها حاليًا.",
-    "@no_teams_to_display": {
-      "description": "Message shown when there are no teams to display."
-    },
-    "team_name_label": "إسم الفريق:",
-    "@team_name_label": {
-      "description": "Label for the team's name in a list item."
-    },
-    "search_team_hint": "ابحث عن اسم الفريق",
-    "@search_team_hint": {
-      "description": "Hint text for the search bar to find a team by name."
-    },
-    
-    "confirm_delete": "تأكيد الحذف",
-    "@confirm_delete": {
-      "description": "Title for the delete confirmation dialog."
-    },
-    "confirm_delete_team_message": "هل أنت متأكد أنك تريد حذف هذا الفريق؟",
-    "@confirm_delete_team_message": {
-      "description": "Message for the team deletion confirmation dialog."
-    },
-    "confirm_delete_member_message": "هل أنت متأكد أنك تريد حذف هذا العضو",
-    "@confirm_delete_member_message": {
-      "description": "Message for the team member deletion confirmation dialog."
-    },
-    "no_data_to_display": "لا توجد بيانات للعرض حاليًا.",
-    "@no_data_to_display": {
-      "description": "Message shown when there is no data to display."
-    },
-    "number_column": "رقم",
-    "@number_column": {
-      "description": "Column title for a numbered list."
-    },
-
-  
-    "@@comment": "صفحه TeamDetails",
-      "team_details": "تفاصيل الفريق",
-      "@team_details": {
-        "description": "The title for the team details page."
-      },
-      "no_leader": "لا يوجد قائد",
-      "@no_leader": {
-        "description": "Text shown when there is no team leader."
-      },
-      "team_leader_name": "إسم قائد الفريق: {teamLeaderName}",
-      "@team_leader_name": {
-        "description": "Label for the team leader's name.",
-        "placeholders": {
-          "teamLeaderName": {
-            "type": "String",
-            "example": "John Doe"
-          }
-        }
-      },
-      "number_of_team_members": "عدد أعضاء الفريق: {count}",
-      "@number_of_team_members": {
-        "description": "Label for the number of team members.",
-        "placeholders": {
-          "count": {
-            "type": "int",
-            "example": "5"
-          }
-        }
-      },
-      "team_members": ": أعضاء الفريق",
-      "@team_members": {
-        "description": "Title for the team members section."
-      },
-      "projects_of_team": ": المشاريع الذي يعمل فيها الفريق",
-      "@projects_of_team": {
-        "description": "Title for the projects of the team section."
-      },
-      "project_status": "حالته",
-      "@project_status": {
-        "description": "Column title for the project's status."
-      },
-      "project_category": "تصنيف المشروع",
-      "@project_category": {
-        "description": "Column title for the project's category."
-      },
-      "project_name": "اسم المشروع",
-      "@project_name": {
-        "description": "Column title for the project's name."
-      },
-
-
-      "@@comment": "صفحه TeamCubit",
-        "unknown_error_occurred": "حدث خطأ غير معروف",
-        "@unknown_error_occurred": {
-          "description": "General unknown error message."
-        },
-        "no_teams": "لا توجد فرق",
-        "@no_teams": {
-          "description": "Error message when there are no teams."
-        },
-        "unknown_error_updating_project": "حدث خطأ غير معروف أثناء تحديث المشروع",
-        "@unknown_error_updating_project": {
-          "description": "Unknown error message specifically for project updates."
-        },
-        "no_projects_for_this_team": "لا توجد مشاريع لهذا الفريق",
-        "@no_projects_for_this_team": {
-          "description": "Message shown when a team has no associated projects."
-        },
-      
-        
-        "@@comment": "صفحه TeamMemberCubit",
-          "unknown_error_updating_team_member": "حدث خطأ غير معروف أثناء تحديث عضو الفريق",
-          "@unknown_error_updating_team_member": {
-            "description": "Unknown error message specifically for team member updates."
-          },
-
-
-          "@@comment": "صفحه TeamRoleCubit",
-            "no_teams_roles": "لا توجد فرق",
-            "@no_teams_roles": {
-              "description": "Error message when there are no team roles."
-            }
-
+  "teams": "الفرق",
+  "@teams": {
+    "description": "The title for the teams page."
+  },
+  "no_teams_to_display": "لا توجد فرق لعرضها حاليًا.",
+  "@no_teams_to_display": {
+    "description": "Message shown when there are no teams to display."
+  },
+  "team_name_label": "إسم الفريق:",
+  "@team_name_label": {
+    "description": "Label for the team's name in a list item."
+  },
+  "search_team_hint": "ابحث عن اسم الفريق",
+  "@search_team_hint": {
+    "description": "Hint text for the search bar to find a team by name."
+  },
+  "confirm_delete": "تأكيد الحذف",
+  "@confirm_delete": {
+    "description": "Title for the delete confirmation dialog."
+  },
+  "confirm_delete_team_message": "هل أنت متأكد أنك تريد حذف هذا الفريق؟",
+  "@confirm_delete_team_message": {
+    "description": "Message for the team deletion confirmation dialog."
+  },
+  "confirm_delete_member_message": "هل أنت متأكد أنك تريد حذف هذا العضو",
+  "@confirm_delete_member_message": {
+    "description": "Message for the team member deletion confirmation dialog."
+  },
+  "no_data_to_display": "لا توجد بيانات للعرض حاليًا.",
+  "@no_data_to_display": {
+    "description": "Message shown when there is no data to display."
+  },
+  "number_column": "رقم",
+  "@number_column": {
+    "description": "Column title for a numbered list."
+  },
+  "@@comment": "صفحه TeamDetails",
+  "team_details": "تفاصيل الفريق",
+  "@team_details": {
+    "description": "The title for the team details page."
+  },
+  "no_leader": "لا يوجد قائد",
+  "@no_leader": {
+    "description": "Text shown when there is no team leader."
+  },
+  "team_leader_name": "إسم قائد الفريق: {teamLeaderName}",
+  "@team_leader_name": {
+    "description": "Label for the team leader's name.",
+    "placeholders": {
+      "teamLeaderName": {
+        "type": "String",
+        "example": "John Doe"
+      }
+    }
+  },
+  "number_of_team_members": "عدد أعضاء الفريق: {count}",
+  "@number_of_team_members": {
+    "description": "Label for the number of team members.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "team_members": ": أعضاء الفريق",
+  "@team_members": {
+    "description": "Title for the team members section."
+  },
+  "projects_of_team": ": المشاريع الذي يعمل فيها الفريق",
+  "@projects_of_team": {
+    "description": "Title for the projects of the team section."
+  },
+  "project_status": "حالته",
+  "@project_status": {
+    "description": "Column title for the project's status."
+  },
+  "project_category": "تصنيف المشروع",
+  "@project_category": {
+    "description": "Column title for the project's category."
+  },
+  "project_name": "اسم المشروع",
+  "@project_name": {
+    "description": "Column title for the project's name."
+  },
+  "@@comment": "صفحه TeamCubit",
+  "unknown_error_occurred": "حدث خطأ غير معروف",
+  "@unknown_error_occurred": {
+    "description": "General unknown error message."
+  },
+  "no_teams": "لا توجد فرق",
+  "@no_teams": {
+    "description": "Error message when there are no teams."
+  },
+  "unknown_error_updating_project": "حدث خطأ غير معروف أثناء تحديث المشروع",
+  "@unknown_error_updating_project": {
+    "description": "Unknown error message specifically for project updates."
+  },
+  "no_projects_for_this_team": "لا توجد مشاريع لهذا الفريق",
+  "@no_projects_for_this_team": {
+    "description": "Message shown when a team has no associated projects."
+  },
+  "@@comment": "صفحه TeamMemberCubit",
+  "unknown_error_updating_team_member": "حدث خطأ غير معروف أثناء تحديث عضو الفريق",
+  "@unknown_error_updating_team_member": {
+    "description": "Unknown error message specifically for team member updates."
+  },
+  "@@comment": "صفحه TeamRoleCubit",
+  "no_teams_roles": "لا توجد فرق",
+  "@no_teams_roles": {
+    "description": "Error message when there are no team roles."
+  },
+  "AddResidentialNeighborhood": "إضافة حي سكني",
+  "@AddResidentialNeighborhood": {
+    "description": "Adding a residential neighborhood"
+  },
+  "ResidentialNeighborhoodName": "اسم الحي السكني",
+  "@ResidentialNeighborhoodName": {
+    "description": "Name of residential neighborhood"
+  },
+  "ResidentialNeighborhoodManagerName": "مدير الحي السكني",
+  "@ResidentialNeighborhoodManagerName": {
+    "description": "Name of residential neighborhood manager"
+  },
+  "residentialNeighborhoodOptions": "خيارات الأحياء السكنية ",
+  "@residentialNeighborhoodOptions": {
+    "description": "residential neighborhood options"
+  },
+  "ChangeNeighborhoodName": "تغيير اسم الحي السكني",
+  "@ChangeNeighborhoodName": {
+    "description": "Change Neighborhood Name"
+  },
+  "ChangeNeighborhoodManagerName": "تغيير مدير الحي السكني",
+  "@ChangeNeighborhoodManagerName": {
+    "description": "Change Neighborhood Manager Name"
+  },
+  "Neighborhoods": "الأحياء",
+  "@Neighborhoods": {
+    "description": "Neighborhoods"
+  },
+  "Units": "الوحدات",
+  "@Units": {
+    "description": "Units"
+  },
+  "Unit": "وحدة",
+  "@Unit": {
+    "description": "Unit"
+  },
+  "Block": "مربع",
+  "@Block": {
+    "description": "Block"
+  },
+  "Blocks": "المربعات",
+  "@Blocks": {
+    "description": "Blocks"
+  },
+  "residentialUnits": "الوحدات السكنية",
+  "@residentialUnits": {
+    "description": "residential units"
+  },
+  "noManager":   "لا يوجد مدير",
+  "@noManager": {
+    "description": "There is no manager"
+  },
+  "lookingNeighborhood": "...ابحث عن حي سكني",
+  "@lookingNeighborhood": {
+    "description": "...looking for a residential neighborhood"
+  },
+  "lookingunit": "ابحث عن وحده سكنية",
+  "@lookingunit": {
+    "description": "...looking for a residential unit"
+  }
 }

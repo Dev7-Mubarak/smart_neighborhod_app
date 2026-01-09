@@ -1,13 +1,17 @@
 class ResidentialNeighborhoodModel {
-  late int id;
-  late String name;
-  late String neighborhoodManagerId;
-  late String neighborhoodManagerName;
+  late int neighborhoodId;
+  late String neighborhoodName;
+  late int unitsCount;
+  late int blocksCount;
+  late String managerId;
+  late String managerName;
 
   ResidentialNeighborhoodModel.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    name = json["name"];
-    neighborhoodManagerId = json["neighborhoodManagerId"];
-    neighborhoodManagerName = json["neighborhoodManagerName"];
+    neighborhoodId = json["neighborhoodId"];
+    neighborhoodName = json["neighborhoodName"] ?? "";
+    unitsCount = json["unitsCount"] ?? 0;
+    blocksCount = json["blocksCount"] ?? 0;
+    managerId = json["managerId"] ?? "";
+    managerName = json["managerName"] ?? "غير معين";
   }
 }

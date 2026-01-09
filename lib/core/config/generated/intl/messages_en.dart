@@ -26,6 +26,26 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "AddResidentialNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "Add a residential neighborhood",
+    ),
+    "Block": MessageLookupByLibrary.simpleMessage("Block"),
+    "Blocks": MessageLookupByLibrary.simpleMessage("Blocks"),
+    "ChangeNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
+      "Change Neighborhood Manager Name",
+    ),
+    "ChangeNeighborhoodName": MessageLookupByLibrary.simpleMessage(
+      "Change Neighborhood Name",
+    ),
+    "Neighborhoods": MessageLookupByLibrary.simpleMessage("Neighborhoods"),
+    "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
+      "Name of residential neighborhood manager",
+    ),
+    "ResidentialNeighborhoodName": MessageLookupByLibrary.simpleMessage(
+      "Name of residential neighborhood",
+    ),
+    "Unit": MessageLookupByLibrary.simpleMessage("Unit"),
+    "Units": MessageLookupByLibrary.simpleMessage("Units"),
     "add": MessageLookupByLibrary.simpleMessage("Add"),
     "addAssistanceProjectTitle": MessageLookupByLibrary.simpleMessage(
       "Add New Assistance Distribution Project",
@@ -208,6 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailConfirmedSuccess": MessageLookupByLibrary.simpleMessage(
       "Email has been confirmed",
     ),
+    "emailLabel": MessageLookupByLibrary.simpleMessage(":ُEmail"),
     "emailSentSuccess": MessageLookupByLibrary.simpleMessage(
       "Email sent successfully, a confirmation code will be sent to your email address.",
     ),
@@ -273,6 +294,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "join_date": MessageLookupByLibrary.simpleMessage("Join Date"),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "...looking for a residential neighborhood",
+    ),
+    "lookingunit": MessageLookupByLibrary.simpleMessage(
+      "...looking for a residential unit",
+    ),
     "main": MessageLookupByLibrary.simpleMessage("Home"),
     "male": MessageLookupByLibrary.simpleMessage("Male"),
     "managerName": MessageLookupByLibrary.simpleMessage("Manager Name"),
@@ -313,6 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noFamilyMembersAvailable": MessageLookupByLibrary.simpleMessage(
       "No family members available",
     ),
+    "noManager": MessageLookupByLibrary.simpleMessage("There is no manager"),
     "noManagersAvailable": MessageLookupByLibrary.simpleMessage(
       "No managers available",
     ),
@@ -427,6 +455,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialBlocksAndFamilies": MessageLookupByLibrary.simpleMessage(
       "Residential Blocks and Distributed Families",
+    ),
+    "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
+      "residential Neighborhood Options",
+    ),
+    "residentialUnits": MessageLookupByLibrary.simpleMessage(
+      "residential units",
     ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Re-enter password:",

@@ -28,7 +28,7 @@ class PersonCubit extends Cubit<PersonState> {
   DateTime? selectedDate;
   bool _hasNextPage = false;
   int _pageNumber = 1;
-  final int _pageSize = 10;
+  final int _pageSize = 1000;
   List<Person> people = [];
 
   /// Sets the cubit fields for editing a person.
@@ -84,7 +84,9 @@ class PersonCubit extends Cubit<PersonState> {
       emit(PersonLoaded(people: people));
     } on Serverexception catch (e) {
       emit(PersonFailure(errorMessage: e.errModel.errorMessage));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Parsing Error: $e"); // سيطبع لك سبب المشكلة بالضبط
+      print(stackTrace);
       emit(PersonFailure(errorMessage: e.toString()));
     }
   }
