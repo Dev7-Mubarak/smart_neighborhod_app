@@ -29,6 +29,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "AddResidentialNeighborhood": MessageLookupByLibrary.simpleMessage(
       "إضافة حي سكني",
     ),
+    "AddResidentialUnit": MessageLookupByLibrary.simpleMessage(
+      "إضافة وحدة سكنية",
+    ),
     "Block": MessageLookupByLibrary.simpleMessage("مربع"),
     "Blocks": MessageLookupByLibrary.simpleMessage("المربعات"),
     "ChangeNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
@@ -37,12 +40,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "ChangeNeighborhoodName": MessageLookupByLibrary.simpleMessage(
       "تغيير اسم الحي السكني",
     ),
+    "ChangeUnitManagerName": MessageLookupByLibrary.simpleMessage(
+      "تغيير مدير الوحده السكنية",
+    ),
+    "ChangeUnitName": MessageLookupByLibrary.simpleMessage(
+      "تغيير اسم الوحده السكنية",
+    ),
     "Neighborhoods": MessageLookupByLibrary.simpleMessage("الأحياء"),
     "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
       "مدير الحي السكني",
     ),
     "ResidentialNeighborhoodName": MessageLookupByLibrary.simpleMessage(
       "اسم الحي السكني",
+    ),
+    "ResidentialUnitName": MessageLookupByLibrary.simpleMessage(
+      "اسم الوحدة السكنية",
     ),
     "Unit": MessageLookupByLibrary.simpleMessage("وحدة"),
     "Units": MessageLookupByLibrary.simpleMessage("الوحدات"),
@@ -117,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "اختيار نوع الهوية",
     ),
     "chooseManager": MessageLookupByLibrary.simpleMessage("اختر المدير"),
+    "chooseNeighborhood": MessageLookupByLibrary.simpleMessage("اختر الحي"),
     "chooseProjectPriority": MessageLookupByLibrary.simpleMessage(
       "اختيار أولوية المشروع",
     ),
@@ -458,6 +471,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "خيارات الأحياء السكنية ",
     ),
     "residentialUnits": MessageLookupByLibrary.simpleMessage("الوحدات السكنية"),
+    "residentialUnitsOptions": MessageLookupByLibrary.simpleMessage(
+      "خيارات الوحدات السكنية ",
+    ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       ":أعد كتابة كلمة المرور",
     ),
@@ -481,6 +497,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchManagerHint": MessageLookupByLibrary.simpleMessage(
       "ابحث عن مدير...",
+    ),
+    "searchNeighborhoodHint": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن الحي...",
     ),
     "searchResidentialBlock": MessageLookupByLibrary.simpleMessage(
       "ابحث عن المربع السكني...",

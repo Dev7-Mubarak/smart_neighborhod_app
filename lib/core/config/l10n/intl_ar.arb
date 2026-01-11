@@ -1109,4 +1109,34 @@
   "@lookingunit": {
     "description": "...looking for a residential unit"
   }
+  ,
+  "AddResidentialUnit": "إضافة وحدة سكنية",
+  "@AddResidentialUnit": {
+    "description": "Adding a residential unit"
+  },
+  "ResidentialUnitName": "اسم الوحدة السكنية",
+  "@ResidentialUnitName": {
+    "description": "Name of residential unit"
+  },
+  "chooseNeighborhood": "اختر الحي",
+  "@chooseNeighborhood": {
+    "description": "Choose neighborhood label"
+  },
+  "searchNeighborhoodHint": "ابحث عن الحي...",
+  "@searchNeighborhoodHint": {
+    "description": "Search neighborhood hint"
+  },
+
+  "residentialUnitsOptions": "خيارات الوحدات السكنية ",
+  "@residentialUnitsOptions": {
+    "description": "residential units options"
+  },
+  "ChangeUnitName":"تغيير اسم الوحده السكنية",
+  "@ChangeUnitName": {
+    "description": "Change Unit Name"
+  },
+  "ChangeUnitManagerName": "تغيير مدير الوحده السكنية",
+  "@ChangeUnitManagerName": {
+    "description": "Change Unit Manager Name"
+  }
 }
