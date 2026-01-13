@@ -23,7 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       final response = await api.post(
         ApiLink.login,
-        data: {'email': email, 'password': password},
+        data: {'identifier': email, 'password': password},
       );
 
       if (response['isSuccess']) {

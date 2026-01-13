@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import '../../constants/app_size.dart'; // تأكد من أن هذا المسار صحيح
+import '../../constants/app_size.dart';
 
 class CustomDropdownSearchWidget<T> extends StatelessWidget {
   const CustomDropdownSearchWidget({
@@ -13,7 +13,7 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
     required this.hintText,
     required this.searchHintText,
     this.validator,
-    this.enabled=true
+    this.enabled = true,
   });
 
   final List<T> items;
@@ -34,14 +34,10 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
         searchFieldProps: TextFieldProps(
           decoration: InputDecoration(
             hintText: searchHintText,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           ),
         ),
-        menuProps: MenuProps(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        menuProps: MenuProps(borderRadius: BorderRadius.circular(8)),
         itemBuilder: (context, item, isSelected) {
           return ListTile(
             title: Text(itemAsString(item)),
@@ -55,7 +51,7 @@ class CustomDropdownSearchWidget<T> extends StatelessWidget {
       onChanged: onChanged,
       selectedItem: selectedItem,
       validator: validator,
-       enabled: enabled,
+      enabled: enabled,
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
           labelText: labelText,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/home/presentation/views/home_view.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/residential_neighborhood_view.dart';
 import '../../../../core/common/cubits/navigation_cubit.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
-import '../../../residdentailBlocks/presentation/views/residdential_blocks.dart';
 import '../../../settings/presentation/views/setteings_view.dart';
 
 class MainHome extends StatelessWidget {
@@ -11,7 +11,7 @@ class MainHome extends StatelessWidget {
 
   final List<Widget> _pages = const [
     HomeView(),
-    ResidentialBlockView(),
+    ResidentialNeighborhoodView(),
     SettingsView(),
   ];
 

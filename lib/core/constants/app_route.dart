@@ -16,6 +16,13 @@ import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/bind_cubit.dart';
 import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/add_residential_neighborhood_view.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/change_neighborhood_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/residential_neighborhood_units_view.dart';
+import 'package:smart_negborhood_app/features/residential_units/presentation/views/add_residential_unit_view.dart';
+import 'package:smart_negborhood_app/features/residential_units/presentation/views/change_unit_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_units/presentation/views/residential_unit_view.dart';
+import 'package:smart_negborhood_app/features/residential_units/presentation/views/residential_unit_blocks_view.dart';
 import 'package:smart_negborhood_app/features/settings/presentation/views/setteings_view.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
@@ -53,6 +60,11 @@ import '../../features/residdentailBlocks/cubits/blockCubit/block_cubit.dart';
 import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
 import '../../features/residdentailBlocks/presentation/views/residdential_blocks.dart';
+import '../../features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart'
+    show ResidentialNeighborhoodsCubit;
+import '../../features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart'
+    show ResidentialUnitsCubit;
+import '../../features/residential_neighborhoods/presentation/views/residential_neighborhood_view.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -66,6 +78,42 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => BlockCubit(api: DioConsumer(dio: Dio())),
             child: const ResidentialBlockView(),
+          ),
+        );
+      case AppRoute.residentialNeighborhoods:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                ResidentialNeighborhoodsCubit(api: DioConsumer(dio: Dio())),
+            child: const ResidentialNeighborhoodView(),
+          ),
+        );
+      case AppRoute.changeResidentialNeighborhoodManager:
+        final residentialNeighborhoodsCubit =
+            settings.arguments as ResidentialNeighborhoodsCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialNeighborhoodsCubit),
+            ],
+            child: ChangeNeighborhoodManagerView(),
+          ),
+        );
+      case AppRoute.addResidentialNeighborhood:
+        final residentialNeighborhoodsCubit =
+            settings.arguments as ResidentialNeighborhoodsCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialNeighborhoodsCubit),
+            ],
+            child: AddResidentialNeighborhoodView(),
           ),
         );
       case AppRoute.allPeople:
@@ -394,9 +442,72 @@ class AppRouter {
         );
       case AppRoute.conflictDetiles:
         final conflict = settings.arguments as Conflict;
-
         return MaterialPageRoute(
           builder: (_) => ConflictDetiles(conflict: conflict),
+        );
+      case AppRoute.residentialNeighborhoodUnits:
+        final residentialNeighborhoodsCubit =
+            settings.arguments as ResidentialNeighborhoodsCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<ResidentialUnitsCubit>(
+                create: (context) =>
+                    ResidentialUnitsCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialNeighborhoodsCubit),
+            ],
+            child: ResidentialNeighborhoodUnits(),
+          ),
+        );
+      case AppRoute.residentialUnits:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                ResidentialUnitsCubit(api: DioConsumer(dio: Dio())),
+            child: const ResidentialUnitView(),
+          ),
+        );
+      case AppRoute.residentialUnitBlocks:
+        final residentialUnitsCubit =
+            settings.arguments as ResidentialUnitsCubit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: residentialUnitsCubit,
+            child: const ResidentialUnitBlocksView(),
+          ),
+        );
+      case AppRoute.addResidentialUnit:
+        final residentialUnitsCubit =
+            settings.arguments as ResidentialUnitsCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider<ResidentialNeighborhoodsCubit>(
+                create: (context) =>
+                    ResidentialNeighborhoodsCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialUnitsCubit),
+            ],
+            child: AddResidentialUnitView(),
+          ),
+        );
+      case AppRoute.changeResidentialUnitManager:
+        final residentialUnitsCubit =
+            settings.arguments as ResidentialUnitsCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialUnitsCubit),
+            ],
+            child: ChangeUnitManagerView(),
+          ),
         );
       case AppRoute.settings:
         return MaterialPageRoute(builder: (_) => const SettingsView());
@@ -410,6 +521,20 @@ class AppRoute {
   static const String onBoarding = '/onBoarding';
   static const String login = '/login';
   static const String mainHome = '/mainhome';
+
+  static const String addResidentialNeighborhood =
+      '/AddResidentialNeighborhood';
+  static const String residentialNeighborhoods = '/ResidentialNeighborhood';
+  static const String residentialNeighborhoodUnits =
+      '/residentialNeighborhoodUnits';
+  static const String changeResidentialNeighborhoodManager =
+      '/ChangeResidentialNeighborhoodManager';
+  static const String residentialUnits = '/ResidentialUnits';
+  static const String addResidentialUnit = '/AddResidentialUnit';
+  static const String changeResidentialUnitManager =
+      '/ChangeResidentialUnitManager';
+  static const String residentialUnitBlocks = '/ResidentialUnitBlocks';
+
   static const String settings = '/settings';
   static const String residentialBlockDetial = '/ResidentialBlockDetial';
   static const String residentialBlocks = '/ResidentialBlock';

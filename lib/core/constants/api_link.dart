@@ -1,6 +1,6 @@
 class ApiLink {
   // Base
-  static const String server = 'https://smartneighboorhood.runasp.net/api';
+  static const String server = 'https://smart-neighborhood-test.runasp.net/api';
 
   // Auth
   static const String login = '$server/auth/login';
@@ -8,6 +8,43 @@ class ApiLink {
   static const String sendConfirmationCode =
       '$server/auth/reset-password/verify-code';
   static const String sendNewPassword = '$server/auth/reset-password/confirm';
+
+  // Residentail Neighborhoods
+  static const String getAllResidentialNeighborhoods =
+      '$server/residential-neighborhoods';
+  static const String getAllResidentialNeighborhoodsDashboard =
+      '$server/residential-neighborhoods/dashboard';
+  static const String addResidentialNeighborhood =
+      '$server/residential-neighborhoods';
+  static const String updateResidentialNeighborhood =
+      '$server/residential-neighborhoods';
+  static const String deleteResidentialNeighborhood =
+      '$server/residential-neighborhoods';
+
+  static String changeResidentialNeighborhoodManager({
+    required int neighborhoodId,
+  }) {
+    return '$server/residential-neighborhoods/$neighborhoodId/manager';
+  }
+
+  static String getResidentialNeighborhoodUnits({required int neighborhoodId}) {
+    return '$server/residential-neighborhoods/$neighborhoodId/units';
+  }
+
+  // Residential Units
+  static const String getAllResidentialUnits = '$server/residential-units';
+  static const String getAllResidentialUnitsDashboard =
+      '$server/residential-units/dashboard';
+  static const String addResidentialUnit = '$server/residential-units';
+  static const String updateResidentialUnit = '$server/residential-units';
+  static const String deleteResidentialUnit = '$server/residential-units';
+  static String changeResidentialUnitsManager({required int unitId}) {
+    return '$server/residential-units/$unitId/manager';
+  }
+
+  static String getResidentialUnitBlocks({required int unitId}) {
+    return '$server/residential-units/$unitId/blocks';
+  }
 
   // Blocks
   static const String getAllBlockes = '$server/blocks';

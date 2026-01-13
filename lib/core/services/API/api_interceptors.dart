@@ -8,7 +8,7 @@ class ApiInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final profile = await SharedPreferencesService.getProfile();
+    final profile = SharedPreferencesService.getProfile();
     options.headers["Authorization"] = "Bearer ${profile?.token}";
     super.onRequest(options, handler);
   }
@@ -16,5 +16,5 @@ class ApiInterceptor extends Interceptor {
 
 // {
 //   "email": "sys.smartneighborhood@gmail.com",
-//   "password": "Mub_@12345"
+//   "password": "Mub_12345"
 // }

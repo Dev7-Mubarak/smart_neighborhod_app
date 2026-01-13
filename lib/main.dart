@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
@@ -37,7 +38,13 @@ Future<void> main() async {
     );
   } else {
     runApp(
-      SmartNeighbourhoodApp(appRouter: AppRouter(), initialRoute: initialRoute),
+      DevicePreview(
+        enabled: false,
+        builder: (context) => SmartNeighbourhoodApp(
+          appRouter: AppRouter(),
+          initialRoute: initialRoute,
+        ),
+      ),
     );
   }
 }
