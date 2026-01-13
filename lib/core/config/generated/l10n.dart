@@ -2783,6 +2783,86 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Add a residential unit`
+  String get AddResidentialUnit {
+    return Intl.message(
+      'Add a residential unit',
+      name: 'AddResidentialUnit',
+      desc: 'Adding a residential unit',
+      args: [],
+    );
+  }
+
+  /// `Name of residential unit`
+  String get ResidentialUnitName {
+    return Intl.message(
+      'Name of residential unit',
+      name: 'ResidentialUnitName',
+      desc: 'Name of residential unit',
+      args: [],
+    );
+  }
+
+  /// `Choose Neighborhood`
+  String get chooseNeighborhood {
+    return Intl.message(
+      'Choose Neighborhood',
+      name: 'chooseNeighborhood',
+      desc: 'Choose neighborhood label',
+      args: [],
+    );
+  }
+
+  /// `Search for a neighborhood...`
+  String get searchNeighborhoodHint {
+    return Intl.message(
+      'Search for a neighborhood...',
+      name: 'searchNeighborhoodHint',
+      desc: 'Search neighborhood hint',
+      args: [],
+    );
+  }
+
+  /// `residential units options`
+  String get residentialUnitsOptions {
+    return Intl.message(
+      'residential units options',
+      name: 'residentialUnitsOptions',
+      desc: 'residential units options',
+      args: [],
+    );
+  }
+
+  /// `Change Unit Name`
+  String get ChangeUnitName {
+    return Intl.message(
+      'Change Unit Name',
+      name: 'ChangeUnitName',
+      desc: 'Change Unit Name',
+      args: [],
+    );
+  }
+
+  /// `Change Unit Manager Name`
+  String get ChangeUnitManagerName {
+    return Intl.message(
+      'Change Unit Manager Name',
+      name: 'ChangeUnitManagerName',
+      desc: 'Change Unit Manager Name',
+      args: [],
+    );
+  }
+
+  /// `Name of residential Unit manager`
+  String get ResidentialUnitManagerName {
+    return Intl.message(
+      'Name of residential Unit manager',
+      name: 'ResidentialUnitManagerName',
+      desc: 'Name of residential Unit manager',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

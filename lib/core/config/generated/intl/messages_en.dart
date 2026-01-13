@@ -29,6 +29,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "AddResidentialNeighborhood": MessageLookupByLibrary.simpleMessage(
       "Add a residential neighborhood",
     ),
+    "AddResidentialUnit": MessageLookupByLibrary.simpleMessage(
+      "Add a residential unit",
+    ),
     "Block": MessageLookupByLibrary.simpleMessage("Block"),
     "Blocks": MessageLookupByLibrary.simpleMessage("Blocks"),
     "ChangeNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
@@ -37,12 +40,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "ChangeNeighborhoodName": MessageLookupByLibrary.simpleMessage(
       "Change Neighborhood Name",
     ),
+    "ChangeUnitManagerName": MessageLookupByLibrary.simpleMessage(
+      "Change Unit Manager Name",
+    ),
+    "ChangeUnitName": MessageLookupByLibrary.simpleMessage("Change Unit Name"),
     "Neighborhoods": MessageLookupByLibrary.simpleMessage("Neighborhoods"),
     "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
       "Name of residential neighborhood manager",
     ),
     "ResidentialNeighborhoodName": MessageLookupByLibrary.simpleMessage(
       "Name of residential neighborhood",
+    ),
+    "ResidentialUnitManagerName": MessageLookupByLibrary.simpleMessage(
+      "Name of residential Unit manager",
+    ),
+    "ResidentialUnitName": MessageLookupByLibrary.simpleMessage(
+      "Name of residential unit",
     ),
     "Unit": MessageLookupByLibrary.simpleMessage("Unit"),
     "Units": MessageLookupByLibrary.simpleMessage("Units"),
@@ -122,6 +135,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Choose Identity Type",
     ),
     "chooseManager": MessageLookupByLibrary.simpleMessage("Choose Manager"),
+    "chooseNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "Choose Neighborhood",
+    ),
     "chooseProjectPriority": MessageLookupByLibrary.simpleMessage(
       "Choose Project Priority",
     ),
@@ -462,6 +478,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "residentialUnits": MessageLookupByLibrary.simpleMessage(
       "residential units",
     ),
+    "residentialUnitsOptions": MessageLookupByLibrary.simpleMessage(
+      "residential units options",
+    ),
     "retypePasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Re-enter password:",
     ),
@@ -489,6 +508,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchManagerHint": MessageLookupByLibrary.simpleMessage(
       "Search for manager...",
+    ),
+    "searchNeighborhoodHint": MessageLookupByLibrary.simpleMessage(
+      "Search for a neighborhood...",
     ),
     "searchResidentialBlock": MessageLookupByLibrary.simpleMessage(
       "Search for a residential block...",

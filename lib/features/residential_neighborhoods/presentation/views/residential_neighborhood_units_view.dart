@@ -1,16 +1,27 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
 import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
+import 'package:smart_negborhood_app/core/constants/app_route.dart';
+import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
+import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
+import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_state.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/unit_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart';
+import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_state.dart';
+import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/presentation/widgets/unit_options_sheet.dart';
 
 class ResidentialNeighborhoodUnits extends StatefulWidget {
   const ResidentialNeighborhoodUnits({super.key});
@@ -25,12 +36,16 @@ class _ResidentialNeighborhoodUnitsState
   late ResidentialNeighborhoodsCubit _residentialNeighborhoodsCubit;
   late TextEditingController _searchingController;
   Timer? _delay;
+  late final ProfileModel? _profileModel;
+  late ResidentialUnitsCubit _residentialUnitsCubit;
   @override
   void initState() {
     super.initState();
     _residentialNeighborhoodsCubit = context
         .read<ResidentialNeighborhoodsCubit>();
+    _residentialUnitsCubit = BlocProvider.of<ResidentialUnitsCubit>(context);
     _searchingController = TextEditingController();
+    _profileModel = SharedPreferencesService.getProfile();
   }
 
   @override
@@ -44,74 +59,181 @@ class _ResidentialNeighborhoodUnitsState
   Widget build(BuildContext context) {
     final locale = context.locale;
     final int crossAxisCount = context.screenSize.width > 600 ? 3 : 2;
-    return BlocBuilder<
-      ResidentialNeighborhoodsCubit,
-      ResidentialNeighborhoodsState
-    >(
-      buildWhen: (previous, current) =>
-          current is ResidentialNeighborhoodUnitssLoaded ||
-          current is ResidentialNeighborhoodUnitsLoading ||
-          current is FailureForUpdateOrAddResidentialNeighborhood,
-      builder: (context, state) {
-        String title = locale.residentialUnits;
+    return BlocListener<ResidentialUnitsCubit, ResidentialUnitsState>(
+      listener: (context, state) {
+        if (state is WaitingForUpdateOrAddResidentialUnit) {
+          context.showLoadingDialog();
+        } else if (state is ResidentialUnitAddedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          // refresh neighborhood units list after add
+          var neighId = _residentialUnitsCubit.selectedNeighborhoodId;
+          if (neighId == null &&
+              _residentialNeighborhoodsCubit.state
+                  is ResidentialNeighborhoodUnitssLoaded) {
+            neighId =
+                (_residentialNeighborhoodsCubit.state
+                        as ResidentialNeighborhoodUnitssLoaded)
+                    .neighborhoodWithUnits
+                    .id;
+          }
+          if (neighId != null) {
+            _residentialNeighborhoodsCubit.getResidentialNeighborhoodUnits(
+              neighId,
+            );
+          }
+          Navigator.pop(context);
+        } else if (state is ResidentialUnitDeletedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          var neighId = _residentialUnitsCubit.selectedNeighborhoodId;
+          if (neighId == null &&
+              _residentialNeighborhoodsCubit.state
+                  is ResidentialNeighborhoodUnitssLoaded) {
+            neighId =
+                (_residentialNeighborhoodsCubit.state
+                        as ResidentialNeighborhoodUnitssLoaded)
+                    .neighborhoodWithUnits
+                    .id;
+          }
+          if (neighId != null) {
+            _residentialNeighborhoodsCubit.getResidentialNeighborhoodUnits(
+              neighId,
+            );
+          }
+        } else if (state is ResidentialUnitUpdatedSuccessfully) {
+          Navigator.of(context, rootNavigator: true).pop();
+          context.showSuccessSnackBar(state.message);
+          var neighId = _residentialUnitsCubit.selectedNeighborhoodId;
+          if (neighId == null &&
+              _residentialNeighborhoodsCubit.state
+                  is ResidentialNeighborhoodUnitssLoaded) {
+            neighId =
+                (_residentialNeighborhoodsCubit.state
+                        as ResidentialNeighborhoodUnitssLoaded)
+                    .neighborhoodWithUnits
+                    .id;
+          }
+          if (neighId != null) {
+            _residentialNeighborhoodsCubit.getResidentialNeighborhoodUnits(
+              neighId,
+            );
+          }
+          Navigator.pop(context);
+        } else if (state is FailureForUpdateOrAddResidentialUnit) {
+          Navigator.of(context, rootNavigator: true).pop();
+          final errorMsg = state.errorMessage;
 
-        if (state is ResidentialNeighborhoodUnitssLoaded) {
-          title = state.neighborhoodWithUnits.name;
+          context.showErrorSnackBar(errorMsg);
         }
-
-        return Scaffold(
-          // backgroundColor: AppColor.gray2,
-          appBar: AppBar(
-            backgroundColor: AppColor.white,
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            iconTheme: const IconThemeData(color: Colors.black),
-            centerTitle: true,
-            title: Text(
-              title,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  SearchableTextFormField(
-                    controller: _searchingController,
-                    hintText: locale.lookingunit,
-                    bachgroundColor: AppColor.gray2,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _searchingController.clear();
-                        _residentialNeighborhoodsCubit.filterNeighborhoodUnits(
-                          '',
-                        );
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
-                    prefixIcon: Icons.search,
-                    onChanged: (String query) {
-                      _delay?.cancel();
-                      _delay = Timer(const Duration(milliseconds: 300), () {
-                        _residentialNeighborhoodsCubit.filterNeighborhoodUnits(
-                          query.trim(),
-                        );
-                      });
-                    },
-                  ),
-                  SizedBox(height: 5),
-                  _buildBody(state, crossAxisCount, locale),
-                ],
-              ),
-            ),
-          ),
-        );
       },
+      child:
+          BlocBuilder<
+            ResidentialNeighborhoodsCubit,
+            ResidentialNeighborhoodsState
+          >(
+            buildWhen: (previous, current) =>
+                current is ResidentialNeighborhoodUnitssLoaded ||
+                current is ResidentialNeighborhoodUnitsLoading ||
+                current is FailureForUpdateOrAddResidentialNeighborhood,
+            builder: (context, state) {
+              String title = locale.residentialUnits;
+
+              if (state is ResidentialNeighborhoodUnitssLoaded) {
+                title = state.neighborhoodWithUnits.name;
+              }
+
+              return Scaffold(
+                appBar: AppBar(
+                  backgroundColor: AppColor.white,
+                  elevation: 0,
+                  scrolledUnderElevation: 0,
+                  iconTheme: const IconThemeData(color: Colors.black),
+                  centerTitle: true,
+                  title: Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SmallButton(
+                                text: locale.add,
+                                onPressed: () {
+                                  int? neighborhoodId;
+                                  if (state
+                                      is ResidentialNeighborhoodUnitssLoaded) {
+                                    neighborhoodId =
+                                        state.neighborhoodWithUnits.id;
+                                  }
+                                  _residentialUnitsCubit
+                                      .changeSelectedNeighborhoodId(
+                                        neighborhoodId,
+                                      );
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoute.addResidentialUnit,
+                                    arguments: _residentialUnitsCubit,
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                width: AppSize.spasingBetweenInputsAndLabale,
+                              ),
+                              Expanded(
+                                child: SearchableTextFormField(
+                                  controller: _searchingController,
+                                  hintText: locale.lookingunit,
+                                  bachgroundColor: AppColor.gray2,
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      _searchingController.clear();
+                                      _residentialNeighborhoodsCubit
+                                          .filterNeighborhoodUnits('');
+                                    },
+                                    icon: const Icon(Icons.close),
+                                  ),
+                                  prefixIcon: Icons.search,
+                                  onChanged: (String query) {
+                                    _delay?.cancel();
+                                    _delay = Timer(
+                                      const Duration(milliseconds: 300),
+                                      () {
+                                        _residentialNeighborhoodsCubit
+                                            .filterNeighborhoodUnits(
+                                              query.trim(),
+                                            );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Expanded(
+                          child: _buildBody(state, crossAxisCount, locale),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
     );
   }
 
@@ -142,7 +264,14 @@ class _ResidentialNeighborhoodUnitsState
           children: state.allNeighborhoodUnits.map((unit) {
             return StaggeredGridTile.fit(
               crossAxisCellCount: 1,
-              child: _buildUnitCard(unit, locale),
+              child: GestureDetector(
+                onLongPress: () {
+                  if (_profileModel?.role == AppRole.Admin.name) {
+                    _showOptions(unit, locale);
+                  }
+                },
+                child: _buildUnitCard(unit, locale),
+              ),
             );
           }).toList(),
         ),
@@ -152,7 +281,13 @@ class _ResidentialNeighborhoodUnitsState
     return const SizedBox.shrink();
   }
 
-  Widget _buildUnitCard(Unit unit, locale) {
+  void _showOptions(ResidentialUnitModel unit, locale) {
+    context.showBottomSheet(
+      UnitOptionsSheet(unit: unit, cubit: _residentialUnitsCubit),
+    );
+  }
+
+  Widget _buildUnitCard(ResidentialUnitModel unit, locale) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -203,8 +338,6 @@ class _ResidentialNeighborhoodUnitsState
                         child: Text(
                           unit.unitManagerName,
                           textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 13,
                             color: Colors.grey,

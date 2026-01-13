@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_Dashboard_model.dart';
+import '../../../../core/common/widgets/stat_item_widget.dart';
 
 class DashboardStatsWidget extends StatelessWidget {
   final ResidentialNeighborhoodDashboardModel data;
@@ -14,7 +15,7 @@ class DashboardStatsWidget extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _buildStatItem(
+          child: StatItemWidget(
             title: locale.Neighborhoods,
             count: data.totalNeighborhoods,
             icon: Icons.location_city,
@@ -23,7 +24,7 @@ class DashboardStatsWidget extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildStatItem(
+          child: StatItemWidget(
             title: locale.Units,
             count: data.totalUnits,
             icon: Icons.home,
@@ -32,7 +33,7 @@ class DashboardStatsWidget extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: _buildStatItem(
+          child: StatItemWidget(
             title: locale.Blocks,
             count: data.totalBlocks,
             icon: Icons.grid_view,
@@ -40,52 +41,6 @@ class DashboardStatsWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildStatItem({
-    required String title,
-    required int count,
-    required IconData icon,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromARGB(255, 222, 222, 222),
-            blurRadius: 8,
-            offset: Offset(3, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 28),
-          const SizedBox(height: 4),
-          Text(
-            count.toString(),
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
     );
   }
 }

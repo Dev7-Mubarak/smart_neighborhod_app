@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_Dashboard_model.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_units_model.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/unit_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
 
 import '../../data/models/residential_neighborhood_model.dart';
 
@@ -30,7 +30,7 @@ class ResidentialNeighborhoodsFailure extends ResidentialNeighborhoodsState {
 class ResidentialNeighborhoodUnitssLoaded
     extends ResidentialNeighborhoodsState {
   final ResidentialNeighborhoodUnitModel neighborhoodWithUnits;
-  final List<Unit> allNeighborhoodUnits;
+  final List<ResidentialUnitModel> allNeighborhoodUnits;
   ResidentialNeighborhoodUnitssLoaded({
     required this.neighborhoodWithUnits,
     required this.allNeighborhoodUnits,

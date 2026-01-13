@@ -1342,4 +1342,38 @@
   "@lookingunit": {
     "description": "...looking for a residential unit"
   }
+  ,
+  "AddResidentialUnit": "Add a residential unit",
+  "@AddResidentialUnit": {
+    "description": "Adding a residential unit"
+  },
+  "ResidentialUnitName": "Name of residential unit",
+  "@ResidentialUnitName": {
+    "description": "Name of residential unit"
+  },
+  "chooseNeighborhood": "Choose Neighborhood",
+  "@chooseNeighborhood": {
+    "description": "Choose neighborhood label"
+  },
+  "searchNeighborhoodHint": "Search for a neighborhood...",
+  "@searchNeighborhoodHint": {
+    "description": "Search neighborhood hint"
+  },
+
+  "residentialUnitsOptions": "residential units options",
+  "@residentialUnitsOptions": {
+    "description": "residential units options"
+  },
+  "ChangeUnitName":"Change Unit Name",
+  "@ChangeUnitName": {
+    "description": "Change Unit Name"
+  },
+  "ChangeUnitManagerName": "Change Unit Manager Name",
+  "@ChangeUnitManagerName": {
+    "description": "Change Unit Manager Name"
+  },
+     "ResidentialUnitManagerName": "Name of residential Unit manager",
+  "@ResidentialUnitManagerName": {
+    "description": "Name of residential Unit manager"
+  }
 }

@@ -31,6 +31,21 @@ class ApiLink {
     return '$server/residential-neighborhoods/$neighborhoodId/units';
   }
 
+  // Residential Units
+  static const String getAllResidentialUnits = '$server/residential-units';
+  static const String getAllResidentialUnitsDashboard =
+      '$server/residential-units/dashboard';
+  static const String addResidentialUnit = '$server/residential-units';
+  static const String updateResidentialUnit = '$server/residential-units';
+  static const String deleteResidentialUnit = '$server/residential-units';
+  static String changeResidentialUnitsManager({required int unitId}) {
+    return '$server/residential-units/$unitId/manager';
+  }
+
+  static String getResidentialUnitBlocks({required int unitId}) {
+    return '$server/residential-units/$unitId/blocks';
+  }
+
   // Blocks
   static const String getAllBlockes = '$server/blocks';
   static const String addBlocke = '$server/blocks';
