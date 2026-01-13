@@ -1138,5 +1138,9 @@
   "ChangeUnitManagerName": "تغيير مدير الوحده السكنية",
   "@ChangeUnitManagerName": {
     "description": "Change Unit Manager Name"
+  },
+    "ResidentialUnitManagerName": "مدير الوحده السكنية",
+  "@ResidentialUnitManagerName": {
+    "description": "Name of residential Unit manager"
   }
 }

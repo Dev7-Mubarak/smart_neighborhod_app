@@ -24,7 +24,7 @@ class _ChangeUnitNameWidgetState extends State<ChangeUnitNameWidget> {
     super.initState();
     _unitsCubit = context.read<ResidentialUnitsCubit>();
     _unitNameController = TextEditingController(
-      text: _unitsCubit.selectedUnit?.unitName ?? '',
+      text: _unitsCubit.selectedUnit?.name ?? '',
     );
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {

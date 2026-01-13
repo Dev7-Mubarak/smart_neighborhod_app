@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -13,10 +12,8 @@ import 'package:smart_negborhood_app/core/services/shared_preferences_service.da
 import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_state.dart';
-import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_dashboard_model.dart';
-import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_summary_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
 import 'package:smart_negborhood_app/features/residential_units/presentation/widgets/unit_options_sheet.dart';
-
 import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/common/widgets/no_result_widget.dart';
 import '../../../../core/common/widgets/stat_item_widget.dart';
@@ -56,7 +53,6 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
   Widget build(BuildContext context) {
     final locale = context.locale;
     final int crossAxisCount = context.screenSize.width > 600 ? 3 : 2;
-
     return BlocListener<ResidentialUnitsCubit, ResidentialUnitsState>(
       listener: (context, state) {
         if (state is WaitingForUpdateOrAddResidentialUnit) {
@@ -117,7 +113,9 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                           arguments: BlocProvider.of<ResidentialUnitsCubit>(
                             context,
                           ),
-                        );
+                        ).then((value) {
+                          _unitsCubit.getResidentialUnitsDashboard();
+                        });
                       },
                     ),
                     const SizedBox(
@@ -213,7 +211,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                               AppRoute.residentialUnitBlocks,
                               arguments: BlocProvider.of<ResidentialUnitsCubit>(
                                 context,
-                              )..getResidentialUnitBlocks(unit.unitId),
+                              )..getResidentialUnitBlocks(unit.id),
                             );
                           },
                           onLongPress: () {
@@ -258,7 +256,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          unit.unitName,
+                                          unit.name,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -294,7 +292,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
 
   // Replaced by shared StatItemWidget
 
-  void _showOptions(ResidentialUnitSummaryModel unit, locale) {
+  void _showOptions(ResidentialUnitModel unit, locale) {
     context.showBottomSheet(UnitOptionsSheet(unit: unit, cubit: _unitsCubit));
   }
 

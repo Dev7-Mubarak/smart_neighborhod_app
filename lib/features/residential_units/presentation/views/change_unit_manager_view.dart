@@ -56,7 +56,7 @@ class _ChangeUnitManagerViewState extends State<ChangeUnitManagerView> {
         centerTitle: true,
         title: Center(
           child: Text(
-            locale.ChangeNeighborhoodManagerName,
+            locale.ChangeUnitManagerName,
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -83,9 +83,7 @@ class _ChangeUnitManagerViewState extends State<ChangeUnitManagerView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SmallText(
-                        text: locale.ResidentialNeighborhoodManagerName,
-                      ),
+                      SmallText(text: locale.ResidentialUnitManagerName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),

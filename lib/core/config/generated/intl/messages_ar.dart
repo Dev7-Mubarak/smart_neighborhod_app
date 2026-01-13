@@ -53,6 +53,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "ResidentialNeighborhoodName": MessageLookupByLibrary.simpleMessage(
       "اسم الحي السكني",
     ),
+    "ResidentialUnitManagerName": MessageLookupByLibrary.simpleMessage(
+      "مدير الوحده السكنية",
+    ),
     "ResidentialUnitName": MessageLookupByLibrary.simpleMessage(
       "اسم الوحدة السكنية",
     ),

@@ -449,8 +449,14 @@ class AppRouter {
         final residentialNeighborhoodsCubit =
             settings.arguments as ResidentialNeighborhoodsCubit;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: residentialNeighborhoodsCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<ResidentialUnitsCubit>(
+                create: (context) =>
+                    ResidentialUnitsCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialNeighborhoodsCubit),
+            ],
             child: ResidentialNeighborhoodUnits(),
           ),
         );

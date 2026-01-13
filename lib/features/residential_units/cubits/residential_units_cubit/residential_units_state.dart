@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../data/models/residential_unit_dashboard_model.dart';
-import '../../data/models/residential_unit_summary_model.dart';
+import '../../data/models/residential_unit_model.dart';
 
 @immutable
 abstract class ResidentialUnitsState {}
@@ -16,7 +16,7 @@ class ResidentialUnitsFailure extends ResidentialUnitsState {
 
 class ResidentialUnitsLoaded extends ResidentialUnitsState {
   final ResidentialUnitDashboardModel dashboardData;
-  final List<ResidentialUnitSummaryModel> filteredUnits;
+  final List<ResidentialUnitModel> filteredUnits;
   ResidentialUnitsLoaded({
     required this.dashboardData,
     required this.filteredUnits,
@@ -24,7 +24,7 @@ class ResidentialUnitsLoaded extends ResidentialUnitsState {
 }
 
 class ResidentialUnitDetailsLoaded extends ResidentialUnitsState {
-  final ResidentialUnitSummaryModel unit;
+  final ResidentialUnitModel unit;
   ResidentialUnitDetailsLoaded({required this.unit});
 }
 
@@ -33,7 +33,10 @@ class ResidentialUnitBlocksLoading extends ResidentialUnitsState {}
 class ResidentialUnitBlocksLoaded extends ResidentialUnitsState {
   final dynamic unitWithBlocks;
   final List<dynamic> allBlocks;
-  ResidentialUnitBlocksLoaded({required this.unitWithBlocks, required this.allBlocks});
+  ResidentialUnitBlocksLoaded({
+    required this.unitWithBlocks,
+    required this.allBlocks,
+  });
 }
 
 class ResidentialUnitBlocksFailure extends ResidentialUnitsState {

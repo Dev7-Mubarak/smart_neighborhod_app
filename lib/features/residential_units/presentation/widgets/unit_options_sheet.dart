@@ -3,16 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_summary_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
 import '../../cubits/residential_units_cubit/residential_units_cubit.dart';
 import 'change_unit_name_widget.dart';
 
 class UnitOptionsSheet extends StatelessWidget {
-  final ResidentialUnitSummaryModel unit;
+  final ResidentialUnitModel unit;
   final ResidentialUnitsCubit cubit;
-
   const UnitOptionsSheet({super.key, required this.unit, required this.cubit});
-
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
@@ -79,7 +77,7 @@ class UnitOptionsSheet extends StatelessWidget {
               final confirmed = await context.showAlertDialog();
               if (confirmed == true) {
                 Navigator.pop(context);
-                cubit.deleteUnit(unit.unitId);
+                cubit.deleteUnit(unit.id);
               }
             },
           ),

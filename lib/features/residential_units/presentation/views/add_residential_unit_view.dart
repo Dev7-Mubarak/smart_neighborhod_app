@@ -34,8 +34,8 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
   late PersonCubit personCubit;
   late ResidentialNeighborhoodsCubit residentialNeighborhoodsCubit;
   late ResidentialUnitsCubit unitsCubit;
-  int? _selectedPersonId;
-
+  int? _selectedNeighborhoodId;
+  bool isNeighborhoodPreSelected = false;
   @override
   void initState() {
     super.initState();
@@ -47,6 +47,12 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
     unitNameController = TextEditingController();
     identifierController = TextEditingController();
     passwordController = TextEditingController();
+    _selectedNeighborhoodId = unitsCubit.selectedNeighborhoodId;
+    if (_selectedNeighborhoodId != null) {
+      isNeighborhoodPreSelected = true;
+    } else {
+      isNeighborhoodPreSelected = false;
+    }
   }
 
   @override
@@ -130,30 +136,39 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                           }
                           if (state is ResidentialNeighborhoodsLoaded) {
                             final items = state.filteredNeighborhoods;
-                            if (items.isEmpty)
+                            if (items.isEmpty) {
                               return Center(
                                 child: Text(locale.noManagersAvailable),
                               );
+                            }
+                            ResidentialNeighborhoodModel?
+                            initialSelectedNeighborhood;
+                            if (_selectedNeighborhoodId != null) {
+                              initialSelectedNeighborhood = items.firstWhere(
+                                (neighborhood) =>
+                                    neighborhood.neighborhoodId ==
+                                    unitsCubit.selectedNeighborhoodId,
+                              );
+                            }
                             return CustomDropdownSearchWidget<
                               ResidentialNeighborhoodModel
                             >(
+                              enabled: !isNeighborhoodPreSelected,
                               items: items,
                               itemAsString: (ResidentialNeighborhoodModel? u) =>
                                   u?.neighborhoodName ?? '',
                               onChanged: (ResidentialNeighborhoodModel? data) {
-                                unitsCubit.selectedNeighborhoodId =
-                                    data?.neighborhoodId;
+                                unitsCubit.changeSelectedNeighborhoodId(
+                                  data?.neighborhoodId,
+                                );
                               },
-                              selectedItem: null,
+                              selectedItem: initialSelectedNeighborhood,
                               labelText:
-                                  locale.chooseNeighborhood ??
-                                  'Choose neighborhood',
+                                  locale.chooseNeighborhood ,
                               hintText:
-                                  locale.chooseNeighborhood ??
-                                  'Choose neighborhood',
+                                  locale.chooseNeighborhood,
                               searchHintText:
-                                  locale.searchNeighborhoodHint ??
-                                  'Search neighborhood',
+                                  locale.searchNeighborhoodHint,
                               validator: (item) =>
                                   AppValidator.validateDropdown(item),
                             );
@@ -163,9 +178,7 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       SmallText(
-                        text:
-                            locale.ResidentialNeighborhoodManagerName ??
-                            'Unit Manager',
+                        text: locale.ResidentialNeighborhoodManagerName,
                       ),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
@@ -178,18 +191,18 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                             );
                           }
                           if (state is PersonLoaded) {
-                            if (state.people.isEmpty)
+                            if (state.people.isEmpty) {
                               return Center(
                                 child: Text(locale.noManagersAvailable),
                               );
-                            Person? initialSelectedPerson;
+                            }
                             return CustomDropdownSearchWidget<Person>(
                               items: state.people,
                               itemAsString: (Person? u) => u?.fullName ?? '',
                               onChanged: (Person? data) {
                                 unitsCubit.changeSelectedUnitManager(data?.id);
                               },
-                              selectedItem: initialSelectedPerson,
+                              selectedItem: null,
                               labelText: locale.chooseManager,
                               hintText: locale.chooseManager,
                               searchHintText: locale.searchManagerHint,

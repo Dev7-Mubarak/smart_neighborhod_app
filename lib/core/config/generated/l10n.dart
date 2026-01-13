@@ -2853,6 +2853,16 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Name of residential Unit manager`
+  String get ResidentialUnitManagerName {
+    return Intl.message(
+      'Name of residential Unit manager',
+      name: 'ResidentialUnitManagerName',
+      desc: 'Name of residential Unit manager',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -6,7 +6,7 @@ import '../../../../core/services/API/dio_consumer.dart';
 import '../../../../core/services/errors/errormodel.dart';
 import '../../../../core/services/errors/exception.dart';
 import '../../data/models/residential_unit_dashboard_model.dart';
-import '../../data/models/residential_unit_summary_model.dart';
+import '../../data/models/residential_unit_model.dart';
 import '../../data/models/residential_unit_blocks_model.dart';
 import 'residential_units_state.dart';
 
@@ -15,9 +15,9 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
   static ResidentialUnitsCubit get(context) => BlocProvider.of(context);
 
   DioConsumer api;
-  ResidentialUnitSummaryModel? selectedUnit;
+  ResidentialUnitModel? selectedUnit;
   ResidentialUnitDashboardModel? _dashboardData;
-  List<ResidentialUnitSummaryModel> _allUnits = [];
+  List<ResidentialUnitModel> _allUnits = [];
   ResidentialUnitBlocksModel? _unitWithBlocks;
   List<UnitBlock> _allBlocks = [];
 
@@ -26,6 +26,10 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
 
   void changeSelectedUnitManager(int? personId) {
     selectedManager = personId;
+  }
+
+  void changeSelectedNeighborhoodId(int? neighborhoodId) {
+    selectedNeighborhoodId = neighborhoodId;
   }
 
   Future<void> getResidentialUnitBlocks(int unitId) async {
@@ -86,7 +90,7 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
     );
   }
 
-  void setSelectedUnit(ResidentialUnitSummaryModel unit) {
+  void setSelectedUnit(ResidentialUnitModel unit) {
     selectedUnit = unit;
   }
 
@@ -137,9 +141,7 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
       return;
     }
     final filteredList = _allUnits
-        .where(
-          (unit) => unit.unitName.toLowerCase().contains(query.toLowerCase()),
-        )
+        .where((unit) => unit.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
     emit(
       ResidentialUnitsLoaded(
@@ -173,7 +175,7 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
             message: response["message"] ?? "Added",
           ),
         );
-        await getResidentialUnitsDashboard();
+        // await getResidentialUnitsDashboard();
       } else {
         throw Serverexception(
           errModel: ErrorModel(
@@ -198,7 +200,7 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
     emit(WaitingForUpdateOrAddResidentialUnit());
     try {
       final response = await api.update(
-        '${ApiLink.updateResidentialUnit}/${selectedUnit?.unitId}',
+        '${ApiLink.updateResidentialUnit}/${selectedUnit?.id}',
         data: {'name': name},
       );
       if (response["isSuccess"]) {
@@ -235,7 +237,7 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
       if (response["isSuccess"]) {
         emit(
           ResidentialUnitDeletedSuccessfully(
-            message: response["message"] ?? 'Deleted',
+            message: response["data"] ?? 'Deleted',
           ),
         );
         await getResidentialUnitsDashboard();
@@ -266,7 +268,7 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
     emit(WaitingForUpdateOrAddResidentialUnit());
     try {
       final response = await api.update(
-        ApiLink.changeResidentialUnitsManager(unitId: selectedUnit!.unitId),
+        ApiLink.changeResidentialUnitsManager(unitId: selectedUnit!.id),
         data: {
           'identifier': identifier,
           'password': password,

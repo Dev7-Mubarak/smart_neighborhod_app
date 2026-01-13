@@ -1371,5 +1371,9 @@
   "ChangeUnitManagerName": "Change Unit Manager Name",
   "@ChangeUnitManagerName": {
     "description": "Change Unit Manager Name"
+  },
+     "ResidentialUnitManagerName": "Name of residential Unit manager",
+  "@ResidentialUnitManagerName": {
+    "description": "Name of residential Unit manager"
   }
 }

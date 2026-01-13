@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_Dashboard_model.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_units_model.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/unit_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
 
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';
@@ -22,7 +22,7 @@ class ResidentialNeighborhoodsCubit
   ResidentialNeighborhoodDashboardModel? _dashboardData;
   List<ResidentialNeighborhoodModel> _allNeighborhoods = [];
   ResidentialNeighborhoodUnitModel? _neighborhoodWithUnits;
-  List<Unit> _allNeighborhoodUnits = [];
+  List<ResidentialUnitModel> _allNeighborhoodUnits = [];
 
   Future<void> setResidentialNeighborhood(
     ResidentialNeighborhoodModel residentialNeighborhood,
