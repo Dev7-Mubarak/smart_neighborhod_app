@@ -163,12 +163,9 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                                 );
                               },
                               selectedItem: initialSelectedNeighborhood,
-                              labelText:
-                                  locale.chooseNeighborhood ,
-                              hintText:
-                                  locale.chooseNeighborhood,
-                              searchHintText:
-                                  locale.searchNeighborhoodHint,
+                              labelText: locale.chooseNeighborhood,
+                              hintText: locale.chooseNeighborhood,
+                              searchHintText: locale.searchNeighborhoodHint,
                               validator: (item) =>
                                   AppValidator.validateDropdown(item),
                             );
@@ -219,7 +216,7 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      SmallText(text: locale.username ?? 'Username'),
+                      SmallText(text: locale.username),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -230,7 +227,7 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                         validator: AppValidator.validateEmptyField,
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      SmallText(text: locale.password ?? 'Password'),
+                      SmallText(text: locale.password),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),

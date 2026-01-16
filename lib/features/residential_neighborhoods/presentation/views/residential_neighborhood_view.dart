@@ -219,7 +219,10 @@ class _ResidentialNeighborhoodViewState
                                     ..getResidentialNeighborhoodUnits(
                                       neighborhood.neighborhoodId,
                                     ),
-                            );
+                            ).then((value) {
+                              _residentialNeighborhoodsCubit
+                                  .getResidentialNeighborhoodsDashboard();
+                            });
                           },
                           onLongPress: () {
                             if (_profileModel?.role == AppRole.Admin.name) {

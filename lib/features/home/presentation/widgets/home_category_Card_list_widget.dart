@@ -54,6 +54,14 @@ class _HomeCategoryCardListWidgetState
         },
       ),
       CategoryCard(
+        title: 'المربعات السكنية',
+        imagePath: AppImage.homeresidential,
+        backgroundColor: const Color(0xFF9AC4A6),
+        onTap: () {
+          Navigator.pushNamed(context, AppRoute.residentialBlockNew);
+        },
+      ),
+      CategoryCard(
         title: "قسم الاتفاقيات",
         imagePath: AppImage.homehandshake,
         backgroundColor: const Color(0xFF878CED),
