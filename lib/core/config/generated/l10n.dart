@@ -329,10 +329,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Change Block Manager`
+  /// `Change Manager`
   String get changeManager {
     return Intl.message(
-      'Change Block Manager',
+      'Change Manager',
       name: 'changeManager',
       desc: 'Change manager label',
       args: [],
@@ -1040,6 +1040,16 @@ class AppLocalizations {
       'Confirm',
       name: 'confirm',
       desc: 'Confirm button',
+      args: [],
+    );
+  }
+
+  /// `Change Block Manager`
+  String get changeBlockManager {
+    return Intl.message(
+      'Change Block Manager',
+      name: 'changeBlockManager',
+      desc: '',
       args: [],
     );
   }
@@ -2860,6 +2870,61 @@ class AppLocalizations {
       'Name of residential Unit manager',
       name: 'ResidentialUnitManagerName',
       desc: 'Name of residential Unit manager',
+      args: [],
+    );
+  }
+
+  /// `Add Residential Block `
+  String get addResidentialBlock {
+    return Intl.message(
+      'Add Residential Block ',
+      name: 'addResidentialBlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose unit`
+  String get chooseUnit {
+    return Intl.message(
+      'Choose unit',
+      name: 'chooseUnit',
+      desc: 'Choose unit label',
+      args: [],
+    );
+  }
+
+  /// `families`
+  String get Families {
+    return Intl.message(
+      'families',
+      name: 'Families',
+      desc: 'Label for families',
+      args: [],
+    );
+  }
+
+  /// `residential Blocks Options`
+  String get residentialBlocksOptions {
+    return Intl.message(
+      'residential Blocks Options',
+      name: 'residentialBlocksOptions',
+      desc: 'residential blocks options',
+      args: [],
+    );
+  }
+
+  /// `family`
+  String get family {
+    return Intl.message('family', name: 'family', desc: 'family', args: []);
+  }
+
+  /// `Looking for a family`
+  String get lookingFamily {
+    return Intl.message(
+      'Looking for a family',
+      name: 'lookingFamily',
+      desc: 'lookingFamily',
       args: [],
     );
   }

@@ -14,8 +14,8 @@ import 'package:smart_negborhood_app/features/families/presentation/views/family
 import 'package:smart_negborhood_app/features/home/presentation/views/main_view.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/data/models/bind_cubit.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/change_block_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/change_block_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/add_residential_neighborhood_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/change_neighborhood_manager_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/residential_neighborhood_units_view.dart';
@@ -49,22 +49,21 @@ import 'package:smart_negborhood_app/features/families/presentation/views/family
 import 'package:smart_negborhood_app/features/onBoarding/presentation/views/onboarding.dart';
 import 'package:smart_negborhood_app/features/people/presentation/views/add_update_person.dart';
 import 'package:smart_negborhood_app/features/people/presentation/views/all_pepole.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/add_block_view.dart';
-import 'package:smart_negborhood_app/features/residdentailBlocks/presentation/views/residential_block_detial.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/add_update_team.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/add_update_team_member.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/all_teams.dart';
 import 'package:smart_negborhood_app/features/teams/presentation/views/team_details.dart';
-import '../../features/residdentailBlocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
-import '../../features/residdentailBlocks/cubits/blockCubit/block_cubit.dart';
 import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
-import '../../features/residdentailBlocks/presentation/views/residdential_blocks.dart';
 import '../../features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart'
     show ResidentialNeighborhoodsCubit;
 import '../../features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart'
     show ResidentialUnitsCubit;
 import '../../features/residential_neighborhoods/presentation/views/residential_neighborhood_view.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/add_residential_block_view.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_families_view.dart';
+import '../../features/residential_blocks/cubits/residential_blocks_cubit/residential_blocks_cubit.dart'
+    show ResidentialBlocksCubit;
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -73,11 +72,53 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const Onboarding());
       case AppRoute.mainHome:
         return MaterialPageRoute(builder: (context) => const MainHome());
-      case AppRoute.residentialBlocks:
+      case AppRoute.residentialBlockNew:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => BlockCubit(api: DioConsumer(dio: Dio())),
+            create: (context) =>
+                ResidentialBlocksCubit(api: DioConsumer(dio: Dio())),
             child: const ResidentialBlockView(),
+          ),
+        );
+      case AppRoute.addResidentialBlock:
+        final residentialBlocksCubit =
+            settings.arguments as ResidentialBlocksCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider<ResidentialUnitsCubit>(
+                create: (context) =>
+                    ResidentialUnitsCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialBlocksCubit),
+            ],
+            child: AddResidentialBlockView(),
+          ),
+        );
+      case AppRoute.changeResidentialBlockManager:
+        final residentialBlocksCubit =
+            settings.arguments as ResidentialBlocksCubit;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: residentialBlocksCubit),
+              BlocProvider<PersonCubit>(
+                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: const ChangeBlockManagerView(),
+          ),
+        );
+      case AppRoute.residentialBlockFamilies:
+        final residentialBlocksCubit =
+            settings.arguments as ResidentialBlocksCubit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: residentialBlocksCubit,
+            child: ResidentialBlockFamiliesView(),
           ),
         );
       case AppRoute.residentialNeighborhoods:
@@ -124,22 +165,22 @@ class AppRouter {
             child: const AllPeople(),
           ),
         );
-      case AppRoute.residentialBlockDetial:
-        final blockId = settings.arguments as int;
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider<FamilyCubit>(
-                create: (_) =>
-                    FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
-              ),
-              BlocProvider<BlockDetailCubit>(
-                create: (_) => BlockDetailCubit(api: DioConsumer(dio: Dio())),
-              ),
-            ],
-            child: ResiddentialBlocksDetail(blockId: blockId),
-          ),
-        );
+      // case AppRoute.residentialBlockDetial:
+      //   final blockId = settings.arguments as int;
+      //   return MaterialPageRoute(
+      //     builder: (_) => MultiBlocProvider(
+      //       providers: [
+      //         BlocProvider<FamilyCubit>(
+      //           create: (_) =>
+      //               FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
+      //         ),
+      //         BlocProvider<BlockDetailCubit>(
+      //           create: (_) => BlockDetailCubit(api: DioConsumer(dio: Dio())),
+      //         ),
+      //       ],
+      //       child: ResiddentialBlocksDetail(blockId: blockId),
+      //     ),
+      //   );
       case AppRoute.addUpdatePerson:
         final personCubit = settings.arguments as PersonCubit;
         return MaterialPageRoute(
@@ -149,26 +190,26 @@ class AppRouter {
           ),
         );
       case AppRoute.addUpdateFamily:
-        final bindCubit = settings.arguments as BindCubit;
-        return MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: bindCubit.familyCubit),
-              BlocProvider.value(value: bindCubit.blockDetailCubit),
-              BlocProvider(
-                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
-              ),
-              BlocProvider(
-                create: (_) =>
-                    FamilyCategoryCubit(api: DioConsumer(dio: Dio())),
-              ),
-            ],
-            child: AddUpdateFamily(
-              blockId: bindCubit.familyCubit.blockId,
-              family: bindCubit.familyCubit.family,
-            ),
-          ),
-        );
+      // final bindCubit = settings.arguments as BindCubit;
+      // return MaterialPageRoute(
+      //   builder: (context) => MultiBlocProvider(
+      //     providers: [
+      //       BlocProvider.value(value: bindCubit.familyCubit),
+      //       BlocProvider.value(value: bindCubit.blockDetailCubit),
+      //       BlocProvider(
+      //         create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+      //       ),
+      //       BlocProvider(
+      //         create: (_) =>
+      //             FamilyCategoryCubit(api: DioConsumer(dio: Dio())),
+      //       ),
+      //     ],
+      //     child: AddUpdateFamily(
+      //       blockId: bindCubit.familyCubit.blockId,
+      //       family: bindCubit.familyCubit.family,
+      //     ),
+      //   ),
+      // );
       case AppRoute.login:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -203,21 +244,6 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: forgetapasswordCubit,
             child: CreateNewPassword(),
-          ),
-          fullscreenDialog: false,
-        );
-
-      case AppRoute.addBlock:
-        final blockCubit = settings.arguments as BlockCubit;
-        return MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider<PersonCubit>(
-                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
-              ),
-              BlocProvider.value(value: blockCubit),
-            ],
-            child: const AddBlockView(),
           ),
           fullscreenDialog: false,
         );
@@ -303,22 +329,6 @@ class AppRouter {
               ),
             ],
             child: AddUpdateAssistanc(assistancProject: assistancCubit.project),
-          ),
-        );
-      case AppRoute.changeBlockManager:
-        final blockCubit = settings.arguments as BlockCubit;
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider<PersonCubit>(
-                create: (context) => PersonCubit(api: DioConsumer(dio: Dio())),
-              ),
-              BlocProvider.value(
-                value: blockCubit,
-                child: ChangeBlockManagerView(),
-              ),
-            ],
-            child: ChangeBlockManagerView(),
           ),
         );
       case AppRoute.assistanceDetiles:
@@ -536,13 +546,19 @@ class AppRoute {
   static const String residentialUnitBlocks = '/ResidentialUnitBlocks';
 
   static const String settings = '/settings';
-  static const String residentialBlockDetial = '/ResidentialBlockDetial';
-  static const String residentialBlocks = '/ResidentialBlock';
-  static const String changeBlockManager = '/ChangeBlockManager';
+
+  // static const String residentialBlockDetial = '/ResidentialBlockDetial';
+  // static const String residentialBlocks = '/ResidentialBlock';
+  static const String residentialBlockNew = '/ResidentialBlocks';
+  static const String addResidentialBlock = '/AddResidentialBlock';
+  static const String changeResidentialBlockManager =
+      '/ChangeResidentialBlockManager';
+  static const String residentialBlockFamilies = '/ResidentialBlockFamilies';
+  // static const String changeBlockManager = '/ChangeBlockManager';
   static const String forgetapassword = '/forgetapassword';
   static const String checkEmail = '/CheckEmail';
   static const String createNewPassword = '/createNewPassword';
-  static const String addBlock = '/AddBlock';
+  // static const String addBlock = '/AddBlock';
   static const String familyDetiles = '/FamilyDetiles';
   static const String addUpdateFamily = '/AddUpdateFamily';
   static const String addFamilyMember = '/AddFamilyMember';

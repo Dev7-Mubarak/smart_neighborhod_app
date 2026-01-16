@@ -13,7 +13,6 @@ import '../../../../core/common/widgets/CustomDropdownGeneric.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
 import '../../../../core/common/widgets/custom_text_input_filed.dart';
-import '../../../residdentailBlocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
 import '../../cubits/family_cubit/family_state.dart';
 import '../../../people/cubits/person_cubit/person_cubit.dart';
 import '../../../people/data/models/Person.dart';
@@ -41,7 +40,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   late PersonCubit personCubit;
   late FamilyCubit familyCubit;
   late FamilyCategoryCubit familyCategoryCubit;
-  late BlockDetailCubit blockDetailCubit;
+  // late BlockDetailCubit blockDetailCubit;
 
   @override
   void initState() {
@@ -49,7 +48,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
     personCubit = context.read<PersonCubit>();
     familyCubit = context.read<FamilyCubit>();
     familyCategoryCubit = context.read<FamilyCategoryCubit>();
-    blockDetailCubit = context.read<BlockDetailCubit>();
+    // blockDetailCubit = context.read<BlockDetailCubit>();
 
     _initializeData();
   }
@@ -94,7 +93,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
       final future = widget.family == null
           ? familyCubit.addNewFamily(family)
           : familyCubit.updateFamily(family);
-      future.then((_) => blockDetailCubit.getBlockDetailes(widget.blockId));
+      // future.then((_) => blockDetailCubit.getBlockDetailes(widget.blockId));
     }
   }
 

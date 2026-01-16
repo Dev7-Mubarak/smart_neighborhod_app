@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Change Unit Manager Name",
     ),
     "ChangeUnitName": MessageLookupByLibrary.simpleMessage("Change Unit Name"),
+    "Families": MessageLookupByLibrary.simpleMessage("families"),
     "Neighborhoods": MessageLookupByLibrary.simpleMessage("Neighborhoods"),
     "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
       "Name of residential neighborhood manager",
@@ -71,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "addNewMember": MessageLookupByLibrary.simpleMessage("Add New Member"),
     "addNewPerson": MessageLookupByLibrary.simpleMessage("Add New Person"),
+    "addResidentialBlock": MessageLookupByLibrary.simpleMessage(
+      "Add Residential Block ",
+    ),
     "addTeam": MessageLookupByLibrary.simpleMessage("Add Team"),
     "addTeamToAssistanceTitle": MessageLookupByLibrary.simpleMessage(
       "Add Team to Assistance Distribution",
@@ -108,12 +112,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "bloodType": MessageLookupByLibrary.simpleMessage("Blood Type"),
     "budget": MessageLookupByLibrary.simpleMessage("Budget"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "changeBlockManager": MessageLookupByLibrary.simpleMessage(
+      "Change Block Manager",
+    ),
     "changeBlockName": MessageLookupByLibrary.simpleMessage(
       "Change Block Name",
     ),
-    "changeManager": MessageLookupByLibrary.simpleMessage(
-      "Change Block Manager",
-    ),
+    "changeManager": MessageLookupByLibrary.simpleMessage("Change Manager"),
     "changeManagerLogic": MessageLookupByLibrary.simpleMessage(
       "Here you can implement the logic to change the manager.",
     ),
@@ -147,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseSecondPartyLabel": MessageLookupByLibrary.simpleMessage(
       "Choose Second Party",
     ),
+    "chooseUnit": MessageLookupByLibrary.simpleMessage("Choose unit"),
     "clickForMoreDetails": MessageLookupByLibrary.simpleMessage(
       "Click for more details",
     ),
@@ -261,6 +267,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
       "No managers available",
     ),
+    "family": MessageLookupByLibrary.simpleMessage("family"),
     "familyAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Family assigned successfully",
     ),
@@ -310,6 +317,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "join_date": MessageLookupByLibrary.simpleMessage("Join Date"),
     "location": MessageLookupByLibrary.simpleMessage("Location"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "lookingFamily": MessageLookupByLibrary.simpleMessage(
+      "Looking for a family",
+    ),
     "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
       "...looking for a residential neighborhood",
     ),
@@ -471,6 +481,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialBlocksAndFamilies": MessageLookupByLibrary.simpleMessage(
       "Residential Blocks and Distributed Families",
+    ),
+    "residentialBlocksOptions": MessageLookupByLibrary.simpleMessage(
+      "residential Blocks Options",
     ),
     "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
       "residential Neighborhood Options",

@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "ChangeUnitName": MessageLookupByLibrary.simpleMessage(
       "تغيير اسم الوحده السكنية",
     ),
+    "Families": MessageLookupByLibrary.simpleMessage("الأسر"),
     "Neighborhoods": MessageLookupByLibrary.simpleMessage("الأحياء"),
     "ResidentialNeighborhoodManagerName": MessageLookupByLibrary.simpleMessage(
       "مدير الحي السكني",
@@ -72,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "addNewMember": MessageLookupByLibrary.simpleMessage("إضافة فرد جديد"),
     "addNewPerson": MessageLookupByLibrary.simpleMessage("إضافة شخص جديد"),
+    "addResidentialBlock": MessageLookupByLibrary.simpleMessage(
+      "إضافة مربع سكني",
+    ),
     "addTeam": MessageLookupByLibrary.simpleMessage("إضافة فريق"),
     "addTeamToAssistanceTitle": MessageLookupByLibrary.simpleMessage(
       "إضافة فريق لتوزيع المساعدات",
@@ -107,10 +111,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "bloodType": MessageLookupByLibrary.simpleMessage("فصيلة الدم"),
     "budget": MessageLookupByLibrary.simpleMessage("الميزانية"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
-    "changeBlockName": MessageLookupByLibrary.simpleMessage("تغيير اسم المربع"),
-    "changeManager": MessageLookupByLibrary.simpleMessage(
+    "changeBlockManager": MessageLookupByLibrary.simpleMessage(
       "تغيير مدير المربع السكني",
     ),
+    "changeBlockName": MessageLookupByLibrary.simpleMessage("تغيير اسم المربع"),
+    "changeManager": MessageLookupByLibrary.simpleMessage("تغيير المدير"),
     "changeManagerLogic": MessageLookupByLibrary.simpleMessage(
       "هنا يمكنك تنفيذ منطق تغيير المدير.",
     ),
@@ -142,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseSecondPartyLabel": MessageLookupByLibrary.simpleMessage(
       "اختر الطرف الثاني",
     ),
+    "chooseUnit": MessageLookupByLibrary.simpleMessage("اختر الوحدة"),
     "clickForMoreDetails": MessageLookupByLibrary.simpleMessage(
       "اضغط للمزيد من التفاصيل",
     ),
@@ -262,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
       "لا يوجد مديرين متاحين",
     ),
+    "family": MessageLookupByLibrary.simpleMessage("أسرة"),
     "familyAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تعيين الأسرة بنجاح",
     ),
@@ -313,6 +320,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "join_date": MessageLookupByLibrary.simpleMessage("تاريخ انضمامه"),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "lookingFamily": MessageLookupByLibrary.simpleMessage("ابحث عن أسرة"),
     "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
       "...ابحث عن حي سكني",
     ),
@@ -469,6 +477,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "residentialBlocksAndFamilies": MessageLookupByLibrary.simpleMessage(
       "المربعات السكنية و الأسر التي تم التوزيع لها",
+    ),
+    "residentialBlocksOptions": MessageLookupByLibrary.simpleMessage(
+      "خيارات المربعات السكنية ",
     ),
     "residentialNeighborhoodOptions": MessageLookupByLibrary.simpleMessage(
       "خيارات الأحياء السكنية ",

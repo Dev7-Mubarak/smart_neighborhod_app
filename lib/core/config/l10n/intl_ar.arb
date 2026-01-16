@@ -290,8 +290,10 @@
   "@main": {},
   "blockManager": "مدير المربع",
   "@blockManager": {},
-  "residentialBlocks": "المربعات السكنية",
+    "residentialBlocks": "المربعات السكنية",
   "@residentialBlocks": {},
+  "addResidentialBlock": "إضافة مربع سكني",
+  "@addResidentialBlock": {},
   "verifyCode": "التحقق من رمز الكود",
   "@verifyCode": {
     "description": "The sub title of the CheckEmail page"
@@ -394,7 +396,7 @@
   "@confirm": {
     "description": "Confirm button"
   },
-  "changeManager": "تغيير مدير المربع السكني",
+  "changeBlockManager": "تغيير مدير المربع السكني",
   "failedToLoadPeople": "لا يوجد مديرين متاحين",
   "searchFamilyHead": "ابحث عن مدير...",
   "chooseFamilyHead": "اختر المدير",
@@ -409,6 +411,11 @@
   "selectFamily": "إختر أسرة",
   "@selectFamily": {
     "description": "Label for selecting a family"
+  },
+  
+  "Families": "الأسر",
+  "@Families": {
+    "description": "Label for families"
   },
   "searchFamilyHint": "ابحث عن أسرة...",
   "@searchFamilyHint": {
@@ -1127,6 +1134,10 @@
     "description": "Search neighborhood hint"
   },
 
+ "residentialBlocksOptions": "خيارات المربعات السكنية ",
+  "@residentialBlocksOptions": {
+    "description": "residential blocks options"
+  },
   "residentialUnitsOptions": "خيارات الوحدات السكنية ",
   "@residentialUnitsOptions": {
     "description": "residential units options"
@@ -1142,5 +1153,21 @@
     "ResidentialUnitManagerName": "مدير الوحده السكنية",
   "@ResidentialUnitManagerName": {
     "description": "Name of residential Unit manager"
+  },
+  
+  "chooseUnit": "اختر الوحدة",
+  "@chooseUnit": {
+    "description": "Choose unit label"
+  },
+
+   
+  "family": "أسرة",
+  "@family": {
+    "description": "family"
+  },
+
+  "lookingFamily": "ابحث عن أسرة",
+  "@lookingFamily": {
+    "description": "family"
   }
 }
