@@ -1178,5 +1178,14 @@
   "lookingFamily": "Looking for a family",
   "@lookingFamily": {
     "description": "lookingFamily"
+  },
+  
+  "familyMembers": "family members",
+  "@familyMembers": {
+    "description": "family members"
+  },
+ "lookingFamilyMembers": "Looking for family members",
+  "@lookingFamilyMembers": {
+    "description": "Looking for family members"
   }
 }

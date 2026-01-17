@@ -1161,12 +1161,21 @@
   },
 
    
-  "family": "أسرة",
+  "family": "العائلة",
   "@family": {
     "description": "family"
   },
 
-  "lookingFamily": "ابحث عن أسرة",
+
+  "familyMembers": "أفراد العائلة",
+  "@familyMembers": {
+    "description": "family members"
+  },
+ "lookingFamilyMembers": "ابحث عن أفراد العائلة",
+  "@lookingFamilyMembers": {
+    "description":"Looking for family members"
+  },
+  "lookingFamily": "ابحث عن عائلة",
   "@lookingFamily": {
     "description": "family"
   }

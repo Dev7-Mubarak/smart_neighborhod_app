@@ -2928,6 +2928,26 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `family members`
+  String get familyMembers {
+    return Intl.message(
+      'family members',
+      name: 'familyMembers',
+      desc: 'family members',
+      args: [],
+    );
+  }
+
+  /// `Looking for family members`
+  String get lookingFamilyMembers {
+    return Intl.message(
+      'Looking for family members',
+      name: 'lookingFamilyMembers',
+      desc: 'Looking for family members',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

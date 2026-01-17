@@ -277,6 +277,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "familyHead": MessageLookupByLibrary.simpleMessage("Family Head"),
     "familyHeadName": MessageLookupByLibrary.simpleMessage("Family Head Name"),
+    "familyMembers": MessageLookupByLibrary.simpleMessage("family members"),
     "familyName": MessageLookupByLibrary.simpleMessage("Family Name"),
     "familyType": MessageLookupByLibrary.simpleMessage("Family Type"),
     "female": MessageLookupByLibrary.simpleMessage("Female"),
@@ -319,6 +320,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "lookingFamily": MessageLookupByLibrary.simpleMessage(
       "Looking for a family",
+    ),
+    "lookingFamilyMembers": MessageLookupByLibrary.simpleMessage(
+      "Looking for family members",
     ),
     "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
       "...looking for a residential neighborhood",
