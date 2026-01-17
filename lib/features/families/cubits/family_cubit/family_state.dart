@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
 
 import '../../data/models/family.dart';
 import '../../data/models/family_detiles_model.dart';
@@ -16,8 +17,11 @@ class FamilyLoaded extends FamilyState {
 
 class FamilyDetilesLoaded extends FamilyState {
   final FamilyDetilesModel familyDetiles;
-
-  FamilyDetilesLoaded({required this.familyDetiles});
+  final List<FamilyMember> allFamilyMembers;
+  FamilyDetilesLoaded({
+    required this.familyDetiles,
+    required this.allFamilyMembers,
+  });
 }
 
 class FamilyLoading extends FamilyState {}

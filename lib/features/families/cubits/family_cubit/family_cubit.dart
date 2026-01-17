@@ -11,17 +11,19 @@ import '../../data/models/family_detiles_model.dart';
 
 class FamilyCubit extends Cubit<FamilyState> {
   final DioConsumer api;
-  FamilyCubit(this.blockId, {required this.api}) : super(FamilyInitial());
+  FamilyCubit({this.blockId, required this.api}) : super(FamilyInitial());
 
   static FamilyCubit get(context) => BlocProvider.of(context);
 
   List<Family> allFamilies = [];
-  final int blockId;
+  final int? blockId;
   int? selectedFamilyHeadId;
   HeadOfFamily? selectedFamilyHead;
   int? selectedCategoryId;
   Family? family;
   FamilyMember? familyMember;
+  FamilyDetilesModel? _familyDetiles;
+  List<FamilyMember> _allFamilyMembers = [];
 
   void setFamily(Family? family) {
     this.family = family;
@@ -130,16 +132,49 @@ class FamilyCubit extends Cubit<FamilyState> {
           ),
         );
       }
-      emit(
-        FamilyDetilesLoaded(
-          familyDetiles: FamilyDetilesModel.fromJson(response["data"]),
-        ),
-      );
+      _familyDetiles = FamilyDetilesModel.fromJson(response["data"]);
+      _allFamilyMembers = _familyDetiles!.familyMembers;
+
+      if (!isClosed) {
+        emit(
+          FamilyDetilesLoaded(
+            familyDetiles: _familyDetiles!,
+            allFamilyMembers: _allFamilyMembers,
+          ),
+        );
+      }
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
+  }
+
+  void filterFamilyMembers(String query) {
+    if (_familyDetiles == null) return;
+
+    if (query.isEmpty) {
+      emit(
+        FamilyDetilesLoaded(
+          familyDetiles: _familyDetiles!,
+          allFamilyMembers: _allFamilyMembers,
+        ),
+      );
+      return;
+    }
+    final filteredList = _allFamilyMembers
+        .where(
+          (member) => member.person.fullName.toLowerCase().contains(
+            query.toLowerCase(),
+          ),
+        )
+        .toList();
+    emit(
+      FamilyDetilesLoaded(
+        familyDetiles: _familyDetiles!,
+        allFamilyMembers: filteredList,
+      ),
+    );
   }
 
   Future<void> addFamilyMember({

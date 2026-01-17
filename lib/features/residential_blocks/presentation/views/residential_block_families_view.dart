@@ -8,6 +8,7 @@ import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
 import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
+import 'package:smart_negborhood_app/core/common/widgets/table.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
@@ -137,111 +138,31 @@ class _ResidentialBlockFamiliesViewState
       }
 
       return SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
-        child: StaggeredGrid.count(
-          crossAxisCount: crossAxisCount,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          children: state.allBlockFamilies.map((family) {
-            return StaggeredGridTile.fit(
-              crossAxisCellCount: 1,
-              child: _buildFamilyCard(family, locale),
-            );
+        child: CustomTableWidget(
+          columnTitles: const ["رقم", "إسم العائلة", "التصنيف", "الموقع"],
+          columnFlexes: const [1, 3, 2, 3],
+          rowData: state.allBlockFamilies.asMap().entries.map((entry) {
+            int index = entry.key;
+            var family = entry.value;
+            return [
+              '${index + 1}',
+              family.name,
+              family.familyCategoryName,
+              family.location,
+            ];
           }).toList(),
+          onRowTap: (rowIndex) {
+            Navigator.pushNamed(
+              context,
+              AppRoute.residentialBlockFamilyMembers,
+              arguments: state.allBlockFamilies[rowIndex].id,
+            );
+          },
+          originalObjects: state.allBlockFamilies,
         ),
       );
     }
 
     return const SizedBox.shrink();
-  }
-
-  Widget _buildFamilyCard(FamilyModel family, locale) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              color: AppColor.primaryColor.withOpacity(0.1),
-              child: Icon(
-                Icons.family_restroom,
-                size: 40,
-                color: AppColor.primaryColor,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    family.name,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.group, size: 14, color: Colors.grey),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          family.familyCategoryName,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        size: 14,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          family.location,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

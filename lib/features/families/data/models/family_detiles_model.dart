@@ -32,8 +32,8 @@ class FamilyDetilesModel {
   late String familyNotes;
   late int familyCategoryId;
   late String familyCategoryName;
-  late int familyTypeId;
-  late String familyTypeName;
+  int familyTypeId = 0;
+  String familyTypeName = "";
   late int blockId;
   late String blockName;
   HeadOfFamily? headOfFamily;
@@ -47,8 +47,8 @@ class FamilyDetilesModel {
     required this.familyNotes,
     required this.familyCategoryId,
     required this.familyCategoryName,
-    required this.familyTypeId,
-    required this.familyTypeName,
+    this.familyTypeId = 0,
+    this.familyTypeName = "",
     required this.blockId,
     required this.blockName,
     this.headOfFamily,

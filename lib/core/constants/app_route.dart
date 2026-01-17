@@ -15,6 +15,7 @@ import 'package:smart_negborhood_app/features/home/presentation/views/main_view.
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/change_block_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_family_members_view.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/add_residential_neighborhood_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/change_neighborhood_manager_view.dart';
@@ -121,6 +122,17 @@ class AppRouter {
             child: ResidentialBlockFamiliesView(),
           ),
         );
+      case AppRoute.residentialBlockFamilyMembers:
+        final familyId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                FamilyCubit(api: DioConsumer(dio: Dio()))
+                  ..getFamilyDetilesById(familyId),
+            child: const ResidentialBlockFamilyMembersView(),
+          ),
+        );
+
       case AppRoute.residentialNeighborhoods:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -362,7 +374,7 @@ class AppRouter {
             providers: [
               BlocProvider<FamilyCubit>(
                 create: (context) => FamilyCubit(
-                  assistancCubit.blockId!,
+                  blockId: assistancCubit.blockId,
                   api: DioConsumer(dio: Dio()),
                 ),
               ),
@@ -554,6 +566,8 @@ class AppRoute {
   static const String changeResidentialBlockManager =
       '/ChangeResidentialBlockManager';
   static const String residentialBlockFamilies = '/ResidentialBlockFamilies';
+  static const String residentialBlockFamilyMembers =
+      '/ResidentialBlockFamilyMembers';
   // static const String changeBlockManager = '/ChangeBlockManager';
   static const String forgetapassword = '/forgetapassword';
   static const String checkEmail = '/CheckEmail';

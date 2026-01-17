@@ -268,7 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
       "لا يوجد مديرين متاحين",
     ),
-    "family": MessageLookupByLibrary.simpleMessage("أسرة"),
+    "family": MessageLookupByLibrary.simpleMessage("العائلة"),
     "familyAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تعيين الأسرة بنجاح",
     ),
@@ -278,6 +278,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "familyHead": MessageLookupByLibrary.simpleMessage("رب الأسرة"),
     "familyHeadName": MessageLookupByLibrary.simpleMessage("إسم رب الأسرة"),
+    "familyMembers": MessageLookupByLibrary.simpleMessage("أفراد العائلة"),
     "familyName": MessageLookupByLibrary.simpleMessage("اسم الأسرة"),
     "familyType": MessageLookupByLibrary.simpleMessage("نوع الأسرة"),
     "female": MessageLookupByLibrary.simpleMessage("أنثى"),
@@ -320,7 +321,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "join_date": MessageLookupByLibrary.simpleMessage("تاريخ انضمامه"),
     "location": MessageLookupByLibrary.simpleMessage("الموقع"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-    "lookingFamily": MessageLookupByLibrary.simpleMessage("ابحث عن أسرة"),
+    "lookingFamily": MessageLookupByLibrary.simpleMessage("ابحث عن عائلة"),
+    "lookingFamilyMembers": MessageLookupByLibrary.simpleMessage(
+      "ابحث عن أفراد العائلة",
+    ),
     "lookingNeighborhood": MessageLookupByLibrary.simpleMessage(
       "...ابحث عن حي سكني",
     ),
