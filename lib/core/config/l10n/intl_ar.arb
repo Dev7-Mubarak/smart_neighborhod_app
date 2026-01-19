@@ -1178,5 +1178,24 @@
   "lookingFamily": "ابحث عن عائلة",
   "@lookingFamily": {
     "description": "family"
+  },
+
+  
+  "unitsInNeighborhood": "الوحدات السكنية في",
+  "@unitsInNeighborhood": {
+    "description": "units in neighborhood"
+  },
+    "blocksInUnit": "المربعات السكنية في",
+  "@blocksInUnit": {
+    "description": "blocks in unit"
+  },
+    "familiesInBlock": "الأسر في",
+  "@familiesInBlock": {
+    "description": "families in block"
+  }
+  ,
+    "noAvailableResidentialUnits": "لا يوجد وحدات سكنية متاحه",
+  "@noAvailableResidentialUnits": {
+    "description": "no available residential units"
   }
 }

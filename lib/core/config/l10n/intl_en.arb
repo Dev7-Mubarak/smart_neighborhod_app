@@ -1187,5 +1187,21 @@
  "lookingFamilyMembers": "Looking for family members",
   "@lookingFamilyMembers": {
     "description": "Looking for family members"
+  },
+    "unitsInNeighborhood": "units in neighborhood",
+  "@unitsInNeighborhood": {
+    "description": "units in neighborhood"
+  },
+     "blocksInUnit": "blocks in unit",
+  "@blocksInUnit": {
+    "description": "blocks in unit"
+  },
+    "familiesInBlock": "families in block",
+  "@familiesInBlock": {
+    "description": "families in block"
+  },
+    "noAvailableResidentialUnits":" no available residential units",
+  "@noAvailableResidentialUnits": {
+    "description": "no available residential units"
   }
 }

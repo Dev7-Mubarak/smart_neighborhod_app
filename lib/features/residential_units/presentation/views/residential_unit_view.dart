@@ -13,6 +13,7 @@ import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart'
 import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_state.dart';
 import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
+import 'package:smart_negborhood_app/features/residential_units/presentation/widgets/unit_card_widget.dart';
 import 'package:smart_negborhood_app/features/residential_units/presentation/widgets/unit_options_sheet.dart';
 import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/common/widgets/no_result_widget.dart';
@@ -204,7 +205,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                     children: state.filteredUnits.map((unit) {
                       return StaggeredGridTile.fit(
                         crossAxisCellCount: 1,
-                        child: GestureDetector(
+                        child: UnitCardWidget(
                           onTap: () {
                             Navigator.pushNamed(
                               context,
@@ -219,62 +220,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                               _showOptions(unit, locale);
                             }
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 20,
-                                    ),
-                                    color: AppColor.primaryColor.withOpacity(
-                                      0.1,
-                                    ),
-                                    child: Icon(
-                                      Icons.home_work_rounded,
-                                      size: 40,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          unit.name,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          '${unit.blocksCount} ${locale.Blocks}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          unit: unit,
                         ),
                       );
                     }).toList(),

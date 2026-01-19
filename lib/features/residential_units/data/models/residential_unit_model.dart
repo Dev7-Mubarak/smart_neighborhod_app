@@ -8,7 +8,8 @@ class ResidentialUnitModel {
   ResidentialUnitModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'] ?? '';
-    blocksCount = json['blocksCount'] ?? 0;
+
+    blocksCount = json['blockCount'] ?? 0;
     unitManagerId = json['unitManagerId'] ?? '';
     unitManagerName = json['unitManagerName'] ?? '';
   }

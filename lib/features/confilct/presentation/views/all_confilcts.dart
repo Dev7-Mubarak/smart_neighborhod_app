@@ -267,7 +267,7 @@ class _AllConflictState extends State<AllConflict> {
         Expanded(
           child: SearchableTextFormField(
             controller: _searchingController,
-            hintText: 'ابحث عن اسم الفريق',
+            hintText: 'ابحث عن إتفاقية ',
             bachgroundColor: AppColor.gray2,
             prefixIcon: Icons.search,
             suffixIcon: IconButton(

@@ -103,6 +103,12 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
   }) async {
     emit(WaitingForUpdateOrAddResidentialBlock());
     try {
+      if (selectedManager == null) {
+        throw Exception("لا يمكن إنشاء مربع سكني من دون ان يكون له مدير ");
+      }
+      if (selectedUnitId == null) {
+        throw Exception("لا يمكن إنشاء مربع سكني من دون ان يكون له وحدة سكنية");
+      }
       final response = await api.post(
         ApiLink.addResidentialBlock,
         data: {

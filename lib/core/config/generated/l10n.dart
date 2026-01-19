@@ -2948,6 +2948,46 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `units in neighborhood`
+  String get unitsInNeighborhood {
+    return Intl.message(
+      'units in neighborhood',
+      name: 'unitsInNeighborhood',
+      desc: 'units in neighborhood',
+      args: [],
+    );
+  }
+
+  /// `blocks in unit`
+  String get blocksInUnit {
+    return Intl.message(
+      'blocks in unit',
+      name: 'blocksInUnit',
+      desc: 'blocks in unit',
+      args: [],
+    );
+  }
+
+  /// `families in block`
+  String get familiesInBlock {
+    return Intl.message(
+      'families in block',
+      name: 'familiesInBlock',
+      desc: 'families in block',
+      args: [],
+    );
+  }
+
+  /// ` no available residential units`
+  String get noAvailableResidentialUnits {
+    return Intl.message(
+      ' no available residential units',
+      name: 'noAvailableResidentialUnits',
+      desc: 'no available residential units',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

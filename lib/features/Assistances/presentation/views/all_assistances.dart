@@ -75,52 +75,53 @@ class _AllAssistancesState extends State<AllAssistances> {
   }
 
   Widget showLoadingIndicator() {
-    return Expanded(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 16),
-            Text('جاري تحميل المساعدات...'),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 16),
+          Text('جاري تحميل المساعدات...'),
+        ],
       ),
     );
   }
 
   Widget buildLoadedListWidgets() {
-    return CustomTableWidget(
-      columnTitles: ['رقم', 'إسم المشروع', 'حالة المشروع'],
-      columnFlexes: [1, 3, 2],
-      rowData: _projectsListSearch.asMap().entries.map((entry) {
-        int index = entry.key;
-        var project = entry.value;
-        return [
-          '${index + 1}',
-          project.name,
-          project.projectStatus.displayName,
-        ];
-      }).toList(),
-      originalObjects: _projectsListSearch,
-      onRowLongPress: (rowIndex, rowObject) {
-        if (_profile.role == AppRole.Admin.name) {
-          _showOptions(context, rowObject as Project);
-        }
-      },
-      onRowTap: (rowIndex) {
-        Navigator.pushNamed(
-          context,
-          AppRoute.assistanceDetiles,
-          arguments: BlocProvider.of<AssistancesCubit>(context)
-            ..setAssistanceForDetiles(_projectsListSearch[rowIndex]),
-        ).then((_) {
-          _assistancesCubit.getAssistances(
-            search: _searchingController.text.trim(),
-          );
-          _assistancesCubit.resetInputs();
-        });
-      },
+    return SingleChildScrollView(
+      child: CustomTableWidget(
+        columnTitles: ['رقم', 'إسم المشروع', 'حالة المشروع'],
+        columnFlexes: [1, 3, 2],
+        rowData: _projectsListSearch.asMap().entries.map((entry) {
+          int index = entry.key;
+          var project = entry.value;
+          return [
+            '${index + 1}',
+            project.name,
+            project.projectStatus.displayName,
+          ];
+        }).toList(),
+        originalObjects: _projectsListSearch,
+        onRowLongPress: (rowIndex, rowObject) {
+          if (_profile.role == AppRole.Admin.name) {
+            _showOptions(context, rowObject as Project);
+          }
+        },
+        onRowTap: (rowIndex) {
+          Navigator.pushNamed(
+            context,
+            AppRoute.assistanceDetiles,
+            arguments: BlocProvider.of<AssistancesCubit>(context)
+              ..setAssistanceForDetiles(_projectsListSearch[rowIndex]),
+          ).then((_) {
+            _assistancesCubit.getAssistances(
+              search: _searchingController.text.trim(),
+            );
+            _assistancesCubit.resetInputs();
+          });
+        },
+      ),
     );
   }
 
@@ -161,7 +162,7 @@ class _AllAssistancesState extends State<AllAssistances> {
               const SizedBox(height: 20),
               _buildToBar(context),
               const SizedBox(height: 20),
-              buildBlocWidget(),
+              Expanded(child: buildBlocWidget()),
             ],
           ),
         ),

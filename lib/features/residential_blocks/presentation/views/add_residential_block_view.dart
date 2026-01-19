@@ -137,6 +137,7 @@ class _AddResidentialBlockViewState extends State<AddResidentialBlockView> {
                                   data?.id,
                                 );
                               },
+                              validator: AppValidator.validateDropdown,
                               selectedItem: null,
                               labelText: locale.chooseManager,
                               hintText: locale.chooseManager,
@@ -153,7 +154,7 @@ class _AddResidentialBlockViewState extends State<AddResidentialBlockView> {
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      SmallText(text: locale.residentialBlockName),
+                      SmallText(text: locale.ResidentialUnitName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),
@@ -174,7 +175,7 @@ class _AddResidentialBlockViewState extends State<AddResidentialBlockView> {
                             final items = state.filteredUnits;
                             if (items.isEmpty) {
                               return Center(
-                                child: Text(locale.noManagersAvailable),
+                                child: Text(locale.noAvailableResidentialUnits),
                               );
                             }
                             ResidentialUnitModel? initialSelectedUnit;
@@ -198,8 +199,7 @@ class _AddResidentialBlockViewState extends State<AddResidentialBlockView> {
                               labelText: locale.chooseUnit,
                               hintText: locale.chooseUnit,
                               searchHintText: locale.lookingunit,
-                              validator: (item) =>
-                                  AppValidator.validateDropdown(item),
+                              validator: AppValidator.validateDropdown,
                             );
                           }
                           return const SizedBox.shrink();

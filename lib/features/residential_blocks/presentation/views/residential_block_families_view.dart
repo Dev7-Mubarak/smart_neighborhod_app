@@ -1,30 +1,15 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
 import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
-import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/common/widgets/table.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
-import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
-import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
-import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/cubits/residential_blocks_cubit/residential_blocks_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/cubits/residential_blocks_cubit/residential_blocks_state.dart';
-import 'package:smart_negborhood_app/features/residential_blocks/data/models/family_model.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
-import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_state.dart';
-import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart';
-import 'package:smart_negborhood_app/features/residential_units/cubits/residential_units_cubit/residential_units_state.dart';
-import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
-import 'package:smart_negborhood_app/features/residential_units/presentation/widgets/unit_options_sheet.dart';
 
 class ResidentialBlockFamiliesView extends StatefulWidget {
   const ResidentialBlockFamiliesView({super.key});
@@ -66,7 +51,8 @@ class _ResidentialBlockFamiliesViewState
         String title = locale.Families;
 
         if (state is ResidentialBlockFamiliesLoaded) {
-          title = state.blockWithFamilies.name;
+          title =
+              "${locale.familiesInBlock} (${state.blockWithFamilies.name}) ";
         }
 
         return Scaffold(

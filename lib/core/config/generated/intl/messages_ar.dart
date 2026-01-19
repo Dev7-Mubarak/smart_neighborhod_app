@@ -108,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تاريخ الميلاد مطلوب",
     ),
     "blockManager": MessageLookupByLibrary.simpleMessage("مدير المربع"),
+    "blocksInUnit": MessageLookupByLibrary.simpleMessage("المربعات السكنية في"),
     "bloodType": MessageLookupByLibrary.simpleMessage("فصيلة الدم"),
     "budget": MessageLookupByLibrary.simpleMessage("الميزانية"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
@@ -268,6 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
       "لا يوجد مديرين متاحين",
     ),
+    "familiesInBlock": MessageLookupByLibrary.simpleMessage("الأسر في"),
     "family": MessageLookupByLibrary.simpleMessage("العائلة"),
     "familyAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تعيين الأسرة بنجاح",
@@ -339,6 +341,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "next": MessageLookupByLibrary.simpleMessage("التالي"),
     "noAssistanceProjects": MessageLookupByLibrary.simpleMessage(
       "لا توجد مشاريع مساعدات",
+    ),
+    "noAvailableResidentialUnits": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد وحدات سكنية متاحه",
     ),
     "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
       "لا يوجد تصنيفات متاحة",
@@ -589,6 +594,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "treatySupervisor": MessageLookupByLibrary.simpleMessage(
       "المشرف على المعاهدة:",
+    ),
+    "unitsInNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "الوحدات السكنية في",
     ),
     "unknownError": MessageLookupByLibrary.simpleMessage("حدث خطأ غير معروف"),
     "unknownErrorOccurred": MessageLookupByLibrary.simpleMessage(
