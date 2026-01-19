@@ -174,9 +174,7 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                         },
                       ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
-                      SmallText(
-                        text: locale.ResidentialNeighborhoodManagerName,
-                      ),
+                      SmallText(text: locale.ResidentialUnitManagerName),
                       const SizedBox(
                         height: AppSize.spasingBetweenInputsAndLabale,
                       ),

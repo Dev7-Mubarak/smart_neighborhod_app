@@ -190,16 +190,19 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                         BlocBuilder<ProjectCategoryCubit, ProjectCategoryState>(
                           builder: (context, state) {
                             if (state is ProjectCategoryLoaded) {
-                              _selectedProjectCategory = state.projectCategories
-                                  .firstWhere(
-                                    (element) => element.name == "مساعدات",
+                              final matches = state.projectCategories
+                                  .where((e) => e.name == "مساعدات")
+                                  .toList();
+                              if (matches.isNotEmpty) {
+                                _selectedProjectCategory = matches.first;
+                                if (assistanceCubit.selectedProjectCategory ==
+                                    null) {
+                                  assistanceCubit.changeSelectedProjectCategory(
+                                    _selectedProjectCategory,
                                   );
-                              if (assistanceCubit.selectedProjectCategory ==
-                                      null &&
-                                  _selectedProjectCategory != null) {
-                                assistanceCubit.changeSelectedProjectCategory(
-                                  _selectedProjectCategory,
-                                );
+                                }
+                              } else {
+                                _selectedProjectCategory = null;
                               }
                               return SizedBox();
                             }
@@ -226,9 +229,14 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                               }
                               Person? initialSelectedPerson;
                               if (_selectedPerson != null) {
-                                initialSelectedPerson = state.people.firstWhere(
-                                  (person) => person.id == _selectedPerson,
-                                );
+                                final matches = state.people
+                                    .where(
+                                      (person) => person.id == _selectedPerson,
+                                    )
+                                    .toList();
+                                if (matches.isNotEmpty) {
+                                  initialSelectedPerson = matches.first;
+                                }
                               }
                               return CustomDropdownSearchWidget<Person>(
                                 items: state.people,

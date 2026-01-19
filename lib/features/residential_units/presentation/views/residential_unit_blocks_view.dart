@@ -53,7 +53,7 @@ class _ResidentialUnitBlocksViewState extends State<ResidentialUnitBlocksView> {
         String title = locale.Blocks;
 
         if (state is ResidentialUnitBlocksLoaded) {
-          title = state.unitWithBlocks.name;
+          title = "${locale.blocksInUnit}(${state.unitWithBlocks.name}) ";
         }
 
         return Scaffold(

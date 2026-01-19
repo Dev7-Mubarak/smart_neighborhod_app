@@ -109,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Birth date is required",
     ),
     "blockManager": MessageLookupByLibrary.simpleMessage("Block Manager"),
+    "blocksInUnit": MessageLookupByLibrary.simpleMessage("blocks in unit"),
     "bloodType": MessageLookupByLibrary.simpleMessage("Blood Type"),
     "budget": MessageLookupByLibrary.simpleMessage("Budget"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -267,6 +268,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToLoadPeople": MessageLookupByLibrary.simpleMessage(
       "No managers available",
     ),
+    "familiesInBlock": MessageLookupByLibrary.simpleMessage(
+      "families in block",
+    ),
     "family": MessageLookupByLibrary.simpleMessage("family"),
     "familyAssignedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Family assigned successfully",
@@ -341,6 +345,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "nextButton": MessageLookupByLibrary.simpleMessage("Next"),
     "noAssistanceProjects": MessageLookupByLibrary.simpleMessage(
       "No assistance projects",
+    ),
+    "noAvailableResidentialUnits": MessageLookupByLibrary.simpleMessage(
+      " no available residential units",
     ),
     "noCategoriesAvailable": MessageLookupByLibrary.simpleMessage(
       "No categories available",
@@ -601,6 +608,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "treatySupervisor": MessageLookupByLibrary.simpleMessage(
       "Treaty Supervisor:",
+    ),
+    "unitsInNeighborhood": MessageLookupByLibrary.simpleMessage(
+      "units in neighborhood",
     ),
     "unknownError": MessageLookupByLibrary.simpleMessage(
       "An unknown error occurred",

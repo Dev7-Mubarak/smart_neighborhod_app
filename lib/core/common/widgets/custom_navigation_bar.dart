@@ -51,7 +51,7 @@ class CustomNavigationBar extends StatelessWidget {
               ),
               _buildNavItem(
                 icon: Icons.apartment,
-                label: 'المربعات السكنية',
+                label: 'الأحياء السكنية',
                 isActive: currentIndex == 1,
               ),
               _buildNavItem(

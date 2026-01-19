@@ -158,6 +158,12 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
   }) async {
     emit(WaitingForUpdateOrAddResidentialUnit());
     try {
+      if (selectedManager == null) {
+        throw Exception("لا يمكن إنشاء وحدة سكنية من دون ان يكون لها مدير ");
+      }
+      if (selectedNeighborhoodId == null) {
+        throw Exception("لا يمكن إنشاء وحدة سكنية من دون ان يكون لها حي سكني");
+      }
       final response = await api.post(
         ApiLink.addResidentialUnit,
         data: {

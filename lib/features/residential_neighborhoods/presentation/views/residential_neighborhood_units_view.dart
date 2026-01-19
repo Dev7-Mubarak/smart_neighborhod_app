@@ -140,7 +140,8 @@ class _ResidentialNeighborhoodUnitsState
               String title = locale.residentialUnits;
 
               if (state is ResidentialNeighborhoodUnitssLoaded) {
-                title = state.neighborhoodWithUnits.name;
+                title =
+                    "${locale.unitsInNeighborhood}(${state.neighborhoodWithUnits.name}) ";
               }
 
               return Scaffold(
@@ -160,75 +161,72 @@ class _ResidentialNeighborhoodUnitsState
                   ),
                 ),
                 body: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SmallButton(
-                                text: locale.add,
-                                onPressed: () {
-                                  int? neighborhoodId;
-                                  if (state
-                                      is ResidentialNeighborhoodUnitssLoaded) {
-                                    neighborhoodId =
-                                        state.neighborhoodWithUnits.id;
-                                  }
-                                  _residentialUnitsCubit
-                                      .changeSelectedNeighborhoodId(
-                                        neighborhoodId,
-                                      );
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoute.addResidentialUnit,
-                                    arguments: _residentialUnitsCubit,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SmallButton(
+                              text: locale.add,
+                              onPressed: () {
+                                int? neighborhoodId;
+                                if (state
+                                    is ResidentialNeighborhoodUnitssLoaded) {
+                                  neighborhoodId =
+                                      state.neighborhoodWithUnits.id;
+                                }
+                                _residentialUnitsCubit
+                                    .changeSelectedNeighborhoodId(
+                                      neighborhoodId,
+                                    );
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoute.addResidentialUnit,
+                                  arguments: _residentialUnitsCubit,
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              width: AppSize.spasingBetweenInputsAndLabale,
+                            ),
+                            Expanded(
+                              child: SearchableTextFormField(
+                                controller: _searchingController,
+                                hintText: locale.lookingunit,
+                                bachgroundColor: AppColor.gray2,
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    _searchingController.clear();
+                                    _residentialNeighborhoodsCubit
+                                        .filterNeighborhoodUnits('');
+                                  },
+                                  icon: const Icon(Icons.close),
+                                ),
+                                prefixIcon: Icons.search,
+                                onChanged: (String query) {
+                                  _delay?.cancel();
+                                  _delay = Timer(
+                                    const Duration(milliseconds: 300),
+                                    () {
+                                      _residentialNeighborhoodsCubit
+                                          .filterNeighborhoodUnits(
+                                            query.trim(),
+                                          );
+                                    },
                                   );
                                 },
                               ),
-                              const SizedBox(
-                                width: AppSize.spasingBetweenInputsAndLabale,
-                              ),
-                              Expanded(
-                                child: SearchableTextFormField(
-                                  controller: _searchingController,
-                                  hintText: locale.lookingunit,
-                                  bachgroundColor: AppColor.gray2,
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      _searchingController.clear();
-                                      _residentialNeighborhoodsCubit
-                                          .filterNeighborhoodUnits('');
-                                    },
-                                    icon: const Icon(Icons.close),
-                                  ),
-                                  prefixIcon: Icons.search,
-                                  onChanged: (String query) {
-                                    _delay?.cancel();
-                                    _delay = Timer(
-                                      const Duration(milliseconds: 300),
-                                      () {
-                                        _residentialNeighborhoodsCubit
-                                            .filterNeighborhoodUnits(
-                                              query.trim(),
-                                            );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 5),
-                        Expanded(
-                          child: _buildBody(state, crossAxisCount, locale),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 5),
+                      Expanded(
+                        child: _buildBody(state, crossAxisCount, locale),
+                      ),
+                    ],
                   ),
                 ),
               );
