@@ -123,7 +123,7 @@ class _ResidentialNeighborhoodViewState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role == AppRole.Admin.name)
+          if (_profileModel?.role == AppRoles.admin.name)
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -142,7 +142,7 @@ class _ResidentialNeighborhoodViewState
                 // });
               },
             ),
-          if (_profileModel?.role == AppRole.Admin.name)
+          if (_profileModel?.role == AppRoles.admin.name)
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
@@ -225,7 +225,7 @@ class _ResidentialNeighborhoodViewState
                             });
                           },
                           onLongPress: () {
-                            if (_profileModel?.role == AppRole.Admin.name) {
+                            if (_profileModel?.role == AppRoles.admin.name) {
                               _showOptions(neighborhood, locale);
                             }
                           },

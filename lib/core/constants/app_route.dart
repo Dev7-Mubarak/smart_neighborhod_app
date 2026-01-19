@@ -7,7 +7,6 @@ import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forget
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
-import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/member_family_role_cubit/member_family_role_cubit.dart';
 import 'package:smart_negborhood_app/features/families/presentation/views/family_member_details.dart';
@@ -44,7 +43,6 @@ import 'package:smart_negborhood_app/features/auth/presentation/views/login.dart
 import 'package:smart_negborhood_app/features/confilct/presentation/views/add_update_conflict.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/all_confilcts.dart';
 import 'package:smart_negborhood_app/features/confilct/presentation/views/conflict_detiles.dart';
-import 'package:smart_negborhood_app/features/families/presentation/views/add_update_family.dart';
 import 'package:smart_negborhood_app/features/families/presentation/views/add_family_member.dart';
 import 'package:smart_negborhood_app/features/families/presentation/views/family_detiles.dart';
 import 'package:smart_negborhood_app/features/onBoarding/presentation/views/onboarding.dart';
@@ -56,6 +54,13 @@ import 'package:smart_negborhood_app/features/teams/presentation/views/all_teams
 import 'package:smart_negborhood_app/features/teams/presentation/views/team_details.dart';
 import '../../features/Assistances/cubits/assistances/assistances_cubit.dart';
 import '../../features/families/cubits/family_cubit/family_cubit.dart';
+import '../../features/government_institutions/cubits/government_institution/government_institution_cubit.dart';
+import '../../features/government_institutions/cubits/government_institution_contact/government_institution_contact_cubit.dart'
+    show GovernmentInstitutionContactCubit;
+import '../../features/government_institutions/presentation/views/add_update_government_institution.dart';
+import '../../features/government_institutions/presentation/views/add_update_government_institution_contact.dart'
+    show AddUpdateGovernmentInstitutionContact;
+import '../../features/government_institutions/presentation/views/all_government_institutions.dart';
 import '../../features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart'
     show ResidentialNeighborhoodsCubit;
 import '../../features/residential_units/cubits/residential_units_cubit/residential_units_cubit.dart'
@@ -517,6 +522,45 @@ class AppRouter {
             child: AddResidentialUnitView(),
           ),
         );
+      case AppRoute.allGovernmentInstitutions:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) =>
+                    GovernmentInstitutionCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (context) => GovernmentInstitutionContactCubit(
+                  api: DioConsumer(dio: Dio()),
+                ),
+              ),
+            ],
+            child: const AllGovernmentInstitutions(),
+          ),
+        );
+      case AppRoute.addUpdateGovernmentInstitution:
+        final governmentInstitutionCubit =
+            settings.arguments as GovernmentInstitutionCubit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: governmentInstitutionCubit,
+            child: AddUpdateGovernmentInstitution(
+              institution: governmentInstitutionCubit.institution,
+            ),
+          ),
+        );
+      case AppRoute.addUpdateGovernmentInstitutionContact:
+        final contactCubit =
+            settings.arguments as GovernmentInstitutionContactCubit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: contactCubit,
+            child: AddUpdateGovernmentInstitutionContact(
+              contact: contactCubit.contact,
+            ),
+          ),
+        );
       case AppRoute.changeResidentialUnitManager:
         final residentialUnitsCubit =
             settings.arguments as ResidentialUnitsCubit;
@@ -599,4 +643,9 @@ class AppRoute {
   static const String addUpdateConflict = '/AddUpdateConflict';
   static const String conflictDetiles = '/ConflictDetiles';
   static const String familyMemberDetails = '/FamilyMemberDetails';
+  static const String allGovernmentInstitutions = '/allGovernmentInstitutions';
+  static const String addUpdateGovernmentInstitution =
+      '/addUpdateGovernmentInstitution';
+  static const String addUpdateGovernmentInstitutionContact =
+      '/addUpdateGovernmentInstitutionContact';
 }

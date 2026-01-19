@@ -141,4 +141,21 @@ class ApiLink {
   static const String deleteConflict = '$server/conflict-cases';
   static const String getAllConflictCaseTypes = '$server/conflict-case-type';
   static const String getConflictCasesByFamilyMember = '$server/conflict-cases';
+
+  // Government Institutions
+  static const String getAllGovernmentInstitutions =
+      '$server/GovernmentInstitutions';
+  static const String addGovernmentInstitution =
+      '$server/GovernmentInstitutions';
+  static const String updateGovernmentInstitution =
+      '$server/GovernmentInstitutions';
+  static const String deleteGovernmentInstitution =
+      '$server/GovernmentInstitutions';
+
+  static const String addGovernmentInstitutionContact =
+      '$server/GovernmentInstitutionContacts/authority';
+  static const String updateGovernmentInstitutionContact =
+      '$server/GovernmentInstitutionContacts';
+  static const String deleteGovernmentInstitutionContact =
+      '$server/GovernmentInstitutionContacts';
 }

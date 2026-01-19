@@ -134,7 +134,7 @@ class _AllTeamsState extends State<AllTeams> {
                                 onLongPress: () {
                                   final profile =
                                       SharedPreferencesService.getProfile();
-                                  if (profile!.role == AppRole.Admin.name) {
+                                  if (profile!.role == AppRoles.admin.name) {
                                     _showTeamOptions(context, team);
                                   }
                                 },
@@ -183,7 +183,7 @@ class _AllTeamsState extends State<AllTeams> {
                                 }).toList(),
                                 originalObjects: teamMembers,
                                 onRowLongPress: (rowIndex, rowObject) {
-                                  if (_profile.role == AppRole.Admin.name) {
+                                  if (_profile.role == AppRoles.admin.name) {
                                     _showTeamMemberOptions(
                                       context,
                                       rowObject as TeamMember,
@@ -192,7 +192,7 @@ class _AllTeamsState extends State<AllTeams> {
                                 },
                               ),
                               const SizedBox(height: 10),
-                              if (_profile.role == AppRole.Admin.name)
+                              if (_profile.role == AppRoles.admin.name)
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: SmallButton(
@@ -253,7 +253,7 @@ class _AllTeamsState extends State<AllTeams> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (_profile.role == AppRole.Admin.name)
+        if (_profile.role == AppRoles.admin.name)
           SmallButton(
             text: 'إضافة فريق',
             onPressed: () {

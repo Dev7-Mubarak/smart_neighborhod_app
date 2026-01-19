@@ -26,7 +26,7 @@ class _HomeCategoryCardListWidgetState
     final profileRole = SharedPreferencesService.getProfile()?.role;
     final roleString = profileRole?.toString() ?? '';
     final isAdmin =
-        roleString.toLowerCase() == AppRole.Admin.name.toLowerCase();
+        roleString.toLowerCase() == AppRoles.admin.name.toLowerCase();
 
     List<CategoryCard> categoryCardList = [
       if (isAdmin)
@@ -75,6 +75,14 @@ class _HomeCategoryCardListWidgetState
         backgroundColor: const Color(0xFFE8618C),
         onTap: () {
           Navigator.pushNamed(context, AppRoute.allAssistances);
+        },
+      ),
+      CategoryCard(
+        title: "الجهات الحكومية",
+        imagePath: AppImage.homepoliceman,
+        backgroundColor: const Color(0xFF4CAF50),
+        onTap: () {
+          Navigator.pushNamed(context, AppRoute.allGovernmentInstitutions);
         },
       ),
       CategoryCard(

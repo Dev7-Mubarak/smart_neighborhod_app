@@ -20,7 +20,6 @@ import '../../presentation/widgets/block_options_sheet.dart';
 import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart';
 import '../../cubits/residential_blocks_cubit/residential_blocks_cubit.dart';
 import '../../cubits/residential_blocks_cubit/residential_blocks_state.dart';
-import '../../data/models/residential_block_model.dart';
 
 class ResidentialBlockView extends StatefulWidget {
   const ResidentialBlockView({super.key});
@@ -111,7 +110,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role == AppRole.Admin.name)
+          if (_profileModel?.role == AppRoles.admin.name)
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -122,7 +121,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                 );
               },
             ),
-          if (_profileModel?.role == AppRole.Admin.name)
+          if (_profileModel?.role == AppRoles.admin.name)
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
@@ -216,7 +215,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                               );
                             },
                             onLongPress: () {
-                              if (_profileModel?.role == AppRole.Admin.name) {
+                              if (_profileModel?.role == AppRoles.admin.name) {
                                 context.showBottomSheet(
                                   BlockOptionsSheet(
                                     block: block,

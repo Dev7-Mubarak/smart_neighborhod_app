@@ -216,7 +216,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                             );
                           },
                           onLongPress: () {
-                            if (_profileModel?.role == AppRole.Admin.name) {
+                            if (_profileModel?.role == AppRoles.admin.name) {
                               _showOptions(unit, locale);
                             }
                           },
@@ -248,7 +248,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role == AppRole.Admin.name)
+          if (_profileModel?.role == AppRoles.admin.name)
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -259,7 +259,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                 );
               },
             ),
-          if (_profileModel?.role == AppRole.Admin.name)
+          if (_profileModel?.role == AppRoles.admin.name)
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(

@@ -124,7 +124,7 @@ class _AllConflictState extends State<AllConflict> {
                                 onLongPress: () {
                                   final profile =
                                       SharedPreferencesService.getProfile();
-                                  if (profile!.role == AppRole.Admin.name) {
+                                  if (profile!.role == AppRoles.admin.name) {
                                     _showOptions(context, e);
                                   }
                                 },
@@ -247,7 +247,7 @@ class _AllConflictState extends State<AllConflict> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        if (_profile.role == AppRole.Admin.name)
+        if (_profile.role == AppRoles.admin.name)
           SmallButton(
             text: 'إضافة إتفاقية',
             onPressed: () {

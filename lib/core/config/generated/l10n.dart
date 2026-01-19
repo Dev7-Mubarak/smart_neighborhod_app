@@ -18,10 +18,8 @@ class AppLocalizations {
   static AppLocalizations? _current;
 
   static AppLocalizations get current {
-    assert(
-      _current != null,
-      'No instance of AppLocalizations was loaded. Try to initialize the AppLocalizations delegate before accessing AppLocalizations.current.',
-    );
+    assert(_current != null,
+        'No instance of AppLocalizations was loaded. Try to initialize the AppLocalizations delegate before accessing AppLocalizations.current.');
     return _current!;
   }
 
@@ -43,10 +41,8 @@ class AppLocalizations {
 
   static AppLocalizations of(BuildContext context) {
     final instance = AppLocalizations.maybeOf(context);
-    assert(
-      instance != null,
-      'No instance of AppLocalizations present in the widget tree. Did you add AppLocalizations.delegate in localizationsDelegates?',
-    );
+    assert(instance != null,
+        'No instance of AppLocalizations present in the widget tree. Did you add AppLocalizations.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -296,7 +292,12 @@ class AppLocalizations {
 
   /// `Notes`
   String get notes {
-    return Intl.message('Notes', name: 'notes', desc: 'Notes label', args: []);
+    return Intl.message(
+      'Notes',
+      name: 'notes',
+      desc: 'Notes label',
+      args: [],
+    );
   }
 
   /// `Cancel`
@@ -311,12 +312,22 @@ class AppLocalizations {
 
   /// `Add`
   String get add {
-    return Intl.message('Add', name: 'add', desc: 'Add button', args: []);
+    return Intl.message(
+      'Add',
+      name: 'add',
+      desc: 'Add button',
+      args: [],
+    );
   }
 
   /// `Edit`
   String get edit {
-    return Intl.message('Edit', name: 'edit', desc: 'Edit button', args: []);
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: 'Edit button',
+      args: [],
+    );
   }
 
   /// `Delete`
@@ -351,7 +362,12 @@ class AppLocalizations {
 
   /// `Close`
   String get close {
-    return Intl.message('Close', name: 'close', desc: 'Close button', args: []);
+    return Intl.message(
+      'Close',
+      name: 'close',
+      desc: 'Close button',
+      args: [],
+    );
   }
 
   /// `Confirm Delete`
@@ -496,7 +512,12 @@ class AppLocalizations {
 
   /// `Male`
   String get male {
-    return Intl.message('Male', name: 'male', desc: 'Male gender', args: []);
+    return Intl.message(
+      'Male',
+      name: 'male',
+      desc: 'Male gender',
+      args: [],
+    );
   }
 
   /// `Female`
@@ -571,7 +592,12 @@ class AppLocalizations {
 
   /// `Job`
   String get job {
-    return Intl.message('Job', name: 'job', desc: 'Job label', args: []);
+    return Intl.message(
+      'Job',
+      name: 'job',
+      desc: 'Job label',
+      args: [],
+    );
   }
 
   /// `Not specified`
@@ -706,7 +732,12 @@ class AppLocalizations {
 
   /// `All People`
   String get allPeople {
-    return Intl.message('All People', name: 'allPeople', desc: '', args: []);
+    return Intl.message(
+      'All People',
+      name: 'allPeople',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `General Unit Report`
@@ -751,7 +782,12 @@ class AppLocalizations {
 
   /// `Home`
   String get main {
-    return Intl.message('Home', name: 'main', desc: '', args: []);
+    return Intl.message(
+      'Home',
+      name: 'main',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Residential Blocks`
@@ -956,7 +992,12 @@ class AppLocalizations {
 
   /// `Email`
   String get email {
-    return Intl.message('Email', name: 'email', desc: 'Email label', args: []);
+    return Intl.message(
+      'Email',
+      name: 'email',
+      desc: 'Email label',
+      args: [],
+    );
   }
 
   /// `Enter your email`
@@ -1031,7 +1072,12 @@ class AppLocalizations {
 
   /// `Save`
   String get save {
-    return Intl.message('Save', name: 'save', desc: 'Save button', args: []);
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: 'Save button',
+      args: [],
+    );
   }
 
   /// `Confirm`
@@ -2736,22 +2782,42 @@ class AppLocalizations {
 
   /// `Units`
   String get Units {
-    return Intl.message('Units', name: 'Units', desc: 'Units', args: []);
+    return Intl.message(
+      'Units',
+      name: 'Units',
+      desc: 'Units',
+      args: [],
+    );
   }
 
   /// `Unit`
   String get Unit {
-    return Intl.message('Unit', name: 'Unit', desc: 'Unit', args: []);
+    return Intl.message(
+      'Unit',
+      name: 'Unit',
+      desc: 'Unit',
+      args: [],
+    );
   }
 
   /// `Block`
   String get Block {
-    return Intl.message('Block', name: 'Block', desc: 'Block', args: []);
+    return Intl.message(
+      'Block',
+      name: 'Block',
+      desc: 'Block',
+      args: [],
+    );
   }
 
   /// `Blocks`
   String get Blocks {
-    return Intl.message('Blocks', name: 'Blocks', desc: 'Blocks', args: []);
+    return Intl.message(
+      'Blocks',
+      name: 'Blocks',
+      desc: 'Blocks',
+      args: [],
+    );
   }
 
   /// `residential units`
@@ -2916,7 +2982,12 @@ class AppLocalizations {
 
   /// `family`
   String get family {
-    return Intl.message('family', name: 'family', desc: 'family', args: []);
+    return Intl.message(
+      'family',
+      name: 'family',
+      desc: 'family',
+      args: [],
+    );
   }
 
   /// `Looking for a family`

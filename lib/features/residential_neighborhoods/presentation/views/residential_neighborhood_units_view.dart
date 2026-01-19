@@ -264,7 +264,7 @@ class _ResidentialNeighborhoodUnitsState
               crossAxisCellCount: 1,
               child: GestureDetector(
                 onLongPress: () {
-                  if (_profileModel?.role == AppRole.Admin.name) {
+                  if (_profileModel?.role == AppRoles.admin.name) {
                     _showOptions(unit, locale);
                   }
                 },
