@@ -66,7 +66,6 @@ class _ResidentialNeighborhoodUnitsState
         } else if (state is ResidentialUnitAddedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
-          // refresh neighborhood units list after add
           var neighId = _residentialUnitsCubit.selectedNeighborhoodId;
           if (neighId == null &&
               _residentialNeighborhoodsCubit.state

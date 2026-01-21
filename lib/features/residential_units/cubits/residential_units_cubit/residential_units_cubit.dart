@@ -129,6 +129,41 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
     }
   }
 
+  Future<void> getResidentialUnitsMeDashboard({String? search}) async {
+    emit(ResidentialUnitsLoading());
+    try {
+      final response = await api.get(ApiLink.getAllResidentialUnitsMeDashboard);
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      _dashboardData = ResidentialUnitDashboardModel.fromJson(response["data"]);
+      _allUnits = _dashboardData!.units;
+
+      if (search != null && search.isNotEmpty) {
+        filterUnits(search);
+      }
+
+      if (!isClosed) {
+        emit(
+          ResidentialUnitsLoaded(
+            dashboardData: _dashboardData!,
+            filteredUnits: _allUnits,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(ResidentialUnitsFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(ResidentialUnitsFailure(errorMessage: e.toString()));
+    }
+  }
+
   void filterUnits(String query) {
     if (_dashboardData == null) return;
     if (query.isEmpty) {
@@ -273,6 +308,11 @@ class ResidentialUnitsCubit extends Cubit<ResidentialUnitsState> {
   }) async {
     emit(WaitingForUpdateOrAddResidentialUnit());
     try {
+      if (selectedManager == null) {
+        throw Exception(
+          "لا يمكن تغيير مدير الوحدة السكنية بدون تحديد مدير جديد ",
+        );
+      }
       final response = await api.update(
         ApiLink.changeResidentialUnitsManager(unitId: selectedUnit!.id),
         data: {

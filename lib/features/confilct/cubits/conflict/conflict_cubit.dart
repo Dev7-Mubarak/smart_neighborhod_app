@@ -130,6 +130,15 @@ class ConflictCubit extends Cubit<ConflictState> {
   Future<void> addConflict(String notes, String title) async {
     emit(WiateAddedUpdatedConflict());
     try {
+      if (selectedConflictTypeId == null) {
+        throw Exception("لا يمكن إضافة إتفاقية بدون تحديد نوع الإتفاقية");
+      }
+      if (selectedfirstPartId == null) {
+        throw Exception("لا يمكن إضافة إتفاقية بدون تحديد الطرف الأول");
+      }
+      if (selectedSecondPartId == null) {
+        throw Exception("لا يمكن إضافة إتفاقية بدون تحديد الطرف الثاني");
+      }
       final profile = await SharedPreferencesService.getProfile();
       final idmanger = profile!.id;
       final response = await api.post(
@@ -191,6 +200,15 @@ class ConflictCubit extends Cubit<ConflictState> {
   }) async {
     emit(WiateAddedUpdatedConflict());
     try {
+      if (selectedConflictTypeId == null) {
+        throw Exception("لا يمكن إضافة إتفاقية بدون تحديد نوع الإتفاقية");
+      }
+      if (selectedfirstPartId == null) {
+        throw Exception("لا يمكن إضافة إتفاقية بدون تحديد الطرف الأول");
+      }
+      if (selectedSecondPartId == null) {
+        throw Exception("لا يمكن إضافة إتفاقية بدون تحديد الطرف الثاني");
+      }
       final profile = await SharedPreferencesService.getProfile();
       final idmanger = profile!.id;
       final response = await api.update(

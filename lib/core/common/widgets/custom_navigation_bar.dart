@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 import '../../constants/app_color.dart';
 
-class CustomNavigationBar extends StatelessWidget {
+class CustomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
@@ -12,7 +14,29 @@ class CustomNavigationBar extends StatelessWidget {
   });
 
   @override
+  State<CustomNavigationBar> createState() => _CustomNavigationBarState();
+}
+
+class _CustomNavigationBarState extends State<CustomNavigationBar> {
+  @override
   Widget build(BuildContext context) {
+    final profileRole = SharedPreferencesService.getProfile()?.role;
+
+    final roleString = profileRole?.toString() ?? '';
+
+    final isBlockManager =
+        roleString.toLowerCase() == AppRoles.blockManager.name.toLowerCase();
+    final isUnitManager =
+        roleString.toLowerCase() == AppRoles.unitManager.name.toLowerCase();
+    String neighborhoodLabel;
+    if (isUnitManager) {
+      neighborhoodLabel = 'الوحدات السكنية';
+    } else if (isBlockManager) {
+      neighborhoodLabel = 'المربعات السكنية';
+    } else {
+      neighborhoodLabel = 'الأحياء السكنية';
+    }
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
@@ -40,24 +64,24 @@ class CustomNavigationBar extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             unselectedLabelStyle: const TextStyle(fontSize: 14),
-            currentIndex: currentIndex,
-            onTap: onTap,
+            currentIndex: widget.currentIndex,
+            onTap: widget.onTap,
             elevation: 0,
             items: [
               _buildNavItem(
                 icon: Icons.home,
                 label: 'الرئيسية',
-                isActive: currentIndex == 0,
+                isActive: widget.currentIndex == 0,
               ),
               _buildNavItem(
                 icon: Icons.apartment,
-                label: 'الأحياء السكنية',
-                isActive: currentIndex == 1,
+                label: neighborhoodLabel,
+                isActive: widget.currentIndex == 1,
               ),
               _buildNavItem(
                 icon: Icons.settings,
                 label: 'الإعدادات',
-                isActive: currentIndex == 2,
+                isActive: widget.currentIndex == 2,
               ),
             ],
           ),

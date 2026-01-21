@@ -37,14 +37,26 @@ class _ResidentialNeighborhoodViewState
   late TextEditingController _searchingController;
   Timer? _delay;
 
+  void reset() {
+    if (_profileModel?.role.toLowerCase() ==
+        AppRoles.neighborhoodManager.name.toLowerCase()) {
+      _residentialNeighborhoodsCubit.getResidentialNeighborhoodsMeDashboard();
+    } else {
+      _residentialNeighborhoodsCubit.getResidentialNeighborhoodsDashboard();
+    }
+    print(
+      "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${AppRoles.admin.name}",
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    _residentialNeighborhoodsCubit =
-        context.read<ResidentialNeighborhoodsCubit>()
-          ..getResidentialNeighborhoodsDashboard();
-    _searchingController = TextEditingController();
     _profileModel = SharedPreferencesService.getProfile();
+    _residentialNeighborhoodsCubit = context
+        .read<ResidentialNeighborhoodsCubit>();
+    reset();
+    _searchingController = TextEditingController();
   }
 
   @override
@@ -89,14 +101,15 @@ class _ResidentialNeighborhoodViewState
         } else if (state is ResidentialNeighborhoodDeletedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
-        } else if (state is ResidentialNeighborhoodsFailure ||
-            state is FailureForUpdateOrAddResidentialNeighborhood) {
+        } else if (state is FailureForUpdateOrAddResidentialNeighborhood) {
+          // final rootNav = Navigator.of(context, rootNavigator: true);
+          // if (rootNav.canPop()) {
+          //   rootNav.pop();
+          // }
           Navigator.of(context, rootNavigator: true).pop();
-          final errorMsg = state is ResidentialNeighborhoodsFailure
-              ? state.errorMessage
-              : (state as FailureForUpdateOrAddResidentialNeighborhood)
-                    .errorMessage;
-          context.showErrorSnackBar(errorMsg);
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is ResidentialNeighborhoodsFailure) {
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -123,7 +136,8 @@ class _ResidentialNeighborhoodViewState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role == AppRoles.admin.name)
+          if (_profileModel?.role.toLowerCase() ==
+              AppRoles.admin.name.toLowerCase())
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -186,8 +200,9 @@ class _ResidentialNeighborhoodViewState
           return const Center(child: CircularProgressIndicator());
         } else if (state is ResidentialNeighborhoodsFailure) {
           return OnFailureWidget(
-            onRetry: () => _residentialNeighborhoodsCubit
-                .getResidentialNeighborhoodsDashboard(),
+            onRetry: () {
+              reset();
+            },
           );
         } else if (state is ResidentialNeighborhoodsLoaded) {
           return SingleChildScrollView(
@@ -220,12 +235,14 @@ class _ResidentialNeighborhoodViewState
                                       neighborhood.neighborhoodId,
                                     ),
                             ).then((value) {
-                              _residentialNeighborhoodsCubit
-                                  .getResidentialNeighborhoodsDashboard();
+                              reset();
+                              // _residentialNeighborhoodsCubit
+                              //     .getResidentialNeighborhoodsDashboard();
                             });
                           },
                           onLongPress: () {
-                            if (_profileModel?.role == AppRoles.admin.name) {
+                            if (_profileModel?.role.toLowerCase() ==
+                                AppRoles.admin.name.toLowerCase()) {
                               _showOptions(neighborhood, locale);
                             }
                           },

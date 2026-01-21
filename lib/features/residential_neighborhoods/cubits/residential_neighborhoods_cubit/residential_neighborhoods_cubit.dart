@@ -40,6 +40,9 @@ class ResidentialNeighborhoodsCubit
   }) async {
     emit(WaitingForUpdateOrAddResidentialNeighborhood());
     try {
+      if (selectedManager == null) {
+        throw Exception("لا يمكن تغيير مدير الحي السكني بدون تحديد مدير جديد ");
+      }
       final response = await api.post(
         ApiLink.changeResidentialNeighborhoodManager(
           neighborhoodId: residentialNeighborhood!.neighborhoodId,
@@ -86,6 +89,45 @@ class ResidentialNeighborhoodsCubit
     try {
       final response = await api.get(
         ApiLink.getAllResidentialNeighborhoodsDashboard,
+      );
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      _dashboardData = ResidentialNeighborhoodDashboardModel.fromJson(
+        response["data"],
+      );
+      _allNeighborhoods = _dashboardData!.neighborhoods;
+      if (search != null && search.isNotEmpty) {
+        filterNeighborhoods(search);
+      }
+      if (!isClosed) {
+        emit(
+          ResidentialNeighborhoodsLoaded(
+            dashboardData: _dashboardData!,
+            filteredNeighborhoods: _allNeighborhoods,
+          ),
+        );
+      }
+    } on Serverexception catch (e) {
+      emit(
+        ResidentialNeighborhoodsFailure(errorMessage: e.errModel.errorMessage),
+      );
+    } catch (e) {
+      emit(ResidentialNeighborhoodsFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> getResidentialNeighborhoodsMeDashboard({String? search}) async {
+    emit(ResidentialNeighborhoodsLoading());
+    try {
+      final response = await api.get(
+        ApiLink.getAllResidentialNeighborhoodsMeDashboard,
       );
 
       if (response["data"] == null) {
@@ -157,6 +199,9 @@ class ResidentialNeighborhoodsCubit
   ) async {
     emit(WaitingForUpdateOrAddResidentialNeighborhood());
     try {
+      if (selectedManager == null) {
+        throw Exception("لا يمكن إضافة حي سكني بدون تحديد مدير ");
+      }
       final response = await api.post(
         ApiLink.addResidentialNeighborhood,
         data: {

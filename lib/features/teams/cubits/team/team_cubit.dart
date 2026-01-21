@@ -23,6 +23,9 @@ class TeamCubit extends Cubit<TeamState> {
   Future<void> addNewTeam(String name) async {
     emit(WiateAddedUpdatedTeam());
     try {
+      if (selectedPersonId == null) {
+        throw Exception("لا يمكن إضافة فريق بدون تحديد قائد الفريق ");
+      }
       final response = await api.post(
         ApiLink.addTeam,
         data: {
@@ -79,6 +82,9 @@ class TeamCubit extends Cubit<TeamState> {
   Future<void> updateTeams({required int id, required String name}) async {
     emit(WiateAddedUpdatedTeam());
     try {
+      if (selectedPersonId == null) {
+        throw Exception("لا يمكن تحديث فريق بدون تحديد قائد الفريق ");
+      }
       final response = await api.update(
         '${ApiLink.updateTeam}/$id',
         data: {

@@ -82,7 +82,7 @@ class GovernmentInstitutionContactCubit
       if (response["isSuccess"]) {
         emit(
           GovernmentInstitutionContactUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح",
+            message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
       } else {
@@ -115,7 +115,7 @@ class GovernmentInstitutionContactCubit
       if (response["isSuccess"]) {
         emit(
           GovernmentInstitutionContactDeletedSuccessfully(
-            message: response["message"] ?? "تم الحذف بنجاح",
+            message: response["data"] ?? "تم الحذف بنجاح",
           ),
         );
       } else {
