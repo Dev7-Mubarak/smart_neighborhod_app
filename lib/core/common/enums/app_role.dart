@@ -1,1 +1,1 @@
-enum AppRoles { admin, blockManager, unitManager }
+enum AppRoles { admin, blockManager, unitManager, neighborhoodManager }

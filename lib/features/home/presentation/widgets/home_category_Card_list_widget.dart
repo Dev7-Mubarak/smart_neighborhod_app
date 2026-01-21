@@ -27,7 +27,13 @@ class _HomeCategoryCardListWidgetState
     final roleString = profileRole?.toString() ?? '';
     final isAdmin =
         roleString.toLowerCase() == AppRoles.admin.name.toLowerCase();
-
+    final isBlockManager =
+        roleString.toLowerCase() == AppRoles.blockManager.name.toLowerCase();
+    final isUnitManager =
+        roleString.toLowerCase() == AppRoles.unitManager.name.toLowerCase();
+    final isNeighborhoodManager =
+        roleString.toLowerCase() ==
+        AppRoles.neighborhoodManager.name.toLowerCase();
     List<CategoryCard> categoryCardList = [
       if (isAdmin)
         CategoryCard(
@@ -38,29 +44,32 @@ class _HomeCategoryCardListWidgetState
             Navigator.pushNamed(context, AppRoute.allPeople);
           },
         ),
+      if (isAdmin || isNeighborhoodManager)
+        CategoryCard(
+          title: "الأحياء السكنية",
+          imagePath: AppImage.homeresidential,
+          backgroundColor: const Color(0xFFEFA98D),
+          onTap: () => context.read<NavigationCubit>().changePage(1),
+        ),
+      if (isAdmin || isUnitManager)
+        CategoryCard(
+          title: locale.residentialUnits,
+          imagePath: AppImage.homeresidential,
+          backgroundColor: const Color.fromARGB(255, 60, 195, 170),
+          onTap: () {
+            Navigator.pushNamed(context, AppRoute.residentialUnits);
+          },
+        ),
+      if (isAdmin || isBlockManager)
+        CategoryCard(
+          title: 'المربعات السكنية',
+          imagePath: AppImage.homeresidential,
+          backgroundColor: const Color(0xFF9AC4A6),
+          onTap: () {
+            Navigator.pushNamed(context, AppRoute.residentialBlockNew);
+          },
+        ),
 
-      CategoryCard(
-        title: "الأحياء السكنية",
-        imagePath: AppImage.homeresidential,
-        backgroundColor: const Color(0xFFEFA98D),
-        onTap: () => context.read<NavigationCubit>().changePage(1),
-      ),
-      CategoryCard(
-        title: locale.residentialUnits,
-        imagePath: AppImage.homeresidential,
-        backgroundColor: const Color.fromARGB(255, 60, 195, 170),
-        onTap: () {
-          Navigator.pushNamed(context, AppRoute.residentialUnits);
-        },
-      ),
-      CategoryCard(
-        title: 'المربعات السكنية',
-        imagePath: AppImage.homeresidential,
-        backgroundColor: const Color(0xFF9AC4A6),
-        onTap: () {
-          Navigator.pushNamed(context, AppRoute.residentialBlockNew);
-        },
-      ),
       CategoryCard(
         title: "قسم الاتفاقيات",
         imagePath: AppImage.homehandshake,

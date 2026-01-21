@@ -57,6 +57,14 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   Future<void> addNewTeamMember() async {
     emit(WiateAddedUpdatedTeamMember());
     try {
+      if (selectedPersonId == null) {
+        throw Exception("لا يمكن إضافة عضو فريق بدون تحديد الشخص ");
+      }
+      if (selectedTeamRoleId == null) {
+        throw Exception(
+          "لا يمكن إضافة عضو فريق بدون تحديد دور العضو في الفريق ",
+        );
+      }
       final response = await api.post(
         ApiLink.addTeamMember,
         data: {
@@ -100,6 +108,11 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   Future<void> updateTeamMember({required int id}) async {
     emit(WiateAddedUpdatedTeamMember());
     try {
+      if (selectedTeamRoleId == null) {
+        throw Exception(
+          "لا يمكن تعديل عضو فريق بدون تحديد دور العضو في الفريق ",
+        );
+      }
       final response = await api.update(
         '${ApiLink.updateTeamMember}/$id',
         data: {

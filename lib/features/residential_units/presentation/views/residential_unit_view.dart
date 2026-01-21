@@ -34,13 +34,22 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
   Timer? _delay;
   late final ProfileModel? _profileModel;
 
+  void reset() {
+    if (_profileModel?.role.toLowerCase() ==
+        AppRoles.unitManager.name.toLowerCase()) {
+      _unitsCubit.getResidentialUnitsMeDashboard();
+    } else {
+      _unitsCubit.getResidentialUnitsDashboard();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _unitsCubit = context.read<ResidentialUnitsCubit>()
-      ..getResidentialUnitsDashboard();
+    _unitsCubit = context.read<ResidentialUnitsCubit>();
     _searchingController = TextEditingController();
     _profileModel = SharedPreferencesService.getProfile();
+    reset();
   }
 
   @override
@@ -69,13 +78,11 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
         } else if (state is ResidentialUnitDeletedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
-        } else if (state is ResidentialUnitsFailure ||
-            state is FailureForUpdateOrAddResidentialUnit) {
+        } else if (state is FailureForUpdateOrAddResidentialUnit) {
           Navigator.of(context, rootNavigator: true).pop();
-          final errorMsg = state is ResidentialUnitsFailure
-              ? state.errorMessage
-              : (state as FailureForUpdateOrAddResidentialUnit).errorMessage;
-          context.showErrorSnackBar(errorMsg);
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is ResidentialUnitsFailure) {
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -100,52 +107,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SmallButton(
-                      text: locale.add,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoute.addResidentialUnit,
-                          arguments: BlocProvider.of<ResidentialUnitsCubit>(
-                            context,
-                          ),
-                        ).then((value) {
-                          _unitsCubit.getResidentialUnitsDashboard();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: AppSize.spasingBetweenInputsAndLabale,
-                    ),
-                    Expanded(
-                      child: SearchableTextFormField(
-                        controller: _searchingController,
-                        hintText: locale.lookingunit,
-                        bachgroundColor: AppColor.gray2,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _searchingController.clear();
-                            _unitsCubit.filterUnits('');
-                          },
-                          icon: const Icon(Icons.close),
-                        ),
-                        prefixIcon: Icons.search,
-                        onChanged: (String query) {
-                          _delay?.cancel();
-                          _delay = Timer(const Duration(milliseconds: 300), () {
-                            _unitsCubit.filterUnits(query.trim());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildHeaderSection(context, locale),
               Expanded(child: _buildContentBody(crossAxisCount, locale)),
             ],
           ),
@@ -164,15 +126,12 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
         if (state is ResidentialUnitsLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ResidentialUnitsFailure) {
-          return OnFailureWidget(
-            onRetry: () => _unitsCubit.getResidentialUnitsDashboard(),
-          );
+          return OnFailureWidget(onRetry: () => reset());
         } else if (state is ResidentialUnitsLoaded) {
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: Column(
               children: [
-                // Dashboard stats (total units / total blocks)
                 Row(
                   children: [
                     Expanded(
@@ -216,7 +175,8 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                             );
                           },
                           onLongPress: () {
-                            if (_profileModel?.role == AppRoles.admin.name) {
+                            if (_profileModel?.role.toLowerCase() ==
+                                AppRoles.admin.name.toLowerCase()) {
                               _showOptions(unit, locale);
                             }
                           },
@@ -236,8 +196,6 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
     );
   }
 
-  // Replaced by shared StatItemWidget
-
   void _showOptions(ResidentialUnitModel unit, locale) {
     context.showBottomSheet(UnitOptionsSheet(unit: unit, cubit: _unitsCubit));
   }
@@ -248,7 +206,8 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role == AppRoles.admin.name)
+          if (_profileModel?.role.toLowerCase() ==
+              AppRoles.admin.name.toLowerCase())
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -259,7 +218,8 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                 );
               },
             ),
-          if (_profileModel?.role == AppRoles.admin.name)
+          if (_profileModel?.role.toLowerCase() ==
+              AppRoles.admin.name.toLowerCase())
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(

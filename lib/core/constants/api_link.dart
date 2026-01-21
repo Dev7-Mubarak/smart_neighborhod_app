@@ -14,6 +14,8 @@ class ApiLink {
       '$server/residential-neighborhoods';
   static const String getAllResidentialNeighborhoodsDashboard =
       '$server/residential-neighborhoods/dashboard';
+  static const String getAllResidentialNeighborhoodsMeDashboard =
+      '$server/residential-neighborhoods/me/dashboard';
   static const String addResidentialNeighborhood =
       '$server/residential-neighborhoods';
   static const String updateResidentialNeighborhood =
@@ -35,6 +37,8 @@ class ApiLink {
   static const String getAllResidentialUnits = '$server/residential-units';
   static const String getAllResidentialUnitsDashboard =
       '$server/residential-units/dashboard';
+  static const String getAllResidentialUnitsMeDashboard =
+      '$server/residential-units/dashboard';
   static const String addResidentialUnit = '$server/residential-units';
   static const String updateResidentialUnit = '$server/residential-units';
   static const String deleteResidentialUnit = '$server/residential-units';
@@ -49,6 +53,8 @@ class ApiLink {
   // Residential Blocks
   static const String getAllResidentialBlocksDashboard =
       '$server/residential-blocks/dashboard';
+  static const String getAllResidentialBlocksMeDashboard =
+      '$server/residential-blocks/me/dashboard';
   static const String addResidentialBlock = '$server/residential-blocks';
   static const String updateResidentialBlock = '$server/residential-blocks';
   static const String deleteResidentialBlock = '$server/residential-blocks';

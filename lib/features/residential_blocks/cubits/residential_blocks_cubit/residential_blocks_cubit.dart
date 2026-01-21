@@ -35,6 +35,45 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
     selectedManager = selectedBlockManager;
   }
 
+  Future<void> getResidentialBlocksMeDashboard({String? search}) async {
+    emit(ResidentialBlocksLoading());
+    try {
+      final response = await api.get(
+        ApiLink.getAllResidentialBlocksMeDashboard,
+      );
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      _dashboardData = ResidentialBlockDashboardModel.fromJson(
+        response["data"],
+      );
+      _allBlocks = _dashboardData!.blocks;
+
+      if (search != null && search.isNotEmpty) {
+        filterBlocks(search);
+      } else {
+        if (!isClosed) {
+          emit(
+            ResidentialBlocksLoaded(
+              dashboardData: _dashboardData!,
+              filteredBlocks: _allBlocks,
+            ),
+          );
+        }
+      }
+    } on Serverexception catch (e) {
+      emit(ResidentialBlocksFailure(errorMessage: e.errModel.errorMessage));
+    } catch (e) {
+      emit(ResidentialBlocksFailure(errorMessage: e.toString()));
+    }
+  }
+
   Future<void> getResidentialBlocksDashboard({String? search}) async {
     emit(ResidentialBlocksLoading());
     try {
@@ -187,6 +226,11 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
   }) async {
     emit(WaitingForUpdateOrAddResidentialBlock());
     try {
+      if (selectedManager == null) {
+        throw Exception(
+          "لا يمكن تغيير مدير المربع السكني بدون تحديد مدير جديد ",
+        );
+      }
       final response = await api.update(
         ApiLink.changeResidentialBlockManager(blockId: selectedBlock!.id),
         data: {

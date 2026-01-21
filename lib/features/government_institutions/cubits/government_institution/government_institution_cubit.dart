@@ -119,7 +119,7 @@ class GovernmentInstitutionCubit extends Cubit<GovernmentInstitutionState> {
       if (response["isSuccess"]) {
         emit(
           GovernmentInstitutionUpdatedSuccessfully(
-            message: response["message"] ?? "تم التحديث بنجاح",
+            message: response["data"] ?? "تم التحديث بنجاح",
           ),
         );
         await getAllGovernmentInstitutions();
@@ -149,7 +149,7 @@ class GovernmentInstitutionCubit extends Cubit<GovernmentInstitutionState> {
       if (response["isSuccess"]) {
         emit(
           GovernmentInstitutionDeletedSuccessfully(
-            message: response["message"] ?? "تم الحذف بنجاح",
+            message: response["data"] ?? "تم الحذف بنجاح",
           ),
         );
         await getAllGovernmentInstitutions();

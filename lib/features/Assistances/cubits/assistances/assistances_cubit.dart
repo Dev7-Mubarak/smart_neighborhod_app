@@ -259,6 +259,18 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   ) async {
     emit(WiateAddedUpdatedassistance());
     try {
+      if (selectedManagerId == null) {
+        throw Exception("لا يمكن إضافة مشروع مساعدات بدون مدير");
+      }
+      if (selectedProjectCategory == null) {
+        throw Exception("لا يمكن إضافة مشروع مساعدات بدون فئة المشروع");
+      }
+      if (selectedProjectStatus == null) {
+        throw Exception("لا يمكن إضافة مشروع مساعدات بدون حالة المشروع");
+      }
+      if (selectedProjectPriority == null) {
+        throw Exception("لا يمكن إضافة مشروع مساعدات بدون أولوية المشروع");
+      }
       final response = await api.post(
         ApiLink.addProject,
         data: {
@@ -300,8 +312,12 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }
 
   Future<void> assignTeamToAssistance() async {
+    if (selectedTeam == null) return;
     emit(WiateAssignTeamToAssistance());
     try {
+      if (selectedTeam == null) {
+        throw Exception("لا يوجد فرق لتقوم بإضافتها ");
+      }
       final response = await api.post(
         ApiLink.assignTeamToProject(
           projectId: project!.id,
@@ -335,6 +351,9 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   Future<void> assignFamilyToAssistance() async {
     emit(WiateAssignFamilyToAssistance());
     try {
+      if (selectedfamily == null) {
+        throw Exception("لا يوجد أسر لتقوم بإضافتها إلى المشروع");
+      }
       final response = await api.post(
         ApiLink.assignFamilyToProject(
           projectId: project!.id,
@@ -383,6 +402,18 @@ class AssistancesCubit extends Cubit<AssistancesState> {
   }) async {
     emit(WiateAddedUpdatedassistance());
     try {
+      if (selectedManagerId == null) {
+        throw Exception("لا يمكن تحديث مشروع مساعدات بدون مدير");
+      }
+      if (selectedProjectCategory == null) {
+        throw Exception("لا يمكن تحديث مشروع مساعدات بدون فئة المشروع");
+      }
+      if (selectedProjectStatus == null) {
+        throw Exception("لا يمكن تحديث مشروع مساعدات بدون حالة المشروع");
+      }
+      if (selectedProjectPriority == null) {
+        throw Exception("لا يمكن تحديث مشروع مساعدات بدون أولوية المشروع");
+      }
       final response = await api.update(
         '${ApiLink.updateProject}/$id',
         data: {

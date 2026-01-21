@@ -134,7 +134,8 @@ class _AllTeamsState extends State<AllTeams> {
                                 onLongPress: () {
                                   final profile =
                                       SharedPreferencesService.getProfile();
-                                  if (profile!.role == AppRoles.admin.name) {
+                                  if (profile!.role.toLowerCase() ==
+                                      AppRoles.admin.name.toLowerCase()) {
                                     _showTeamOptions(context, team);
                                   }
                                 },
@@ -183,7 +184,8 @@ class _AllTeamsState extends State<AllTeams> {
                                 }).toList(),
                                 originalObjects: teamMembers,
                                 onRowLongPress: (rowIndex, rowObject) {
-                                  if (_profile.role == AppRoles.admin.name) {
+                                  if (_profile.role.toLowerCase() ==
+                                      AppRoles.admin.name.toLowerCase()) {
                                     _showTeamMemberOptions(
                                       context,
                                       rowObject as TeamMember,
@@ -192,7 +194,8 @@ class _AllTeamsState extends State<AllTeams> {
                                 },
                               ),
                               const SizedBox(height: 10),
-                              if (_profile.role == AppRoles.admin.name)
+                              if (_profile.role.toLowerCase() ==
+                                  AppRoles.admin.name.toLowerCase())
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: SmallButton(
@@ -253,7 +256,7 @@ class _AllTeamsState extends State<AllTeams> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (_profile.role == AppRoles.admin.name)
+        if (_profile.role.toLowerCase() == AppRoles.admin.name.toLowerCase())
           SmallButton(
             text: 'إضافة فريق',
             onPressed: () {

@@ -34,13 +34,22 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
   Timer? _delay;
   late final ProfileModel? _profileModel;
 
+  void reset() {
+    if (_profileModel?.role.toLowerCase() ==
+        AppRoles.blockManager.name.toLowerCase()) {
+      _blocksCubit.getResidentialBlocksMeDashboard();
+    } else {
+      _blocksCubit.getResidentialBlocksDashboard();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _blocksCubit = context.read<ResidentialBlocksCubit>()
-      ..getResidentialBlocksDashboard();
-    _searchingController = TextEditingController();
     _profileModel = SharedPreferencesService.getProfile();
+    _blocksCubit = context.read<ResidentialBlocksCubit>();
+    reset();
+    _searchingController = TextEditingController();
   }
 
   @override
@@ -70,13 +79,11 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
         } else if (state is ResidentialBlockDeletedSuccessfully) {
           Navigator.of(context, rootNavigator: true).pop();
           context.showSuccessSnackBar(state.message);
-        } else if (state is ResidentialBlocksFailure ||
-            state is FailureForUpdateOrAddResidentialBlock) {
+        } else if (state is ResidentialBlocksFailure) {
+          context.showErrorSnackBar(state.errorMessage);
+        } else if (state is FailureForUpdateOrAddResidentialBlock) {
           Navigator.of(context, rootNavigator: true).pop();
-          final errorMsg = state is ResidentialBlocksFailure
-              ? state.errorMessage
-              : (state as FailureForUpdateOrAddResidentialBlock).errorMessage;
-          context.showErrorSnackBar(errorMsg);
+          context.showErrorSnackBar(state.errorMessage);
         }
       },
       child: Scaffold(
@@ -110,7 +117,8 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role == AppRoles.admin.name)
+          if (_profileModel?.role.toLowerCase() ==
+              AppRoles.admin.name.toLowerCase())
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -121,7 +129,8 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                 );
               },
             ),
-          if (_profileModel?.role == AppRoles.admin.name)
+          if (_profileModel?.role.toLowerCase() ==
+              AppRoles.admin.name.toLowerCase())
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
@@ -159,9 +168,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
         if (state is ResidentialBlocksLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ResidentialBlocksFailure) {
-          return OnFailureWidget(
-            onRetry: () => _blocksCubit.getResidentialBlocksDashboard(),
-          );
+          return OnFailureWidget(onRetry: () => reset());
         } else if (state is ResidentialBlocksLoaded) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -215,7 +222,8 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                               );
                             },
                             onLongPress: () {
-                              if (_profileModel?.role == AppRoles.admin.name) {
+                              if (_profileModel?.role.toLowerCase() ==
+                                  AppRoles.admin.name.toLowerCase()) {
                                 context.showBottomSheet(
                                   BlockOptionsSheet(
                                     block: block,
