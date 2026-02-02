@@ -85,7 +85,9 @@ class IssueService {
       final updatedIssue = issue.copyWith(
         status: newStatus,
         updatedAt: DateTime.now(),
-        resolvedAt: (newStatus == IssueStatus.resolved || newStatus == IssueStatus.closed)
+        resolvedAt:
+            (newStatus == IssueStatus.resolved ||
+                newStatus == IssueStatus.closed)
             ? DateTime.now()
             : issue.resolvedAt,
       );
@@ -107,8 +109,8 @@ class IssueService {
 
       final updatedIssue = issue.copyWith(
         assignedTo: assigneeId,
-        status: issue.status == IssueStatus.open 
-            ? IssueStatus.inProgress 
+        status: issue.status == IssueStatus.open
+            ? IssueStatus.inProgress
             : issue.status,
         updatedAt: DateTime.now(),
       );
@@ -272,8 +274,11 @@ class IssueService {
     }
 
     // Validate description (optional but if provided, check length)
-    if (description != null && description.trim().length > maxDescriptionLength) {
-      errors.add('Description must be less than $maxDescriptionLength characters');
+    if (description != null &&
+        description.trim().length > maxDescriptionLength) {
+      errors.add(
+        'Description must be less than $maxDescriptionLength characters',
+      );
     }
 
     return errors;
@@ -286,11 +291,7 @@ class IssueResult {
   final Issue? issue;
   final List<String> errors;
 
-  IssueResult._({
-    required this.isSuccess,
-    this.issue,
-    this.errors = const [],
-  });
+  IssueResult._({required this.isSuccess, this.issue, this.errors = const []});
 
   factory IssueResult.success(Issue issue) {
     return IssueResult._(isSuccess: true, issue: issue);

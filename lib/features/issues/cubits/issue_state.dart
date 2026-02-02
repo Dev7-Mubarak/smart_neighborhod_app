@@ -38,13 +38,13 @@ class IssueLoaded extends IssueState {
 
   @override
   List<Object?> get props => [
-        issues,
-        stats,
-        searchQuery,
-        filterStatus,
-        filterPriority,
-        filterCategory,
-      ];
+    issues,
+    stats,
+    searchQuery,
+    filterStatus,
+    filterPriority,
+    filterCategory,
+  ];
 }
 
 /// Saving state

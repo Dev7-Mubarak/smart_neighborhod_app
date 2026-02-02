@@ -4,10 +4,10 @@ enum SyncStatus {
   synced('synced'),
   conflict('conflict'),
   failed('failed');
-  
+
   final String value;
   const SyncStatus(this.value);
-  
+
   static SyncStatus fromString(String? value) {
     return SyncStatus.values.firstWhere(
       (e) => e.value == value,
@@ -17,11 +17,7 @@ enum SyncStatus {
 }
 
 /// Sync operation type
-enum SyncOperation {
-  upload,
-  download,
-  full,
-}
+enum SyncOperation { upload, download, full }
 
 /// Sync result status
 enum SyncResultStatus {
@@ -42,7 +38,7 @@ class SyncLog {
   final int recordsUploaded;
   final int recordsDownloaded;
   final String? errorMessage;
-  
+
   SyncLog({
     required this.id,
     required this.syncType,
@@ -53,7 +49,7 @@ class SyncLog {
     this.recordsDownloaded = 0,
     this.errorMessage,
   });
-  
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -66,14 +62,14 @@ class SyncLog {
       'error_message': errorMessage,
     };
   }
-  
+
   factory SyncLog.fromMap(Map<String, dynamic> map) {
     return SyncLog(
       id: map['id'],
       syncType: map['sync_type'],
       startedAt: DateTime.parse(map['started_at']),
-      completedAt: map['completed_at'] != null 
-          ? DateTime.parse(map['completed_at']) 
+      completedAt: map['completed_at'] != null
+          ? DateTime.parse(map['completed_at'])
           : null,
       status: map['status'],
       recordsUploaded: map['records_uploaded'] ?? 0,
@@ -90,7 +86,7 @@ class SyncResult {
   final int downloadedCount;
   final List<String> errors;
   final DateTime timestamp;
-  
+
   SyncResult({
     required this.status,
     this.uploadedCount = 0,
@@ -98,10 +94,10 @@ class SyncResult {
     this.errors = const [],
     DateTime? timestamp,
   }) : timestamp = timestamp ?? DateTime.now();
-  
+
   bool get isSuccess => status == SyncResultStatus.success;
   bool get hasErrors => errors.isNotEmpty;
-  
+
   @override
   String toString() {
     return 'SyncResult(status: $status, uploaded: $uploadedCount, downloaded: $downloadedCount, errors: ${errors.length})';

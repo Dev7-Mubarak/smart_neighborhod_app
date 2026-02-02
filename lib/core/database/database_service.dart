@@ -10,13 +10,13 @@ class DatabaseService {
   static Database? _database;
   static const String _dbName = 'smart_neighbourhood.db';
   static const int _dbVersion = 1;
-  
+
   // Secure storage for encryption key
   static const _secureStorage = FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
   );
-  
+
   static const String _keyAlias = 'db_encryption_key';
 
   DatabaseService._();
@@ -33,10 +33,10 @@ class DatabaseService {
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _dbName);
-    
+
     // Get or generate encryption key
     final encryptionKey = await _getOrCreateEncryptionKey();
-    
+
     return await openDatabase(
       path,
       version: _dbVersion,
@@ -49,19 +49,21 @@ class DatabaseService {
   /// Get existing key or create a new secure random key
   Future<String> _getOrCreateEncryptionKey() async {
     String? existingKey = await _secureStorage.read(key: _keyAlias);
-    
+
     if (existingKey != null) {
       return existingKey;
     }
-    
+
     // Generate a cryptographically secure 256-bit key
     final random = Random.secure();
     final keyBytes = List<int>.generate(32, (_) => random.nextInt(256));
-    final newKey = keyBytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
-    
+    final newKey = keyBytes
+        .map((b) => b.toRadixString(16).padLeft(2, '0'))
+        .join();
+
     // Store securely in platform keychain/keystore
     await _secureStorage.write(key: _keyAlias, value: newKey);
-    
+
     return newKey;
   }
 
@@ -85,7 +87,7 @@ class DatabaseService {
         deleted_at TEXT
       )
     ''');
-    
+
     // Issues/Complaints table
     await db.execute('''
       CREATE TABLE issues (
@@ -109,7 +111,7 @@ class DatabaseService {
         deleted_at TEXT
       )
     ''');
-    
+
     // Sync log table for tracking sync history
     await db.execute('''
       CREATE TABLE sync_log (
@@ -123,9 +125,11 @@ class DatabaseService {
         error_message TEXT
       )
     ''');
-    
+
     // Create indexes for common queries
-    await db.execute('CREATE INDEX idx_residents_sync ON residents(sync_status)');
+    await db.execute(
+      'CREATE INDEX idx_residents_sync ON residents(sync_status)',
+    );
     await db.execute('CREATE INDEX idx_residents_unit ON residents(unit_id)');
     await db.execute('CREATE INDEX idx_issues_sync ON issues(sync_status)');
     await db.execute('CREATE INDEX idx_issues_status ON issues(status)');

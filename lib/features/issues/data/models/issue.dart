@@ -246,27 +246,28 @@ class Issue extends Equatable {
   bool get isPending => syncStatus == SyncStatus.pending;
   bool get isDeleted => deletedAt != null;
   bool get isOpen => status == IssueStatus.open;
-  bool get isResolved => status == IssueStatus.resolved || status == IssueStatus.closed;
+  bool get isResolved =>
+      status == IssueStatus.resolved || status == IssueStatus.closed;
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        description,
-        category,
-        priority,
-        status,
-        reporterId,
-        assignedTo,
-        unitId,
-        blockId,
-        neighbourhoodId,
-        resolutionNotes,
-        createdAt,
-        updatedAt,
-        resolvedAt,
-        syncStatus,
-        serverId,
-        deletedAt,
-      ];
+    id,
+    title,
+    description,
+    category,
+    priority,
+    status,
+    reporterId,
+    assignedTo,
+    unitId,
+    blockId,
+    neighbourhoodId,
+    resolutionNotes,
+    createdAt,
+    updatedAt,
+    resolvedAt,
+    syncStatus,
+    serverId,
+    deletedAt,
+  ];
 }

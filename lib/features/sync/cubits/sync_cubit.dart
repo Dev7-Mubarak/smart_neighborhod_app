@@ -13,8 +13,8 @@ class SyncCubit extends Cubit<SyncState> {
   StreamSubscription<SyncProgress>? _progressSubscription;
 
   SyncCubit({SyncService? syncService})
-      : _syncService = syncService ?? SyncService.instance,
-        super(const SyncInitial()) {
+    : _syncService = syncService ?? SyncService.instance,
+      super(const SyncInitial()) {
     _init();
   }
 
@@ -22,12 +22,14 @@ class SyncCubit extends Cubit<SyncState> {
     // Listen to sync progress
     _progressSubscription = _syncService.progressStream.listen((progress) {
       if (state is SyncInProgress) {
-        emit(SyncInProgress(
-          stage: progress.stage,
-          message: progress.message,
-          uploadedCount: progress.uploadedCount ?? 0,
-          downloadedCount: progress.downloadedCount ?? 0,
-        ));
+        emit(
+          SyncInProgress(
+            stage: progress.stage,
+            message: progress.message,
+            uploadedCount: progress.uploadedCount ?? 0,
+            downloadedCount: progress.downloadedCount ?? 0,
+          ),
+        );
       }
     });
   }
@@ -42,31 +44,32 @@ class SyncCubit extends Cubit<SyncState> {
       final lastSync = await _syncService.getLastSuccessfulSync();
       final timeUntilNext = await _syncService.timeUntilNextSync();
 
-      emit(SyncStatusLoaded(
-        isSyncDue: isSyncDue,
-        hasConnection: hasConnection,
-        lastSync: lastSync,
-        timeUntilNextSync: timeUntilNext,
-      ));
+      emit(
+        SyncStatusLoaded(
+          isSyncDue: isSyncDue,
+          hasConnection: hasConnection,
+          lastSync: lastSync,
+          timeUntilNextSync: timeUntilNext,
+        ),
+      );
     } catch (e) {
       emit(SyncError(message: 'Failed to check sync status: $e'));
     }
   }
 
   /// Perform weekly sync
-  Future<void> performSync({
-    required String baseUrl,
-    String? authToken,
-  }) async {
+  Future<void> performSync({required String baseUrl, String? authToken}) async {
     if (_syncService.isSyncing) {
       emit(const SyncError(message: 'Sync already in progress'));
       return;
     }
 
-    emit(const SyncInProgress(
-      stage: SyncStage.starting,
-      message: 'Starting synchronization...',
-    ));
+    emit(
+      const SyncInProgress(
+        stage: SyncStage.starting,
+        message: 'Starting synchronization...',
+      ),
+    );
 
     final result = await _syncService.performSync(
       baseUrl: baseUrl,
@@ -74,23 +77,26 @@ class SyncCubit extends Cubit<SyncState> {
     );
 
     if (result.isSuccess) {
-      emit(SyncComplete(
-        result: result,
-        message: 'Sync completed successfully',
-      ));
+      emit(
+        SyncComplete(result: result, message: 'Sync completed successfully'),
+      );
     } else if (result.status == SyncResultStatus.noConnection) {
       emit(const SyncError(message: 'No internet connection available'));
     } else if (result.status == SyncResultStatus.partialSuccess) {
-      emit(SyncComplete(
-        result: result,
-        message: 'Sync completed with some errors',
-      ));
+      emit(
+        SyncComplete(
+          result: result,
+          message: 'Sync completed with some errors',
+        ),
+      );
     } else {
-      emit(SyncError(
-        message: result.errors.isNotEmpty 
-            ? result.errors.first 
-            : 'Sync failed',
-      ));
+      emit(
+        SyncError(
+          message: result.errors.isNotEmpty
+              ? result.errors.first
+              : 'Sync failed',
+        ),
+      );
     }
 
     // Refresh status after sync

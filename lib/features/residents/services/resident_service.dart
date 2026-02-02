@@ -11,7 +11,8 @@ class ResidentService {
   // Validation rules
   static const int minNameLength = 2;
   static const int maxNameLength = 100;
-  static const int nationalIdLength = 10; // Adjust based on your country's format
+  static const int nationalIdLength =
+      10; // Adjust based on your country's format
 
   /// Create a new resident with validation
   Future<ResidentResult> createResident({
@@ -70,13 +71,16 @@ class ResidentService {
     }
 
     // Check for duplicate national ID (excluding current resident)
-    if (await _dao.nationalIdExists(resident.nationalId, excludeId: resident.id)) {
-      return ResidentResult.failure(['National ID already registered to another resident']);
+    if (await _dao.nationalIdExists(
+      resident.nationalId,
+      excludeId: resident.id,
+    )) {
+      return ResidentResult.failure([
+        'National ID already registered to another resident',
+      ]);
     }
 
-    final updatedResident = resident.copyWith(
-      updatedAt: DateTime.now(),
-    );
+    final updatedResident = resident.copyWith(updatedAt: DateTime.now());
 
     try {
       await _dao.update(updatedResident);
@@ -95,7 +99,9 @@ class ResidentService {
       }
 
       await _dao.softDelete(id);
-      return ResidentResult.success(resident.copyWith(deletedAt: DateTime.now()));
+      return ResidentResult.success(
+        resident.copyWith(deletedAt: DateTime.now()),
+      );
     } catch (e) {
       return ResidentResult.failure(['Failed to delete resident: $e']);
     }

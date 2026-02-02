@@ -127,8 +127,8 @@ class Resident extends Equatable {
       updatedAt: DateTime.parse(map['updated_at'] as String),
       syncStatus: SyncStatus.fromString(map['sync_status'] as String?),
       serverId: map['server_id'] as String?,
-      deletedAt: map['deleted_at'] != null 
-          ? DateTime.parse(map['deleted_at'] as String) 
+      deletedAt: map['deleted_at'] != null
+          ? DateTime.parse(map['deleted_at'] as String)
           : null,
     );
   }
@@ -158,11 +158,11 @@ class Resident extends Equatable {
       blockId: json['blockId'] as String?,
       neighbourhoodId: json['neighbourhoodId'] as String?,
       status: json['status'] as String? ?? 'active',
-      createdAt: json['createdAt'] != null 
-          ? DateTime.parse(json['createdAt']) 
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
           : now,
-      updatedAt: json['updatedAt'] != null 
-          ? DateTime.parse(json['updatedAt']) 
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'])
           : now,
       syncStatus: SyncStatus.synced,
       serverId: json['id']?.toString(),
@@ -175,18 +175,18 @@ class Resident extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        nationalId,
-        fullName,
-        phone,
-        unitId,
-        blockId,
-        neighbourhoodId,
-        status,
-        createdAt,
-        updatedAt,
-        syncStatus,
-        serverId,
-        deletedAt,
-      ];
+    id,
+    nationalId,
+    fullName,
+    phone,
+    unitId,
+    blockId,
+    neighbourhoodId,
+    status,
+    createdAt,
+    updatedAt,
+    syncStatus,
+    serverId,
+    deletedAt,
+  ];
 }

@@ -62,7 +62,12 @@ class SyncStatusLoaded extends SyncState {
   }
 
   @override
-  List<Object?> get props => [isSyncDue, hasConnection, lastSync, timeUntilNextSync];
+  List<Object?> get props => [
+    isSyncDue,
+    hasConnection,
+    lastSync,
+    timeUntilNextSync,
+  ];
 }
 
 /// Sync in progress
@@ -88,10 +93,7 @@ class SyncComplete extends SyncState {
   final SyncResult result;
   final String message;
 
-  const SyncComplete({
-    required this.result,
-    required this.message,
-  });
+  const SyncComplete({required this.result, required this.message});
 
   @override
   List<Object?> get props => [result, message];

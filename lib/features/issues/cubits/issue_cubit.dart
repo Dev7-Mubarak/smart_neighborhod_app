@@ -10,8 +10,8 @@ class IssueCubit extends Cubit<IssueState> {
   final IssueService _service;
 
   IssueCubit({IssueService? service})
-      : _service = service ?? IssueService(),
-        super(const IssueInitial());
+    : _service = service ?? IssueService(),
+      super(const IssueInitial());
 
   /// Load all issues
   Future<void> loadIssues() async {
@@ -82,13 +82,15 @@ class IssueCubit extends Cubit<IssueState> {
         category: category,
       );
       final stats = await _service.getStatistics();
-      emit(IssueLoaded(
-        issues: issues,
-        stats: stats,
-        filterStatus: status,
-        filterPriority: priority,
-        filterCategory: category,
-      ));
+      emit(
+        IssueLoaded(
+          issues: issues,
+          stats: stats,
+          filterStatus: status,
+          filterPriority: priority,
+          filterCategory: category,
+        ),
+      );
     } catch (e) {
       emit(IssueError(message: 'Failed to filter issues: $e'));
     }
@@ -119,7 +121,9 @@ class IssueCubit extends Cubit<IssueState> {
     );
 
     if (result.isSuccess) {
-      emit(IssueSaved(issue: result.issue!, message: 'Issue created successfully'));
+      emit(
+        IssueSaved(issue: result.issue!, message: 'Issue created successfully'),
+      );
       await loadIssues();
     } else {
       emit(IssueError(message: result.errorMessage));
@@ -133,7 +137,9 @@ class IssueCubit extends Cubit<IssueState> {
     final result = await _service.updateIssue(issue);
 
     if (result.isSuccess) {
-      emit(IssueSaved(issue: result.issue!, message: 'Issue updated successfully'));
+      emit(
+        IssueSaved(issue: result.issue!, message: 'Issue updated successfully'),
+      );
       await loadIssues();
     } else {
       emit(IssueError(message: result.errorMessage));

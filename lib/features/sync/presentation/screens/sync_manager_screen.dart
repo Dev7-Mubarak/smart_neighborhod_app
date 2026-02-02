@@ -38,7 +38,9 @@ class _SyncManagerView extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: state.result.isSuccess ? Colors.green : Colors.orange,
+                backgroundColor: state.result.isSuccess
+                    ? Colors.green
+                    : Colors.orange,
               ),
             );
           } else if (state is SyncError) {
@@ -101,8 +103,8 @@ class _SyncManagerView extends StatelessWidget {
                       Text(
                         _getStatusMessage(state),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ],
                   ),
@@ -154,15 +156,12 @@ class _SyncManagerView extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '$label: ',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
         ),
         Expanded(
-          child: Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
         ),
       ],
     );
@@ -173,9 +172,7 @@ class _SyncManagerView extends StatelessWidget {
     final isEnabled = state is SyncStatusLoaded && state.hasConnection;
 
     return ElevatedButton.icon(
-      onPressed: isLoading || !isEnabled
-          ? null
-          : () => _performSync(context),
+      onPressed: isLoading || !isEnabled ? null : () => _performSync(context),
       icon: isLoading
           ? const SizedBox(
               width: 20,
@@ -249,10 +246,7 @@ class _SyncManagerView extends StatelessWidget {
             color: color,
           ),
         ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
-        ),
+        Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
       ],
     );
   }
@@ -262,9 +256,7 @@ class _SyncManagerView extends StatelessWidget {
       return const Card(
         child: Padding(
           padding: EdgeInsets.all(24),
-          child: Center(
-            child: Text('No sync history yet'),
-          ),
+          child: Center(child: Text('No sync history yet')),
         ),
       );
     }
@@ -277,10 +269,7 @@ class _SyncManagerView extends StatelessWidget {
             padding: EdgeInsets.all(16),
             child: Text(
               'Sync History',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           const Divider(height: 1),
@@ -291,7 +280,8 @@ class _SyncManagerView extends StatelessWidget {
             separatorBuilder: (_, __) => const Divider(height: 1),
             itemBuilder: (context, index) {
               final log = state.history[index];
-              final isSuccess = log.status == 'success' || log.status == 'partialSuccess';
+              final isSuccess =
+                  log.status == 'success' || log.status == 'partialSuccess';
 
               return ListTile(
                 leading: Icon(
@@ -362,7 +352,7 @@ class _SyncManagerView extends StatelessWidget {
     // In production, get these from your configuration service
     const baseUrl = 'https://your-api-server.com';
     // Get auth token from secure storage in production
-    
+
     context.read<SyncCubit>().performSync(
       baseUrl: baseUrl,
       authToken: null, // Get from secure storage

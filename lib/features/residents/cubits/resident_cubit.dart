@@ -11,8 +11,8 @@ class ResidentCubit extends Cubit<ResidentState> {
   final ResidentService _service;
 
   ResidentCubit({ResidentService? service})
-      : _service = service ?? ResidentService(),
-        super(const ResidentInitial());
+    : _service = service ?? ResidentService(),
+      super(const ResidentInitial());
 
   /// Load all residents
   Future<void> loadResidents() async {
@@ -34,7 +34,9 @@ class ResidentCubit extends Cubit<ResidentState> {
     try {
       final residents = await _service.searchResidents(query);
       final stats = await _service.getStatistics();
-      emit(ResidentLoaded(residents: residents, stats: stats, searchQuery: query));
+      emit(
+        ResidentLoaded(residents: residents, stats: stats, searchQuery: query),
+      );
     } catch (e) {
       emit(ResidentError(message: 'Failed to search residents: $e'));
     }
@@ -61,7 +63,12 @@ class ResidentCubit extends Cubit<ResidentState> {
     );
 
     if (result.isSuccess) {
-      emit(ResidentSaved(resident: result.resident!, message: 'Resident created successfully'));
+      emit(
+        ResidentSaved(
+          resident: result.resident!,
+          message: 'Resident created successfully',
+        ),
+      );
       // Reload the list
       await loadResidents();
     } else {
@@ -76,7 +83,12 @@ class ResidentCubit extends Cubit<ResidentState> {
     final result = await _service.updateResident(resident);
 
     if (result.isSuccess) {
-      emit(ResidentSaved(resident: result.resident!, message: 'Resident updated successfully'));
+      emit(
+        ResidentSaved(
+          resident: result.resident!,
+          message: 'Resident updated successfully',
+        ),
+      );
       // Reload the list
       await loadResidents();
     } else {

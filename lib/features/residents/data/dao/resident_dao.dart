@@ -60,10 +60,7 @@ class ResidentDao extends BaseDao<Resident> {
 
   /// Get active residents only
   Future<List<Resident>> getActiveResidents() async {
-    return search(
-      where: "status = 'active'",
-      orderBy: 'full_name ASC',
-    );
+    return search(where: "status = 'active'", orderBy: 'full_name ASC');
   }
 
   /// Get residents with pagination
@@ -99,11 +96,11 @@ class ResidentDao extends BaseDao<Resident> {
   Future<Map<String, int>> countByStatus() async {
     final all = await getAll();
     final counts = <String, int>{};
-    
+
     for (final resident in all) {
       counts[resident.status] = (counts[resident.status] ?? 0) + 1;
     }
-    
+
     return counts;
   }
 

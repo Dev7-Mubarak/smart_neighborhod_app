@@ -189,7 +189,8 @@ class IssueDao extends BaseDao<Issue> {
   /// Get critical and high priority open issues
   Future<List<Issue>> getUrgentIssues() async {
     return search(
-      where: "(priority = 'critical' OR priority = 'high') AND (status = 'open' OR status = 'in_progress')",
+      where:
+          "(priority = 'critical' OR priority = 'high') AND (status = 'open' OR status = 'in_progress')",
       orderBy: 'priority DESC, created_at ASC',
     );
   }
