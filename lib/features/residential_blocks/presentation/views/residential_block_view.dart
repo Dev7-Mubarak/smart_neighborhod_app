@@ -220,6 +220,11 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                                       context,
                                     )..getBlockFamilies(block.id),
                               );
+                              // Navigator.pushNamed(
+                              //   context,
+                              //   AppRoute.residentialBlockDetial,
+                              //   arguments: block.id,
+                              // );
                             },
                             onLongPress: () {
                               if (_profileModel?.role.toLowerCase() ==

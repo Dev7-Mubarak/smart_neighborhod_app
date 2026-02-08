@@ -50,17 +50,23 @@ class ApiLink {
     return '$server/residential-units/$unitId/blocks';
   }
 
+  // Statistics
+  static const String getStatistics = '$server/stats';
+
   // Residential Blocks
   static const String getAllResidentialBlocksDashboard =
       '$server/residential-blocks/dashboard';
   static const String getAllResidentialBlocksMeDashboard =
       '$server/residential-blocks/me/dashboard';
+
   static const String addResidentialBlock = '$server/residential-blocks';
   static const String updateResidentialBlock = '$server/residential-blocks';
   static const String deleteResidentialBlock = '$server/residential-blocks';
   static String changeResidentialBlockManager({required int blockId}) {
     return '$server/residential-blocks/$blockId/manager';
   }
+
+  static const String getBlockDetails = '$server/blocks/details';
 
   static String getResidentialBlockFamilies({required int blockId}) {
     return '$server/residential-blocks/$blockId/families';

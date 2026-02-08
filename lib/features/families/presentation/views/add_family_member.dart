@@ -203,6 +203,10 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                               familyCubit.selectedFamilyHead?.lastName,
                         )
                         .toList();
+                    print(
+                      "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${familyCubit.selectedFamilyHead?.lastName}",
+                    );
+
                     if (people.isEmpty) {
                       return Container(
                         height: 56,

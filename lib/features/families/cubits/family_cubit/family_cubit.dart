@@ -21,6 +21,7 @@ class FamilyCubit extends Cubit<FamilyState> {
   HeadOfFamily? selectedFamilyHead;
   int? selectedCategoryId;
   Family? family;
+  int? familyId;
   FamilyMember? familyMember;
   FamilyDetilesModel? _familyDetiles;
   List<FamilyMember> _allFamilyMembers = [];
@@ -116,6 +117,7 @@ class FamilyCubit extends Cubit<FamilyState> {
   }
 
   Future<void> getFamilyDetilesById(int id) async {
+    familyId = id;
     emit(FamilyLoading());
     try {
       final response = await api.get(
@@ -188,7 +190,6 @@ class FamilyCubit extends Cubit<FamilyState> {
         ApiLink.addFamilyMember,
         data: {"familyId": familyId, "personId": personId, "roleId": roleId},
       );
-
       if (response["isSuccess"]) {
         emit(
           FamilyMemberAddedSuccessfully(message: "تم إضافة الشخص للأسرة بنجاح"),
@@ -259,7 +260,6 @@ class FamilyCubit extends Cubit<FamilyState> {
         );
       }
       allFamilies = familiesObjects.where((e) => e.blockId == blockId).toList();
-
       emit(FamilyLoaded(families: allFamilies));
     } on Serverexception catch (e) {
       emit(FamilyFailure(errorMessage: e.errModel.errorMessage));

@@ -290,7 +290,7 @@
   "@main": {},
   "blockManager": "مدير المربع",
   "@blockManager": {},
-    "residentialBlocks": "المربعات السكنية",
+  "residentialBlocks": "المربعات السكنية",
   "@residentialBlocks": {},
   "addResidentialBlock": "إضافة مربع سكني",
   "@addResidentialBlock": {},
@@ -412,7 +412,6 @@
   "@selectFamily": {
     "description": "Label for selecting a family"
   },
-  
   "Families": "الأسر",
   "@Families": {
     "description": "Label for families"
@@ -1104,7 +1103,7 @@
   "@residentialUnits": {
     "description": "residential units"
   },
-  "noManager":   "لا يوجد مدير",
+  "noManager": "لا يوجد مدير",
   "@noManager": {
     "description": "There is no manager"
   },
@@ -1115,8 +1114,7 @@
   "lookingunit": "ابحث عن وحده سكنية",
   "@lookingunit": {
     "description": "...looking for a residential unit"
-  }
-  ,
+  },
   "AddResidentialUnit": "إضافة وحدة سكنية",
   "@AddResidentialUnit": {
     "description": "Adding a residential unit"
@@ -1133,8 +1131,7 @@
   "@searchNeighborhoodHint": {
     "description": "Search neighborhood hint"
   },
-
- "residentialBlocksOptions": "خيارات المربعات السكنية ",
+  "residentialBlocksOptions": "خيارات المربعات السكنية ",
   "@residentialBlocksOptions": {
     "description": "residential blocks options"
   },
@@ -1142,7 +1139,11 @@
   "@residentialUnitsOptions": {
     "description": "residential units options"
   },
-  "ChangeUnitName":"تغيير اسم الوحده السكنية",
+  "FamilyOptions": "خيارات  العائلة ",
+  "@FamilyOptions": {
+    "description": "family options"
+  },
+  "ChangeUnitName": "تغيير اسم الوحده السكنية",
   "@ChangeUnitName": {
     "description": "Change Unit Name"
   },
@@ -1150,52 +1151,63 @@
   "@ChangeUnitManagerName": {
     "description": "Change Unit Manager Name"
   },
-    "ResidentialUnitManagerName": "مدير الوحده السكنية",
+  "ResidentialUnitManagerName": "مدير الوحده السكنية",
   "@ResidentialUnitManagerName": {
     "description": "Name of residential Unit manager"
   },
-  
   "chooseUnit": "اختر الوحدة",
   "@chooseUnit": {
     "description": "Choose unit label"
   },
-
-   
   "family": "العائلة",
   "@family": {
     "description": "family"
   },
-
-
   "familyMembers": "أفراد العائلة",
   "@familyMembers": {
     "description": "family members"
   },
- "lookingFamilyMembers": "ابحث عن أفراد العائلة",
+  "lookingFamilyMembers": "ابحث عن أفراد العائلة",
   "@lookingFamilyMembers": {
-    "description":"Looking for family members"
+    "description": "Looking for family members"
   },
   "lookingFamily": "ابحث عن عائلة",
   "@lookingFamily": {
     "description": "family"
   },
-
-  
   "unitsInNeighborhood": "الوحدات السكنية في",
   "@unitsInNeighborhood": {
     "description": "units in neighborhood"
   },
-    "blocksInUnit": "المربعات السكنية في",
+  "blocksInUnit": "المربعات السكنية في",
   "@blocksInUnit": {
     "description": "blocks in unit"
   },
-    "familiesInBlock": "الأسر في",
+  "familiesInBlock": "الأسر في",
   "@familiesInBlock": {
     "description": "families in block"
-  }
-  ,
-    "noAvailableResidentialUnits": "لا يوجد وحدات سكنية متاحه",
+  },
+  "noAvailableResidentialUnits": "لا يوجد وحدات سكنية متاحه",
   "@noAvailableResidentialUnits": {
     "description": "no available residential units"
+  },
+  "Statistics": "الإحصائيات",
+  "@Statistics": {
+    "description": "Statistics"
   }
+  ,
+  "SocialAndFamily": "الإحصائيات العائلية",
+  "@SocialAndFamily": {
+    "description": "Social And Family"
+  },
+  "projects": "إحصائيات المشاريع",
+  "@projects": {
+    "description": "projects"
+  },
+    "Housing": "إحصائيات التسكين",
+  "@Housing": {
+    "description": "Housing"
+  }
+  
+  
 }

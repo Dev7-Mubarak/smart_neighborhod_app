@@ -23,6 +23,8 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
   int? selectedUnitId;
   ResidentialBlockModel? selectedBlock;
   int? selectedManager;
+  late int blockId;
+
   void changeSelectedUnitId(int? selectedUnitId) {
     this.selectedUnitId = selectedUnitId;
   }
@@ -303,6 +305,7 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
   }
 
   Future<void> getBlockFamilies(int id) async {
+    blockId = id;
     emit(ResidentialBlockFamiliesLoading());
     try {
       final response = await api.get(
@@ -340,7 +343,6 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
 
   void filterBlockfamilies(String query) {
     if (_blockWithFamilies == null) return;
-
     if (query.isEmpty) {
       emit(
         ResidentialBlockFamiliesLoaded(
