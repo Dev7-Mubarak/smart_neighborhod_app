@@ -19,9 +19,9 @@ import '../../../people/data/models/Person.dart';
 
 class AddUpdateFamily extends StatefulWidget {
   final int blockId;
-  final Family? family;
+  // final Family? family;
 
-  const AddUpdateFamily({super.key, required this.blockId, this.family});
+  const AddUpdateFamily({super.key, required this.blockId});
 
   @override
   State<AddUpdateFamily> createState() => _AddUpdateFamilyState();
@@ -56,13 +56,12 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   Future<void> _initializeData() async {
     await familyCategoryCubit.getFamilyCategories();
     await personCubit.getPeople();
-
-    if (widget.family != null) {
-      _familyNameController.text = widget.family!.name;
-      _locationController.text = widget.family!.location;
-      _notesController.text = widget.family!.familyNotes;
-      selectedFamilyCategory = widget.family!.familyCatgoryId;
-      selectedFamilyHead = widget.family!.familyHeadId;
+    if (familyCubit.family != null) {
+      _familyNameController.text = familyCubit.family!.name;
+      _locationController.text = familyCubit.family!.location;
+      // _notesController.text = familyCubit.family!.familyNotes;
+      selectedFamilyCategory = familyCubit.family!.familyCatgoryId;
+      // selectedFamilyHead = familyCubit.family!.familyHeadId;
     }
     setState(() {});
   }
@@ -77,7 +76,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
 
   Family _buildFamilyPayload() {
     return Family(
-      id: widget.family?.id ?? 0,
+      id: familyCubit.family?.id ?? 0,
       name: _familyNameController.text,
       location: _locationController.text,
       familyNotes: _notesController.text,
@@ -90,7 +89,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       final family = _buildFamilyPayload();
-      final future = widget.family == null
+      final future = familyCubit.family == null
           ? familyCubit.addNewFamily(family)
           : familyCubit.updateFamily(family);
       // future.then((_) => blockDetailCubit.getBlockDetailes(widget.blockId));
@@ -126,7 +125,7 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
           iconTheme: const IconThemeData(color: Colors.black),
           title: Center(
             child: Text(
-              widget.family == null
+              familyCubit.family == null
                   ? 'إضافة أسرة جديدة'
                   : 'تحديث بيانات الأسرة',
               style: const TextStyle(
@@ -293,7 +292,9 @@ class _AddUpdateFamilyState extends State<AddUpdateFamily> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SmallButton(
-                            text: widget.family == null ? 'إضافة' : 'تحديث',
+                            text: familyCubit.family == null
+                                ? 'إضافة'
+                                : 'تحديث',
                             onPressed: _submitForm,
                           ),
                           const SizedBox(width: 10),

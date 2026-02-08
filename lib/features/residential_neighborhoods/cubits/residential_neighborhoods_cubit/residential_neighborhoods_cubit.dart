@@ -49,7 +49,7 @@ class ResidentialNeighborhoodsCubit
         ),
         data: {
           'personId': selectedManager,
-          'email': email,
+          'identifier': email,
           'password': password,
         },
       );

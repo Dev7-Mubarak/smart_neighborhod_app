@@ -1167,11 +1167,11 @@
   "@Families": {
     "description": "Label for families"
   },
-   "residentialBlocksOptions": "residential Blocks Options",
+  "residentialBlocksOptions": "residential Blocks Options",
   "@residentialBlocksOptions": {
     "description": "residential blocks options"
   },
-   "family": "family",
+  "family": "family",
   "@family": {
     "description": "family"
   },
@@ -1179,29 +1179,48 @@
   "@lookingFamily": {
     "description": "lookingFamily"
   },
-  
   "familyMembers": "family members",
   "@familyMembers": {
     "description": "family members"
   },
- "lookingFamilyMembers": "Looking for family members",
+  "lookingFamilyMembers": "Looking for family members",
   "@lookingFamilyMembers": {
     "description": "Looking for family members"
   },
-    "unitsInNeighborhood": "units in neighborhood",
+  "unitsInNeighborhood": "units in neighborhood",
   "@unitsInNeighborhood": {
     "description": "units in neighborhood"
   },
-     "blocksInUnit": "blocks in unit",
+  "blocksInUnit": "blocks in unit",
   "@blocksInUnit": {
     "description": "blocks in unit"
   },
-    "familiesInBlock": "families in block",
+  "familiesInBlock": "families in block",
   "@familiesInBlock": {
     "description": "families in block"
   },
-    "noAvailableResidentialUnits":" no available residential units",
+  "noAvailableResidentialUnits": " no available residential units",
   "@noAvailableResidentialUnits": {
     "description": "no available residential units"
+  },
+  "FamilyOptions": "خيارات  العائلة ",
+  "@FamilyOptions": {
+    "description": "family options"
+  },
+  "Statistics": "Statistics",
+  "@Statistics": {
+    "description": "Statistics"
+  },
+  "SocialAndFamily": "Family statistics",
+  "@SocialAndFamily": {
+    "description": "Social And Family"
+  },
+  "projects": "projects",
+  "@projects": {
+    "description": "projects"
+  },
+  "Housing": "Housing",
+  "@Housing": {
+    "description": "Housing"
   }
 }

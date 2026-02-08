@@ -7,13 +7,17 @@ import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forget
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflictType/conflict_type_cubit.dart';
+import 'package:smart_negborhood_app/features/families/cubits/family_catgory_cubit/family_catgory_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_member/family_member_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/member_family_role_cubit/member_family_role_cubit.dart';
+import 'package:smart_negborhood_app/features/families/presentation/views/add_update_family.dart';
 import 'package:smart_negborhood_app/features/families/presentation/views/family_member_details.dart';
 import 'package:smart_negborhood_app/features/home/presentation/views/main_view.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
 import 'package:smart_negborhood_app/features/people/cubits/project_category/project_category_cubit.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/change_block_manager_view.dart';
+import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_detial.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_family_members_view.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/presentation/views/residential_block_view.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/views/add_residential_neighborhood_view.dart';
@@ -24,6 +28,8 @@ import 'package:smart_negborhood_app/features/residential_units/presentation/vie
 import 'package:smart_negborhood_app/features/residential_units/presentation/views/residential_unit_view.dart';
 import 'package:smart_negborhood_app/features/residential_units/presentation/views/residential_unit_blocks_view.dart';
 import 'package:smart_negborhood_app/features/settings/presentation/views/setteings_view.dart';
+import 'package:smart_negborhood_app/features/statistics/cubits/residential_units_cubit/statistics_cubit.dart';
+import 'package:smart_negborhood_app/features/statistics/presentation/views/statistics_view.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team/team_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_member/team_member_cubit.dart';
 import 'package:smart_negborhood_app/features/teams/cubits/team_role/team_role_cubit.dart';
@@ -122,13 +128,19 @@ class AppRouter {
         final residentialBlocksCubit =
             settings.arguments as ResidentialBlocksCubit;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: residentialBlocksCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<FamilyCubit>(
+                create: (context) => FamilyCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider.value(value: residentialBlocksCubit),
+            ],
             child: ResidentialBlockFamiliesView(),
           ),
         );
       case AppRoute.residentialBlockFamilyMembers:
         final familyId = settings.arguments as int;
+        // final familyCubit = settings.arguments as FamilyCubit;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) =>
@@ -136,6 +148,11 @@ class AppRouter {
                   ..getFamilyDetilesById(familyId),
             child: const ResidentialBlockFamilyMembersView(),
           ),
+          // BlocProvider.value(
+          //   value: familyCubit
+          //     ..getFamilyDetilesById(familyCubit.family!.id),
+          //   child: const ResidentialBlockFamilyMembersView(),
+          // ),
         );
 
       case AppRoute.residentialNeighborhoods:
@@ -182,22 +199,24 @@ class AppRouter {
             child: const AllPeople(),
           ),
         );
-      // case AppRoute.residentialBlockDetial:
-      //   final blockId = settings.arguments as int;
-      //   return MaterialPageRoute(
-      //     builder: (_) => MultiBlocProvider(
-      //       providers: [
-      //         BlocProvider<FamilyCubit>(
-      //           create: (_) =>
-      //               FamilyCubit(blockId, api: DioConsumer(dio: Dio())),
-      //         ),
-      //         BlocProvider<BlockDetailCubit>(
-      //           create: (_) => BlockDetailCubit(api: DioConsumer(dio: Dio())),
-      //         ),
-      //       ],
-      //       child: ResiddentialBlocksDetail(blockId: blockId),
-      //     ),
-      //   );
+      case AppRoute.residentialBlockDetial:
+        final blockId = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<FamilyCubit>(
+                create: (_) => FamilyCubit(
+                  blockId: blockId,
+                  api: DioConsumer(dio: Dio()),
+                ),
+              ),
+              BlocProvider<BlockDetailCubit>(
+                create: (_) => BlockDetailCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: ResiddentialBlocksDetail(blockId: blockId),
+          ),
+        );
       case AppRoute.addUpdatePerson:
         final personCubit = settings.arguments as PersonCubit;
         return MaterialPageRoute(
@@ -207,6 +226,25 @@ class AppRouter {
           ),
         );
       case AppRoute.addUpdateFamily:
+        final args = settings.arguments as Map<String, dynamic>;
+
+        final familyCubit = args['familyCubit'] as FamilyCubit;
+        final blockId = args['blockId'] as int;
+        return MaterialPageRoute(
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: familyCubit),
+              BlocProvider(
+                create: (_) => PersonCubit(api: DioConsumer(dio: Dio())),
+              ),
+              BlocProvider(
+                create: (_) =>
+                    FamilyCategoryCubit(api: DioConsumer(dio: Dio())),
+              ),
+            ],
+            child: AddUpdateFamily(blockId: blockId),
+          ),
+        );
       // final bindCubit = settings.arguments as BindCubit;
       // return MaterialPageRoute(
       //   builder: (context) => MultiBlocProvider(
@@ -304,7 +342,7 @@ class AppRouter {
                     MemberFamilyRoleCubit(api: DioConsumer(dio: Dio())),
               ),
             ],
-            child: AddFamilyMember(familyId: familyCubit.family!.id),
+            child: AddFamilyMember(familyId: familyCubit.familyId!),
           ),
         );
       case AppRoute.annoucement1:
@@ -448,6 +486,15 @@ class AppRouter {
             child: const AllConflict(),
           ),
           fullscreenDialog: false,
+        );
+      case AppRoute.statistics:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider<StatisticsCubit>(
+            create: ((BuildContext context) =>
+                StatisticsCubit(api: DioConsumer(dio: Dio()))),
+            child: const StatisticsView(),
+          ),
+          // fullscreenDialog: false,
         );
       case AppRoute.addUpdateConflict:
         final conflictCubit = settings.arguments as ConflictCubit;
@@ -603,7 +650,7 @@ class AppRoute {
 
   static const String settings = '/settings';
 
-  // static const String residentialBlockDetial = '/ResidentialBlockDetial';
+  static const String residentialBlockDetial = '/ResidentialBlockDetial';
   // static const String residentialBlocks = '/ResidentialBlock';
   static const String residentialBlockNew = '/ResidentialBlocks';
   static const String addResidentialBlock = '/AddResidentialBlock';
@@ -627,6 +674,7 @@ class AppRoute {
   static const String addTeamsToAssistance = '/AddTeamsToAssistance';
   static const String addFamilyToAssistance = '/AddFamilyToAssistance';
   static const String allConflict = '/AllConflict';
+  static const String statistics = '/Statistics';
   static const String addUpdateAssistanc = '/AddUpdateAssistanc';
   static const String assistanceDetiles = '/AssistanceDetiles';
   static const String allTeams = '/AllTeams';

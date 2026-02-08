@@ -35,6 +35,14 @@ class _HomeCategoryCardListWidgetState
         roleString.toLowerCase() ==
         AppRoles.neighborhoodManager.name.toLowerCase();
     List<CategoryCard> categoryCardList = [
+      CategoryCard(
+        title: "قسم الإحصائيات",
+        imagePath: AppImage.homehandshake,
+        backgroundColor: const Color(0xFF878CED),
+        onTap: () {
+          Navigator.pushNamed(context, AppRoute.statistics);
+        },
+      ),
       if (isAdmin)
         CategoryCard(
           title: locale.allPeople,
@@ -78,6 +86,7 @@ class _HomeCategoryCardListWidgetState
           Navigator.pushNamed(context, AppRoute.allConflict);
         },
       ),
+
       CategoryCard(
         title: locale.assistanceSection,
         imagePath: AppImage.homehelping,

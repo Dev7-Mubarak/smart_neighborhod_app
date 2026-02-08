@@ -7,7 +7,9 @@ import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/searcable_text_input_filed.dart';
+import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
+import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
@@ -78,24 +80,50 @@ class _ResidentialBlockFamilyMembersViewState
               padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
-                  SearchableTextFormField(
-                    controller: _searchingController,
-                    hintText: locale.lookingFamilyMembers,
-                    bachgroundColor: AppColor.gray2,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _searchingController.clear();
-                        _familyCubit.filterFamilyMembers('');
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
-                    prefixIcon: Icons.search,
-                    onChanged: (String query) {
-                      _delay?.cancel();
-                      _delay = Timer(const Duration(milliseconds: 300), () {
-                        _familyCubit.filterFamilyMembers(query.trim());
-                      });
-                    },
+                  Row(
+                    children: [
+                      SmallButton(
+                        text: locale.add,
+                        onPressed: () {
+                          // _familyCubit.selectedFamilyHead = selectedFamilyHead;
+
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.addFamilyMember,
+                            arguments: _familyCubit,
+                          ).then((_) {
+                            _familyCubit.getFamilyDetilesById(
+                              _familyCubit.familyId!,
+                            );
+                          });
+                        },
+                      ),
+                      SizedBox(height: 5),
+                      Expanded(
+                        child: SearchableTextFormField(
+                          controller: _searchingController,
+                          hintText: locale.lookingFamilyMembers,
+                          bachgroundColor: AppColor.gray2,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              _searchingController.clear();
+                              _familyCubit.filterFamilyMembers('');
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
+                          prefixIcon: Icons.search,
+                          onChanged: (String query) {
+                            _delay?.cancel();
+                            _delay = Timer(
+                              const Duration(milliseconds: 300),
+                              () {
+                                _familyCubit.filterFamilyMembers(query.trim());
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
 
                   SizedBox(height: 5),
