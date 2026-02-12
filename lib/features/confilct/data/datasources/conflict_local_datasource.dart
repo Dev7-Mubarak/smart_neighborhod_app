@@ -84,7 +84,7 @@ class ConflictLocalDataSource {
 
   /// Search conflicts
   Future<List<Conflict>> searchConflicts(String query) async {
-    return await _conflictDao.search(query);
+    return await _conflictDao.searchByText(query);
   }
 
   /// Get upcoming conflicts (future session dates)
