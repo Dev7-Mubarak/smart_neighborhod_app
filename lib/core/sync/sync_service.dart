@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import '../services/sync_service_locator.dart';
 import 'sync_models.dart';
+import 'network_manager.dart';
+import 'advanced_sync_engine.dart';
+import 'operation_queue.dart';
+import '../services/sync_service_locator.dart';
 
 /// Progress information for sync operations with percentage tracking
 class SyncProgressInfo extends SyncProgress {
@@ -51,12 +53,26 @@ class SyncLog {
   });
 }
 
-/// Service for managing data synchronization
+/// Orchestrates synchronization using existing core/sync infrastructure.
+///
+/// Delegates to:
+/// - [NetworkManager] for connectivity checks
+/// - [AdvancedSyncEngine] for the actual upload/download sync engine
+/// - [OperationQueue] for queued operations count
+/// - [SyncServiceLocator] for per-feature sync services
+///
+/// This class adds progress tracking with percentage on top of
+/// the existing infrastructure, without duplicating any logic.
 class SyncService {
   static SyncService? _instance;
   static SyncService get instance => _instance ??= SyncService._();
 
   SyncService._();
+
+  // === Reuse existing core infrastructure ===
+  final NetworkManager _networkManager = NetworkManager.instance;
+  final AdvancedSyncEngine _syncEngine = AdvancedSyncEngine.instance;
+  final OperationQueue _operationQueue = OperationQueue.instance;
 
   final _progressController = StreamController<SyncProgressInfo>.broadcast();
   Stream<SyncProgressInfo> get progressStream => _progressController.stream;
@@ -74,21 +90,16 @@ class SyncService {
     {'id': 'issues', 'name': 'القضايا', 'nameEn': 'Issues'},
   ];
 
-  /// Check if device has internet connectivity
+  /// Check connectivity using [NetworkManager]
   Future<bool> hasConnectivity() async {
-    try {
-      final connectivityResult = await Connectivity().checkConnectivity();
-      return !connectivityResult.contains(ConnectivityResult.none);
-    } catch (e) {
-      return false;
-    }
+    final quality = await _networkManager.assessNetworkQuality();
+    return quality.connectionType != ConnectionType.none;
   }
 
   /// Check if sync is due (weekly sync)
   Future<bool> isSyncDue() async {
     if (_lastSyncTime == null) return true;
-    final daysSinceLastSync =
-        DateTime.now().difference(_lastSyncTime!).inDays;
+    final daysSinceLastSync = DateTime.now().difference(_lastSyncTime!).inDays;
     return daysSinceLastSync >= 7;
   }
 
@@ -116,7 +127,12 @@ class SyncService {
     return _syncHistory.take(limit).toList();
   }
 
-  /// Perform full synchronization of all features
+  /// Perform full synchronization of all features.
+  ///
+  /// 1. Checks connectivity via [NetworkManager].
+  /// 2. Syncs pending operations through [AdvancedSyncEngine] (upload phase).
+  /// 3. Syncs each feature one-by-one via [SyncServiceLocator].
+  /// 4. Emits [SyncProgressInfo] with percentage for the UI.
   Future<SyncResult> performSync({
     required String baseUrl,
     String? authToken,
@@ -128,11 +144,11 @@ class SyncService {
       );
     }
 
-    // Check connectivity first
+    // Use NetworkManager for connectivity check
     if (!await hasConnectivity()) {
       return SyncResult(
-        status: SyncResultStatus.failed,
-        errors: ['No internet connection'],
+        status: SyncResultStatus.noConnection,
+        errors: ['لا يوجد اتصال بالإنترنت'],
       );
     }
 
@@ -144,38 +160,55 @@ class SyncService {
     int totalDownloaded = 0;
 
     try {
-      final totalSteps = syncFeatures.length;
+      // --- Phase 1: Upload pending operations via AdvancedSyncEngine ---
+      // Total steps = 1 (engine upload) + syncFeatures.length
+      final totalSteps = 1 + syncFeatures.length;
 
-      // Emit starting progress
-      _progressController.add(SyncProgressInfo(
-        stage: SyncStage.uploading,
-        message: 'جاري بدء المزامنة...',
+      _emitProgress(
+        stage: SyncStage.starting,
+        message: 'جاري التحضير للمزامنة...',
         sessionId: sessionId,
         totalSteps: totalSteps,
         completedSteps: 0,
-        currentFeature: '',
-      ));
+        currentFeature: 'تحميل البيانات المعلقة',
+      );
 
-      // Sync each feature one by one
+      // Use AdvancedSyncEngine for the upload phase
+      try {
+        final pendingCount = await _operationQueue.getPendingCount();
+        if (pendingCount > 0) {
+          final engineResult = await _syncEngine.performIntelligentSync(
+            baseUrl: baseUrl,
+            authToken: authToken,
+            trigger: SyncTrigger.manual,
+          );
+          totalUploaded += engineResult.uploadedCount;
+          if (engineResult.errors.isNotEmpty) {
+            errors.addAll(engineResult.errors);
+          }
+        }
+      } catch (e) {
+        errors.add('فشل في تحميل البيانات المعلقة: $e');
+      }
+
+      // --- Phase 2: Sync each feature one by one via SyncServiceLocator ---
       for (int i = 0; i < syncFeatures.length; i++) {
         final feature = syncFeatures[i];
         final featureId = feature['id']!;
         final featureName = feature['name']!;
 
-        // Emit progress for current feature
-        _progressController.add(SyncProgressInfo(
-          stage: SyncStage.uploading,
+        _emitProgress(
+          stage: SyncStage.downloading,
           message: 'جاري مزامنة $featureName...',
           sessionId: sessionId,
           totalSteps: totalSteps,
-          completedSteps: i,
+          completedSteps: 1 + i, // +1 for the engine upload phase
           currentFeature: featureName,
           uploadedCount: totalUploaded,
           downloadedCount: totalDownloaded,
-        ));
+        );
 
         try {
-          // Perform sync for each feature
           switch (featureId) {
             case 'conflicts':
               await SyncServiceLocator.syncConflicts();
@@ -187,7 +220,7 @@ class SyncService {
               await SyncServiceLocator.syncIssues();
               break;
           }
-          totalUploaded++;
+          totalDownloaded++;
         } catch (e) {
           errors.add('فشل في مزامنة $featureName: $e');
         }
@@ -196,8 +229,8 @@ class SyncService {
         await Future.delayed(const Duration(milliseconds: 300));
       }
 
-      // Emit completion progress
-      _progressController.add(SyncProgressInfo(
+      // --- Phase 3: Complete ---
+      _emitProgress(
         stage: SyncStage.completed,
         message: 'اكتملت المزامنة',
         sessionId: sessionId,
@@ -206,11 +239,11 @@ class SyncService {
         currentFeature: '',
         uploadedCount: totalUploaded,
         downloadedCount: totalDownloaded,
-      ));
+      );
 
       _lastSyncTime = DateTime.now();
 
-      // Create sync log
+      // Record sync log
       final syncLog = SyncLog(
         id: sessionId,
         startedAt: startTime,
@@ -236,12 +269,37 @@ class SyncService {
     } catch (e) {
       return SyncResult(
         status: SyncResultStatus.failed,
-        errors: ['Sync failed: $e', ...errors],
+        errors: ['فشلت المزامنة: $e', ...errors],
         duration: DateTime.now().difference(startTime),
       );
     } finally {
       _isSyncing = false;
     }
+  }
+
+  /// Helper to emit progress updates
+  void _emitProgress({
+    required SyncStage stage,
+    required String message,
+    required String sessionId,
+    required int totalSteps,
+    required int completedSteps,
+    required String currentFeature,
+    int? uploadedCount,
+    int? downloadedCount,
+  }) {
+    _progressController.add(
+      SyncProgressInfo(
+        stage: stage,
+        message: message,
+        sessionId: sessionId,
+        totalSteps: totalSteps,
+        completedSteps: completedSteps,
+        currentFeature: currentFeature,
+        uploadedCount: uploadedCount,
+        downloadedCount: downloadedCount,
+      ),
+    );
   }
 
   /// Dispose of resources
