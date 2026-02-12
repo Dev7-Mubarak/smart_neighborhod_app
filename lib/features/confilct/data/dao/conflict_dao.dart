@@ -8,10 +8,7 @@ import 'package:sqflite_sqlcipher/sqflite.dart';
 class ConflictDao extends BaseDao<Conflict> {
   final DatabaseService _databaseService;
 
-  ConflictDao(this._databaseService);
-
-  @override
-  String get tableName => 'conflicts';
+  ConflictDao(this._databaseService) : super('conflicts');
 
   @override
   Conflict fromMap(Map<String, dynamic> map) {
@@ -64,7 +61,7 @@ class ConflictDao extends BaseDao<Conflict> {
   }
 
   /// Search conflicts by title, notes, or party names
-  Future<List<Conflict>> search(String query) async {
+  Future<List<Conflict>> searchByText(String query) async {
     final db = await database;
     final searchPattern = '%$query%';
     final maps = await db.query(
