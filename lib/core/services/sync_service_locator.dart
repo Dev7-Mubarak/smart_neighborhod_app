@@ -61,8 +61,8 @@ class SyncServiceLocator {
     }
 
     await Future.wait([
-      _conflictSyncService!.syncPending(),
-      _familySyncService!.syncPending(),
+      _conflictSyncService!.syncAll(),
+      _familySyncService!.syncAll(),
       // Note: IssueSyncService doesn't have syncPending method in the current implementation
       // If needed, you can add it or handle differently
     ]);
@@ -70,17 +70,17 @@ class SyncServiceLocator {
 
   /// Sync conflicts only
   static Future<void> syncConflicts() async {
-    await conflictSyncService.syncPending();
+    await conflictSyncService.syncAll();
   }
 
-  /// Sync families only
+  /// Sync all families data
   static Future<void> syncFamilies() async {
-    await familySyncService.syncPending();
+    await familySyncService.syncAll();
   }
 
   /// Sync issues only
   static Future<void> syncIssues() async {
-    await issueSyncService.syncPending();
+    await issueSyncService.syncAll();
   }
 
   /// Dispose all services (for testing or app cleanup)

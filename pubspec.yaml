@@ -60,6 +60,8 @@ dependencies:
   battery_plus: ^6.0.2
   # Background task scheduler for periodic work
   workmanager: ^0.5.1
+  # Service locator for dependency injection
+  get_it: ^7.6.0
 
 
 
