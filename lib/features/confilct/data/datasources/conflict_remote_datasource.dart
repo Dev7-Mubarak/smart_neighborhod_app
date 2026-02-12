@@ -175,7 +175,7 @@ class ConflictRemoteDataSource {
   Future<List<ConflictType>> getAllConflictTypes() async {
     try {
       final response = await _api.get(
-        ApiLink.getAllConflictType,
+        ApiLink.getAllConflictCaseTypes,
         treat404AsEmptyList: true,
       );
 
