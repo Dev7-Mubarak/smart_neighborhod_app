@@ -9,6 +9,11 @@ import '../../features/confilct/data/datasources/conflict_remote_datasource.dart
 import '../../features/confilct/data/repositories/conflict_repository.dart';
 import '../../features/confilct/services/conflict_sync_service.dart';
 import '../../features/confilct/cubits/conflict/conflict_cubit.dart';
+import '../../features/families/data/datasources/family_local_datasource.dart';
+import '../../features/families/data/datasources/family_remote_datasource.dart';
+import '../../features/families/data/repositories/family_repository.dart';
+import '../../features/families/services/family_sync_service.dart';
+import '../../features/families/cubits/family_cubit/family_cubit.dart';
 
 /// Global service locator instance
 final getIt = GetIt.instance;
@@ -63,6 +68,16 @@ Future<void> initializeDependencies() async {
     () => ConflictRemoteDataSource(api: getIt<DioConsumer>()),
   );
 
+  // Family Local DataSource
+  getIt.registerLazySingleton<FamilyLocalDataSource>(
+    () => FamilyLocalDataSource(getIt<DatabaseService>()),
+  );
+
+  // Family Remote DataSource
+  getIt.registerLazySingleton<FamilyRemoteDataSource>(
+    () => FamilyRemoteDataSource(getIt<DioConsumer>()),
+  );
+
   // ============================================================================
   // REPOSITORIES
   // ============================================================================
@@ -75,6 +90,14 @@ Future<void> initializeDependencies() async {
     ),
   );
 
+  // Family Repository
+  getIt.registerLazySingleton<FamilyRepository>(
+    () => FamilyRepository(
+      localDataSource: getIt<FamilyLocalDataSource>(),
+      remoteDataSource: getIt<FamilyRemoteDataSource>(),
+    ),
+  );
+
   // ============================================================================
   // SYNC SERVICES
   // ============================================================================
@@ -84,6 +107,11 @@ Future<void> initializeDependencies() async {
     () => ConflictSyncService(getIt<ConflictRepository>()),
   );
 
+  // Family Sync Service
+  getIt.registerLazySingleton<FamilySyncService>(
+    () => FamilySyncService(getIt<FamilyRepository>()),
+  );
+
   // ============================================================================
   // CUBITS / BLOCS
   // ============================================================================
@@ -91,6 +119,12 @@ Future<void> initializeDependencies() async {
   // Conflict Cubit - Factory (new instance each time)
   getIt.registerFactory<ConflictCubit>(
     () => ConflictCubit(repository: getIt<ConflictRepository>()),
+  );
+
+  // Family Cubit - Factory (new instance each time, with optional blockId)
+  getIt.registerFactoryParam<FamilyCubit, int?, void>(
+    (blockId, _) =>
+        FamilyCubit(blockId: blockId, repository: getIt<FamilyRepository>()),
   );
 }
 

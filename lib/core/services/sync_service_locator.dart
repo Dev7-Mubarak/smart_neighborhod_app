@@ -1,39 +1,28 @@
 import '../../features/confilct/services/conflict_sync_service.dart';
 import '../../features/families/services/family_sync_service.dart';
 import '../../features/issues/services/issue_sync_service.dart';
+import '../config/injection.dart';
 
 /// Global service locator for sync services
 /// Provides access to all sync services throughout the app
 class SyncServiceLocator {
-  static ConflictSyncService? _conflictSyncService;
-  static FamilySyncService? _familySyncService;
   static IssueSyncService? _issueSyncService;
 
   /// Initialize all sync services
   static Future<void> init() async {
-    _conflictSyncService = ConflictSyncService();
-    _familySyncService = FamilySyncService();
+    // ConflictSyncService and FamilySyncService are now managed by GetIt
+    // Only initialize services not yet in GetIt
     _issueSyncService = const IssueSyncService();
   }
 
-  /// Get the ConflictSyncService instance
+  /// Get the ConflictSyncService instance from GetIt
   static ConflictSyncService get conflictSyncService {
-    if (_conflictSyncService == null) {
-      throw StateError(
-        'SyncServiceLocator not initialized. Call SyncServiceLocator.init() first.',
-      );
-    }
-    return _conflictSyncService!;
+    return getIt<ConflictSyncService>();
   }
 
-  /// Get the FamilySyncService instance
+  /// Get the FamilySyncService instance from GetIt
   static FamilySyncService get familySyncService {
-    if (_familySyncService == null) {
-      throw StateError(
-        'SyncServiceLocator not initialized. Call SyncServiceLocator.init() first.',
-      );
-    }
-    return _familySyncService!;
+    return getIt<FamilySyncService>();
   }
 
   /// Get the IssueSyncService instance
@@ -48,8 +37,8 @@ class SyncServiceLocator {
 
   /// Check if services are initialized
   static bool get isInitialized =>
-      _conflictSyncService != null &&
-      _familySyncService != null &&
+      getIt.isRegistered<ConflictSyncService>() &&
+      getIt.isRegistered<FamilySyncService>() &&
       _issueSyncService != null;
 
   /// Perform sync for all services
@@ -61,10 +50,9 @@ class SyncServiceLocator {
     }
 
     await Future.wait([
-      _conflictSyncService!.syncAll(),
-      _familySyncService!.syncAll(),
-      // Note: IssueSyncService doesn't have syncPending method in the current implementation
-      // If needed, you can add it or handle differently
+      conflictSyncService.syncAll(),
+      familySyncService.syncAll(),
+      // Note: IssueSyncService sync can be added when implemented
     ]);
   }
 
@@ -85,8 +73,8 @@ class SyncServiceLocator {
 
   /// Dispose all services (for testing or app cleanup)
   static void dispose() {
-    _conflictSyncService = null;
-    _familySyncService = null;
     _issueSyncService = null;
+    // ConflictSyncService and FamilySyncService are managed by GetIt
+    // They will be disposed when GetIt is reset
   }
 }
