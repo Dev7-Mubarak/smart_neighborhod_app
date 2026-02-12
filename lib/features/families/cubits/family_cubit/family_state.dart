@@ -63,3 +63,13 @@ class ChangeFamilyCategory extends FamilyState {}
 class ChangeFamilyType extends FamilyState {}
 
 class WaitingForUpdateOrAddFamily extends FamilyState {}
+
+class FamilySyncedSuccessfully extends FamilyState {
+  final String message;
+  FamilySyncedSuccessfully({required this.message});
+}
+
+class FamilySyncFailed extends FamilyState {
+  final String errorMessage;
+  FamilySyncFailed({required this.errorMessage});
+}
