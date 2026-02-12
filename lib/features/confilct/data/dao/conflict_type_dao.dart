@@ -1,16 +1,14 @@
-import '../../database/dao/base_dao.dart';
-import '../../database/database_service.dart';
-import '../data/models/conflict_type.dart';
+import '../../../../database/dao/base_dao.dart';
+import '../../../../database/database_service.dart';
+import '../models/conflict_type.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 /// Data Access Object for ConflictType
 /// Handles database operations for conflict types (lookup/reference data)
 class ConflictTypeDao extends BaseDao<ConflictType> {
   final DatabaseService _databaseService;
 
-  ConflictTypeDao(this._databaseService);
-
-  @override
-  String get tableName => 'conflict_types';
+  ConflictTypeDao(this._databaseService) : super('conflict_types');
 
   @override
   ConflictType fromMap(Map<String, dynamic> map) {
