@@ -8,8 +8,7 @@ import 'package:smart_negborhood_app/core/common/widgets/smallButton.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/people/cubits/person_cubit/person_cubit.dart';
-import 'package:dio/dio.dart';
-import '../../../../core/services/API/dio_consumer.dart';
+
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_state.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/data/models/residential_neighborhood_model.dart';
@@ -138,7 +137,9 @@ class _AddResidentialUnitViewState extends State<AddResidentialUnitView> {
                             final items = state.filteredNeighborhoods;
                             if (items.isEmpty) {
                               return Center(
-                                child: Text(locale.noManagersAvailable),
+                                child: Text(
+                                  locale.noAvailableResidentialNeighborhood,
+                                ),
                               );
                             }
                             ResidentialNeighborhoodModel?

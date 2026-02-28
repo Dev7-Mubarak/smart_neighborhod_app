@@ -28,10 +28,10 @@ class _MainHomeState extends State<MainHome> {
   }
 
   Widget _getRoleBasedView() {
-    if (_profile?.role.toLowerCase() ==
+    if (_profile?.role!.toLowerCase() ==
         AppRoles.unitManager.name.toLowerCase()) {
       return const ResidentialUnitView();
-    } else if (_profile?.role.toLowerCase() ==
+    } else if (_profile?.role!.toLowerCase() ==
         AppRoles.blockManager.name.toLowerCase()) {
       return const ResidentialBlockView();
     }

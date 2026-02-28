@@ -1222,5 +1222,9 @@
   "Housing": "Housing",
   "@Housing": {
     "description": "Housing"
+  },
+    "noAvailableResidentialNeighborhood": "no available residential neighborhoods",
+  "@noAvailableResidentialNeighborhood": {
+    "description": "no available residential neighborhoods"
   }
 }

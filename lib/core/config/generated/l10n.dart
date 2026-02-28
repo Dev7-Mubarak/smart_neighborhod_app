@@ -3109,6 +3109,16 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `no available residential neighborhoods`
+  String get noAvailableResidentialNeighborhood {
+    return Intl.message(
+      'no available residential neighborhoods',
+      name: 'noAvailableResidentialNeighborhood',
+      desc: 'no available residential neighborhoods',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

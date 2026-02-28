@@ -291,6 +291,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "nextButton": MessageLookupByLibrary.simpleMessage("Next"),
         "noAssistanceProjects":
             MessageLookupByLibrary.simpleMessage("No assistance projects"),
+        "noAvailableResidentialNeighborhood":
+            MessageLookupByLibrary.simpleMessage(
+                "no available residential neighborhoods"),
         "noAvailableResidentialUnits": MessageLookupByLibrary.simpleMessage(
             " no available residential units"),
         "noCategoriesAvailable":

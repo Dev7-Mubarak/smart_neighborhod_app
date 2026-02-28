@@ -35,7 +35,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
   late final ProfileModel? _profileModel;
 
   void reset() {
-    if (_profileModel?.role.toLowerCase() ==
+    if (_profileModel?.role!.toLowerCase() ==
         AppRoles.unitManager.name.toLowerCase()) {
       _unitsCubit.getResidentialUnitsMeDashboard();
     } else {
@@ -175,7 +175,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                             );
                           },
                           onLongPress: () {
-                            if (_profileModel?.role.toLowerCase() ==
+                            if (_profileModel?.role!.toLowerCase() ==
                                 AppRoles.admin.name.toLowerCase()) {
                               _showOptions(unit, locale);
                             }
@@ -206,7 +206,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role.toLowerCase() ==
+          if (_profileModel?.role!.toLowerCase() ==
               AppRoles.admin.name.toLowerCase())
             SmallButton(
               text: locale.add,
@@ -218,7 +218,7 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                 );
               },
             ),
-          if (_profileModel?.role.toLowerCase() ==
+          if (_profileModel?.role!.toLowerCase() ==
               AppRoles.admin.name.toLowerCase())
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(

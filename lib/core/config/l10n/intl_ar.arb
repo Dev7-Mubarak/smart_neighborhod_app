@@ -1191,6 +1191,10 @@
   "@noAvailableResidentialUnits": {
     "description": "no available residential units"
   },
+   "noAvailableResidentialNeighborhood": "لا يوجد أحياء سكنية متاحه",
+  "@noAvailableResidentialNeighborhood": {
+    "description": "no available residential neighborhoods"
+  },
   "Statistics": "الإحصائيات",
   "@Statistics": {
     "description": "Statistics"

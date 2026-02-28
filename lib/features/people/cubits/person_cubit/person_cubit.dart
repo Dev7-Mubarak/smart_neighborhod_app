@@ -107,7 +107,8 @@ class PersonCubit extends Cubit<PersonState> {
         "ThirdName": thirdName,
         "LastName": lastName,
         "PhoneNumber": phoneNumber,
-        // "DateOfBirth": selectedDate,
+        // "ResidencyStatus": phoneNumber,
+        "DateOfBirth": selectedDate,
         "Gender": selectedGender,
 
         "BloodType": selectedBloodType?.toString().split('.').last,

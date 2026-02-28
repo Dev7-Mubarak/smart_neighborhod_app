@@ -281,6 +281,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "next": MessageLookupByLibrary.simpleMessage("التالي"),
         "noAssistanceProjects":
             MessageLookupByLibrary.simpleMessage("لا توجد مشاريع مساعدات"),
+        "noAvailableResidentialNeighborhood":
+            MessageLookupByLibrary.simpleMessage("لا يوجد أحياء سكنية متاحه"),
         "noAvailableResidentialUnits":
             MessageLookupByLibrary.simpleMessage("لا يوجد وحدات سكنية متاحه"),
         "noCategoriesAvailable":

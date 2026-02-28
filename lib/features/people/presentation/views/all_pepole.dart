@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
@@ -99,7 +100,6 @@ class _AllPeopleState extends State<AllPeople> {
           if (state is PersonFailure) {
             return OnFailureWidget(onRetry: () => _personCubit.getPeople());
           }
-
           if (state is PersonLoading && state.isFirstFetch) {
             return Center(child: const CircularProgressIndicator());
             // return const _SkeletonList();
@@ -109,6 +109,9 @@ class _AllPeopleState extends State<AllPeople> {
               (state is PersonLoading && !state.isFirstFetch)) {
             final people = _personCubit.people;
             final isLoadingMore = state is PersonLoading && !state.isFirstFetch;
+            if (people.isEmpty && !isLoadingMore) {
+              return const NoResultWidget();
+            }
             return ListView.separated(
               controller: _scrollController,
               padding: const EdgeInsets.all(16),

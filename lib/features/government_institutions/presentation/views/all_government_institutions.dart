@@ -143,7 +143,7 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
                                 children: [
                                   InkWell(
                                     onLongPress: () {
-                                      if (_profile.role.toLowerCase() ==
+                                      if (_profile.role!.toLowerCase() ==
                                           AppRoles.admin.name.toLowerCase()) {
                                         _showInstitutionOptions(
                                           context,
@@ -183,7 +183,7 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
                                     }).toList(),
                                     originalObjects: contacts,
                                     onRowLongPress: (rowIndex, rowObject) {
-                                      if (_profile.role.toLowerCase() ==
+                                      if (_profile.role!.toLowerCase() ==
                                           AppRoles.admin.name.toLowerCase()) {
                                         _showContactOptions(
                                           context,
@@ -194,7 +194,7 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
                                     },
                                   ),
                                   const SizedBox(height: 10),
-                                  if (_profile.role.toLowerCase() ==
+                                  if (_profile.role!.toLowerCase() ==
                                       AppRoles.admin.name.toLowerCase())
                                     Align(
                                       alignment: Alignment.centerRight,
@@ -263,7 +263,7 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (_profile.role.toLowerCase() == AppRoles.admin.name.toLowerCase())
+        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase())
           SmallButton(
             text: 'إضافة جهة',
             onPressed: () {

@@ -13,6 +13,7 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_cubit.dart';
 import 'package:smart_negborhood_app/features/confilct/cubits/conflict/conflict_state.dart';
 import 'package:smart_negborhood_app/features/confilct/data/models/conflict.dart';
+import 'package:smart_negborhood_app/core/services/db_provider.dart';
 import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/common/widgets/smallButton.dart';
@@ -124,7 +125,7 @@ class _AllConflictState extends State<AllConflict> {
                                 onLongPress: () {
                                   final profile =
                                       SharedPreferencesService.getProfile();
-                                  if (profile!.role.toLowerCase() ==
+                                  if (profile!.role!.toLowerCase() ==
                                       AppRoles.admin.name.toLowerCase()) {
                                     _showOptions(context, e);
                                   }
@@ -248,7 +249,7 @@ class _AllConflictState extends State<AllConflict> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        if (_profile.role.toLowerCase() == AppRoles.admin.name.toLowerCase())
+        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase())
           SmallButton(
             text: 'إضافة إتفاقية',
             onPressed: () {

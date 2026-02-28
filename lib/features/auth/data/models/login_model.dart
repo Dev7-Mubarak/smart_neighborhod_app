@@ -2,13 +2,13 @@ class ProfileModel {
   late String id;
   late String identifier;
   late String token;
-  late String role;
+  late String? role;
 
   ProfileModel({
     required this.id,
     required this.identifier,
     required this.token,
-    required this.role,
+    this.role,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {

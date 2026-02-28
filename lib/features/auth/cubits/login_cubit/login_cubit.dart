@@ -25,13 +25,20 @@ class LoginCubit extends Cubit<LoginState> {
         ApiLink.login,
         data: {'identifier': email, 'password': password},
       );
-
       if (response['isSuccess']) {
         profileModel = ProfileModel.fromJson(response["data"]);
-        await SharedPreferencesService.setProfile(profileModel);
-        emit(
-          LoginSuccess(userdata: profileModel, message: response['message']),
-        );
+        if (profileModel.role == null) {
+          emit(
+            LoginFailure(
+              errorMessage: "عذراً، لا يوجد صلاحية (Role) مسندة لهذا المستخدم.",
+            ),
+          );
+        } else {
+          await SharedPreferencesService.setProfile(profileModel);
+          emit(
+            LoginSuccess(userdata: profileModel, message: response['message']),
+          );
+        }
       }
     } on Serverexception catch (e) {
       emit(LoginFailure(errorMessage: e.errModel.errorMessage));
