@@ -35,7 +35,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
   late final ProfileModel? _profileModel;
 
   void reset() {
-    if (_profileModel?.role.toLowerCase() ==
+    if (_profileModel?.role!.toLowerCase() ==
         AppRoles.blockManager.name.toLowerCase()) {
       _blocksCubit.getResidentialBlocksMeDashboard();
     } else {
@@ -117,7 +117,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role.toLowerCase() ==
+          if (_profileModel?.role!.toLowerCase() ==
               AppRoles.admin.name.toLowerCase())
             SmallButton(
               text: locale.add,
@@ -129,7 +129,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                 );
               },
             ),
-          if (_profileModel?.role.toLowerCase() ==
+          if (_profileModel?.role!.toLowerCase() ==
               AppRoles.admin.name.toLowerCase())
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
@@ -227,7 +227,7 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                               // );
                             },
                             onLongPress: () {
-                              if (_profileModel?.role.toLowerCase() ==
+                              if (_profileModel?.role!.toLowerCase() ==
                                   AppRoles.admin.name.toLowerCase()) {
                                 context.showBottomSheet(
                                   BlockOptionsSheet(

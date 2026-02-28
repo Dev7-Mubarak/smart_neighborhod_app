@@ -33,7 +33,7 @@ class _HomeCategoryCardListWidgetState
         roleString.toLowerCase() == AppRoles.unitManager.name.toLowerCase();
     final isNeighborhoodManager =
         roleString.toLowerCase() ==
-        AppRoles.neighborhoodManager.name.toLowerCase();
+        AppRoles.residentialNeighborhoodManager.name.toLowerCase();
     List<CategoryCard> categoryCardList = [
       CategoryCard(
         title: "قسم الإحصائيات",

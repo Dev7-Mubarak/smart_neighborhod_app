@@ -38,8 +38,8 @@ class _ResidentialNeighborhoodViewState
   Timer? _delay;
 
   void reset() {
-    if (_profileModel?.role.toLowerCase() ==
-        AppRoles.neighborhoodManager.name.toLowerCase()) {
+    if (_profileModel?.role!.toLowerCase() ==
+        AppRoles.residentialNeighborhoodManager.name.toLowerCase()) {
       _residentialNeighborhoodsCubit.getResidentialNeighborhoodsMeDashboard();
     } else {
       _residentialNeighborhoodsCubit.getResidentialNeighborhoodsDashboard();
@@ -136,7 +136,7 @@ class _ResidentialNeighborhoodViewState
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if (_profileModel?.role.toLowerCase() ==
+          if (_profileModel?.role!.toLowerCase() ==
               AppRoles.admin.name.toLowerCase())
             SmallButton(
               text: locale.add,
@@ -241,7 +241,7 @@ class _ResidentialNeighborhoodViewState
                             });
                           },
                           onLongPress: () {
-                            if (_profileModel?.role.toLowerCase() ==
+                            if (_profileModel?.role!.toLowerCase() ==
                                 AppRoles.admin.name.toLowerCase()) {
                               _showOptions(neighborhood, locale);
                             }
