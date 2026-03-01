@@ -11,7 +11,6 @@ import 'package:smart_negborhood_app/features/families/cubits/family_cubit/famil
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/data/models/BlockDetails.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/data/models/bind_cubit.dart';
-import '../../../../core/common/enums/app_role.dart';
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/app_image.dart';
 import '../../../../core/services/shared_preferences_service.dart';

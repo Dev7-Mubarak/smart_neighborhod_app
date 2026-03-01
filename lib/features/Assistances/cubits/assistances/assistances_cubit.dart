@@ -140,7 +140,6 @@ class AssistancesCubit extends Cubit<AssistancesState> {
       if (response["isSuccess"]) {
         emit(FamilyDeletedSuccessfully(message: response["data"]));
         await getProjectBlockFamilies(id: project!.id);
-        ;
       } else {
         Serverexception(
           errModel: ErrorModel(

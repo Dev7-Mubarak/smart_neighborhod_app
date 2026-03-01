@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
 import 'package:smart_negborhood_app/features/teams/data/models/team_role.dart';
 import '../../../../core/constants/api_link.dart';
 import '../../../../core/services/API/dio_consumer.dart';

@@ -25,7 +25,7 @@ class CustomDropdown<T> extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: DropdownButtonHideUnderline(
         child: DropdownButtonFormField<T>(
-          value: selectedValue,
+          initialValue: selectedValue,
           isExpanded: true,
           decoration: InputDecoration(
             fillColor: Colors.white,

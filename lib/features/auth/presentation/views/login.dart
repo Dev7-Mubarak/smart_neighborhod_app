@@ -12,7 +12,7 @@ import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubi
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_state.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();

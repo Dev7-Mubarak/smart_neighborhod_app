@@ -5,7 +5,6 @@ import 'package:smart_negborhood_app/features/auth/data/models/login_model.dart'
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/cubits/BlockDetailCubit/block_detail_cubit.dart';
-import 'package:smart_negborhood_app/features/residential_blocks/data/models/family_model.dart';
 
 class FamilyListTable extends StatelessWidget {
   final List<Family> families;

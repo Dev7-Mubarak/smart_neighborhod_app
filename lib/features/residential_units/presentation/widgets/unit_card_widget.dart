@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
-import 'package:smart_negborhood_app/features/residential_blocks/data/models/residential_block_model.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/presentation/widgets/build_mini_state_widget.dart';
 import 'package:smart_negborhood_app/features/residential_units/data/models/residential_unit_model.dart';
 

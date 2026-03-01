@@ -11,7 +11,7 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class CheckEmail extends StatefulWidget {
-  CheckEmail({super.key});
+  const CheckEmail({super.key});
 
   @override
   State<CheckEmail> createState() => _CheckEmailState();
