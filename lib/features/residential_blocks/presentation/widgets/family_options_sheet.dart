@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
-import 'package:smart_negborhood_app/features/residential_blocks/data/models/family_model.dart';
 
-import '../../data/models/residential_block_model.dart';
 import '../../cubits/residential_blocks_cubit/residential_blocks_cubit.dart';
-import 'change_block_name_widget.dart';
 
 class FamilyOptionsSheet extends StatelessWidget {
   final Family family;

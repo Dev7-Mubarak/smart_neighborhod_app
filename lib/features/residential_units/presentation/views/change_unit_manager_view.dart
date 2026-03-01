@@ -89,15 +89,17 @@ class _ChangeUnitManagerViewState extends State<ChangeUnitManagerView> {
                       ),
                       BlocBuilder<PersonCubit, PersonState>(
                         builder: (context, state) {
-                          if (state is PersonLoading)
+                          if (state is PersonLoading) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
+                          }
                           if (state is PersonLoaded) {
-                            if (state.people.isEmpty)
+                            if (state.people.isEmpty) {
                               return Center(
                                 child: Text(locale.noManagersAvailable),
                               );
+                            }
                             Person? initialSelectedPerson;
                             if (_selectedPerson != null) {
                               initialSelectedPerson = state.people.firstWhere(

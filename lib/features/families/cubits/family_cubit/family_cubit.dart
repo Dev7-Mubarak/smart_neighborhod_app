@@ -1,15 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
+import '../../../../core/constants/api_link.dart';
+import '../../../../core/services/errors/exception.dart';
 import 'dart:async';
+import '../../../../core/services/API/dio_consumer.dart';
+import '../../../../core/services/errors/errormodel.dart';
 import '../../data/models/family.dart';
 import '../../data/models/family_detiles_model.dart';
-import '../../data/repositories/family_repository.dart';
 
 class FamilyCubit extends Cubit<FamilyState> {
-  final FamilyRepository repository;
-  FamilyCubit({this.blockId, required this.repository})
-    : super(FamilyInitial());
+  final DioConsumer api;
+  FamilyCubit({this.blockId, required this.api}) : super(FamilyInitial());
 
   static FamilyCubit get(context) => BlocProvider.of(context);
 
@@ -30,8 +32,8 @@ class FamilyCubit extends Cubit<FamilyState> {
 
   void setFamilyForUpdate(Family family) {
     this.family = family;
-    this.selectedCategoryId = family.familyCatgoryId;
-    this.selectedFamilyHeadId = family.familyHeadId;
+    selectedCategoryId = family.familyCatgoryId;
+    selectedFamilyHeadId = family.familyHeadId;
   }
 
   void setFamilyMember(FamilyMember? familyMember) {
@@ -51,20 +53,31 @@ class FamilyCubit extends Cubit<FamilyState> {
   Future<void> addNewFamily(Family family) async {
     emit(WaitingForUpdateOrAddFamily());
     try {
-      final familyToCreate = family.copyWith(
-        familyCatgoryId: this.selectedCategoryId ?? family.familyCatgoryId,
-        familyHeadId: this.selectedFamilyHeadId ?? family.familyHeadId,
+      final response = await api.post(
+        ApiLink.addFamily,
+        data: {
+          "name": family.name,
+          "familyCatgoryId": selectedCategoryId,
+          "location": family.location,
+          "familyNotes": family.familyNotes,
+          "blockId": family.blockId,
+          "familyHeadId": selectedFamilyHeadId,
+        },
       );
 
-      final familyId = await repository.createFamily(familyToCreate);
-
-      if (familyId != null) {
+      if (response["isSuccess"]) {
         emit(FamilyAddedSuccessfully(message: "تم اضافة الاسرة بنجاح"));
-        // Refresh local list
-        await getAllFamilies();
       } else {
-        emit(FamilyFailure(errorMessage: "فشل في حفظ الأسرة"));
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
@@ -73,20 +86,31 @@ class FamilyCubit extends Cubit<FamilyState> {
   Future<void> updateFamily(Family family) async {
     emit(WaitingForUpdateOrAddFamily());
     try {
-      final familyToUpdate = family.copyWith(
-        familyCatgoryId: this.selectedCategoryId ?? family.familyCatgoryId,
-        familyHeadId: this.selectedFamilyHeadId ?? family.familyHeadId,
+      final response = await api.update(
+        '${ApiLink.updateFamily}/${family.id}',
+        data: {
+          "name": family.name,
+          "familyCatgoryId": selectedCategoryId,
+          "location": family.location,
+          "familyNotes": family.familyNotes,
+          "blockId": family.blockId,
+          "familyHeadId": selectedFamilyHeadId,
+        },
       );
 
-      final success = await repository.updateFamily(familyToUpdate);
-
-      if (success) {
+      if (response["isSuccess"]) {
         emit(FamilyUpdatedSuccessfully(message: "تم تحديث الأسرة بنجاح"));
-        // Refresh local list
-        await getAllFamilies();
       } else {
-        emit(FamilyFailure(errorMessage: "فشل في تحديث الأسرة"));
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
@@ -96,11 +120,21 @@ class FamilyCubit extends Cubit<FamilyState> {
     familyId = id;
     emit(FamilyLoading());
     try {
-      // Still using remote API for family details
-      // TODO: Create a local query that joins families with members
-      final response = await repository.remoteDataSource.getFamilyDetails(id);
+      final response = await api.get(
+        ApiLink.getFamilyDetailes,
+        queryparameters: {"id": id},
+      );
 
-      _familyDetiles = response;
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      _familyDetiles = FamilyDetilesModel.fromJson(response["data"]);
       _allFamilyMembers = _familyDetiles!.familyMembers;
 
       if (!isClosed) {
@@ -111,6 +145,8 @@ class FamilyCubit extends Cubit<FamilyState> {
           ),
         );
       }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
@@ -150,23 +186,25 @@ class FamilyCubit extends Cubit<FamilyState> {
   }) async {
     emit(WaitingForUpdateOrAddFamily());
     try {
-      final memberId = await repository.addFamilyMember(
-        familyId: familyId,
-        personId: personId,
-        roleId: roleId,
+      final response = await api.post(
+        ApiLink.addFamilyMember,
+        data: {"familyId": familyId, "personId": personId, "roleId": roleId},
       );
-
-      if (memberId != null) {
+      if (response["isSuccess"]) {
         emit(
           FamilyMemberAddedSuccessfully(message: "تم إضافة الشخص للأسرة بنجاح"),
         );
-        // Optionally refresh family details
-        if (this.familyId != null) {
-          await getFamilyDetilesById(this.familyId!);
-        }
       } else {
-        emit(FamilyFailure(errorMessage: "فشل في إضافة عضو الأسرة"));
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
@@ -175,94 +213,85 @@ class FamilyCubit extends Cubit<FamilyState> {
   Future<void> deleteFamily(int id) async {
     emit(WaitingForUpdateOrAddFamily());
     try {
-      final success = await repository.deleteFamily(id);
+      final response = await api.delete('${ApiLink.deleteFamily}/$id');
 
-      if (success) {
+      if (response["isSuccess"]) {
         emit(FamilyDeletedSuccessfully(message: "تم حذف الأسرة بنجاح"));
-        // Refresh local list
-        await getAllFamilies();
       } else {
-        emit(FamilyFailure(errorMessage: "فشل في حذف الأسرة"));
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
       }
-    } catch (e) {
-      emit(FamilyFailure(errorMessage: e.toString()));
-    }
-  }
-
-  /// Get all families from local database
-  Future<void> getAllFamilies() async {
-    emit(FamilyLoading());
-    try {
-      if (blockId != null) {
-        allFamilies = await repository.getFamiliesByBlockId(blockId!);
-      } else {
-        allFamilies = await repository.getAllFamilies();
-      }
-      emit(FamilyLoaded(families: allFamilies));
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
   }
 
   Future<void> getFamiliesByBlockId() async {
-    await getAllFamilies();
-  }
-
-  Future<void> deleteFamilyMember(int familyId, int personId) async {
-    emit(WaitingForUpdateOrAddFamily());
+    emit(FamilyLoading());
     try {
-      final success = await repository.removeFamilyMember(familyId, personId);
-
-      if (success) {
-        emit(
-          FamilyMemberDeletedSuccessfully(message: "تم حذف فرد الأسرة بنجاح"),
+      final response = await api.get(ApiLink.getAllFamily);
+      if (response["data"] == null) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "No data received",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
         );
-        // Optionally refresh family details
-        if (this.familyId != null) {
-          await getFamilyDetilesById(this.familyId!);
-        }
-      } else {
-        emit(FamilyFailure(errorMessage: "فشل في حذف عضو الأسرة"));
       }
+      List<dynamic> familiesJson = response["data"];
+      List<Family> familiesObjects = familiesJson
+          .map((e) => Family.fromJson(e))
+          .toList();
+      if (familiesObjects == []) {
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: "لا توجد أسر",
+            isSuccess: response["isSuccess"] ?? false,
+          ),
+        );
+      }
+      allFamilies = familiesObjects.where((e) => e.blockId == blockId).toList();
+      emit(FamilyLoaded(families: allFamilies));
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(FamilyFailure(errorMessage: e.toString()));
     }
   }
 
-  /// Sync local families with server
-  Future<void> syncFamilies() async {
-    emit(FamilyLoading());
+  Future<void> deleteFamilyMember(int familyId, int familyMemberId) async {
+    emit(WaitingForUpdateOrAddFamily());
     try {
-      final result = await repository.syncFamilies();
-      await repository.syncFamilyMembers(); // Also sync members
-
-      if (result.success) {
-        // Refresh local list after sync
-        await getAllFamilies();
+      final response = await api.delete(
+        '${ApiLink.getFamilyMembers}/$familyMemberId',
+        queryparameters: {"familyId": familyId},
+      );
+      if (response["isSuccess"]) {
         emit(
-          FamilySyncedSuccessfully(
-            message:
-                "تم المزامنة بنجاح: ${result.uploadedCount} تم الرفع، ${result.downloadedCount} تم التنزيل",
-          ),
+          FamilyMemberDeletedSuccessfully(message: "تم حذف فرد الأسرة بنجاح"),
         );
       } else {
-        emit(
-          FamilySyncFailed(
-            errorMessage: "فشلت المزامنة: ${result.errors.join(', ')}",
+        throw Serverexception(
+          errModel: ErrorModel(
+            statusCode: 400,
+            errorMessage: response["message"] ?? "حدث خطأ غير معروف",
+            isSuccess: response["isSuccess"] ?? false,
           ),
         );
       }
+    } on Serverexception catch (e) {
+      emit(FamilyFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
-      emit(FamilySyncFailed(errorMessage: e.toString()));
-    }
-  }
-
-  /// Get count of pending families
-  Future<int> getPendingCount() async {
-    try {
-      return await repository.getPendingFamiliesCount();
-    } catch (e) {
-      return 0;
+      emit(FamilyFailure(errorMessage: e.toString()));
     }
   }
 }

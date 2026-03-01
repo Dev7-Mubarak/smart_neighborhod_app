@@ -150,11 +150,11 @@ class TeamCubit extends Cubit<TeamState> {
       );
 
       List<dynamic> ProjectJson = response["data"];
-      List<Project> _allProjects = ProjectJson.map(
+      List<Project> allProjects = ProjectJson.map(
         (e) => Project.fromJson(e),
       ).toList();
 
-      emit(ProjectsOfTeamLoaded(_allProjects));
+      emit(ProjectsOfTeamLoaded(allProjects));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
@@ -224,7 +224,6 @@ class TeamCubit extends Cubit<TeamState> {
           ),
         );
       }
-      ;
       emit(TeamByIdLoaded(team: Team.fromJson(response["data"])));
     } on Serverexception catch (e) {
       emit(TeamFailure(errorMessage: e.errModel.errorMessage));

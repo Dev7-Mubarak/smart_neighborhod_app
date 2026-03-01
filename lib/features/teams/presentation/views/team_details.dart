@@ -189,8 +189,8 @@ class TeamDetailsState extends State<TeamDetails> {
                     );
                   }
                   if (state is ProjectsOfTeamLoaded) {
-                    final _projects = state.allProjects;
-                    if (_projects.isEmpty) {
+                    final projects = state.allProjects;
+                    if (projects.isEmpty) {
                       return NoResultWidget();
                     }
                     return CustomTableWidget(

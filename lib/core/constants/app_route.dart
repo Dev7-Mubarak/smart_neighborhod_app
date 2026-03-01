@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_negborhood_app/core/config/injection.dart';
 import 'package:smart_negborhood_app/core/services/API/dio_consumer.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/login_cubit/login_cubit.dart';
@@ -132,7 +131,8 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<FamilyCubit>(
-                create: (context) => getIt<FamilyCubit>(),
+                create: (context) =>
+                    FamilyCubit(api: DioConsumer(dio: Dio())),
               ),
               BlocProvider.value(value: residentialBlocksCubit),
             ],
@@ -145,7 +145,8 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) =>
-                getIt<FamilyCubit>()..getFamilyDetilesById(familyId),
+                FamilyCubit(api: DioConsumer(dio: Dio()))
+                  ..getFamilyDetilesById(familyId),
             child: const ResidentialBlockFamilyMembersView(),
           ),
           // BlocProvider.value(
@@ -205,7 +206,10 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<FamilyCubit>(
-                create: (_) => getIt<FamilyCubit>(param1: blockId),
+                create: (_) => FamilyCubit(
+                  api: DioConsumer(dio: Dio()),
+                  blockId: blockId,
+                ),
               ),
               BlocProvider<BlockDetailCubit>(
                 create: (_) => BlockDetailCubit(api: DioConsumer(dio: Dio())),
@@ -413,8 +417,10 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<FamilyCubit>(
-                create: (context) =>
-                    getIt<FamilyCubit>(param1: assistancCubit.blockId),
+                create: (context) => FamilyCubit(
+                  api: DioConsumer(dio: Dio()),
+                  blockId: assistancCubit.blockId,
+                ),
               ),
               BlocProvider.value(value: assistancCubit),
             ],

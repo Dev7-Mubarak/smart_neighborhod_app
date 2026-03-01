@@ -11,7 +11,7 @@ import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/features/auth/cubits/forgetapassword/forgetapassword_cubit.dart';
 
 class CreateNewPassword extends StatefulWidget {
-  CreateNewPassword({super.key});
+  const CreateNewPassword({super.key});
 
   @override
   State<CreateNewPassword> createState() => _CreateNewPasswordState();

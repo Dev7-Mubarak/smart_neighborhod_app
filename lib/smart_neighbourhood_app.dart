@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:smart_negborhood_app/features/residential_neighborhoods/cubits/residential_neighborhoods_cubit/residential_neighborhoods_cubit.dart';
-import 'package:smart_negborhood_app/features/sync/cubits/sync_cubit.dart';
 
 import 'core/config/generated/l10n.dart';
 import 'core/constants/app_color.dart';
@@ -28,7 +27,6 @@ class SmartNeighbourhoodApp extends StatelessWidget {
           create: (context) =>
               ResidentialNeighborhoodsCubit(api: DioConsumer(dio: Dio())),
         ),
-        BlocProvider(create: (context) => SyncCubit()),
       ],
       child: MaterialApp(
         localizationsDelegates: const [

@@ -83,11 +83,11 @@ class _ChangeUnitNameWidgetState extends State<ChangeUnitNameWidget> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(locale.cancel),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.primaryColor,
                     foregroundColor: AppColor.white,
                   ),
+                  child: Text(locale.cancel),
                 ),
               ),
             ],

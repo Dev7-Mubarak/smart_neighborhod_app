@@ -448,7 +448,7 @@ class MemberCard extends StatelessWidget {
         );
       },
       onLongPress: () {
-        if (profileModel.role == AppRoles.admin.name)
+        if (profileModel.role == AppRoles.admin.name) {
           showModalBottomSheet(
             context: context,
             builder: (context) => Padding(
@@ -500,6 +500,7 @@ class MemberCard extends StatelessWidget {
               ),
             ),
           );
+        }
       },
       child: Container(
         width: 220,
