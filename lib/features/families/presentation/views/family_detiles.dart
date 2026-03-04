@@ -160,7 +160,8 @@ class FamilyDetailsBody extends StatelessWidget {
             profileModel: profileModel,
           ),
           const SizedBox(height: 16),
-          if (profileModel.role == AppRoles.admin.name)
+          if (profileModel.role == AppRoles.admin.name ||
+              profileModel.role == AppRoles.unitManager.name)
             _AddMemberButtonRow(state.familyDetiles.headOfFamily),
           const Padding(
             padding: EdgeInsets.all(16),
@@ -448,7 +449,8 @@ class MemberCard extends StatelessWidget {
         );
       },
       onLongPress: () {
-        if (profileModel.role == AppRoles.admin.name) {
+        if (profileModel.role == AppRoles.admin.name ||
+            profileModel.role == AppRoles.unitManager.name) {
           showModalBottomSheet(
             context: context,
             builder: (context) => Padding(
