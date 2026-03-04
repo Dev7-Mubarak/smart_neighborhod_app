@@ -135,7 +135,10 @@ class _AllTeamsState extends State<AllTeams> {
                                   final profile =
                                       SharedPreferencesService.getProfile();
                                   if (profile!.role!.toLowerCase() ==
-                                      AppRoles.admin.name.toLowerCase()) {
+                                          AppRoles.admin.name.toLowerCase() ||
+                                      profile.role!.toLowerCase() ==
+                                          AppRoles.unitManager.name
+                                              .toLowerCase()) {
                                     _showTeamOptions(context, team);
                                   }
                                 },
@@ -185,7 +188,10 @@ class _AllTeamsState extends State<AllTeams> {
                                 originalObjects: teamMembers,
                                 onRowLongPress: (rowIndex, rowObject) {
                                   if (_profile.role!.toLowerCase() ==
-                                      AppRoles.admin.name.toLowerCase()) {
+                                          AppRoles.admin.name.toLowerCase() ||
+                                      _profile.role!.toLowerCase() ==
+                                          AppRoles.unitManager.name
+                                              .toLowerCase()) {
                                     _showTeamMemberOptions(
                                       context,
                                       rowObject as TeamMember,
@@ -195,7 +201,9 @@ class _AllTeamsState extends State<AllTeams> {
                               ),
                               const SizedBox(height: 10),
                               if (_profile.role!.toLowerCase() ==
-                                  AppRoles.admin.name.toLowerCase())
+                                      AppRoles.admin.name.toLowerCase() ||
+                                  _profile.role!.toLowerCase() ==
+                                      AppRoles.unitManager.name.toLowerCase())
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: SmallButton(
@@ -256,7 +264,9 @@ class _AllTeamsState extends State<AllTeams> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase())
+        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase() ||
+            _profile.role!.toLowerCase() ==
+                AppRoles.unitManager.name.toLowerCase())
           SmallButton(
             text: 'إضافة فريق',
             onPressed: () {
