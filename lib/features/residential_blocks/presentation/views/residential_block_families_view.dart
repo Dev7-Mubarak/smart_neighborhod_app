@@ -14,6 +14,8 @@ import 'package:smart_negborhood_app/features/families/cubits/family_cubit/famil
 import 'package:smart_negborhood_app/features/families/data/models/family.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/cubits/residential_blocks_cubit/residential_blocks_cubit.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/cubits/residential_blocks_cubit/residential_blocks_state.dart';
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 import 'package:smart_negborhood_app/features/residential_blocks/presentation/widgets/family_options_sheet.dart';
 
 class ResidentialBlockFamiliesView extends StatefulWidget {
@@ -48,6 +50,10 @@ class _ResidentialBlockFamiliesViewState
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
+    final profileRole = SharedPreferencesService.getProfile()?.role;
+    final isNeighborhoodManager =
+        profileRole?.toLowerCase() ==
+        AppRoles.residentialNeighborhoodManager.name.toLowerCase();
     final int crossAxisCount = context.screenSize.width > 600 ? 3 : 2;
     return BlocListener<FamilyCubit, FamilyState>(
       listener: (context, state) {
@@ -98,24 +104,26 @@ class _ResidentialBlockFamiliesViewState
                   children: [
                     Row(
                       children: [
-                        SmallButton(
-                          text: locale.add,
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoute.addUpdateFamily,
-                              arguments: {
-                                'familyCubit': _familyCubit,
-                                'blockId': _residentialBlocksCubit.blockId,
-                              },
-                            ).then((_) {
-                              _residentialBlocksCubit.getBlockFamilies(
-                                _residentialBlocksCubit.blockId,
-                              );
-                            });
-                          },
-                        ),
-                        SizedBox(height: 5),
+                        if (!isNeighborhoodManager) ...[
+                          SmallButton(
+                            text: locale.add,
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoute.addUpdateFamily,
+                                arguments: {
+                                  'familyCubit': _familyCubit,
+                                  'blockId': _residentialBlocksCubit.blockId,
+                                },
+                              ).then((_) {
+                                _residentialBlocksCubit.getBlockFamilies(
+                                  _residentialBlocksCubit.blockId,
+                                );
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 5),
+                        ],
                         Expanded(
                           child: SearchableTextFormField(
                             controller: _searchingController,
