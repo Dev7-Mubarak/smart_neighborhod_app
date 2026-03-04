@@ -198,7 +198,9 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                   },
                 ),
                 if (_profile.role!.toLowerCase() ==
-                    AppRoles.admin.name.toLowerCase())
+                        AppRoles.admin.name.toLowerCase() ||
+                    _profile.role!.toLowerCase() ==
+                        AppRoles.unitManager.name.toLowerCase())
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Align(
@@ -305,7 +307,9 @@ class _AssistanceDetilesState extends State<AssistanceDetiles> {
                                     ),
                               SizedBox(height: 10),
                               if (_profile.role!.toLowerCase() ==
-                                  AppRoles.admin.name.toLowerCase())
+                                      AppRoles.admin.name.toLowerCase() ||
+                                  _profile.role!.toLowerCase() ==
+                                      AppRoles.unitManager.name.toLowerCase())
                                 Padding(
                                   padding: const EdgeInsets.all(15),
                                   child: Align(
