@@ -11,6 +11,8 @@ import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
 import 'package:smart_negborhood_app/core/common/enums/gender.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/core/common/enums/occupation_status.dart';
+import 'package:smart_negborhood_app/core/common/enums/vehicle_type.dart';
+import 'package:smart_negborhood_app/core/common/enums/residency_status.dart';
 import '../../../../core/common/widgets/CustomDropdown.dart';
 import '../../../../core/constants/app_size.dart';
 import '../../../../core/constants/small_text.dart';
@@ -29,8 +31,11 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
   late final TextEditingController secondNameController;
   late final TextEditingController thirdNameController;
   late final TextEditingController lastNameController;
-  // late final TextEditingController birthDateController;
   late final TextEditingController phoneNumberController;
+  late final TextEditingController jobController;
+  late final TextEditingController nationalIdController;
+  late final TextEditingController vehicleRegistrationController;
+  late final TextEditingController chronicDiseasesNotesController;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -59,8 +64,23 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     phoneNumberController = TextEditingController(
       text: widget.person?.phoneNumber,
     );
+    jobController = TextEditingController(text: widget.person?.job ?? '');
+    nationalIdController = TextEditingController(
+      text: widget.person?.nationalId ?? '',
+    );
+    vehicleRegistrationController = TextEditingController(
+      text: widget.person?.vehicleRegistrationNumber ?? '',
+    );
+    chronicDiseasesNotesController = TextEditingController(
+      text: widget.person?.chronicDiseasesNotes ?? '',
+    );
 
-    cubit.selectedGender = widget.person?.gender;
+    cubit.selectedGender = widget.person?.gender?.name;
+
+    // Initialize enum selections for editing
+    if (widget.person != null) {
+      cubit.setPersonForUpdate(widget.person!);
+    }
 
     super.initState();
   }
@@ -71,8 +91,11 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
     secondNameController.dispose();
     thirdNameController.dispose();
     lastNameController.dispose();
-    // birthDateController.dispose();
     phoneNumberController.dispose();
+    jobController.dispose();
+    nationalIdController.dispose();
+    vehicleRegistrationController.dispose();
+    chronicDiseasesNotesController.dispose();
     super.dispose();
   }
 
@@ -339,6 +362,123 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                           ),
                         ],
                       ),
+
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
+
+                      const SmallText(text: 'رقم الهوية'),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
+                      CustomTextFormField(controller: nationalIdController),
+                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                      const SmallText(text: 'نوع المركبة'),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
+                      BlocBuilder<PersonCubit, PersonState>(
+                        builder: (context, state) {
+                          return CustomDropdown(
+                            items: VehicleType.values
+                                .map((e) => e.arabicName)
+                                .toList(),
+                            selectedValue:
+                                cubit.selectedVehicleType?.arabicName,
+                            onChanged: (String? newValue) {
+                              cubit.changeSelectedVehicleType(
+                                newValue != null
+                                    ? VehicleType.values.firstWhere(
+                                        (e) => e.arabicName == newValue,
+                                      )
+                                    : null,
+                              );
+                            },
+                            text: 'اختيار نوع المركبة',
+                            validator: (value) => null,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                      const SmallText(text: 'رقم لوحة المركبة'),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
+                      CustomTextFormField(
+                        controller: vehicleRegistrationController,
+                      ),
+                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                      const SmallText(text: 'وضع الإقامة'),
+                      const SizedBox(
+                        height: AppSize.spasingBetweenInputsAndLabale,
+                      ),
+                      BlocBuilder<PersonCubit, PersonState>(
+                        builder: (context, state) {
+                          return CustomDropdown(
+                            items: ResidencyStatus.values
+                                .map((e) => e.arabicName)
+                                .toList(),
+                            selectedValue:
+                                cubit.selectedResidencyStatus?.arabicName,
+                            onChanged: (String? newValue) {
+                              cubit.changeSelectedResidencyStatus(
+                                newValue != null
+                                    ? ResidencyStatus.values.firstWhere(
+                                        (e) => e.arabicName == newValue,
+                                      )
+                                    : null,
+                              );
+                            },
+                            text: 'اختيار وضع الإقامة',
+                            validator: (value) => null,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: AppSize.spasingBetweenInputBloc),
+                      Row(
+                        children: [
+                          BlocBuilder<PersonCubit, PersonState>(
+                            builder: (context, state) {
+                              return Checkbox(
+                                value: cubit.hasChronicDiseases,
+                                onChanged: (bool? value) {
+                                  cubit.toggleHasChronicDiseases();
+                                },
+                              );
+                            },
+                          ),
+                          const SmallText(text: 'يعاني من أمراض مزمنة'),
+                        ],
+                      ),
+                      BlocBuilder<PersonCubit, PersonState>(
+                        builder: (context, state) {
+                          return cubit.hasChronicDiseases
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: AppSize.spasingBetweenInputBloc,
+                                    ),
+                                    const SmallText(
+                                      text: 'ملاحظات الأمراض المزمنة',
+                                    ),
+                                    const SizedBox(
+                                      height:
+                                          AppSize.spasingBetweenInputsAndLabale,
+                                    ),
+                                    CustomTextFormField(
+                                      controller:
+                                          chronicDiseasesNotesController,
+                                      maxLines: 3,
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox();
+                        },
+                      ),
                       const SizedBox(height: AppSize.spasingBetweenInputBloc),
                       _buildImagePicker(context, cubit),
                     ],
@@ -489,6 +629,7 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
               context.showErrorSnackBar("يرجى اختيار الجنس.");
               return;
             }
+
             if (_formKey.currentState!.validate()) {
               if (widget.person == null) {
                 cubit.addNewPerson(
@@ -497,6 +638,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   thirdName: thirdNameController.text,
                   lastName: lastNameController.text,
                   phoneNumber: phoneNumberController.text,
+                  job: jobController.text,
+                  nationalId: nationalIdController.text,
+                  vehicleRegistrationNumber: vehicleRegistrationController.text,
+                  chronicDiseasesNotes: chronicDiseasesNotesController.text,
                 );
               } else {
                 cubit.updatePerson(
@@ -506,6 +651,10 @@ class AddUpdatePersonState extends State<AddUpdatePerson> {
                   thirdName: thirdNameController.text,
                   lastName: lastNameController.text,
                   phoneNumber: phoneNumberController.text,
+                  job: jobController.text,
+                  nationalId: nationalIdController.text,
+                  vehicleRegistrationNumber: vehicleRegistrationController.text,
+                  chronicDiseasesNotes: chronicDiseasesNotesController.text,
                 );
               }
             }
