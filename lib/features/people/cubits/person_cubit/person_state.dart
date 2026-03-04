@@ -61,10 +61,16 @@ class ChangeSelctedGender extends PersonState {}
 
 class ChangeContactType extends PersonState {}
 
-class ChangeSelectedIdentityType extends PersonState {}
+// Identity type and person type states were removed when those fields
+// were cleaned from the cubit/view. Only keep relevant states.
 
 class ChangeSelectedBloodType extends PersonState {}
 
 class ChangeSelectedMaritalStatus extends PersonState {}
 
 class ChangeSelectedOccupationStatus extends PersonState {}
+
+
+class ChangeSelectedVehicleType extends PersonState {}
+
+class ChangeSelectedResidencyStatus extends PersonState {}
