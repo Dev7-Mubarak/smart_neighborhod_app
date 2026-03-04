@@ -105,7 +105,9 @@ class _AllAssistancesState extends State<AllAssistances> {
         originalObjects: _projectsListSearch,
         onRowLongPress: (rowIndex, rowObject) {
           if (_profile.role!.toLowerCase() ==
-              AppRoles.admin.name.toLowerCase()) {
+                  AppRoles.admin.name.toLowerCase() ||
+              _profile.role!.toLowerCase() ==
+                  AppRoles.unitManager.name.toLowerCase()) {
             _showOptions(context, rowObject as Project);
           }
         },
@@ -175,7 +177,9 @@ class _AllAssistancesState extends State<AllAssistances> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase())
+        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase() ||
+            _profile.role!.toLowerCase() ==
+                AppRoles.unitManager.name.toLowerCase())
           SmallButton(
             text: 'إضافة',
             onPressed: () {
