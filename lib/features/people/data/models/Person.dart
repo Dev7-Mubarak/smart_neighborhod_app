@@ -105,40 +105,103 @@ class Person {
     );
   }
 
-  static BloodType _bloodTypeFromString(String value) {
-    return BloodType.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => BloodType.values.first,
-    );
+  static BloodType _bloodTypeFromString(dynamic value) {
+    if (value == null) return BloodType.values.first;
+    final str = value.toString();
+    final key = str.contains('.') ? str.split('.').last : str;
+
+    try {
+      return BloodType.values.firstWhere(
+        (e) => e.name.toLowerCase() == key.toLowerCase(),
+      );
+    } catch (_) {}
+
+    try {
+      return BloodType.values.firstWhere(
+        (e) => e.arabicName == str || e.arabicName == key,
+      );
+    } catch (_) {}
+
+    return BloodType.values.first;
   }
 
-  static OccupationStatus _occupationStatusFromString(String value) {
-    return OccupationStatus.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => OccupationStatus.values.first,
-    );
+  static OccupationStatus _occupationStatusFromString(dynamic value) {
+    if (value == null) return OccupationStatus.values.first;
+    final str = value.toString();
+    final key = str.contains('.') ? str.split('.').last : str;
+
+    try {
+      return OccupationStatus.values.firstWhere(
+        (e) => e.name.toLowerCase() == key.toLowerCase(),
+      );
+    } catch (_) {}
+
+    try {
+      return OccupationStatus.values.firstWhere(
+        (e) => e.arabicName == str || e.arabicName == key,
+      );
+    } catch (_) {}
+
+    return OccupationStatus.values.first;
   }
 
-  static MaritalStatus _maritalStatusFromString(String value) {
-    return MaritalStatus.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => MaritalStatus.values.first,
-    );
+  static MaritalStatus _maritalStatusFromString(dynamic value) {
+    if (value == null) return MaritalStatus.values.first;
+    final str = value.toString();
+    final key = str.contains('.') ? str.split('.').last : str;
+
+    try {
+      return MaritalStatus.values.firstWhere(
+        (e) => e.name.toLowerCase() == key.toLowerCase(),
+      );
+    } catch (_) {}
+
+    try {
+      return MaritalStatus.values.firstWhere(
+        (e) => e.arabicName == str || e.arabicName == key,
+      );
+    } catch (_) {}
+
+    return MaritalStatus.values.first;
   }
 
-  static VehicleType? _vehicleTypeFromString(String? value) {
+  static VehicleType? _vehicleTypeFromString(dynamic value) {
     if (value == null) return null;
-    return VehicleType.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => VehicleType.Unknown,
-    );
+    final str = value.toString();
+    final key = str.contains('.') ? str.split('.').last : str;
+
+    try {
+      return VehicleType.values.firstWhere(
+        (e) => e.name.toLowerCase() == key.toLowerCase(),
+      );
+    } catch (_) {}
+
+    try {
+      return VehicleType.values.firstWhere(
+        (e) => e.arabicName == str || e.arabicName == key,
+      );
+    } catch (_) {}
+
+    return VehicleType.Unknown;
   }
 
-  static ResidencyStatus? _residencyStatusFromString(String? value) {
+  static ResidencyStatus? _residencyStatusFromString(dynamic value) {
     if (value == null) return null;
-    return ResidencyStatus.values.firstWhere(
-      (e) => e.name.toLowerCase() == value.toLowerCase(),
-      orElse: () => ResidencyStatus.Resident,
-    );
+    final str = value.toString();
+    final key = str.contains('.') ? str.split('.').last : str;
+
+    try {
+      return ResidencyStatus.values.firstWhere(
+        (e) => e.name.toLowerCase() == key.toLowerCase(),
+      );
+    } catch (_) {}
+
+    try {
+      return ResidencyStatus.values.firstWhere(
+        (e) => e.arabicName == str || e.arabicName == key,
+      );
+    } catch (_) {}
+
+    return ResidencyStatus.Resident;
   }
 }
