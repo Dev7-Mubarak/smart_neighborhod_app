@@ -10,6 +10,8 @@ import '../../data/models/Person.dart';
 import '../../../../core/common/enums/blood_type.dart';
 import '../../../../core/common/enums/marital_status.dart';
 import '../../../../core/common/enums/occupation_status.dart';
+import '../../../../core/common/enums/vehicle_type.dart';
+import '../../../../core/common/enums/residency_status.dart';
 part 'person_state.dart';
 
 class PersonCubit extends Cubit<PersonState> {
@@ -20,11 +22,18 @@ class PersonCubit extends Cubit<PersonState> {
   Person? person;
   XFile? profilePicture;
   String? selectedGender;
-  bool isCall = false;
-  bool isWhatsapp = false;
+
   BloodType? selectedBloodType;
   MaritalStatus? selectedMaritalStatus;
   OccupationStatus? selectedOccupationStatus;
+  VehicleType? selectedVehicleType;
+  ResidencyStatus? selectedResidencyStatus;
+  bool hasChronicDiseases = false;
+  // contact flags (used by some legacy toggle methods, keep until UI is cleaned)
+  bool isWhatsapp = false;
+  bool isContactNumber = false;
+  bool isCall = false;
+
   DateTime? selectedDate;
   bool _hasNextPage = false;
   int _pageNumber = 1;
@@ -38,8 +47,11 @@ class PersonCubit extends Cubit<PersonState> {
     selectedBloodType = person.bloodType;
     selectedMaritalStatus = person.maritalStatus;
     selectedOccupationStatus = person.occupationStatus;
+    selectedVehicleType = person.vehicleType;
+    selectedResidencyStatus = person.residencyStatus;
     selectedDate = person.dateOfBirth;
-    selectedGender = person.gender;
+    selectedGender = person.gender?.name;
+    hasChronicDiseases = person.hasChronicDiseases ?? false;
   }
 
   /// Loads the next page of people if available.
@@ -97,6 +109,10 @@ class PersonCubit extends Cubit<PersonState> {
     required String thirdName,
     required String lastName,
     required String? phoneNumber,
+    String? job,
+    String? nationalId,
+    String? vehicleRegistrationNumber,
+    String? chronicDiseasesNotes,
   }) async {
     emit(WaitingForUpdateOrAddPerson());
 
@@ -107,7 +123,6 @@ class PersonCubit extends Cubit<PersonState> {
         "ThirdName": thirdName,
         "LastName": lastName,
         "PhoneNumber": phoneNumber,
-        // "ResidencyStatus": phoneNumber,
         "DateOfBirth": selectedDate,
         "Gender": selectedGender,
 
@@ -117,8 +132,13 @@ class PersonCubit extends Cubit<PersonState> {
             ?.toString()
             .split('.')
             .last,
-        "Job": null,
-
+        "Job": job,
+        "NationalId": nationalId,
+        "VehicleType": selectedVehicleType?.toString().split('.').last,
+        "VehicleRegistrationNumber": vehicleRegistrationNumber,
+        "ResidencyStatus": selectedResidencyStatus?.toString().split('.').last,
+        "HasChronicDiseases": hasChronicDiseases,
+        "ChronicDiseasesNotes": chronicDiseasesNotes,
         "Image": profilePicture != null
             ? await MultipartFile.fromFile(
                 profilePicture!.path,
@@ -127,7 +147,6 @@ class PersonCubit extends Cubit<PersonState> {
             : null,
       };
 
-      // Debug log to ensure data is ready
       print("Request Data: $requestData");
 
       final response = await api.post(
@@ -161,6 +180,10 @@ class PersonCubit extends Cubit<PersonState> {
     String? thirdName,
     String? lastName,
     String? phoneNumber,
+    String? job,
+    String? nationalId,
+    String? vehicleRegistrationNumber,
+    String? chronicDiseasesNotes,
   }) async {
     emit(WaitingForUpdateOrAddPerson());
     try {
@@ -173,15 +196,25 @@ class PersonCubit extends Cubit<PersonState> {
           "ThirdName": thirdName,
           "LastName": lastName,
           "PhoneNumber": phoneNumber,
-          // "DateOfBirth": selectedDate?.toIso8601String(),
+          "DateOfBirth": selectedDate?.toIso8601String(),
           "Gender": selectedGender,
+
           "BloodType": selectedBloodType?.toString().split('.').last,
           "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
           "OccupationStatus": selectedOccupationStatus
               ?.toString()
               .split('.')
               .last,
-          "Job": null,
+          "Job": job,
+          "NationalId": nationalId,
+          "VehicleType": selectedVehicleType?.toString().split('.').last,
+          "VehicleRegistrationNumber": vehicleRegistrationNumber,
+          "ResidencyStatus": selectedResidencyStatus
+              ?.toString()
+              .split('.')
+              .last,
+          "HasChronicDiseases": hasChronicDiseases,
+          "ChronicDiseasesNotes": chronicDiseasesNotes,
           if (profilePicture != null)
             "Image": await MultipartFile.fromFile(
               profilePicture!.path,
@@ -249,10 +282,14 @@ class PersonCubit extends Cubit<PersonState> {
     emit(ChangeSelctedGender());
   }
 
-  void toggleContactType({bool? isCall, bool? isWhatsapp}) {
-    this.isCall = isCall ?? false;
-    this.isWhatsapp = isWhatsapp ?? false;
-    emit(ChangeContactType());
+  void changeSelectedVehicleType(VehicleType? selectedVehicleType) {
+    this.selectedVehicleType = selectedVehicleType;
+    emit(ChangeSelectedVehicleType());
+  }
+
+  void changeSelectedResidencyStatus(ResidencyStatus? selectedResidencyStatus) {
+    this.selectedResidencyStatus = selectedResidencyStatus;
+    emit(ChangeSelectedResidencyStatus());
   }
 
   void changeSelectedBloodType(BloodType selectedBloodType) {
@@ -270,5 +307,11 @@ class PersonCubit extends Cubit<PersonState> {
   ) {
     this.selectedOccupationStatus = selectedOccupationStatus;
     emit(ChangeSelectedOccupationStatus());
+  }
+
+
+  void toggleHasChronicDiseases() {
+    hasChronicDiseases = !hasChronicDiseases;
+    emit(ChangeContactType());
   }
 }
