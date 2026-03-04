@@ -38,8 +38,9 @@ class _ResidentialNeighborhoodViewState
   Timer? _delay;
 
   void reset() {
-    if (_profileModel?.role!.toLowerCase() ==
-        AppRoles.residentialNeighborhoodManager.name.toLowerCase()) {
+    final role = _profileModel?.role?.toLowerCase();
+    if (role == AppRoles.residentialNeighborhoodManager.name.toLowerCase() ||
+        role == AppRoles.blockManager.name.toLowerCase()) {
       _residentialNeighborhoodsCubit.getResidentialNeighborhoodsMeDashboard();
     } else {
       _residentialNeighborhoodsCubit.getResidentialNeighborhoodsDashboard();
@@ -137,7 +138,9 @@ class _ResidentialNeighborhoodViewState
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (_profileModel?.role!.toLowerCase() ==
-              AppRoles.admin.name.toLowerCase())
+                  AppRoles.admin.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.unitManager.name.toLowerCase())
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -156,7 +159,8 @@ class _ResidentialNeighborhoodViewState
                 // });
               },
             ),
-          if (_profileModel?.role == AppRoles.admin.name)
+          if (_profileModel?.role == AppRoles.admin.name ||
+              _profileModel?.role == AppRoles.unitManager.name)
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
@@ -242,7 +246,9 @@ class _ResidentialNeighborhoodViewState
                           },
                           onLongPress: () {
                             if (_profileModel?.role!.toLowerCase() ==
-                                AppRoles.admin.name.toLowerCase()) {
+                                    AppRoles.admin.name.toLowerCase() ||
+                                _profileModel?.role!.toLowerCase() ==
+                                    AppRoles.unitManager.name.toLowerCase()) {
                               _showOptions(neighborhood, locale);
                             }
                           },
