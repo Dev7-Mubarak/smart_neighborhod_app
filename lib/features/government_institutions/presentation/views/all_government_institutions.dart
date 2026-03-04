@@ -144,7 +144,11 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
                                   InkWell(
                                     onLongPress: () {
                                       if (_profile.role!.toLowerCase() ==
-                                          AppRoles.admin.name.toLowerCase()) {
+                                              AppRoles.admin.name
+                                                  .toLowerCase() ||
+                                          _profile.role!.toLowerCase() ==
+                                              AppRoles.unitManager.name
+                                                  .toLowerCase()) {
                                         _showInstitutionOptions(
                                           context,
                                           institution,
@@ -184,7 +188,11 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
                                     originalObjects: contacts,
                                     onRowLongPress: (rowIndex, rowObject) {
                                       if (_profile.role!.toLowerCase() ==
-                                          AppRoles.admin.name.toLowerCase()) {
+                                              AppRoles.admin.name
+                                                  .toLowerCase() ||
+                                          _profile.role!.toLowerCase() ==
+                                              AppRoles.unitManager.name
+                                                  .toLowerCase()) {
                                         _showContactOptions(
                                           context,
                                           rowObject
@@ -195,7 +203,10 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
                                   ),
                                   const SizedBox(height: 10),
                                   if (_profile.role!.toLowerCase() ==
-                                      AppRoles.admin.name.toLowerCase())
+                                          AppRoles.admin.name.toLowerCase() ||
+                                      _profile.role!.toLowerCase() ==
+                                          AppRoles.unitManager.name
+                                              .toLowerCase())
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: SmallButton(
@@ -263,7 +274,9 @@ class _AllGovernmentInstitutionsState extends State<AllGovernmentInstitutions> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase())
+        if (_profile.role!.toLowerCase() == AppRoles.admin.name.toLowerCase() ||
+            _profile.role!.toLowerCase() ==
+                AppRoles.unitManager.name.toLowerCase())
           SmallButton(
             text: 'إضافة جهة',
             onPressed: () {
