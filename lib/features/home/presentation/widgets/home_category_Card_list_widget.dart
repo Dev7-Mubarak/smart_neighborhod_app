@@ -43,7 +43,7 @@ class _HomeCategoryCardListWidgetState
           Navigator.pushNamed(context, AppRoute.statistics);
         },
       ),
-      if (isAdmin)
+      if (isAdmin || isUnitManager || isNeighborhoodManager || isBlockManager)
         CategoryCard(
           title: locale.allPeople,
           imagePath: AppImage.homecomplan,
@@ -52,14 +52,14 @@ class _HomeCategoryCardListWidgetState
             Navigator.pushNamed(context, AppRoute.allPeople);
           },
         ),
-      if (isAdmin || isNeighborhoodManager)
+      if (isAdmin || isNeighborhoodManager || isBlockManager)
         CategoryCard(
           title: "الأحياء السكنية",
           imagePath: AppImage.homeresidential,
           backgroundColor: const Color(0xFFEFA98D),
           onTap: () => context.read<NavigationCubit>().changePage(1),
         ),
-      if (isAdmin || isUnitManager)
+      if (isAdmin || isUnitManager || isNeighborhoodManager || isBlockManager)
         CategoryCard(
           title: locale.residentialUnits,
           imagePath: AppImage.homeresidential,
@@ -68,7 +68,7 @@ class _HomeCategoryCardListWidgetState
             Navigator.pushNamed(context, AppRoute.residentialUnits);
           },
         ),
-      if (isAdmin || isBlockManager)
+      if (isAdmin || isBlockManager || isUnitManager || isNeighborhoodManager)
         CategoryCard(
           title: 'المربعات السكنية',
           imagePath: AppImage.homeresidential,
