@@ -14,6 +14,8 @@ import 'package:smart_negborhood_app/core/extensions/context_extension.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_cubit.dart';
 import 'package:smart_negborhood_app/features/families/cubits/family_cubit/family_state.dart';
 import 'package:smart_negborhood_app/features/families/data/models/family_member.dart';
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 
 class ResidentialBlockFamilyMembersView extends StatefulWidget {
   const ResidentialBlockFamilyMembersView({super.key});
@@ -46,6 +48,10 @@ class _ResidentialBlockFamilyMembersViewState
   @override
   Widget build(BuildContext context) {
     final locale = context.locale;
+    final profileRole = SharedPreferencesService.getProfile()?.role;
+    final isNeighborhoodManager =
+        profileRole?.toLowerCase() ==
+        AppRoles.residentialNeighborhoodManager.name.toLowerCase();
     final int crossAxisCount = context.screenSize.width > 600 ? 3 : 2;
     return BlocBuilder<FamilyCubit, FamilyState>(
       buildWhen: (previous, current) =>
@@ -82,23 +88,25 @@ class _ResidentialBlockFamilyMembersViewState
                 children: [
                   Row(
                     children: [
-                      SmallButton(
-                        text: locale.add,
-                        onPressed: () {
-                          // _familyCubit.selectedFamilyHead = selectedFamilyHead;
+                      if (!isNeighborhoodManager) ...[
+                        SmallButton(
+                          text: locale.add,
+                          onPressed: () {
+                            // _familyCubit.selectedFamilyHead = selectedFamilyHead;
 
-                          Navigator.pushNamed(
-                            context,
-                            AppRoute.addFamilyMember,
-                            arguments: _familyCubit,
-                          ).then((_) {
-                            _familyCubit.getFamilyDetilesById(
-                              _familyCubit.familyId!,
-                            );
-                          });
-                        },
-                      ),
-                      SizedBox(height: 5),
+                            Navigator.pushNamed(
+                              context,
+                              AppRoute.addFamilyMember,
+                              arguments: _familyCubit,
+                            ).then((_) {
+                              _familyCubit.getFamilyDetilesById(
+                                _familyCubit.familyId!,
+                              );
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 5),
+                      ],
                       Expanded(
                         child: SearchableTextFormField(
                           controller: _searchingController,
