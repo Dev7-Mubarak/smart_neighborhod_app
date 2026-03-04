@@ -125,7 +125,10 @@ class _AllConflictState extends State<AllConflict> {
                                   final profile =
                                       SharedPreferencesService.getProfile();
                                   if (profile?.role?.toLowerCase() ==
-                                      AppRoles.admin.name.toLowerCase()) {
+                                          AppRoles.admin.name.toLowerCase() ||
+                                      profile?.role?.toLowerCase() ==
+                                          AppRoles.unitManager.name
+                                              .toLowerCase()) {
                                     _showOptions(context, e);
                                   }
                                 },
@@ -248,7 +251,9 @@ class _AllConflictState extends State<AllConflict> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        if (_profile.role?.toLowerCase() == AppRoles.admin.name.toLowerCase())
+        if (_profile.role?.toLowerCase() == AppRoles.admin.name.toLowerCase() ||
+            _profile.role?.toLowerCase() ==
+                AppRoles.unitManager.name.toLowerCase())
           SmallButton(
             text: 'إضافة إتفاقية',
             onPressed: () {
