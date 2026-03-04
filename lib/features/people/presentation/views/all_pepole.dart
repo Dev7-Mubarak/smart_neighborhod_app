@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
+import 'package:smart_negborhood_app/core/services/shared_preferences_service.dart';
 import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_route.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
@@ -23,12 +25,20 @@ class _AllPeopleState extends State<AllPeople> {
   late TextEditingController _searchingController;
   late ScrollController _scrollController;
   Timer? _delay;
+  bool isNeighborhoodManager = false;
+  bool isBlockManager = false;
 
   @override
   void initState() {
     _personCubit = context.read<PersonCubit>()..getPeople();
     _searchingController = TextEditingController();
     _scrollController = ScrollController();
+    final role = SharedPreferencesService.getProfile()?.role;
+    isNeighborhoodManager =
+        role?.toLowerCase() ==
+        AppRoles.residentialNeighborhoodManager.name.toLowerCase();
+    isBlockManager =
+        role?.toLowerCase() == AppRoles.blockManager.name.toLowerCase();
 
     _setListener();
     super.initState();
@@ -136,9 +146,11 @@ class _AllPeopleState extends State<AllPeople> {
                           child: Icon(Icons.person, color: Colors.white),
                         ),
                   title: Text(person.fullName),
-                  onLongPress: () {
-                    _showOptions(context, person);
-                  },
+                  onLongPress: isNeighborhoodManager
+                      ? null
+                      : () {
+                          _showOptions(context, person);
+                        },
                 );
               },
             );
@@ -155,18 +167,20 @@ class _AllPeopleState extends State<AllPeople> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          SmallButton(
-            text: 'أضافة',
-            onPressed: () {
-              BlocProvider.of<PersonCubit>(context).person = null;
-              Navigator.pushNamed(
-                context,
-                AppRoute.addUpdatePerson,
-                arguments: BlocProvider.of<PersonCubit>(context),
-              );
-            },
-          ),
-          const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+          if (!isNeighborhoodManager && !isBlockManager) ...[
+            SmallButton(
+              text: 'أضافة',
+              onPressed: () {
+                BlocProvider.of<PersonCubit>(context).person = null;
+                Navigator.pushNamed(
+                  context,
+                  AppRoute.addUpdatePerson,
+                  arguments: BlocProvider.of<PersonCubit>(context),
+                );
+              },
+            ),
+            const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
+          ],
           Expanded(
             child: SearchableTextFormField(
               controller: _searchingController,
