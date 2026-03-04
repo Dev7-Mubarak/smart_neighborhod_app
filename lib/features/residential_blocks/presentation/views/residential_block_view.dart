@@ -118,7 +118,11 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (_profileModel?.role!.toLowerCase() ==
-              AppRoles.admin.name.toLowerCase())
+                  AppRoles.admin.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.unitManager.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.residentialNeighborhoodManager.name.toLowerCase())
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -130,7 +134,11 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
               },
             ),
           if (_profileModel?.role!.toLowerCase() ==
-              AppRoles.admin.name.toLowerCase())
+                  AppRoles.admin.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.unitManager.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.residentialNeighborhoodManager.name.toLowerCase())
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
@@ -228,7 +236,14 @@ class _ResidentialBlockViewState extends State<ResidentialBlockView> {
                             },
                             onLongPress: () {
                               if (_profileModel?.role!.toLowerCase() ==
-                                  AppRoles.admin.name.toLowerCase()) {
+                                      AppRoles.admin.name.toLowerCase() ||
+                                  _profileModel?.role!.toLowerCase() ==
+                                      AppRoles.unitManager.name.toLowerCase() ||
+                                  _profileModel?.role!.toLowerCase() ==
+                                      AppRoles
+                                          .residentialNeighborhoodManager
+                                          .name
+                                          .toLowerCase()) {
                                 context.showBottomSheet(
                                   BlockOptionsSheet(
                                     block: block,
