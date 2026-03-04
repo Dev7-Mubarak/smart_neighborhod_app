@@ -35,8 +35,9 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
   late final ProfileModel? _profileModel;
 
   void reset() {
-    if (_profileModel?.role!.toLowerCase() ==
-        AppRoles.unitManager.name.toLowerCase()) {
+    final role = _profileModel?.role?.toLowerCase();
+    if (role == AppRoles.unitManager.name.toLowerCase() ||
+        role == AppRoles.blockManager.name.toLowerCase()) {
       _unitsCubit.getResidentialUnitsMeDashboard();
     } else {
       _unitsCubit.getResidentialUnitsDashboard();
@@ -176,7 +177,9 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
                           },
                           onLongPress: () {
                             if (_profileModel?.role!.toLowerCase() ==
-                                AppRoles.admin.name.toLowerCase()) {
+                                    AppRoles.admin.name.toLowerCase() ||
+                                _profileModel?.role!.toLowerCase() ==
+                                    AppRoles.unitManager.name.toLowerCase()) {
                               _showOptions(unit, locale);
                             }
                           },
@@ -207,7 +210,9 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (_profileModel?.role!.toLowerCase() ==
-              AppRoles.admin.name.toLowerCase())
+                  AppRoles.admin.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.unitManager.name.toLowerCase())
             SmallButton(
               text: locale.add,
               onPressed: () {
@@ -219,7 +224,9 @@ class _ResidentialUnitViewState extends State<ResidentialUnitView> {
               },
             ),
           if (_profileModel?.role!.toLowerCase() ==
-              AppRoles.admin.name.toLowerCase())
+                  AppRoles.admin.name.toLowerCase() ||
+              _profileModel?.role!.toLowerCase() ==
+                  AppRoles.unitManager.name.toLowerCase())
             const SizedBox(width: AppSize.spasingBetweenInputsAndLabale),
           Expanded(
             child: SearchableTextFormField(
