@@ -268,42 +268,6 @@ class ResidentialBlocksCubit extends Cubit<ResidentialBlocksState> {
     }
   }
 
-  Future<void> deleteBlock(int id) async {
-    emit(WaitingForUpdateOrAddResidentialBlock());
-    try {
-      final response = await api.delete(
-        '${ApiLink.deleteResidentialBlock}/$id',
-      );
-      if (response["isSuccess"]) {
-        emit(
-          ResidentialBlockDeletedSuccessfully(
-            message:
-                response["data"]?.toString() ??
-                response["message"] ??
-                "Deleted",
-          ),
-        );
-        await getResidentialBlocksDashboard();
-      } else {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: response["statusCode"] ?? 400,
-            errorMessage: response["message"] ?? "Unknown",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
-      }
-    } on Serverexception catch (e) {
-      emit(
-        FailureForUpdateOrAddResidentialBlock(
-          errorMessage: e.errModel.errorMessage,
-        ),
-      );
-    } catch (e) {
-      emit(FailureForUpdateOrAddResidentialBlock(errorMessage: e.toString()));
-    }
-  }
-
   Future<void> getBlockFamilies(int id) async {
     blockId = id;
     emit(ResidentialBlockFamiliesLoading());
