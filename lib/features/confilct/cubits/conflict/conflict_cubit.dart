@@ -30,7 +30,25 @@ class ConflictCubit extends Cubit<ConflictState> {
         ApiLink.getAllConflict,
         treat404AsEmptyList: true,
       );
-      List<dynamic> conflictsJson = response["data"];
+      final dynamic respData = response["data"];
+      List<dynamic> conflictsJson = [];
+      if (respData == null) {
+        conflictsJson = [];
+      } else if (respData is List) {
+        conflictsJson = respData;
+      } else if (respData is Map) {
+    
+        if (respData.containsKey('items') && respData['items'] is List) {
+          conflictsJson = respData['items'];
+        } else if (respData.containsKey('data') && respData['data'] is List) {
+          conflictsJson = respData['data'];
+        } else {
+          conflictsJson = [respData];
+        }
+      } else {
+        conflictsJson = [];
+      }
+
       _allconflicts = conflictsJson.map((e) => Conflict.fromJson(e)).toList();
 
       if (search != null && search.isNotEmpty) {
