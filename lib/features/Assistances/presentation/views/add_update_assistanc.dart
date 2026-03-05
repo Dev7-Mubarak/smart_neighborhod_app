@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
+import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
+import 'package:smart_negborhood_app/core/common/enums/occupation_status.dart';
 import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
@@ -228,18 +231,51 @@ class AddUpdateAssistancState extends State<AddUpdateAssistanc> {
                                 );
                               }
                               Person? initialSelectedPerson;
-                              if (_selectedPerson != null) {
+                              if (assistanceCubit.selectedManagerId != null) {
                                 final matches = state.people
                                     .where(
-                                      (person) => person.id == _selectedPerson,
+                                      (person) =>
+                                          person.id ==
+                                          assistanceCubit.selectedManagerId,
                                     )
                                     .toList();
                                 if (matches.isNotEmpty) {
                                   initialSelectedPerson = matches.first;
+                                } else if (widget.assistancProject != null) {
+                                  // Fallback dummy Person to show the manager even if not inside the default loaded people
+                                  initialSelectedPerson = Person(
+                                    id: widget.assistancProject!.manager.id,
+                                    fullNameOneString: widget
+                                        .assistancProject!
+                                        .manager
+                                        .fullName,
+                                    firstName: '',
+                                    secondName: '',
+                                    thirdName: '',
+                                    lastName: '',
+                                    phoneNumber: '',
+                                    dateOfBirth: DateTime.now(),
+                                    gender: null,
+                                    bloodType: BloodType.oPositive,
+                                    occupationStatus: OccupationStatus.employee,
+                                    maritalStatus: MaritalStatus.single,
+                                  );
                                 }
                               }
+
+                              // Ensure the initialSelectedPerson is somewhat included in items if it's the fallback
+                              List<Person> dropdownItems = List.from(
+                                state.people,
+                              );
+                              if (initialSelectedPerson != null &&
+                                  !dropdownItems.any(
+                                    (p) => p.id == initialSelectedPerson!.id,
+                                  )) {
+                                dropdownItems.add(initialSelectedPerson);
+                              }
+
                               return CustomDropdownSearchWidget<Person>(
-                                items: state.people,
+                                items: dropdownItems,
                                 itemAsString: (Person? u) => u?.fullName ?? '',
                                 onChanged: (Person? data) {
                                   assistanceCubit.changeSelectedManager(
