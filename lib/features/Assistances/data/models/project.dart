@@ -38,10 +38,40 @@ class Project {
       projectStatus: _projectStatusFromString(json["projectStatus"]),
       projectPriority: _projectPriorityFromString(json["projectPriority"]),
       budget: json["budget"] ?? 0,
-      manager: Manager.fromJson(json["manager"] ?? {}),
+      manager: _extractManager(json),
       projectCategory: ProjectCategory.fromJson(json["projectCatgory"] ?? {}),
     );
   }
+
+  static Manager _extractManager(Map<String, dynamic> json) {
+    int managerId = json["managerId"] ?? 0;
+    String managerName = "";
+
+    if (json["manager"] != null && json["manager"] is Map<String, dynamic>) {
+      final managerJson = json["manager"];
+      managerId = managerJson["id"] ?? managerId;
+
+      // Handle the case where the backend returns a Person object instead of a direct fullName
+      final firstName = managerJson['firstName'] as String? ?? '';
+      final lastName = managerJson['lastName'] as String? ?? '';
+      final fullName =
+          managerJson['fullName'] as String? ??
+          managerJson['name'] as String? ??
+          '';
+
+      if (fullName.isNotEmpty) {
+        managerName = fullName;
+      } else if (firstName.isNotEmpty || lastName.isNotEmpty) {
+        managerName = '$firstName $lastName'.trim();
+      }
+    }
+
+    return Manager(
+      id: managerId,
+      fullName: managerName.isEmpty ? "غير محدد" : managerName,
+    );
+  }
+
   static ProjectStatus _projectStatusFromString(String value) {
     try {
       return ProjectStatusExtension.fromDisplayName(value);
