@@ -1,7 +1,8 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/CustomDropdown.dart';
+import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
+import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/constants/small_text.dart';
@@ -196,16 +197,7 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                       );
                     }
 
-                    final people = personCubit.people
-                        .where(
-                          (e) =>
-                              e.lastName ==
-                              familyCubit.selectedFamilyHead?.lastName,
-                        )
-                        .toList();
-                    print(
-                      "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${familyCubit.selectedFamilyHead?.lastName}",
-                    );
+                    final people = personCubit.people;
 
                     if (people.isEmpty) {
                       return Container(
@@ -237,18 +229,13 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                         ),
                       );
                     }
-                    return DropdownSearch<Person>(
+                    return CustomDropdownSearchWidget<Person>(
                       items: people,
                       selectedItem: selectedPerson,
-                      itemAsString: (person) => person.fullName,
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'اختر شخص من القائمة',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
+                      itemAsString: (person) => person?.fullName ?? '',
+                      labelText: 'اختر شخص من القائمة',
+                      hintText: 'اختر شخص من القائمة',
+                      searchHintText: 'ابحث عن شخص',
                       validator: (value) =>
                           value == null ? 'يرجى اختيار شخص' : null,
                       onChanged: (person) {
@@ -257,12 +244,6 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                           selectedPersonName = person?.fullName;
                         });
                       },
-                      popupProps: const PopupProps.menu(
-                        showSearchBox: true,
-                        searchFieldProps: TextFieldProps(
-                          decoration: InputDecoration(labelText: 'بحث'),
-                        ),
-                      ),
                     );
                   },
                 ),
