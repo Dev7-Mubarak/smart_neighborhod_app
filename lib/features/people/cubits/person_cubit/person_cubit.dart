@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:smart_negborhood_app/core/services/errors/errormodel.dart';
@@ -123,7 +124,7 @@ class PersonCubit extends Cubit<PersonState> {
         "ThirdName": thirdName,
         "LastName": lastName,
         "PhoneNumber": phoneNumber,
-        "DateOfBirth": selectedDate,
+        "DateOfBirth": selectedDate?.toIso8601String(),
         "Gender": selectedGender,
 
         "BloodType": selectedBloodType?.toString().split('.').last,
@@ -187,43 +188,69 @@ class PersonCubit extends Cubit<PersonState> {
   }) async {
     emit(WaitingForUpdateOrAddPerson());
     try {
+      final Map<String, dynamic> requestData = {
+        "FirstName": firstName,
+        "SecondName": secondName,
+        "ThirdName": thirdName,
+        "LastName": lastName,
+        "PhoneNumber": phoneNumber,
+        "DateOfBirth": selectedDate?.toIso8601String(),
+        "Gender": selectedGender,
+
+        "BloodType": selectedBloodType?.toString().split('.').last,
+        "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
+        "OccupationStatus": selectedOccupationStatus
+            ?.toString()
+            .split('.')
+            .last,
+        "Job": job,
+        "NationalId": nationalId,
+        "VehicleType": selectedVehicleType?.toString().split('.').last,
+        "VehicleRegistrationNumber": vehicleRegistrationNumber,
+        "ResidencyStatus": selectedResidencyStatus?.toString().split('.').last,
+        "HasChronicDiseases": hasChronicDiseases,
+        "ChronicDiseasesNotes": chronicDiseasesNotes,
+        if (profilePicture != null)
+          "Image": await MultipartFile.fromFile(
+            profilePicture!.path,
+            filename: profilePicture!.name,
+          ),
+      };
+
+      print("Update Request Data: $requestData");
+
       final response = await api.update(
         '${ApiLink.updatePerson}/$id',
         isFromData: true,
-        data: {
-          "FirstName": firstName,
-          "SecondName": secondName,
-          "ThirdName": thirdName,
-          "LastName": lastName,
-          "PhoneNumber": phoneNumber,
-          "DateOfBirth": selectedDate?.toIso8601String(),
-          "Gender": selectedGender,
-
-          "BloodType": selectedBloodType?.toString().split('.').last,
-          "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
-          "OccupationStatus": selectedOccupationStatus
-              ?.toString()
-              .split('.')
-              .last,
-          "Job": job,
-          "NationalId": nationalId,
-          "VehicleType": selectedVehicleType?.toString().split('.').last,
-          "VehicleRegistrationNumber": vehicleRegistrationNumber,
-          "ResidencyStatus": selectedResidencyStatus
-              ?.toString()
-              .split('.')
-              .last,
-          "HasChronicDiseases": hasChronicDiseases,
-          "ChronicDiseasesNotes": chronicDiseasesNotes,
-          if (profilePicture != null)
-            "Image": await MultipartFile.fromFile(
-              profilePicture!.path,
-              filename: profilePicture!.name,
-            ),
-        },
+        data: requestData,
       );
 
+      print("Update Response: $response");
+
+      // Try to extract updated person data from response and update local state
+      dynamic raw = response["data"];
+      Map<String, dynamic>? updatedPersonMap;
+      if (raw != null) {
+        if (raw is String) {
+          try {
+            final decoded = jsonDecode(raw);
+            if (decoded is Map<String, dynamic>) updatedPersonMap = decoded;
+          } catch (_) {}
+        } else if (raw is Map<String, dynamic>) {
+          updatedPersonMap = raw;
+        }
+      }
+
       if (response["isSuccess"]) {
+        // If API returned the updated person object, update the cubit's `person`.
+        if (updatedPersonMap != null) {
+          try {
+            person = Person.fromJson(updatedPersonMap);
+          } catch (_) {
+            // ignore parse errors; still proceed
+          }
+        }
+
         emit(PersonUpdatedSuccessfully(message: response["message"]));
         _resetPeopleList();
         await getPeople();
@@ -251,6 +278,53 @@ class PersonCubit extends Cubit<PersonState> {
       emit(PersonDeletedFailure(errorMessage: e.errModel.errorMessage));
     } catch (e) {
       emit(PersonDeletedFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<bool> fetchPersonById(int id) async {
+    emit(PersonLoading(isFirstFetch: false));
+    try {
+      final response = await api.get('${ApiLink.getPersonById}/$id');
+
+      dynamic raw = response["data"];
+      Map<String, dynamic>? personMap;
+      if (raw != null) {
+        if (raw is String) {
+          try {
+            final decoded = jsonDecode(raw);
+            if (decoded is Map<String, dynamic>) personMap = decoded;
+          } catch (_) {}
+        } else if (raw is Map<String, dynamic>) {
+          personMap = raw;
+        } else if (raw is List && raw.isNotEmpty) {
+          final first = raw.first;
+          if (first is Map<String, dynamic>) personMap = first;
+        }
+      }
+
+      if (personMap != null) {
+        person = Person.fromJson(personMap);
+        // initialize selection fields for edit screen
+        setPersonForUpdate(person!);
+        emit(PersonLoaded(people: people));
+        return true;
+      }
+
+      throw Serverexception(
+        errModel: ErrorModel(
+          statusCode: 404,
+          errorMessage: 'Person not found',
+          isSuccess: false,
+        ),
+      );
+    } on Serverexception catch (e) {
+      emit(PersonFailure(errorMessage: e.errModel.errorMessage));
+      return false;
+    } catch (e, st) {
+      print('fetchPersonById error: $e');
+      print(st);
+      emit(PersonFailure(errorMessage: e.toString()));
+      return false;
     }
   }
 
@@ -308,7 +382,6 @@ class PersonCubit extends Cubit<PersonState> {
     this.selectedOccupationStatus = selectedOccupationStatus;
     emit(ChangeSelectedOccupationStatus());
   }
-
 
   void toggleHasChronicDiseases() {
     hasChronicDiseases = !hasChronicDiseases;
