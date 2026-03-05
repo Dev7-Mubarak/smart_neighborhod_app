@@ -40,7 +40,24 @@ class AssistancesCubit extends Cubit<AssistancesState> {
         '${ApiLink.getAllProjects}?projectCategoryId=4',
         treat404AsEmptyList: true,
       );
-      List<dynamic> projectsJson = response["data"];
+      final dynamic respData = response["data"];
+      List<dynamic> projectsJson = [];
+      if (respData == null) {
+        projectsJson = [];
+      } else if (respData is List) {
+        projectsJson = respData;
+      } else if (respData is Map) {
+        if (respData.containsKey('items') && respData['items'] is List) {
+          projectsJson = respData['items'];
+        } else if (respData.containsKey('data') && respData['data'] is List) {
+          projectsJson = respData['data'];
+        } else {
+          projectsJson = [respData];
+        }
+      } else {
+        projectsJson = [];
+      }
+
       _allProjects = projectsJson.map((e) => Project.fromJson(e)).toList();
 
       if (search != null && search.isNotEmpty) {
