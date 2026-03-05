@@ -49,11 +49,6 @@ class ResidentialBlockUpdatedSuccessfully extends ResidentialBlocksState {
   ResidentialBlockUpdatedSuccessfully({required this.message});
 }
 
-class ResidentialBlockDeletedSuccessfully extends ResidentialBlocksState {
-  final String message;
-  ResidentialBlockDeletedSuccessfully({required this.message});
-}
-
 class FailureForUpdateOrAddResidentialBlock extends ResidentialBlocksState {
   final String errorMessage;
   FailureForUpdateOrAddResidentialBlock({required this.errorMessage});
