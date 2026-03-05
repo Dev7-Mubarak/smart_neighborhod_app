@@ -72,21 +72,7 @@ class BlockOptionsSheet extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.delete),
-            label: Text(locale.delete),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.white,
-              foregroundColor: Colors.red,
-            ),
-            onPressed: () async {
-              final confirmed = await context.showAlertDialog();
-              if (confirmed == true) {
-                Navigator.pop(context);
-                cubit.deleteBlock(block.id);
-              }
-            },
-          ),
+          // Delete option removed
         ],
       ),
     );
