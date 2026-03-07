@@ -13,6 +13,8 @@ class StatisticsFailure extends StatisticsState {
   StatisticsFailure({required this.errorMessage});
 }
 
+class StatisticsEmpty extends StatisticsState {}
+
 class StatisticsLoaded extends StatisticsState {
   final StatisticsModel statisticsModel;
   StatisticsLoaded({required this.statisticsModel});

@@ -41,14 +41,32 @@ void handleDioExceptions(DioException error) {
         case 409:
         case 422:
         case 504:
-          throw Serverexception(
-            errModel: ErrorModel.fromJson(error.response!.data),
-          );
+          Map<String, dynamic> errData = {};
+          if (error.response?.data is Map<String, dynamic>) {
+            errData = error.response!.data;
+          } else if (error.response?.data is String) {
+            errData = {
+              "statusCode": error.response?.statusCode,
+              "message": error.response!.data,
+              "isSuccess": false,
+            };
+          } else {
+            errData = {
+              "statusCode": error.response?.statusCode,
+              "message": error.response?.statusMessage ?? 'خطأ غير معروف',
+              "isSuccess": false,
+            };
+          }
+
+          // Ensure statusCode is in the data so ErrorModel.fromJson doesn't crash on null
+          errData["statusCode"] ??= error.response?.statusCode ?? 500;
+
+          throw Serverexception(errModel: ErrorModel.fromJson(errData));
         default:
           throw Serverexception(
             errModel: ErrorModel(
               errorMessage: 'حدث خطأ من الخادم، يرجى المحاولة لاحقاً',
-              statusCode: 500,
+              statusCode: error.response?.statusCode ?? 500,
               isSuccess: false,
             ),
           );

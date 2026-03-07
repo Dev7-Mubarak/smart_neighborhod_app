@@ -20,8 +20,14 @@ class ErrorModel {
       finalErrorMessage = jsonData["message"] ?? "خطأ غير معروف حدث.";
     }
 
+    num getStatusCode(dynamic value) {
+      if (value is num) return value;
+      if (value is String) return num.tryParse(value) ?? 500;
+      return 500;
+    }
+
     return ErrorModel(
-      statusCode: jsonData["statusCode"] as num,
+      statusCode: getStatusCode(jsonData["statusCode"]),
       errorMessage: finalErrorMessage,
       isSuccess: successStatus,
     );
