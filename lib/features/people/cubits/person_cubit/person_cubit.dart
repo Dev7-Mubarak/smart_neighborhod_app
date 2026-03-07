@@ -126,7 +126,6 @@ class PersonCubit extends Cubit<PersonState> {
         "PhoneNumber": phoneNumber,
         "DateOfBirth": selectedDate?.toIso8601String(),
         "Gender": selectedGender,
-
         "BloodType": selectedBloodType?.toString().split('.').last,
         "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
         "OccupationStatus": selectedOccupationStatus
@@ -138,15 +137,18 @@ class PersonCubit extends Cubit<PersonState> {
         "VehicleType": selectedVehicleType?.toString().split('.').last,
         "VehicleRegistrationNumber": vehicleRegistrationNumber,
         "ResidencyStatus": selectedResidencyStatus?.toString().split('.').last,
-        "HasChronicDiseases": hasChronicDiseases,
+        "HasChronicDiseases": hasChronicDiseases.toString(),
         "ChronicDiseasesNotes": chronicDiseasesNotes,
-        "Image": profilePicture != null
-            ? await MultipartFile.fromFile(
-                profilePicture!.path,
-                filename: profilePicture!.name,
-              )
-            : null,
+        if (profilePicture != null)
+          "Image": await MultipartFile.fromFile(
+            profilePicture!.path,
+            filename: profilePicture!.name,
+          ),
       };
+
+      // Remove null entries – FormData.fromMap sends them as "null" strings
+      // which causes C# model binding to fail.
+      requestData.removeWhere((key, value) => value == null);
 
       print("Request Data: $requestData");
 
@@ -196,7 +198,6 @@ class PersonCubit extends Cubit<PersonState> {
         "PhoneNumber": phoneNumber,
         "DateOfBirth": selectedDate?.toIso8601String(),
         "Gender": selectedGender,
-
         "BloodType": selectedBloodType?.toString().split('.').last,
         "MaritalStatus": selectedMaritalStatus?.toString().split('.').last,
         "OccupationStatus": selectedOccupationStatus
@@ -208,7 +209,7 @@ class PersonCubit extends Cubit<PersonState> {
         "VehicleType": selectedVehicleType?.toString().split('.').last,
         "VehicleRegistrationNumber": vehicleRegistrationNumber,
         "ResidencyStatus": selectedResidencyStatus?.toString().split('.').last,
-        "HasChronicDiseases": hasChronicDiseases,
+        "HasChronicDiseases": hasChronicDiseases.toString(),
         "ChronicDiseasesNotes": chronicDiseasesNotes,
         if (profilePicture != null)
           "Image": await MultipartFile.fromFile(
@@ -216,6 +217,9 @@ class PersonCubit extends Cubit<PersonState> {
             filename: profilePicture!.name,
           ),
       };
+
+
+      requestData.removeWhere((key, value) => value == null);
 
       print("Update Request Data: $requestData");
 
@@ -227,7 +231,6 @@ class PersonCubit extends Cubit<PersonState> {
 
       print("Update Response: $response");
 
-      // Try to extract updated person data from response and update local state
       dynamic raw = response["data"];
       Map<String, dynamic>? updatedPersonMap;
       if (raw != null) {
@@ -242,7 +245,6 @@ class PersonCubit extends Cubit<PersonState> {
       }
 
       if (response["isSuccess"]) {
-        // If API returned the updated person object, update the cubit's `person`.
         if (updatedPersonMap != null) {
           try {
             person = Person.fromJson(updatedPersonMap);
