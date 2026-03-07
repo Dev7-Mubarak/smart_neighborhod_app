@@ -37,7 +37,6 @@ class ConflictCubit extends Cubit<ConflictState> {
       } else if (respData is List) {
         conflictsJson = respData;
       } else if (respData is Map) {
-    
         if (respData.containsKey('items') && respData['items'] is List) {
           conflictsJson = respData['items'];
         } else if (respData.containsKey('data') && respData['data'] is List) {
@@ -159,25 +158,29 @@ class ConflictCubit extends Cubit<ConflictState> {
       }
       final profile = SharedPreferencesService.getProfile();
       final idmanger = profile!.id;
+      final bool useFormData = conflictPicture != null;
+      final Map<String, dynamic> payload = {
+        "conflictTypeId": selectedConflictTypeId,
+        "managerId": idmanger,
+        "firstPartyId": selectedfirstPartId,
+        "secondPartyId": selectedSecondPartId,
+        "notes": notes,
+        "title": title,
+        "isResolved": isResolved ?? false,
+      };
+      if (sessionDate != null)
+        payload["sessionDate"] = sessionDate!.toIso8601String();
+      if (useFormData) {
+        payload["image"] = await MultipartFile.fromFile(
+          conflictPicture!.path,
+          filename: conflictPicture!.name,
+        );
+      }
+
       final response = await api.post(
         ApiLink.addConflict,
-        data: {
-          "conflictTypeId": selectedConflictTypeId,
-          "managerId": idmanger,
-          "firstPartyId": selectedfirstPartId,
-          "secondPartyId": selectedSecondPartId,
-          "notes": notes,
-          "image": conflictPicture != null
-              ? await MultipartFile.fromFile(
-                  conflictPicture!.path,
-                  filename: conflictPicture!.name,
-                )
-              : null,
-          "sessionDate": sessionDate,
-          "title": title,
-          "isResolved": isResolved ?? false,
-        },
-        isFromData: true,
+        data: payload,
+        isFromData: useFormData,
       );
       if (response["isSuccess"]) {
         emit(
@@ -229,25 +232,29 @@ class ConflictCubit extends Cubit<ConflictState> {
       }
       final profile = SharedPreferencesService.getProfile();
       final idmanger = profile!.id;
+      final bool useFormData = conflictPicture != null;
+      final Map<String, dynamic> payload = {
+        "title": title,
+        "conflictTypeId": selectedConflictTypeId,
+        "managerId": idmanger,
+        "firstPartyId": selectedfirstPartId,
+        "secondPartyId": selectedSecondPartId,
+        "notes": notes,
+        "isResolved": isResolved,
+      };
+      if (sessionDate != null)
+        payload["sessionDate"] = sessionDate!.toIso8601String();
+      if (useFormData) {
+        payload["image"] = await MultipartFile.fromFile(
+          conflictPicture!.path,
+          filename: conflictPicture!.name,
+        );
+      }
+
       final response = await api.update(
         '${ApiLink.updateConflict}/$id',
-        data: {
-          "title": title,
-          "conflictTypeId": selectedConflictTypeId,
-          "managerId": idmanger,
-          "firstPartyId": selectedfirstPartId,
-          "secondPartyId": selectedSecondPartId,
-          "notes": notes,
-          "image": conflictPicture != null
-              ? await MultipartFile.fromFile(
-                  conflictPicture!.path,
-                  filename: conflictPicture!.name,
-                )
-              : null,
-          "sessionDate": sessionDate,
-          "isResolved": isResolved,
-        },
-        isFromData: true,
+        data: payload,
+        isFromData: useFormData,
       );
       if (response["isSuccess"]) {
         emit(
