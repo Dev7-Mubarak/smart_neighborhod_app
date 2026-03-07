@@ -51,7 +51,7 @@ class ApiLink {
   }
 
   // Statistics
-  static const String getStatistics = '$server/stats';
+  static const String getStatistics = '$server/dashboard/stats';
 
   // Residential Blocks
   static const String getAllResidentialBlocksDashboard =

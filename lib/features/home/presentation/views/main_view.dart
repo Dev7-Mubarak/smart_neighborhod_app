@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/enums/app_role.dart';
@@ -9,6 +10,9 @@ import 'package:smart_negborhood_app/features/residential_neighborhoods/presenta
 import 'package:smart_negborhood_app/features/residential_units/presentation/views/residential_unit_view.dart';
 import '../../../../core/common/cubits/navigation_cubit.dart';
 import '../../../../core/common/widgets/custom_navigation_bar.dart';
+import '../../../../core/services/API/dio_consumer.dart';
+import '../../../residential_blocks/cubits/residential_blocks_cubit/residential_blocks_cubit.dart';
+import '../../../residential_units/cubits/residential_units_cubit/residential_units_cubit.dart';
 import '../../../settings/presentation/views/setteings_view.dart';
 
 class MainHome extends StatefulWidget {
@@ -30,10 +34,18 @@ class _MainHomeState extends State<MainHome> {
   Widget _getRoleBasedView() {
     if (_profile?.role!.toLowerCase() ==
         AppRoles.unitManager.name.toLowerCase()) {
-      return const ResidentialUnitView();
+      return BlocProvider(
+        create: (context) =>
+            ResidentialUnitsCubit(api: DioConsumer(dio: Dio())),
+        child: const ResidentialUnitView(),
+      );
     } else if (_profile?.role!.toLowerCase() ==
         AppRoles.blockManager.name.toLowerCase()) {
-      return const ResidentialBlockView();
+      return BlocProvider(
+        create: (context) =>
+            ResidentialBlocksCubit(api: DioConsumer(dio: Dio())),
+        child: const ResidentialBlockView(),
+      );
     }
     return const ResidentialNeighborhoodView();
   }

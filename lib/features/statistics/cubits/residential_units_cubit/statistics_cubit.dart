@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/features/statistics/data/models/statistics_model.dart';
 
@@ -17,26 +19,52 @@ class StatisticsCubit extends Cubit<StatisticsState> {
     emit(StatisticsLoading());
     try {
       final response = await api.get(ApiLink.getStatistics);
-      if (response["data"] == null) {
-        throw Serverexception(
-          errModel: ErrorModel(
-            statusCode: 400,
-            errorMessage: "No data received",
-            isSuccess: response["isSuccess"] ?? false,
-          ),
-        );
+      dynamic respData = response["data"];
+      if (respData == null) {
+        if (!isClosed) emit(StatisticsEmpty());
+        return;
       }
+
+      if (respData is String) {
+        try {
+          final decoded = jsonDecode(respData);
+          respData = decoded;
+        } catch (_) {
+          if (!isClosed) emit(StatisticsFailure(errorMessage: respData));
+          return;
+        }
+      }
+
+      if (respData is List && respData.isNotEmpty) {
+        final first = respData.first;
+        if (first is Map<String, dynamic>) {
+          respData = first;
+        }
+      }
+
+      if (respData is! Map<String, dynamic>) {
+        if (!isClosed)
+          emit(StatisticsFailure(errorMessage: 'Unexpected data format'));
+        return;
+      }
+
       if (!isClosed) {
         emit(
-          StatisticsLoaded(
-            statisticsModel: StatisticsModel.fromJson(response["data"]),
-          ),
+          StatisticsLoaded(statisticsModel: StatisticsModel.fromJson(respData)),
         );
       }
     } on Serverexception catch (e) {
-      emit(StatisticsFailure(errorMessage: e.errModel.errorMessage));
+      if (e.errModel.statusCode == 404) {
+        emit(StatisticsEmpty());
+      } else {
+        emit(StatisticsFailure(errorMessage: e.errModel.errorMessage));
+      }
     } catch (e) {
-      emit(StatisticsFailure(errorMessage: e.toString()));
+      if (e.toString().contains('404')) {
+        emit(StatisticsEmpty());
+      } else {
+        emit(StatisticsFailure(errorMessage: e.toString()));
+      }
     }
   }
 

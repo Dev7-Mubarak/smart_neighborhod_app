@@ -92,6 +92,19 @@ class _StatisticsViewState extends State<StatisticsView> {
               _statisticsCubit.getStatistics();
             },
           );
+        } else if (state is StatisticsEmpty) {
+          return Expanded(
+            child: Center(
+              child: Text(
+                'لاتوجد احصائيات',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+          );
         } else if (state is StatisticsLoaded) {
           return Expanded(
             child: SingleChildScrollView(

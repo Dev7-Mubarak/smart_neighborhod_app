@@ -8,19 +8,25 @@ class StatisticsModel {
   late Health health;
   late Housing housing;
 
+  // Accepts JSON with either camelCase keys (from JS-style serialization)
+  // or PascalCase keys (as produced by some C# serializers).
   StatisticsModel.fromJson(Map<String, dynamic> json) {
-    socialAndFamily = SocialAndFamily.fromJson(json['socialAndFamily'] ?? {});
-    agreements = Agreements.fromJson(json['agreements'] ?? {});
-    projects = Projects.fromJson(json['projects'] ?? {});
-    teams = Teams.fromJson(json['teams'] ?? {});
+    socialAndFamily = SocialAndFamily.fromJson(
+      json['socialAndFamily'] ?? json['SocialAndFamily'] ?? {},
+    );
+    agreements = Agreements.fromJson(
+      json['agreements'] ?? json['Agreements'] ?? {},
+    );
+    projects = Projects.fromJson(json['projects'] ?? json['Projects'] ?? {});
+    teams = Teams.fromJson(json['teams'] ?? json['Teams'] ?? {});
     populationStatus = PopulationStatus.fromJson(
-      json['populationStatus'] ?? {},
+      json['populationStatus'] ?? json['PopulationStatus'] ?? {},
     );
     incomeCategories = IncomeCategories.fromJson(
-      json['incomeCategories'] ?? {},
+      json['incomeCategories'] ?? json['IncomeCategories'] ?? {},
     );
-    health = Health.fromJson(json['health'] ?? {});
-    housing = Housing.fromJson(json['housing'] ?? {});
+    health = Health.fromJson(json['health'] ?? json['Health'] ?? {});
+    housing = Housing.fromJson(json['housing'] ?? json['Housing'] ?? {});
   }
 }
 
