@@ -1,6 +1,6 @@
 class ApiLink {
   // Base
-  static const String server = 'https://neibourhood.runasp.net/api';
+  static const String server = 'https://smartneighboorhood.runasp.net//api';
 
   // Auth
   static const String login = '$server/auth/login';
