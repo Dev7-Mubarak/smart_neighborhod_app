@@ -119,6 +119,8 @@ class _ResidentialBlockFamiliesViewState
                                 _residentialBlocksCubit.getBlockFamilies(
                                   _residentialBlocksCubit.blockId,
                                 );
+                                _residentialBlocksCubit
+                                    .getResidentialBlocksDashboard();
                               });
                             },
                           ),
