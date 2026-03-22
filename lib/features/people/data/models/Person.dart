@@ -86,7 +86,7 @@ class Person {
       bloodType: _bloodTypeFromString(json['bloodType']),
       occupationStatus: _occupationStatusFromString(json['occupationStatus']),
       maritalStatus: _maritalStatusFromString(json['maritalStatus']),
-      job: json['job'] as String? ?? "",
+      job: json['job'],
       nationalId: json['nationalId'] as String?,
       vehicleType: _vehicleTypeFromString(json['vehicleType']),
       vehicleRegistrationNumber: json['vehicleRegistrationNumber'] as String?,

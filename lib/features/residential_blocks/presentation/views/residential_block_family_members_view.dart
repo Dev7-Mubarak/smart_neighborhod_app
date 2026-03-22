@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:smart_negborhood_app/core/common/enums/blood_type.dart';
+import 'package:smart_negborhood_app/core/common/enums/gender.dart';
 import 'package:smart_negborhood_app/core/common/enums/marital_status.dart';
 import 'package:smart_negborhood_app/core/common/widgets/no_result_widget.dart';
 import 'package:smart_negborhood_app/core/common/widgets/on_failure_widget.dart';
@@ -185,9 +186,8 @@ class MemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 220,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+    return SizedBox(
+      width: double.infinity,
       child: Card(
         color: Colors.white,
         elevation: 6,
@@ -210,7 +210,7 @@ class MemberCard extends StatelessWidget {
                         ),
                       )
                     : Icon(
-                        familyMember.person.gender == "Female"
+                        familyMember.person.gender == Gender.Female
                             ? Icons.woman
                             : Icons.man,
                         size: 36,
@@ -232,14 +232,15 @@ class MemberCard extends StatelessWidget {
               infoRow('رقم الجوال', familyMember.person.phoneNumber),
               infoRow(
                 'الجنس',
-                familyMember.person.gender == "Female" ? "أنثى" : "ذكر",
+                familyMember.person.gender == Gender.Male ? 'ذكر' : 'أنثى',
               ),
+              infoRow('المهنة', familyMember.person.job),
+
               infoRow('فصيلة الدم', familyMember.person.bloodType.arabicName),
               infoRow(
                 'الحالة الاجتماعية',
                 familyMember.person.maritalStatus.arabicName,
               ),
-              infoRow('المهنة', familyMember.person.job ?? 'غير محدد'),
               const SizedBox(height: 8),
             ],
           ),
@@ -269,7 +270,7 @@ class MemberCard extends StatelessWidget {
             ),
           ),
           Text(
-            value ?? '-',
+            value ?? 'لا يوجد',
             style: const TextStyle(color: Colors.black54, fontSize: 12),
             textAlign: TextAlign.right,
             overflow: TextOverflow.ellipsis,

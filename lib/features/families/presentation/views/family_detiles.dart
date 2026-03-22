@@ -490,12 +490,6 @@ class MemberCard extends StatelessWidget {
                     label: const Text('تغيير دور فرد الأسرة'),
                     onPressed: () {
                       Navigator.pop(context);
-                      // Navigate to change role screen or show dialog
-                      // Navigator.pushNamed(
-                      //   context,
-                      //   AppRoute.changeFamilyMemberRole,
-                      //   arguments: familyMember,
-                      // );
                     },
                   ),
                 ],
@@ -563,7 +557,13 @@ class MemberCard extends StatelessWidget {
                   'الحالة الاجتماعية',
                   familyMember.person.maritalStatus.arabicName,
                 ),
-                infoRow('المهنة', familyMember.person.job ?? 'غير محدد'),
+                infoRow(
+                  'المهنة',
+                  familyMember.person.job == null ||
+                          familyMember.person.job!.isEmpty
+                      ? 'غير محدد'
+                      : familyMember.person.job!,
+                ),
                 const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
