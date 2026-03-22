@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -24,29 +25,17 @@ class CategoryCard extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(15),
         ),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Positioned(
-              right: 0,
-              top: 10,
-              child: Image.asset(
-                imagePath,
-                width: 80,
-                height: 80,
-                fit: BoxFit.contain,
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 10,
-              child: Text(
-                title,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+            Image.asset(imagePath, width: 80, height: 80, fit: BoxFit.contain),
+            AutoSizeText(
+              title,
+              maxLines: 1,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
