@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_negborhood_app/core/common/widgets/CustomDropdown.dart';
 import 'package:smart_negborhood_app/core/common/widgets/DropdownSearch.dart';
-import 'package:smart_negborhood_app/core/utils/app_validator.dart';
 import 'package:smart_negborhood_app/core/constants/app_color.dart';
 import 'package:smart_negborhood_app/core/constants/app_size.dart';
 import 'package:smart_negborhood_app/core/constants/small_text.dart';
@@ -361,7 +360,7 @@ class _AddFamilyMemberState extends State<AddFamilyMember> {
                                     ),
                                   ),
                                   Text(
-                                    'رقم الجوال: ${selectedPerson!.phoneNumber}',
+                                    'رقم الجوال: ${selectedPerson?.phoneNumber ?? 'لا يوجد رقم جوال'}',
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 14,
